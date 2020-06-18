@@ -129,4 +129,8 @@ if __name__ == '__main__':
   # Add scene to project
   project.scenes.append(a_scene)
 
+  # Set the starting scene and player sprite
+  project.settings["startSceneId"] = a_scene["id"]
+  project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+
   write_project_to_disk(project)

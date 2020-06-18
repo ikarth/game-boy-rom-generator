@@ -98,4 +98,5 @@ if __name__ == '__main__':
   default_bkg = makeBackground("placeholder", "placeholder.png", 20, 18, 160, 144)
   a_scene = makeScene("Scene 0", default_bkg["id"], 20, 18, 228, 172)
   a_scene["actors"].append(a_rock)
+  project.scenes.append(a_scene)
   write_project_to_disk(project)

@@ -63,6 +63,16 @@ def makeBackground(name, filename, width, height, imageWidth, imageHeight):
   element["_v"] = int(round(time.time() * 1000.0))
   return element
 
+def makeActor(sprite_id, x, y, movementType="static"):
+    element = makeElement()
+    element["spriteSheetId"] = sprite_id
+    element["movementType"] = movementType
+    element["moveSpeed"] = "1"
+    element["animSpeed"] = "3"
+    element["x"] = x
+    element["y"] = y
+    return element
+
 def makeScene(name, background, width, height, x, y, collisions=[], actors=[], triggers=[]):
   element = makeElement()
   element["name"] = name
@@ -93,10 +103,14 @@ def write_project_to_disk(gb_project, filename="test.gbsproj", output_path="../g
 if __name__ == '__main__':
   project = types.SimpleNamespace(**base_gb_project)
   project.settings = default_project_settings.copy()
-  a_rock = makeSpriteSheet("rock", 1, "static", "rock.png")
-  project.spriteSheets.append(a_rock)
+  player_sprite_sheet = makeSpriteSheet("actor_animated", 6, "actor_animated", "actor_animated.png")
+  project.spriteSheets.append(player_sprite_sheet)
+  a_rock_sprite = makeSpriteSheet("rock", 1, "static", "rock.png")
+  project.spriteSheets.append(a_rock_sprite)
   default_bkg = makeBackground("placeholder", "placeholder.png", 20, 18, 160, 144)
   a_scene = makeScene("Scene 0", default_bkg["id"], 20, 18, 228, 172)
-  a_scene["actors"].append(a_rock)
+  a_scene["actors"].append({"id": "9261decb-55c1-4ab9-ae40-801b1a6a93b8"})
+  example_rock = makeActor(a_rock_sprite["id"], 5, 5)
+  a_scene["actors"].append(example_rock)
   project.scenes.append(a_scene)
   write_project_to_disk(project)

@@ -126,14 +126,17 @@ def makeProject():
             try:
                 shutil.copy2(asset_path + f_name, temp_file)
                 os.replace(Path(temp_file), Path(output_path + asset_path + f_name))
+                logging.info(f"Wrote {Path(output_path + asset_path + f_name)}")
             except FileNotFoundError as err:
                 print(f"Asset File Missing: {err}")
+                logging.warning(f"Asset File Missing: {err}")
         if not shutil.rmtree.avoids_symlink_attacks:
             logging.info("Temp directory deletion potentially vulerable to symlink attacks.")
         shutil.rmtree(Path(output_path + "assets/temp/"))
 
     def write_project_to_disk(gb_project, filename="test.gbsproj", output_path="../gbprojects/projects/"):
         # Write project to JSON
+        logging.info(f"Writing {filename} project file...")
         gb_project_without_ui_elements = copy.deepcopy(gb_project)
         gb_project_without_ui_elements.ui = None
         generated_project = json.dumps(gb_project_without_ui_elements.__dict__, indent=4)
@@ -149,15 +152,15 @@ def makeProject():
         ui_asset_array = write_ui_assets(gb_project.ui, "assets/ui/")
         write_assets(ui_asset_array, output_path, "assets/ui/")
 
-        def makeBasicProject():
-            project = types.SimpleNamespace(**base_gb_project)
-            project.settings = default_project_settings.copy()
-            project.ui = [
-            {"filename": "ascii.png", "asset_file_name": "original/ascii.png"},
-            {"filename": "cursor.png", "asset_file_name": "original/cursor.png"},
-            {"filename": "emotes.png", "asset_file_name": "original/emotes.png"},
-            {"filename": "frame.png", "asset_file_name": "original/frame.png"}]
-            return project
+    def makeBasicProject():
+        project = types.SimpleNamespace(**base_gb_project)
+        project.settings = default_project_settings.copy()
+        project.ui = [
+        {"filename": "ascii.png", "asset_file_name": "original/ascii.png"},
+        {"filename": "cursor.png", "asset_file_name": "original/cursor.png"},
+        {"filename": "emotes.png", "asset_file_name": "original/emotes.png"},
+        {"filename": "frame.png", "asset_file_name": "original/frame.png"}]
+        return project
 
 
     def create():

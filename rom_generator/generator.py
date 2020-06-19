@@ -10,6 +10,9 @@ import copy
 import logging
 import argparse
 from pathlib import Path
+from PIL import Image
+
+
 
 
 
@@ -59,6 +62,10 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
         return element
 
+    def getImageInfo(image_filename, image_type="sprites"):
+        im = Image.open(Path(asset_folder).joinpath(image_type, image_filename))
+        return {"pixel_width": im.size[0], "pixel_height": im.size[1], "image_format": im.format, "image_mode": im.mode}
+
     def makeSpriteSheet(name, frames, type, filename):
         element = makeElement()
         element["name"] = name
@@ -66,9 +73,10 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         element["type"] = type
         element["filename"] = filename
         element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
+        element["_generator_metadata"] = getImageInfo(filename)
         return element
 
-    def makeBackground(name, filename, width, height, imageWidth, imageHeight):
+    def makeBackground(name, filename, width=None, height=None, imageWidth=None, imageHeight=None):
         element = makeElement()
         element["name"] = name
         element["width"] = width
@@ -77,6 +85,17 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         element["imageHeight"] = imageHeight
         element["filename"] = filename
         element["_v"] = int(round(time.time() * 1000.0))
+        element["_generator_metadata"] = getImageInfo(filename, image_type="backgrounds")
+        if imageWidth is None:
+            element["imageWidth"] = element["_generator_metadata"]["pixel_width"]
+        if imageHeight is None:
+            element["imageHeight"] = element["_generator_metadata"]["pixel_height"]
+        if width is None:
+            element["width"] = element["_generator_metadata"]["pixel_width"] // 8
+        if height is None:
+            element["height"] = element["_generator_metadata"]["pixel_height"] // 8
+        if (element["_generator_metadata"]["pixel_width"] % 8 != 0) or (element["_generator_metadata"]["pixel_height"] % 8 != 0):
+            logging.warning(f"{filename} has a dimention that is not a multiple of 8")
         return element
 
     def makeActor(sprite_id, x, y, movementType="static"):

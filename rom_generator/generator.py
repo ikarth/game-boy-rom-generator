@@ -8,11 +8,12 @@ import shutil
 import ntpath
 import copy
 import logging
+import argparse
 from pathlib import Path
 
 
 
-def makeProject():
+def makeProject(project_output_path="../gbprojects/projects/"):
 
     base_gb_project = {
     "settings": {},
@@ -100,7 +101,6 @@ def makeProject():
         element["actors"] = actors
         element["triggers"] = triggers
         return element
-
 
     ### Writing the project to disk
 
@@ -195,10 +195,13 @@ def makeProject():
         project.settings["startSceneId"] = a_scene["id"]
         project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
-        write_project_to_disk(project)
+        write_project_to_disk(project, output_path=project_output_path)
 
     create()
 
 ### Run the generator
 if __name__ == '__main__':
-    makeProject()
+    parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
+    args = parser.parse_args()
+    makeProject(project_output_path=args.destination)

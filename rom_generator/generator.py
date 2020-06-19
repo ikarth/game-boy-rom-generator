@@ -76,7 +76,7 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         element["_generator_metadata"] = getImageInfo(filename)
         return element
 
-    def makeBackground(name, filename, width=None, height=None, imageWidth=None, imageHeight=None):
+    def makeBackground(name, filename, imageWidth=None, imageHeight=None, width=None, height=None):
         element = makeElement()
         element["name"] = name
         element["width"] = width

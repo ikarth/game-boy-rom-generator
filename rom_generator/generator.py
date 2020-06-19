@@ -3,6 +3,11 @@ import types
 import uuid
 import time
 import random
+import os
+import shutil
+import ntpath
+import copy
+import logging
 from pathlib import Path
 
 
@@ -99,25 +104,62 @@ def makeProject():
 
     ### Writing the project to disk
 
+    def write_ui_assets(ui_asset_array, asset_path):
+        ui_assets = []
+        for ui_asset in ui_asset_array:
+            temp_file = Path("assets/ui/" + ui_asset["filename"])
+            try:
+                shutil.copy2(asset_path + ui_asset["asset_file_name"], temp_file)
+                ui_assets.append({"filename": ui_asset["filename"]})
+            except FileNotFoundError as err:
+                print(f"Asset File Missing: {err}")
+        return ui_assets
+
+
+    def write_assets(asset_array, output_path, asset_path):
+        Path(output_path + "assets/temp/").mkdir(parents=True, exist_ok=True)
+        Path(output_path + asset_path).mkdir(parents=True, exist_ok=True)
+        for element in asset_array:
+            f_name = element["filename"]
+            print(f_name)
+            temp_file = Path(output_path + "assets/temp/scratch.file")
+            try:
+                shutil.copy2(asset_path + f_name, temp_file)
+                os.replace(Path(temp_file), Path(output_path + asset_path + f_name))
+            except FileNotFoundError as err:
+                print(f"Asset File Missing: {err}")
+        if not shutil.rmtree.avoids_symlink_attacks:
+            logging.info("Temp directory deletion potentially vulerable to symlink attacks.")
+        shutil.rmtree(Path(output_path + "assets/temp/"))
+
     def write_project_to_disk(gb_project, filename="test.gbsproj", output_path="../gbprojects/projects/"):
         # Write project to JSON
-        generated_project = json.dumps(gb_project.__dict__, indent=4)
+        gb_project_without_ui_elements = copy.deepcopy(gb_project)
+        gb_project_without_ui_elements.ui = None
+        generated_project = json.dumps(gb_project_without_ui_elements.__dict__, indent=4)
         print(generated_project)
         Path(output_path).mkdir(parents=True, exist_ok=True)
         with open(f"{output_path}{filename}", "w") as wfile:
             wfile.write(generated_project)
 
         # Copy assets to projects
-        Path(output_path + "assets/backgrounds/").mkdir(parents=True, exist_ok=True)
-        Path(output_path + "assets/music/").mkdir(parents=True, exist_ok=True)
-        Path(output_path + "assets/sprites/").mkdir(parents=True, exist_ok=True)
-        Path(output_path + "assets/ui/").mkdir(parents=True, exist_ok=True)
+        write_assets(gb_project.spriteSheets, output_path, "assets/sprites/")
+        write_assets(gb_project.music, output_path, "assets/music/")
+        write_assets(gb_project.backgrounds, output_path, "assets/backgrounds/")
+        ui_asset_array = write_ui_assets(gb_project.ui, "assets/ui/")
+        write_assets(ui_asset_array, output_path, "assets/ui/")
+
 
 
     def create():
         # Set up a barebones project
         project = types.SimpleNamespace(**base_gb_project)
         project.settings = default_project_settings.copy()
+        project.ui = [
+        {"filename": "ascii.png", "asset_file_name": "original/ascii.png"},
+        {"filename": "cursor.png", "asset_file_name": "original/cursor.png"},
+        {"filename": "emotes.png", "asset_file_name": "original/emotes.png"},
+        {"filename": "frame.png", "asset_file_name": "original/frame.png"}]
 
         # Create sprite sheets
         player_sprite_sheet = makeSpriteSheet("actor_animated", 6, "actor_animated", "actor_animated.png")

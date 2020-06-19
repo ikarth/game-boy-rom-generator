@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 
-def makeProject(project_output_path="../gbprojects/projects/"):
+def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../assets/"):
 
     base_gb_project = {
     "settings": {},
@@ -109,7 +109,8 @@ def makeProject(project_output_path="../gbprojects/projects/"):
         for ui_asset in ui_asset_array:
             temp_file = Path("assets/ui/" + ui_asset["filename"])
             try:
-                shutil.copy2(asset_path + ui_asset["asset_file_name"], temp_file)
+                copy_path = os.path.abspath(Path(asset_path).joinpath(ui_asset["asset_file_name"]))
+                shutil.copy2(copy_path, temp_file)
                 ui_assets.append({"filename": ui_asset["filename"]})
             except FileNotFoundError as err:
                 print(f"Asset File Missing: {err}")
@@ -118,15 +119,17 @@ def makeProject(project_output_path="../gbprojects/projects/"):
 
     def write_assets(asset_array, output_path, asset_path):
         Path(output_path + "assets/temp/").mkdir(parents=True, exist_ok=True)
-        Path(output_path + asset_path).mkdir(parents=True, exist_ok=True)
+        Path(output_path).joinpath(asset_path).mkdir(parents=True, exist_ok=True)
         for element in asset_array:
             f_name = element["filename"]
             print(f_name)
-            temp_file = Path(output_path + "assets/temp/scratch.file")
+            temp_file = os.path.abspath(Path(output_path + "assets/temp/scratch.file"))
             try:
-                shutil.copy2(asset_path + f_name, temp_file)
-                os.replace(Path(temp_file), Path(output_path + asset_path + f_name))
-                logging.info(f"Wrote {Path(output_path + asset_path + f_name)}")
+                copy_path = os.path.abspath(Path(asset_path).joinpath(f_name))
+                destination_path = Path(output_path).joinpath(asset_path, f_name)
+                shutil.copy2(copy_path, temp_file)
+                os.replace(Path(temp_file), destination_path)
+                logging.info(f"Wrote {destination_path}")
             except FileNotFoundError as err:
                 print(f"Asset File Missing: {err}")
                 logging.warning(f"Asset File Missing: {err}")
@@ -146,11 +149,12 @@ def makeProject(project_output_path="../gbprojects/projects/"):
             wfile.write(generated_project)
 
         # Copy assets to projects
-        write_assets(gb_project.spriteSheets, output_path, "assets/sprites/")
-        write_assets(gb_project.music, output_path, "assets/music/")
-        write_assets(gb_project.backgrounds, output_path, "assets/backgrounds/")
-        ui_asset_array = write_ui_assets(gb_project.ui, "assets/ui/")
-        write_assets(ui_asset_array, output_path, "assets/ui/")
+        print("*** Writing assets ***")
+        write_assets(gb_project.spriteSheets, output_path, Path(asset_folder + "sprites/"))
+        write_assets(gb_project.music, output_path, Path(asset_folder + "music/"))
+        write_assets(gb_project.backgrounds, output_path, Path(asset_folder + "backgrounds/"))
+        ui_asset_array = write_ui_assets(gb_project.ui, Path(asset_folder +"ui/"))
+        write_assets(ui_asset_array, output_path, Path(asset_folder + "ui/"))
 
     def makeBasicProject():
         project = types.SimpleNamespace(**base_gb_project)
@@ -203,5 +207,6 @@ def makeProject(project_output_path="../gbprojects/projects/"):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
+    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
     args = parser.parse_args()
-    makeProject(project_output_path=args.destination)
+    makeProject(project_output_path=args.destination, asset_folder = args.assets)

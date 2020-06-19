@@ -197,19 +197,19 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         project.spriteSheets.append(a_rock_sprite)
 
         # Add a background image
-        bkg_x = 160
-        bkg_y = 144
-        bkg_width = (bkg_x/8)-1
-        bkg_height = (bkg_y/8)-1
-        default_bkg = makeBackground("placeholder", "placeholder.png", bkg_width, bkg_height, bkg_x, bkg_y)
+        default_bkg = makeBackground("placeholder", "placeholder.png")
         project.backgrounds.append(default_bkg)
+        bkg_x = default_bkg["imageWidth"]
+        bkg_y = default_bkg["imageHeight"]
+        bkg_width = default_bkg["width"]
+        bkg_height = default_bkg["height"]
 
         # Create a scene
         a_scene = makeScene("Scene 0", default_bkg["id"], 20, 18, 228, 172)
         # Create an actor
         for x in range(9): # Maximum number of actors in GB Studio is 9
-            actor_x = random.randint(0,(bkg_width-1)) # Second value subtracted by 1 to keep sprite within bounds of the screen
-            actor_y = random.randint(1,bkg_height) # First value added by 1 to keep sprite within bounds of the screen
+            actor_x = random.randint(0,(bkg_width-2)) # Second value subtracted by 1 to keep sprite within bounds of the screen
+            actor_y = random.randint(1,bkg_height-1) # First value added by 1 to keep sprite within bounds of the screen
             example_rock = makeActor(a_rock_sprite["id"], actor_x, actor_y)
             a_scene["actors"].append(example_rock)
         # Add scene to project

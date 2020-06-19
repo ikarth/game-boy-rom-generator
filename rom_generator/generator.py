@@ -18,6 +18,7 @@ from PIL import Image
 
 def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../assets/"):
 
+    scene_count = 0
     base_gb_project = {
     "settings": {},
     "scenes": [],
@@ -48,6 +49,18 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
             "playerSpriteSheetId": "581d34d0-9591-4e6e-a609-1d94f203b0cd"
         }
 
+    ### query current project for information
+    def getNumberOfScenes():
+        return scene_count
+
+    def assignSceneLocation(scene_number):
+        scene_columns = 10
+        scene_spacing = 200
+        x = (scene_number % scene_columns) * scene_spacing
+        y = (scene_number // scene_columns) * scene_spacing
+        return (x, y)
+
+
     ### Create a basic GBS element, with a unique ID
 
     def makeElement():
@@ -66,14 +79,21 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         im = Image.open(Path(asset_folder).joinpath(image_type, image_filename))
         return {"pixel_width": im.size[0], "pixel_height": im.size[1], "image_format": im.format, "image_mode": im.mode}
 
-    def makeSpriteSheet(name, frames, type, filename):
+    def makeSpriteSheet(name, type, filename, frames=None):
         element = makeElement()
         element["name"] = name
-        element["frames"] = frames
         element["type"] = type
         element["filename"] = filename
         element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
         element["_generator_metadata"] = getImageInfo(filename)
+        width = element["_generator_metadata"]["pixel_width"]
+        height = element["_generator_metadata"]["pixel_height"]
+        if (width % 16 != 0) or (height % 16 != 0):
+            logging.warning(f"Sprite sheet {name} is not a multiple of 16: ({width},{height})")
+        if frames is None:
+            element["frames"] = width // 16
+        else:
+            element["frames"] = frames
         return element
 
     def makeBackground(name, filename, imageWidth=None, imageHeight=None, width=None, height=None):
@@ -100,7 +120,7 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
 
     def makeActor(sprite_id, x, y, movementType="static"):
         element = makeElement()
-        element["spriteSheetId"] = sprite_id
+        element["spriteSheetId"] = sprite_id["id"]
         element["movementType"] = movementType
         element["moveSpeed"] = "1"
         element["animSpeed"] = "3"
@@ -108,14 +128,42 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         element["y"] = y
         return element
 
-    def makeScene(name, background, width, height, x, y, collisions=[], actors=[], triggers=[]):
+    def makeScene(name, background, width=None, height=None, x=None, y=None, collisions=[], actors=[], triggers=[]):
+        """Creates a scene element.
+        name is the scene name (arbitrary string)
+        background is a background element (background data element).
+        width and height are the size of the scene in tiles (optional, calculated from the background)
+        x and y are the position of the scene in the GB Studio editor (optional)
+        collisions is the collisions array (optional)
+        actors is the array of actors in this scene (optional)
+        triggers is the array of triggers in this scene (optional)
+        Returns a data element in type 'scene'
+        """
+        nonlocal scene_count
+        scene_count += 1
         element = makeElement()
         element["name"] = name
-        element["backgroundId"] = background
-        element["width"] = width
-        element["height"] = height
-        element["x"] = x
-        element["y"] = y
+        element["backgroundId"] = background["id"]
+
+        # width and height are the size of the scene in tiles.
+        if not width is None:
+            element["width"] = width
+        else:
+            element["width"] = background["width"]
+        if not height is None:
+            element["height"] = height
+        else:
+            element["height"] = background["height"]
+
+        # x and y are the position of the scene in the editor window
+        if not x is None:
+            element["x"] = x
+        else:
+            element["x"] = assignSceneLocation(getNumberOfScenes())[0] # + background["imageWidth"]
+        if not y is None:
+            element["y"] = y
+        else:
+            element["y"] = assignSceneLocation(getNumberOfScenes())[1] # + background["imageHeight"]
         element["collisions"] = collisions
         element["actors"] = actors
         element["triggers"] = triggers
@@ -191,9 +239,9 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         project = makeBasicProject()
 
         # Create sprite sheets
-        player_sprite_sheet = makeSpriteSheet("actor_animated", 6, "actor_animated", "actor_animated.png")
+        player_sprite_sheet = makeSpriteSheet("actor_animated", "actor_animated", "actor_animated.png")
         project.spriteSheets.append(player_sprite_sheet)
-        a_rock_sprite = makeSpriteSheet("rock", 1, "static", "rock.png")
+        a_rock_sprite = makeSpriteSheet("rock", "static", "rock.png")
         project.spriteSheets.append(a_rock_sprite)
 
         # Add a background image
@@ -205,12 +253,12 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         bkg_height = default_bkg["height"]
 
         # Create a scene
-        a_scene = makeScene("Scene 0", default_bkg["id"], 20, 18, 228, 172)
+        a_scene = makeScene("Scene 0", default_bkg)
         # Create an actor
         for x in range(9): # Maximum number of actors in GB Studio is 9
             actor_x = random.randint(0,(bkg_width-2)) # Second value subtracted by 1 to keep sprite within bounds of the screen
             actor_y = random.randint(1,bkg_height-1) # First value added by 1 to keep sprite within bounds of the screen
-            example_rock = makeActor(a_rock_sprite["id"], actor_x, actor_y)
+            example_rock = makeActor(a_rock_sprite, actor_x, actor_y)
             a_scene["actors"].append(example_rock)
         # Add scene to project
         project.scenes.append(a_scene)

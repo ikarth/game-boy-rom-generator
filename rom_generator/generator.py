@@ -149,17 +149,20 @@ def makeProject():
         ui_asset_array = write_ui_assets(gb_project.ui, "assets/ui/")
         write_assets(ui_asset_array, output_path, "assets/ui/")
 
+        def makeBasicProject():
+            project = types.SimpleNamespace(**base_gb_project)
+            project.settings = default_project_settings.copy()
+            project.ui = [
+            {"filename": "ascii.png", "asset_file_name": "original/ascii.png"},
+            {"filename": "cursor.png", "asset_file_name": "original/cursor.png"},
+            {"filename": "emotes.png", "asset_file_name": "original/emotes.png"},
+            {"filename": "frame.png", "asset_file_name": "original/frame.png"}]
+            return project
 
 
     def create():
         # Set up a barebones project
-        project = types.SimpleNamespace(**base_gb_project)
-        project.settings = default_project_settings.copy()
-        project.ui = [
-        {"filename": "ascii.png", "asset_file_name": "original/ascii.png"},
-        {"filename": "cursor.png", "asset_file_name": "original/cursor.png"},
-        {"filename": "emotes.png", "asset_file_name": "original/emotes.png"},
-        {"filename": "frame.png", "asset_file_name": "original/frame.png"}]
+        project = makeBasicProject()
 
         # Create sprite sheets
         player_sprite_sheet = makeSpriteSheet("actor_animated", 6, "actor_animated", "actor_animated.png")

@@ -42,7 +42,7 @@ def makeProject():
     ### Create a basic GBS element, with a unique ID
 
     def makeElement():
-         element = {}
+        element = {}
         element["id"] = str(uuid.uuid4())
         return element.copy()
 
@@ -100,11 +100,18 @@ def makeProject():
     ### Writing the project to disk
 
     def write_project_to_disk(gb_project, filename="test.gbsproj", output_path="../gbprojects/projects/"):
+        # Write project to JSON
         generated_project = json.dumps(gb_project.__dict__, indent=4)
         print(generated_project)
         Path(output_path).mkdir(parents=True, exist_ok=True)
         with open(f"{output_path}{filename}", "w") as wfile:
             wfile.write(generated_project)
+
+        # Copy assets to projects
+        Path(output_path + "assets/backgrounds/").mkdir(parents=True, exist_ok=True)
+        Path(output_path + "assets/music/").mkdir(parents=True, exist_ok=True)
+        Path(output_path + "assets/sprites/").mkdir(parents=True, exist_ok=True)
+        Path(output_path + "assets/ui/").mkdir(parents=True, exist_ok=True)
 
 
     def create():

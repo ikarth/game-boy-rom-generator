@@ -125,10 +125,11 @@ if __name__ == '__main__':
   # Create a scene
   a_scene = makeScene("Scene 0", default_bkg["id"], 20, 18, 228, 172)
   # Create an actor
-  actor_x = random.randint(0,19)
-  actor_y = random.randint(0,17)
-  example_rock = makeActor(a_rock_sprite["id"], actor_x, actor_y)
-  a_scene["actors"].append(example_rock)
+  for x in range(9): # Maximum number of actors in GB Studio is 9
+      actor_x = random.randint(0,18)
+      actor_y = random.randint(1,17)
+      example_rock = makeActor(a_rock_sprite["id"], actor_x, actor_y)
+      a_scene["actors"].append(example_rock)
   # Add scene to project
   project.scenes.append(a_scene)
 

@@ -13,8 +13,19 @@ from pathlib import Path
 from PIL import Image
 
 
+# Utilities
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
+# Make Project
 
 def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../assets/"):
 
@@ -281,3 +292,6 @@ if __name__ == '__main__':
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
     args = parser.parse_args()
     makeProject(project_output_path=args.destination, asset_folder = args.assets)
+    if args.destination == "../gbprojects/projects/":
+        print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
+        print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

@@ -77,7 +77,7 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
     def makeElement():
         element = {}
         element["id"] = str(uuid.uuid4())
-        return element.copy()
+        return copy.deepcopy(element)
 
     def makeMusic(name, filename):
         element = makeElement()
@@ -129,15 +129,24 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
             logging.warning(f"{filename} has a dimention that is not a multiple of 8")
         return element
 
-    def makeActor(sprite_id, x, y, movementType="static"):
+    def makeActor(sprite, x, y, movementType="static"):
         element = makeElement()
-        element["spriteSheetId"] = sprite_id["id"]
+        element["spriteSheetId"] = sprite["id"]
         element["movementType"] = movementType
         element["moveSpeed"] = "1"
         element["animSpeed"] = "3"
         element["x"] = x
         element["y"] = y
         return element
+
+    def makeTrigger(trigger, x, y, width, height, script=[]):
+      element = makeElement()
+      element["x"] = x
+      element["y"] = y
+      element["width"] = width
+      element["height"] = height
+      element["script"] = script
+      return element
 
     def makeScene(name, background, width=None, height=None, x=None, y=None, collisions=[], actors=[], triggers=[]):
         """Creates a scene element.
@@ -153,7 +162,10 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         nonlocal scene_count
         scene_count += 1
         element = makeElement()
-        element["name"] = name
+        if name is None:
+            element["name"] = f"Scene_{scene_count:04}"
+        else:
+            element["name"] = name
         element["backgroundId"] = background["id"]
 
         # width and height are the size of the scene in tiles.
@@ -179,6 +191,65 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         element["actors"] = actors
         element["triggers"] = triggers
         return element
+
+    def makeScriptConnectionToScene(target_scene, direction="right", location=None):
+        destination_location = {
+            "right": (1, target_scene["height"] // 2),
+            "left":  (target_scene["width"] - 3, target_scene["height"] // 2),
+            "up":    (target_scene["width"] // 2, target_scene["height"] - 2),
+            "down":  (target_scene["width"] // 2, 1),
+        }
+        if location is None:
+            location = destination_location[direction]
+        script = []
+        element = makeElement()
+        element["command"] = "EVENT_SWITCH_SCENE"
+        element["args"] = {
+          "sceneId": target_scene["id"],
+          "x": location[0],
+          "y": location[1],
+          "direction": direction,
+          "fadeSpeed": "2"
+        }
+        script.append(element)
+        element = makeElement()
+        element["command"] = "EVENT_END"
+        script.append(element)
+        return script
+
+    reverse_direction = {"left": "right", "right": "left", "up": "down", "down": "up"}
+    connector_sprite = None
+
+    def makeTriggerConnectionToScene(scene, destination_scene, direction):
+        source_location = {
+            "right": (scene["width"] - 1, (scene["height"] // 2) - 1),
+            "left":  (0, (scene["height"] // 2) - 1),
+            "up":    (scene["width"] // 2, 0),
+            "down":  (scene["width"] // 2, scene["height"] - 1)
+        }
+        trigger_size = {
+        "right": (1, 2),
+        "left":  (1, 2),
+        "up":    (2, 1),
+        "down":  (2, 2),
+        }
+        sign_offset = {
+        "right": (0, 2),
+        "left":  (0, 2),
+        "up":    (2, 0),
+        "down":  (2, 0),
+        }
+        trigger_connection = makeTrigger(f"walkTo{destination_scene['name']}", source_location[direction][0], source_location[direction][1], trigger_size[direction][0], trigger_size[direction][1], makeScriptConnectionToScene(destination_scene, direction))
+        scene["triggers"].append(trigger_connection)
+
+        actor_connector = makeActor(connector_sprite, source_location[direction][0] + sign_offset[direction][0], (source_location[direction][1] + sign_offset[direction][1]) + 1, movementType="static")
+        scene["actors"].append(actor_connector)
+        actor_connector = makeActor(connector_sprite, source_location[direction][0] - sign_offset[direction][0], (source_location[direction][1] - sign_offset[direction][1]) + 1, movementType="static")
+        scene["actors"].append(actor_connector)
+
+    def makeSymmetricSceneConnections(scene, destination_scene, direction):
+        makeTriggerConnectionToScene(scene, destination_scene, direction)
+        makeTriggerConnectionToScene(destination_scene, scene, reverse_direction[direction])
 
     ### Writing the project to disk
 
@@ -263,16 +334,39 @@ def makeProject(project_output_path="../gbprojects/projects/", asset_folder="../
         bkg_width = default_bkg["width"]
         bkg_height = default_bkg["height"]
 
-        # Create a scene
-        a_scene = makeScene("Scene 0", default_bkg)
-        # Create an actor
-        for x in range(9): # Maximum number of actors in GB Studio is 9
-            actor_x = random.randint(0,(bkg_width-2)) # Second value subtracted by 1 to keep sprite within bounds of the screen
-            actor_y = random.randint(1,bkg_height-1) # First value added by 1 to keep sprite within bounds of the screen
-            example_rock = makeActor(a_rock_sprite, actor_x, actor_y)
-            a_scene["actors"].append(example_rock)
-        # Add scene to project
-        project.scenes.append(a_scene)
+        # add connector sprite
+        nonlocal connector_sprite
+        connector_sprite = makeSpriteSheet("tower", "static", "tower.png")
+        project.spriteSheets.append(connector_sprite)
+
+        number_of_scenes_to_make = 7
+        for make_scene_num in range(number_of_scenes_to_make):
+            # Create a scene
+            a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
+            # Create an actor
+            for x in range(2): # Maximum number of actors in GB Studio is 9
+                actor_x = random.randint(1,(bkg_width-3)) # Second value subtracted by 1 to keep sprite within bounds of the screen
+                actor_y = random.randint(2,bkg_height-2) # First value added by 1 to keep sprite within bounds of the screen
+                example_rock = makeActor(a_rock_sprite, actor_x, actor_y)
+                a_scene["actors"].append(example_rock)
+            # Add scene to project
+            project.scenes.append(copy.deepcopy(a_scene))
+
+        scene_connections_translations = {"right":0, "left":1, "up":2, "down":3}
+        scene_connections = [[True, True, True, True] for n in range(number_of_scenes_to_make)]
+        for y in range(number_of_scenes_to_make):
+            for attempts in range(3):
+                other_scene = random.randint(0, number_of_scenes_to_make - 2)
+                if other_scene >= y:
+                    other_scene += 1
+                chosen_direction = random.choice(["right", "left", "up", "down"])
+                print(scene_connections)
+                if scene_connections[y][scene_connections_translations[chosen_direction]]:
+                    if scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]]:
+                        scene_connections[y][scene_connections_translations[chosen_direction]] = False
+                        scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]] = False
+                        makeSymmetricSceneConnections(project.scenes[y], project.scenes[other_scene], chosen_direction)
+                        break
 
         # Add some music
         project.music.append(makeMusic("template", "template.mod"))
@@ -291,7 +385,7 @@ if __name__ == '__main__':
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
     args = parser.parse_args()
-    makeProject(project_output_path=args.destination, asset_folder = args.assets)
+    makeProject(project_output_path = args.destination, asset_folder = args.assets)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

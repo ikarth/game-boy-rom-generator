@@ -22,8 +22,6 @@ wincertstore==0.2
 zipp==3.1.0
 pip==20.1.1
 setuptools==47.3.0
-vc==14.1
-vs2015_runtime==14.16.27012
 wheel==0.34.2
 wincertstore==0.2
 zlib==1.2.11

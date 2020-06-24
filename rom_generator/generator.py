@@ -36,12 +36,17 @@ class bcolors:
 main_asset_folder = "../assets/"
 
 scene_count = 0
+generator_seed = "game boy generator"
 
-def initializeGenerator(asset_folder = "../assets/"):
+def initializeGenerator(asset_folder = "../assets/", new_seed=None):
     global main_asset_folder
     global scene_count
     main_asset_folder = asset_folder
     scene_count = 0
+    global generator_seed
+    if not new_seed is None:
+        generator_seed = new_seed
+    random.seed(generator_seed)
 
 base_gb_project = {
 "settings": {},
@@ -306,6 +311,8 @@ def writeUIAssets(ui_asset_array, asset_path):
             ui_assets.append({"filename": ui_asset["filename"]})
         except FileNotFoundError as err:
             print(f"Asset File Missing: {err}")
+            logging.warning(f"Asset File Missing: {err}")
+
     return ui_assets
 
 
@@ -434,7 +441,6 @@ def createExampleProject():
             if other_scene >= y:
                 other_scene += 1
             chosen_direction = random.choice(["right", "left", "up", "down"])
-            print(scene_connections)
             if scene_connections[y][scene_connections_translations[chosen_direction]]:
                 if scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]]:
                     scene_connections[y][scene_connections_translations[chosen_direction]] = False

@@ -3,7 +3,6 @@
 # platform: win-64
 atomicwrites==1.4.0
 attrs==19.3.0
-ca-certificates
 certifi==2020.6.20
 colorama==0.4.3
 coverage==5.0

@@ -401,7 +401,8 @@ def createExampleProject():
     project.spriteSheets.append(a_rock_sprite)
 
     # Add a background image
-    default_bkg = makeBackground("placeholder.png", "placeholder")
+    default_bkg = makeBackground("placeholder.png", "placeholder_fail_fail")
+    assert(False)
     project.backgrounds.append(default_bkg)
 
     # Get information about the background

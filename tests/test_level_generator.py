@@ -1,0 +1,13 @@
+import rom_generator.generator as generator
+import rom_generator.level_generator as level_generator
+
+def test_RockWorld(tmpdir):
+    generator.initializeGenerator(asset_folder = "assets/")
+    project = level_generator.createRockWorld()
+    generator.writeProjectToDisk(project, output_path = tmpdir)
+    assert(project.scenes[0]["x"] == 200)
+    assert(project.scenes[0]["actors"][0]["movementType"] == "static")
+    assert(project.scenes[0]["triggers"][0]["script"][1]["command"] == "EVENT_END")
+    assert(project.spriteSheets[1]["name"] == "rock")
+    assert(project.backgrounds[0]["name"] == "placeholder")
+    assert(project.backgrounds[0]["height"] == 18)

@@ -340,6 +340,7 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="../gbpr
     # Write project to JSON
     logging.info(f"Writing {filename} project file...")
     gb_project_without_ui_elements = copy.deepcopy(gb_project)
+    print(gb_project)
     gb_project_without_ui_elements.ui = None
     generated_project = json.dumps(gb_project_without_ui_elements.__dict__, indent=4)
     print(generated_project)

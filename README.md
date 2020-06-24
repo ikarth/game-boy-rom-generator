@@ -1,5 +1,5 @@
 # game-boy-rom-generator
 
-![Python application](https://github.com/ikarth/game-boy-rom-generator/workflows/Python%20application/badge.svg)
+![Python application](https://github.com/ikarth/game-boy-rom-generator/workflows/Python%20application/badge.svg?branch=main)
 
 Game Boy ROM Generator

@@ -143,7 +143,9 @@ def addSpriteSheet(project, filename, name=None, type="static", frames=None):
     project.spriteSheets.append(element)
     return element
 
-def makeBackground(name, filename, imageWidth=None, imageHeight=None, width=None, height=None):
+def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width=None, height=None):
+    if name is None:
+        name = filename
     element = makeElement()
     element["name"] = name
     element["width"] = width
@@ -391,7 +393,7 @@ def createExampleProject():
     project.spriteSheets.append(a_rock_sprite)
 
     # Add a background image
-    default_bkg = makeBackground("placeholder", "placeholder.png")
+    default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
 
     # Get information about the background

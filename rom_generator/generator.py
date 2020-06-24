@@ -262,10 +262,7 @@ def makeScriptConnectionToScene(target_scene, direction="right", location=None):
 
 reverse_direction = {"left": "right", "right": "left", "up": "down", "down": "up"}
 
-# The doorway sprite is a hack, and not the best way to handle this...
-doorway_sprite = None
-
-def addTriggerConnectionToScene(project, scene, destination_scene, direction):
+def addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite=None):
     source_location = {
         "right": (scene["width"] - 1, (scene["height"] // 2) - 1),
         "left":  (0, (scene["height"] // 2) - 1),
@@ -294,9 +291,9 @@ def addTriggerConnectionToScene(project, scene, destination_scene, direction):
         scene["actors"].append(actor_connector)
 
 
-def addSymmetricSceneConnections(project, scene, destination_scene, direction):
-    addTriggerConnectionToScene(project, scene, destination_scene, direction)
-    addTriggerConnectionToScene(project, destination_scene, scene, reverse_direction[direction])
+def addSymmetricSceneConnections(project, scene, destination_scene, direction, doorway_sprite=None):
+    addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite)
+    addTriggerConnectionToScene(project, destination_scene, scene, reverse_direction[direction], doorway_sprite)
 
 
 ### Writing the project to disk ###
@@ -401,7 +398,7 @@ def createExampleProject():
     project.spriteSheets.append(a_rock_sprite)
 
     # Add a background image
-    default_bkg = makeBackground("placeholder.png", "placeholder_fail")
+    default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
 
     # Get information about the background
@@ -412,7 +409,6 @@ def createExampleProject():
 
     # add a sprite to indicate the location of a doorway
     # a better way to do this in the actual levels is to alter the background image instead
-    global doorway_sprite
     doorway_sprite = makeSpriteSheet("tower.png", "tower", "static")
     project.spriteSheets.append(doorway_sprite)
 
@@ -446,7 +442,7 @@ def createExampleProject():
                 if scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]]:
                     scene_connections[y][scene_connections_translations[chosen_direction]] = False
                     scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]] = False
-                    addSymmetricSceneConnections(project, project.scenes[y], project.scenes[other_scene], chosen_direction)
+                    addSymmetricSceneConnections(project, project.scenes[y], project.scenes[other_scene], chosen_direction, doorway_sprite)
                     break
 
     # Add some music

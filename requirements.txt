@@ -24,4 +24,3 @@ pip==20.1.1
 setuptools==47.3.0
 wheel==0.34.2
 wincertstore==0.2
-zlib==1.2.11

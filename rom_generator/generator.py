@@ -36,12 +36,17 @@ class bcolors:
 main_asset_folder = "../assets/"
 
 scene_count = 0
+generator_seed = "game boy generator"
 
-def initializeGenerator(asset_folder = "../assets/"):
+def initializeGenerator(asset_folder = "../assets/", new_seed=None):
     global main_asset_folder
     global scene_count
     main_asset_folder = asset_folder
     scene_count = 0
+    global generator_seed
+    if not new_seed is None:
+        generator_seed = new_seed
+    random.seed(generator_seed)
 
 base_gb_project = {
 "settings": {},
@@ -107,10 +112,20 @@ def getImageInfo(image_filename, image_type="sprites"):
     im = Image.open(Path(main_asset_folder).joinpath(image_type, image_filename))
     return {"pixel_width": im.size[0], "pixel_height": im.size[1], "image_format": im.format, "image_mode": im.mode}
 
-def makeSpriteSheet(name, type, filename, frames=None):
+## The way I decided to implment the API is that there are two kinds of
+## functions that create stuff that will go into the project structure.
+## The functions that start with 'make' create the element and return it.
+## The functions that start with 'add' create the element and add it directly
+## to the project. Mostly by calling the 'make' function to create the thing.
+##
+
+
+def makeSpriteSheet(filename, name=None, type="static", frames=None):
     """
     Create a sprite sheet.
     """
+    if name is None:
+        name = filename
     element = makeElement()
     element["name"] = name
     element["type"] = type
@@ -127,13 +142,15 @@ def makeSpriteSheet(name, type, filename, frames=None):
         element["frames"] = frames
     return element
 
-def addSpriteSheet(project, name, type, filename, frames=None):
+def addSpriteSheet(project, filename, name=None, type="static", frames=None):
     """Create a sprite sheet and add it to the project."""
-    element = makeSpriteSheet(name, type, filename, frames)
+    element = makeSpriteSheet(filename, name, type, frames)
     project.spriteSheets.append(element)
     return element
 
-def makeBackground(name, filename, imageWidth=None, imageHeight=None, width=None, height=None):
+def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width=None, height=None):
+    if name is None:
+        name = filename
     element = makeElement()
     element["name"] = name
     element["width"] = width
@@ -284,7 +301,7 @@ def addSymmetricSceneConnections(project, scene, destination_scene, direction):
 
 ### Writing the project to disk ###
 
-def write_ui_assets(ui_asset_array, asset_path):
+def writeUIAssets(ui_asset_array, asset_path):
     ui_assets = []
     for ui_asset in ui_asset_array:
         temp_file = Path("assets/ui/" + ui_asset["filename"])
@@ -294,6 +311,8 @@ def write_ui_assets(ui_asset_array, asset_path):
             ui_assets.append({"filename": ui_asset["filename"]})
         except FileNotFoundError as err:
             print(f"Asset File Missing: {err}")
+            logging.warning(f"Asset File Missing: {err}")
+
     return ui_assets
 
 
@@ -333,7 +352,7 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="../gbpr
     writeAssets(gb_project.spriteSheets, output_path, Path(main_asset_folder + "sprites/"))
     writeAssets(gb_project.music, output_path, Path(main_asset_folder + "music/"))
     writeAssets(gb_project.backgrounds, output_path, Path(main_asset_folder + "backgrounds/"))
-    ui_asset_array = write_ui_assets(gb_project.ui, Path(main_asset_folder +"ui/"))
+    ui_asset_array = writeUIAssets(gb_project.ui, Path(main_asset_folder +"ui/"))
     writeAssets(ui_asset_array, output_path, Path(main_asset_folder + "ui/"))
 
 def makeBasicProject():
@@ -372,16 +391,16 @@ def createExampleProject():
     project = makeBasicProject()
 
     # Create sprite sheet for the player sprite
-    player_sprite_sheet = makeSpriteSheet("actor_animated", "actor_animated", "actor_animated.png")
+    player_sprite_sheet = makeSpriteSheet("actor_animated.png", "actor_animated", "actor_animated")
     project.spriteSheets.append(player_sprite_sheet)
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
     # add a sprite we can use for the rocks
-    a_rock_sprite = makeSpriteSheet("rock", "static", "rock.png")
+    a_rock_sprite = makeSpriteSheet("rock.png", "rock", "static")
     project.spriteSheets.append(a_rock_sprite)
 
     # Add a background image
-    default_bkg = makeBackground("placeholder", "placeholder.png")
+    default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
 
     # Get information about the background
@@ -393,7 +412,7 @@ def createExampleProject():
     # add a sprite to indicate the location of a doorway
     # a better way to do this in the actual levels is to alter the background image instead
     global doorway_sprite
-    doorway_sprite = makeSpriteSheet("tower", "static", "tower.png")
+    doorway_sprite = makeSpriteSheet("tower.png", "tower", "static")
     project.spriteSheets.append(doorway_sprite)
 
     # We want to create a bunch of scenes.
@@ -422,7 +441,6 @@ def createExampleProject():
             if other_scene >= y:
                 other_scene += 1
             chosen_direction = random.choice(["right", "left", "up", "down"])
-            print(scene_connections)
             if scene_connections[y][scene_connections_translations[chosen_direction]]:
                 if scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]]:
                     scene_connections[y][scene_connections_translations[chosen_direction]] = False

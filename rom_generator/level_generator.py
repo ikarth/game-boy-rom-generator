@@ -1,11 +1,7 @@
-import rom_generator.generator as generator
 import argparse
 import copy
 import random
-from rom_generator.generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction
-
-
-
+from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
 def createRockWorld():
     # Set up a barebones project
@@ -62,7 +58,7 @@ def createRockWorld():
                 if scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]]:
                     scene_connections[y][scene_connections_translations[chosen_direction]] = False
                     scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]] = False
-                    addSymmetricSceneConnections(project, project.scenes[y], project.scenes[other_scene], chosen_direction)
+                    addSymmetricSceneConnections(project, project.scenes[y], project.scenes[other_scene], chosen_direction, doorway_sprite)
                     break
 
     # Add some music
@@ -90,9 +86,9 @@ if __name__ == '__main__':
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
     args = parser.parse_args()
-    generator.initializeGenerator(asset_folder = args.assets)
+    initializeGenerator(asset_folder = args.assets)
     project = createRockWorld()
-    generator.writeProjectToDisk(project, output_path = args.destination)
+    writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

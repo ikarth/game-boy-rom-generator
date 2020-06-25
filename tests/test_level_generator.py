@@ -1,5 +1,8 @@
-import rom_generator.generator as generator
-import rom_generator.level_generator as level_generator
+import sys,os
+sys.path.append(os.path.join(os.path.dirname(__file__),os.pardir,"rom_generator"))
+
+import generator
+import level_generator
 
 def test_RockWorld(tmpdir):
     generator.initializeGenerator(asset_folder = "assets/")

@@ -11,10 +11,6 @@ def SachitasGame():
     player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
-    # Add a background image
-    default_bkg = makeBackground("placeholder.png", "placeholder")
-    project.backgrounds.append(default_bkg)
-
     a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
     project.scenes.append(copy.deepcopy(a_scene))
 

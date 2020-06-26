@@ -3,6 +3,9 @@ import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
+def createEmptyWorld():
+    pass
+
 def createRockWorld():
     # Set up a barebones project
     project = makeBasicProject()

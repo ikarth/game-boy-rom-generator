@@ -3,6 +3,27 @@ import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
+def createVijayaWorld():
+    # Set up a barebones project
+    project = makeBasicProject()
+
+    # Create sprite sheet for the player sprite
+    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+
+    # Add a background image
+    default_bkg = makeBackground("placeholder.png", "placeholder")
+    project.backgrounds.append(default_bkg)
+
+    a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
+
+    project.scenes.append(copy.deepcopy(a_scene))
+
+    # Add some music
+    project.music.append(makeMusic("template", "template.mod"))
+    project.settings["startSceneId"] = project.scenes[0]["id"]
+    
+    return project
 
 def createAaronGame():
     project = makeBasicProject()
@@ -88,8 +109,7 @@ def createRockWorld():
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project
-
+    return project  
 
 # Utilities
 class bcolors:
@@ -115,6 +135,7 @@ if __name__ == '__main__':
     initializeGenerator(asset_folder=args.assets)
     project = createAaronGame()
     writeProjectToDisk(project, output_path=args.destination)
+    
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

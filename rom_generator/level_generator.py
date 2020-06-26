@@ -3,6 +3,9 @@ import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
+def AnikaProject():
+    pass
+
 def createRockWorld():
     # Set up a barebones project
     project = makeBasicProject()
@@ -87,7 +90,7 @@ if __name__ == '__main__':
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
     args = parser.parse_args()
     initializeGenerator(asset_folder = args.assets)
-    project = createRockWorld()
+    project = AnikaProject()
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")

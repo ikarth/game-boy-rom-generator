@@ -4,7 +4,7 @@ import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
 def createVijayaWorld():
-	# Set up a barebones project
+    # Set up a barebones project
     project = makeBasicProject()
 
     # Create sprite sheet for the player sprite
@@ -15,7 +15,7 @@ def createVijayaWorld():
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
 
-	a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
+    a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
 
     project.scenes.append(copy.deepcopy(a_scene))
 
@@ -24,7 +24,7 @@ def createVijayaWorld():
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project	
+    return project  
 
 
 def createRockWorld():
@@ -90,7 +90,7 @@ def createRockWorld():
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project	
+    return project  
 
 # Utilities
 class bcolors:

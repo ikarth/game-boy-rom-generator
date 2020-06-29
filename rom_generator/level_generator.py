@@ -59,7 +59,7 @@ def createEmptyWorld():
     bkg_width = default_bkg["width"]
     bkg_height = default_bkg["height"]
 
-    a_scene = makeScene(f"Scene {make_scene_num}", default_bkg)
+    a_scene = makeScene(f"Scene Zero", default_bkg)
     # Add scene to project
     project.scenes.append(a_scene)
 

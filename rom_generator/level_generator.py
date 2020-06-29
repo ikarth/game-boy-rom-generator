@@ -9,6 +9,12 @@ def AnikaProject123():
     """
     pass
 
+def createVijayaWorld():
+	"""
+	Create an empty world
+	"""
+    pass
+
 def SachitasGame():
     pass
 
@@ -127,8 +133,6 @@ def createRockWorld():
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project  
-
-
 # Utilities
 class bcolors:
     HEADER = '\033[95m'
@@ -153,4 +157,18 @@ if __name__ == '__main__':
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")
 
-        
+
+def createAaronGame():
+    project = makeBasicProject()
+    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+    default_bkg = makeBackground("placeholder.png", "placeholder")
+    project.backgrounds.append(default_bkg)
+
+    project.music.append(makeMusic("template", "template.mod"))
+
+    # Set the starting scene
+    project.settings["startSceneId"] = project.scenes[0]["id"]
+    return project
+
+

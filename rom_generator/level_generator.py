@@ -31,7 +31,10 @@ def createEmptyWorld():
     # Create sprite sheet for the player sprite
     player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+   
+    a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
 
+    project.scenes.append(copy.deepcopy(a_scene))
     # add a sprite we can use for the rocks
     a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
 
@@ -123,7 +126,7 @@ def createRockWorld():
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project
+    return project  
 
 
 # Utilities
@@ -149,3 +152,5 @@ if __name__ == '__main__':
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")
+
+        

@@ -3,6 +3,8 @@ import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
+def AnikaProject():
+    pass
 
 def createVijayaWorld():
     # Set up a barebones project

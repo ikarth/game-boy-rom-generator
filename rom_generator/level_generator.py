@@ -22,6 +22,23 @@ def SachitasGame():
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
 
+def SachitasGame():
+    # Set up a barebones project
+    project = makeBasicProject()
+
+     # Create sprite sheet for the player sprite
+    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+
+    a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
+    project.scenes.append(copy.deepcopy(a_scene))
+
+     project.music.append(makeMusic("template", "template.mod"))
+
+    # Set the starting scene
+    project.settings["startSceneId"] = project.scenes[0]["id"]
+    return project
+
 def createRockWorld():
     # Set up a barebones project
     project = makeBasicProject()
@@ -106,7 +123,7 @@ if __name__ == '__main__':
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
     args = parser.parse_args()
     initializeGenerator(asset_folder = args.assets)
-    project = createRockWorld()
+    project = SachitasGame()
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")

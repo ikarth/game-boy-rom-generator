@@ -3,7 +3,25 @@ import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
+def AnikaProject123():
+    pass
+
+def SachitasGame():
+    pass
+
+def createVijayaWorld():
+    pass
+
+def Harvin():
+    pass
+
+def createAaronGame():
+    pass
+
 def createEmptyWorld():
+    """
+    Create an empty world as an example to build future projects from.
+    """
     # Set up a barebones project
     project = makeBasicProject()
 

@@ -46,9 +46,6 @@ def createEmptyWorld():
     player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
-    a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
-
-    project.scenes.append(copy.deepcopy(a_scene))
     # add a sprite we can use for the rocks
     a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
 
@@ -61,10 +58,6 @@ def createEmptyWorld():
     bkg_y = default_bkg["imageHeight"]
     bkg_width = default_bkg["width"]
     bkg_height = default_bkg["height"]
-
-    # add a sprite to indicate the location of a doorway
-    # a better way to do this in the actual levels is to alter the background image instead
-    doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
 
     a_scene = makeScene(f"Scene {make_scene_num}", default_bkg)
     # Add scene to project
@@ -141,6 +134,7 @@ def createRockWorld():
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
+
 # Utilities
 class bcolors:
     HEADER = '\033[95m'

@@ -4,6 +4,10 @@ import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
 def createVijayaWorld():
+	"""
+	Create an empty world
+	"""
+
     # Set up a barebones project
     project = makeBasicProject()
 
@@ -14,7 +18,7 @@ def createVijayaWorld():
     # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
-
+   
     a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
 
     project.scenes.append(copy.deepcopy(a_scene))

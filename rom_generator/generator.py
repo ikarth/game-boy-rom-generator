@@ -419,7 +419,7 @@ def createExampleProject():
         # Create a scene
         a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
         # Create an actor
-        for x in range(2): # Maximum number of actors in GB Studio is 9
+        for x in range(8): # Maximum number of actors in GB Studio is 9
             actor_x = random.randint(1,(bkg_width-3)) # Second value subtracted by 1 to keep sprite within bounds of the screen
             actor_y = random.randint(2,bkg_height-2) # First value added by 1 to keep sprite within bounds of the screen
             example_rock = makeActor(a_rock_sprite, actor_x, actor_y)

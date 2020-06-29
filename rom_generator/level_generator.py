@@ -3,6 +3,73 @@ import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
+def AnikaProject123():
+    """
+    This is my change
+    """
+    pass
+
+def createVijayaWorld():
+    """
+    Create an empty world
+    """
+    pass
+
+def SachitasGame():
+    pass
+
+def Harvin():
+    pass
+
+def createAaronGame():
+    project = makeBasicProject()
+    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+    default_bkg = makeBackground("placeholder.png", "placeholder")
+    project.backgrounds.append(default_bkg)
+
+    project.music.append(makeMusic("template", "template.mod"))
+
+    # Set the starting scene
+    project.settings["startSceneId"] = project.scenes[0]["id"]
+    return project
+
+
+def createEmptyWorld():
+    """
+    Create an empty world as an example to build future projects from.
+    """
+    # Set up a barebones project
+    project = makeBasicProject()
+
+    # Create sprite sheet for the player sprite
+    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+
+    # add a sprite we can use for the rocks
+    a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
+
+    # Add a background image
+    default_bkg = makeBackground("placeholder.png", "placeholder")
+    project.backgrounds.append(default_bkg)
+
+    # Get information about the background
+    bkg_x = default_bkg["imageWidth"]
+    bkg_y = default_bkg["imageHeight"]
+    bkg_width = default_bkg["width"]
+    bkg_height = default_bkg["height"]
+
+    a_scene = makeScene(f"Scene Zero", default_bkg)
+    # Add scene to project
+    project.scenes.append(a_scene)
+
+    # Add some music
+    project.music.append(makeMusic("template", "template.mod"))
+
+    # Set the starting scene
+    project.settings["startSceneId"] = project.scenes[0]["id"]
+    return project
+
 def createRockWorld():
     # Set up a barebones project
     project = makeBasicProject()
@@ -38,8 +105,8 @@ def createRockWorld():
         for x in range(2): # Maximum number of actors in GB Studio is 9
             actor_x = random.randint(1,(bkg_width-3)) # Second value subtracted by 1 to keep sprite within bounds of the screen
             actor_y = random.randint(2,bkg_height-2) # First value added by 1 to keep sprite within bounds of the screen
-            example_rock = makeActor(a_rock_sprite, actor_x, actor_y)
-            a_scene["actors"].append(example_rock)
+            a_rock = makeActor(a_rock_sprite, 5, 6)
+            a_scene["actors"].append(a_rock)
         # Add scene to project
         project.scenes.append(copy.deepcopy(a_scene))
 
@@ -67,7 +134,6 @@ def createRockWorld():
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
-
 
 # Utilities
 class bcolors:

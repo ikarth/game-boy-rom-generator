@@ -3,33 +3,68 @@ import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
+def AnikaProject123():
+    pass
+
 def createVijayaWorld():
 	"""
 	Create an empty world
 	"""
+    pass
 
+def SachitasGame():
+    pass
+
+def createVijayaWorld():
+    pass
+
+def Harvin():
+    pass
+
+def createAaronGame():
+    pass
+
+def createEmptyWorld():
+    """
+    Create an empty world as an example to build future projects from.
+    """
     # Set up a barebones project
     project = makeBasicProject()
 
     # Create sprite sheet for the player sprite
     player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
-
-    # Add a background image
-    default_bkg = makeBackground("placeholder.png", "placeholder")
-    project.backgrounds.append(default_bkg)
    
     a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
 
     project.scenes.append(copy.deepcopy(a_scene))
+    # add a sprite we can use for the rocks
+    a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
+
+    # Add a background image
+    default_bkg = makeBackground("placeholder.png", "placeholder")
+    project.backgrounds.append(default_bkg)
+
+    # Get information about the background
+    bkg_x = default_bkg["imageWidth"]
+    bkg_y = default_bkg["imageHeight"]
+    bkg_width = default_bkg["width"]
+    bkg_height = default_bkg["height"]
+
+    # add a sprite to indicate the location of a doorway
+    # a better way to do this in the actual levels is to alter the background image instead
+    doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
+
+    a_scene = makeScene(f"Scene {make_scene_num}", default_bkg)
+    # Add scene to project
+    project.scenes.append(a_scene)
 
     # Add some music
     project.music.append(makeMusic("template", "template.mod"))
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project  
-
+    return project
 
 def createRockWorld():
     # Set up a barebones project
@@ -114,7 +149,7 @@ if __name__ == '__main__':
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
     args = parser.parse_args()
     initializeGenerator(asset_folder = args.assets)
-    project = createVijayaWorld()
+    project = createRockWorld()
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")

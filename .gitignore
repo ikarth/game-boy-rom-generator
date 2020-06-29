@@ -130,3 +130,6 @@ dmypy.json
 
 #Vscode Environment
 .vscode/*
+
+
+.DS_Store

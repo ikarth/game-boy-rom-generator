@@ -5,6 +5,9 @@ from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScen
 
 
 def createAaronGame():
+    '''
+    test
+    '''
     project = makeBasicProject()
     player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
@@ -19,7 +22,7 @@ def createAaronGame():
 
 
 def createRockWorld():
-    # Set up a barebones project
+        # Set up a barebones project
     project = makeBasicProject()
 
     # Create sprite sheet for the player sprite

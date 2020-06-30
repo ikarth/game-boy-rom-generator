@@ -172,15 +172,18 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
         logging.warning(f"{filename} has a dimention that is not a multiple of 8")
     return element
 
-def makeActor(sprite, x, y, movementType="static"):
+
+def makeActor(sprite, x, y, movementType="static", animate=True):
     element = makeElement()
     element["spriteSheetId"] = sprite["id"]
     element["movementType"] = movementType
     element["moveSpeed"] = "1"
     element["animSpeed"] = "3"
     element["x"] = x
-    element["y"] = y
+    element["y"] = y   
+    element["animate"] = animate
     return element
+
 
 def makeTrigger(trigger, x, y, width, height, script=[]):
   element = makeElement()

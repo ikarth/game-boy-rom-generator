@@ -9,12 +9,9 @@ def AnikaProject123():
     """
     pass
 
-def createVijayaWorld():
-    """
-    Create an empty world
-    """
+def createVijayaWorld():    
     pass
-
+    
 def SachitasGame():
     pass
 

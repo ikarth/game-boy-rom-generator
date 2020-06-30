@@ -7,11 +7,10 @@ def AnikaProject123():
     pass
 
 def createVijayaWorld():
-	"""
-	Create an empty world
-	"""
     pass
-
+    """
+    Create an empty world
+	"""
 def SachitasGame():
     pass
 

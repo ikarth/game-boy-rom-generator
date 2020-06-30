@@ -17,31 +17,31 @@ def vijayaGame():
     # add sprites
     a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
     doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
-    duck_sprite = addSpriteSheet(project, "duck.png", "duck", "animated", "2")
+    duck_sprite = addSpriteSheet(project, "duck.png", "duck", "animated", 2)
+    
+    # Adding actors
+    actor = makeActor(a_rock_sprite, 9, 8)
+    actor2 = makeActor(a_rock_sprite, 2, 3)
+    actor3 = makeActor(duck_sprite, 9, 10, "animated", True)
     
     # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
     
-    num_of_scenes = randInt(0, 30)
-    for y in range(num_of_scenes)
-        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))
-        for x in range(9)
-            a_scene["actors"].append(actor2)
-
-
-    """
-    a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))
-    a_scene2 = copy.deepcopy(makeScene(f"Scene", default_bkg))
-    project.scenes.append(a_scene)
-    project.scenes.append(a_scene2)
-    """
-
+    num = random.randint(1, 20)
+    for y in range(num):
+        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))       
+        if y%2 == 0:
+            a_scene["actors"].append(actor)
+        if y%3 == 0:
+            a_scene["actors"].append(actor3)   
+        project.scenes.append(copy.deepcopy(a_scene)) 
+       
     # Adding connections
     scene_connections_translations = {"right":0, "left":1, "up":2, "down":3}
-    scene_connections = [[True, True, True, True] for n in range(2)]
-    for y in range(2):
-        for attempts in range(3):
+    scene_connections = [[True, True, True, True] for n in range(num)]
+    for y in range(num):
+        for attempts in range(num):
             other_scene = random.randint(0, 2 - 2)
             if other_scene >= y:
                 other_scene += 1
@@ -60,13 +60,7 @@ def vijayaGame():
     bkg_width = default_bkg["width"]
     bkg_height = default_bkg["height"]
 
-    # Adding actors
-    actor = makeActor(a_rock_sprite, 9, 8)
-    actor2 = makeActor(a_rock_sprite, 2, 3)
-    actor3 = makeActor(duck_sprite, 9, 10, "animated")
-    a_scene['actors'].append(actor)
-    a_scene['actors'].append(actor2)
-    a_scene2['actors'].append(actor3)
+    
 
     # add a sprite to indicate the location of a doorway
     # a better way to do this in the actual levels is to alter the background image instead

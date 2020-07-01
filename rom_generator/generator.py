@@ -12,7 +12,6 @@ import argparse
 from pathlib import Path
 from PIL import Image
 
-#this is an edit
 # Utilities
 
 ## Just some colors for fancy printing

@@ -2,10 +2,11 @@ import argparse
 import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
-""
-    Create an empty world as an example to build future projects.
-""
+
 def SachitasGame(): 
+    """"
+    Create an empty world as an example to build future projects.
+    """
     # Set up a barebones project
     project = makeBasicProject()
 
@@ -16,7 +17,7 @@ def SachitasGame():
     a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
     project.scenes.append(copy.deepcopy(a_scene))
 
-     project.music.append(makeMusic("template", "template.mod"))
+    project.music.append(makeMusic("template", "template.mod"))
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
@@ -33,7 +34,7 @@ def SachitasGame():
     a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
     project.scenes.append(copy.deepcopy(a_scene))
 
-     project.music.append(makeMusic("template", "template.mod"))
+    project.music.append(makeMusic("template", "template.mod"))
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]

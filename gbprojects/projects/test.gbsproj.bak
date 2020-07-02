@@ -1,0 +1,60 @@
+{
+    "settings": {
+        "showCollisions": true,
+        "showConnections": true,
+        "worldScrollX": 0,
+        "worldScrollY": 0,
+        "zoom": 100,
+        "customColorsWhite": "E8F8E0",
+        "customColorsLight": "B0F088",
+        "customColorsDark": "509878",
+        "customColorsBlack": "202850",
+        "startX": 9,
+        "startY": 9,
+        "startDirection": "down",
+        "startSceneId": "420f311b-2550-4f01-b05e-b2ae747aac46",
+        "playerSpriteSheetId": "5f805169-67ee-454f-aa92-5478693b5cbc"
+    },
+    "scenes": [
+        {
+            "id": "420f311b-2550-4f01-b05e-b2ae747aac46",
+            "name": "Scene",
+            "backgroundId": "62918de5-6a24-4ff1-9675-1b5b860b89b2",
+            "width": 32,
+            "height": 32,
+            "x": 200,
+            "y": 0,
+            "collisions": [],
+            "actors": [
+                {
+                    "id": "938d0cf8-d704-4748-a412-4cc580c9c844",
+                    "spriteSheetId": "9e9c9b61-4dd0-4fdd-a632-823a4ef274aa",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 9,
+                    "y": 8
+                },
+                {
+                    "movementType": "static",
+                    "direction": "down",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "id": "471577b4-7057-4edd-ae16-69338b8463b8",
+                    "x": 4,
+                    "y": 13
+                }
+            ],
+            "triggers": []
+        }
+    ],
+    "_version": "1.2.0",
+    "author": "Generator",
+    "name": "GenerationTest",
+    "variables": [],
+    "backgrounds": [],
+    "spriteSheets": [],
+    "music": [],
+    "customEvents": [],
+    "ui": null
+}

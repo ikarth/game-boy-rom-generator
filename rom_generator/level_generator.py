@@ -9,9 +9,9 @@ def AnikaProject123():
     """
     pass
 
-def createVijayaWorld():    
+def createVijayaWorld():
     pass
-    
+
 def SachitasGame():
     pass
 
@@ -146,8 +146,8 @@ class bcolors:
 ### Run the generator
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
-    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects2/")
+    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
     args = parser.parse_args()
     initializeGenerator(asset_folder = args.assets)
     project = createRockWorld()

@@ -1,4 +1,4 @@
-### Scription ###
+### Script Commands ###
 script_commands = {
 "EVENT_END": {},
 "EVENT_STOP": {}, # Same as End except explicitly user created
@@ -100,5 +100,5 @@ script_commands = {
 # Sound
 "EVENT_SOUND_PLAY_BEEP": {},
 # Call CustomEvent
-"EVENT_CALL_CUSTOM_EVENT"
+"EVENT_CALL_CUSTOM_EVENT": {}
 }

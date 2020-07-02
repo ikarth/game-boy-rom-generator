@@ -18,7 +18,7 @@ script_commands = {
 # Conditional
 "EVENT_IF_TRUE": {},
 "EVENT_IF_FALSE": {},
-"EVENT_IF_VALUE": {"variable": "L3", "operator": ">", "comparator": 2, "__collapseElse": false},
+"EVENT_IF_VALUE": {"variable": "L3", "operator": ">", "comparator": 2, "__collapseElse": False},
 "EVENT_IF_VALUE_COMPARE": {},
 "EVENT_IF_INPUT": {},
 "EVENT_IF_ACTOR_DIRECTION": {},

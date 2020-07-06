@@ -12,7 +12,6 @@ import argparse
 from pathlib import Path
 from PIL import Image
 
-#this is an edit
 # Utilities
 
 ## Just some colors for fancy printing
@@ -42,6 +41,7 @@ def initializeGenerator(asset_folder = "../assets/", new_seed=None):
     global main_asset_folder
     global scene_count
     main_asset_folder = asset_folder
+    print(main_asset_folder)
     scene_count = 0
     global generator_seed
     if not new_seed is None:
@@ -109,6 +109,7 @@ def getImageInfo(image_filename, image_type="sprites"):
     Get information about the image file from disk.
     image_type is a path that tells it where to look in the asset folder.
     """
+    print(Path(main_asset_folder).joinpath(image_type, image_filename))
     im = Image.open(Path(main_asset_folder).joinpath(image_type, image_filename))
     return {"pixel_width": im.size[0], "pixel_height": im.size[1], "image_format": im.format, "image_mode": im.mode}
 
@@ -301,7 +302,7 @@ def addSymmetricSceneConnections(project, scene, destination_scene, direction, d
 def writeUIAssets(ui_asset_array, asset_path):
     ui_assets = []
     for ui_asset in ui_asset_array:
-        temp_file = Path("assets/ui/" + ui_asset["filename"])
+        temp_file = Path("../assets/ui/" + ui_asset["filename"])
         try:
             copy_path = os.path.abspath(Path(asset_path).joinpath(ui_asset["asset_file_name"]))
             shutil.copy2(copy_path, temp_file)
@@ -309,7 +310,6 @@ def writeUIAssets(ui_asset_array, asset_path):
         except FileNotFoundError as err:
             print(f"Asset File Missing: {err}")
             logging.warning(f"Asset File Missing: {err}")
-
     return ui_assets
 
 
@@ -321,13 +321,13 @@ def writeAssets(asset_array, output_path, asset_path):
         print(f_name)
         temp_file = os.path.abspath(Path(output_path + "assets/temp/scratch.file"))
         try:
-            copy_path = os.path.abspath(Path(asset_path).joinpath(f_name))
+            copy_path = os.path.abspath(Path("../").joinpath(Path(asset_path).joinpath(f_name)))
             destination_path = Path(output_path).joinpath(asset_path, f_name)
             shutil.copy2(copy_path, temp_file)
             os.replace(Path(temp_file), destination_path)
             logging.info(f"Wrote {destination_path}")
         except FileNotFoundError as err:
-            print(f"Asset File Missing: {err}")
+            print(f"Asset File Missing for writeAssets(): {err}")
             logging.warning(f"Asset File Missing: {err}")
     if not shutil.rmtree.avoids_symlink_attacks:
         logging.info("Temp directory deletion potentially vulnerable to symlink attacks.")
@@ -347,11 +347,11 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="../gbpr
 
     # Copy assets to projects
     print("*** Writing assets ***")
-    writeAssets(gb_project.spriteSheets, output_path, Path(main_asset_folder + "sprites/"))
-    writeAssets(gb_project.music, output_path, Path(main_asset_folder + "music/"))
-    writeAssets(gb_project.backgrounds, output_path, Path(main_asset_folder + "backgrounds/"))
-    ui_asset_array = writeUIAssets(gb_project.ui, Path(main_asset_folder +"ui/"))
-    writeAssets(ui_asset_array, output_path, Path(main_asset_folder + "ui/"))
+    writeAssets(gb_project.spriteSheets, output_path, Path("assets/" + "sprites/"))
+    writeAssets(gb_project.music, output_path, Path("assets/" + "music/"))
+    writeAssets(gb_project.backgrounds, output_path, Path("assets/" + "backgrounds/"))
+    ui_asset_array = writeUIAssets(gb_project.ui, Path("../assets/" + "ui/"))
+    writeAssets(ui_asset_array, output_path, Path("assets/" + "ui/"))
 
 def makeBasicProject():
     project = types.SimpleNamespace(**base_gb_project)
@@ -457,10 +457,11 @@ def createExampleProject():
 ### Run the generator
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
-    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
+    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
+    parser.add_argument('--subfolder', '-s', type=bool, help="asset folder name", default=False)
     args = parser.parse_args()
-    initializeGenerator(asset_folder = args.assets)
+    initializeGenerator(asset_folder=args.assets)
     project = createExampleProject()
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":

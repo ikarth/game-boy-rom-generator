@@ -38,9 +38,9 @@ scene_count = 0
 generator_seed = "game boy generator"
 
 def initializeGenerator(asset_folder = "../assets/", new_seed=None):
-    #global main_asset_folder
-    #global scene_count
-    #main_asset_folder = asset_folder
+    global main_asset_folder
+    global scene_count
+    main_asset_folder = asset_folder
     print(main_asset_folder)
     scene_count = 0
     global generator_seed
@@ -458,10 +458,10 @@ def createExampleProject():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
-    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
-    parser.add_argument('--subfolder', '-s', type=bool, help="asset folder name", default=False
+    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
+    parser.add_argument('--subfolder', '-s', type=bool, help="asset folder name", default=False)
     args = parser.parse_args()
-    initializeGenerator()
+    initializeGenerator(asset_folder=args.assets)
     project = createExampleProject()
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":

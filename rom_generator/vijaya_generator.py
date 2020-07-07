@@ -1,7 +1,7 @@
 import argparse
 import copy
 import random
-from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
+from generator import makeBasicProject, addSpriteSheet, makeColBorder, makeBackground, makeScene, makeActor, makeElement, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
 
 def vijayaGame():
@@ -18,17 +18,43 @@ def vijayaGame():
     a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
     doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
     duck_sprite = addSpriteSheet(project, "duck.png", "duck", "animated", 2)
+    a_dog_sprite = addSpriteSheet(project, "dog.png", "dog", "static")
     
     # Adding actors
     actor = makeActor(a_rock_sprite, 9, 8)
     actor2 = makeActor(a_rock_sprite, 2, 3)
     actor3 = makeActor(duck_sprite, 9, 10, "animated", True)
-    
+
+    #dog script
+    dog_actor = makeActor(a_dog_sprite, 5, 6)
+    dog_script = []
+    element = makeElement()
+    element["command"] = "EVENT_ACTOR_EMOTE"
+    element["args"] = {
+        "actorID" : "player",
+        "emoteId" : "2"
+    }
+    dog_script.append(element)
+    element = makeElement()
+    element["command"] = "EVENT_END"
+    dog_script.append(element)
+    dog_actor["script"] = dog_script
+     
     # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
     
+    # Add scenes with some actors
+    a_scene2 = copy.deepcopy(makeScene(f"Scene", default_bkg))
+    print(makeColBorder(a_scene2))
+    a_scene2["actors"].append(dog_actor)
+    scene2_script = []
+    element = makeElement()
+    project.scenes.append(copy.deepcopy(a_scene2)) 
+    random.seed(1)
     num = random.randint(1, 20)
+    print ("this is num: ") 
+    print (num)
     for y in range(num):
         a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))       
         if y%2 == 0:
@@ -61,7 +87,6 @@ def vijayaGame():
     bkg_height = default_bkg["height"]
 
     
-
     # add a sprite to indicate the location of a doorway
     # a better way to do this in the actual levels is to alter the background image instead
     doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")

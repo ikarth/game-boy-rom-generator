@@ -238,6 +238,7 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     element["triggers"] = triggers
     return element
 
+
 def makeScriptConnectionToScene(target_scene, direction="right", location=None):
     destination_location = {
         "right": (1, target_scene["height"] // 2),
@@ -365,6 +366,51 @@ def makeBasicProject():
     {"filename": "emotes.png", "asset_file_name": "original/emotes.png"},
     {"filename": "frame.png", "asset_file_name": "original/frame.png"}]
     return project
+
+def makeColBorder(scenex):
+    wid = scenex["width"]
+    hei = scenex["height"]
+    tilenum = wid * hei
+    work = [False] * tilenum
+    for x in range(0, wid-1):
+        work[x] = True
+    y = 0 + wid    
+    while y < (wid * hei) - wid:
+        work[y] = True
+        y = y + wid
+    z = wid - 1
+    while z < (wid * hei):
+        work[z] = True
+        z = z + wid
+    w = (wid * hei) - wid
+    while w < (wid * hei):
+        work[w] = True
+        w = w + 1
+    
+    bytez = wid * hei 
+    cc = []
+    max = 0
+
+    while max < wid * hei - 1:
+        g = 1
+        j = " "
+        while g < 9:
+            if work[max] == True:
+                j = j + "1"
+            elif work[max] == False:
+                j = j + "0"
+            max = max + 1
+            g = g + 1
+        jnum = int(j, 2)
+        cc.insert(0, jnum)
+
+    scenex["collisions"] = cc
+
+    
+
+
+
+    
 
 # def createWithCallback(callback_func):
 #     # Set up a barebones project

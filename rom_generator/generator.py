@@ -104,13 +104,17 @@ def makeMusic(name, filename):
     element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
     return element
 
+def getImage(image_filename, image_type="sprites"):
+    print(Path(main_asset_folder).joinpath(image_type, image_filename))
+    im = Image.open(Path(main_asset_folder).joinpath(image_type, image_filename))
+    return im
+
 def getImageInfo(image_filename, image_type="sprites"):
     """
     Get information about the image file from disk.
     image_type is a path that tells it where to look in the asset folder.
     """
-    print(Path(main_asset_folder).joinpath(image_type, image_filename))
-    im = Image.open(Path(main_asset_folder).joinpath(image_type, image_filename))
+    im = getImage(image_filename, image_type)
     return {"pixel_width": im.size[0], "pixel_height": im.size[1], "image_format": im.format, "image_mode": im.mode}
 
 ## The way I decided to implment the API is that there are two kinds of

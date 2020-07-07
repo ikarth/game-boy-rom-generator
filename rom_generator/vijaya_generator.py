@@ -78,7 +78,6 @@ def vijayaGame():
                     scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]] = False
                     addSymmetricSceneConnections(project, project.scenes[y], project.scenes[other_scene], chosen_direction, doorway_sprite)
                     break
-                    
 
     # Get information about the background
     bkg_x = default_bkg["imageWidth"]
@@ -86,7 +85,6 @@ def vijayaGame():
     bkg_width = default_bkg["width"]
     bkg_height = default_bkg["height"]
 
-    
     # add a sprite to indicate the location of a doorway
     # a better way to do this in the actual levels is to alter the background image instead
     doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
@@ -99,8 +97,6 @@ def vijayaGame():
     return project
 
 # Utilities
-
-
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'

@@ -385,12 +385,10 @@ def makeColBorder(scenex):
     w = (wid * hei) - wid
     while w < (wid * hei):
         work[w] = True
-        w = w + 1
-    
+        w = w + 1    
     bytez = wid * hei 
     cc = []
     max = 0
-
     while max < wid * hei - 1:
         g = 1
         j = " "
@@ -403,15 +401,9 @@ def makeColBorder(scenex):
             g = g + 1
         jnum = int(j, 2)
         cc.insert(0, jnum)
-
     scenex["collisions"] = cc
 
     
-
-
-
-    
-
 # def createWithCallback(callback_func):
 #     # Set up a barebones project
 #     project = makeBasicProject()

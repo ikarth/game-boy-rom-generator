@@ -5,7 +5,7 @@ from generator import makeBasicProject, addSpriteSheet, makeColBorder, makeBackg
 
 
 def vijayaGame():
-    
+
     # Set up a barebones project
     project = makeBasicProject()
 
@@ -19,7 +19,7 @@ def vijayaGame():
     doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
     duck_sprite = addSpriteSheet(project, "duck.png", "duck", "animated", 2)
     a_dog_sprite = addSpriteSheet(project, "dog.png", "dog", "static")
-    
+
     # Adding actors
     actor = makeActor(a_rock_sprite, 9, 8)
     actor2 = makeActor(a_rock_sprite, 2, 3)
@@ -39,30 +39,30 @@ def vijayaGame():
     element["command"] = "EVENT_END"
     dog_script.append(element)
     dog_actor["script"] = dog_script
-     
+
     # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
-    
+
     # Add scenes with some actors
     a_scene2 = copy.deepcopy(makeScene(f"Scene", default_bkg))
     print(makeColBorder(a_scene2))
     a_scene2["actors"].append(dog_actor)
     scene2_script = []
     element = makeElement()
-    project.scenes.append(copy.deepcopy(a_scene2)) 
+    project.scenes.append(copy.deepcopy(a_scene2))
     random.seed(1)
     num = random.randint(1, 20)
-    print ("this is num: ") 
+    print ("this is num: ")
     print (num)
     for y in range(num):
-        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))       
+        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))
         if y%2 == 0:
             a_scene["actors"].append(actor)
         if y%3 == 0:
-            a_scene["actors"].append(actor3)   
-        project.scenes.append(copy.deepcopy(a_scene)) 
-       
+            a_scene["actors"].append(actor3)
+        project.scenes.append(copy.deepcopy(a_scene))
+
     # Adding connections
     scene_connections_translations = {"right":0, "left":1, "up":2, "down":3}
     scene_connections = [[True, True, True, True] for n in range(num)]
@@ -115,11 +115,11 @@ if __name__ == '__main__':
     parser.add_argument('--destination', '-d', type=str,
                         help="destination folder name", default="../gbprojects/projects/")
     parser.add_argument('--assets', '-a', type=str,
-                        help="asset folder name", default="assets/")
+                        help="asset folder name", default="../assets/")
     args = parser.parse_args()
     initializeGenerator(asset_folder=args.assets)
     project = vijayaGame()
-    writeProjectToDisk(project, output_path=args.destination, filename="test.gbsproj")
+    writeProjectToDisk(project, output_path=args.destination, filename="test.gbsproj", assets_path=args.assets)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

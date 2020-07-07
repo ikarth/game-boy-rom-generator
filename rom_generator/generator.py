@@ -9,10 +9,21 @@ import ntpath
 import copy
 import logging
 import argparse
+import os
+from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
 
 # Utilities
+
+@contextmanager
+def cd(newdir):
+    prevdir = os.getcwd()
+    os.chdir(os.path.expanduser(newdir))
+    try:
+        yield
+    finally:
+        os.chdir(prevdir)
 
 ## Just some colors for fancy printing
 class bcolors:
@@ -41,12 +52,13 @@ def initializeGenerator(asset_folder = "../assets/", new_seed=None):
     global main_asset_folder
     global scene_count
     main_asset_folder = asset_folder
-    print(main_asset_folder)
+    print(f"Using assets from {os.path.abspath(Path(main_asset_folder))}")
     scene_count = 0
     global generator_seed
     if not new_seed is None:
         generator_seed = new_seed
     random.seed(generator_seed)
+
 
 base_gb_project = {
 "settings": {},
@@ -185,7 +197,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     element["moveSpeed"] = "1"
     element["animSpeed"] = "3"
     element["x"] = x
-    element["y"] = y   
+    element["y"] = y
     element["animate"] = animate
     return element
 
@@ -382,7 +394,7 @@ def makeColBorder(scenex):
     work = [False] * tilenum
     for x in range(0, wid-1):
         work[x] = True
-    y = 0 + wid    
+    y = 0 + wid
     while y < (wid * hei) - wid:
         work[y] = True
         y = y + wid
@@ -393,8 +405,8 @@ def makeColBorder(scenex):
     w = (wid * hei) - wid
     while w < (wid * hei):
         work[w] = True
-        w = w + 1    
-    bytez = wid * hei 
+        w = w + 1
+    bytez = wid * hei
     cc = []
     max = 0
     while max < wid * hei - 1:
@@ -411,7 +423,7 @@ def makeColBorder(scenex):
         cc.insert(0, jnum)
     scenex["collisions"] = cc
 
-    
+
 # def createWithCallback(callback_func):
 #     # Set up a barebones project
 #     project = makeBasicProject()

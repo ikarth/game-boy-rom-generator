@@ -1,6 +1,7 @@
 import generator
 import argparse
 import os
+import numpy as np
 from PIL import Image
 from pathlib import Path
 
@@ -12,9 +13,15 @@ def getTileList(list_of_tile_files=[]):
         tile_list.append(tile_image)
     return tile_list
 
+def makeCheckerboard(width, height):
+    board = np.zeros([width, height], dtype=int)
+    for j in range(height):
+        for i in range(width):
+            board[i,j] = (i + (j * height) + (j % 2)) % 2
+    board = np.fromfunction(lambda i,j: (i + (j * height) + (j % 2)) % 2, (width, height), dtype=int)
+    return board.reshape([width, height]).tolist()
 
-
-def generate_background_tiles(array_of_tiles, list_of_sprites):
+def generateBackgroundTiles(array_of_tiles, list_of_sprites):
     """
     Given an array of tiles assemble a background image composed of those tiles.
 
@@ -51,4 +58,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     tile_list = getTileList(["black_tile.png", "white_tile.png"])
 
-    generate_background_tiles([[0, 1, 0, 1, 0, 1], [1, 0, 1, 0, 1, 0], [0, 1, 0, 1, 0, 1], [1, 0, 1, 0, 1, 0], [0, 1, 0, 1, 0, 1], [1, 0, 1, 0, 1, 0]], tile_list)
+    tile_array = makeCheckerboard(14, 14)
+    background_image = generateBackgroundTiles(tile_array, tile_list)

@@ -1,0 +1,132 @@
+{
+    "settings": {
+        "showCollisions": true,
+        "showConnections": true,
+        "worldScrollX": 0,
+        "worldScrollY": 0,
+        "zoom": 100,
+        "customColorsWhite": "E8F8E0",
+        "customColorsLight": "B0F088",
+        "customColorsDark": "509878",
+        "customColorsBlack": "202850",
+        "startX": 9,
+        "startY": 9,
+        "startDirection": "down",
+        "startSceneId": "d0fa3d2a-5c50-4014-a1a8-de4899482b2b",
+        "playerSpriteSheetId": "f193c90e-2413-4e24-b219-30f8f219cebd"
+    },
+    "scenes": [
+        {
+            "id": "d0fa3d2a-5c50-4014-a1a8-de4899482b2b",
+            "name": "Scene",
+            "backgroundId": "1dd4285d-d162-4869-bca1-bceff1a60ed0",
+            "width": 32,
+            "height": 32,
+            "x": 1200,
+            "y": 0,
+            "collisions": [],
+            "actors": [
+                {
+                    "id": "237963f3-9a93-424a-88d9-cd1a3828548d",
+                    "spriteSheetId": "54f03d56-59f4-43d7-a334-47275e76d930",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 9,
+                    "y": 8
+                }
+            ],
+            "triggers": []
+        }
+    ],
+    "_version": "1.2.0",
+    "author": "Generator",
+    "name": "GenerationTest",
+    "variables": [],
+    "backgrounds": [
+        {
+            "id": "1dd4285d-d162-4869-bca1-bceff1a60ed0",
+            "name": "stars",
+            "width": 32,
+            "height": 32,
+            "imageWidth": 256,
+            "imageHeight": 256,
+            "filename": "stars.png",
+            "_v": 1594152726004,
+            "_generator_metadata": {
+                "pixel_width": 256,
+                "pixel_height": 256,
+                "image_format": "PNG",
+                "image_mode": "P"
+            }
+        }
+    ],
+    "spriteSheets": [
+        {
+            "id": "f193c90e-2413-4e24-b219-30f8f219cebd",
+            "name": "actor_animated",
+            "type": "actor_animated",
+            "filename": "actor_animated.png",
+            "_v": 1594152725988,
+            "_generator_metadata": {
+                "pixel_width": 96,
+                "pixel_height": 16,
+                "image_format": "PNG",
+                "image_mode": "P"
+            },
+            "frames": 6
+        },
+        {
+            "id": "54f03d56-59f4-43d7-a334-47275e76d930",
+            "name": "rock",
+            "type": "static",
+            "filename": "rock.png",
+            "_v": 1594152726004,
+            "_generator_metadata": {
+                "pixel_width": 16,
+                "pixel_height": 16,
+                "image_format": "PNG",
+                "image_mode": "P"
+            },
+            "frames": 1
+        },
+        {
+            "id": "73a9d4e8-94e4-410c-93f4-2d2f20ffdc37",
+            "name": "duck",
+            "type": "animated",
+            "filename": "duck.png",
+            "_v": 1594152726004,
+            "_generator_metadata": {
+                "pixel_width": 32,
+                "pixel_height": 16,
+                "image_format": "PNG",
+                "image_mode": "P"
+            },
+            "frames": 2
+        },
+        {
+            "id": "a9e6cc9f-bd20-497a-92dd-cfc97c1346c1",
+            "name": "tower",
+            "type": "static",
+            "filename": "tower.png",
+            "_v": 1594152726005,
+            "_generator_metadata": {
+                "pixel_width": 16,
+                "pixel_height": 16,
+                "image_format": "PNG",
+                "image_mode": "P"
+            },
+            "frames": 1
+        }
+    ],
+    "music": [
+        {
+            "id": "bffd2540-a767-4b07-bebc-834099a6dbc6",
+            "name": "template",
+            "filename": "template.mod",
+            "_v": 1594152726005
+        }
+    ],
+    "customEvents": [],
+    "ui": null
+}

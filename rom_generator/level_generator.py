@@ -31,7 +31,6 @@ def createAaronGame():
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
 
-
 def createEmptyWorld():
     """
     Create an empty world as an example to build future projects from.
@@ -150,7 +149,7 @@ if __name__ == '__main__':
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
     args = parser.parse_args()
     initializeGenerator(asset_folder = args.assets)
-    project = createRockWorld()
+    project = SachitasGame()
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")

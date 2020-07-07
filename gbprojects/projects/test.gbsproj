@@ -12,14 +12,14 @@
         "startX": 9,
         "startY": 9,
         "startDirection": "down",
-        "startSceneId": "2bb7db4c-e9b2-4365-af83-d052e5ea19ab",
-        "playerSpriteSheetId": "4b186fe5-f671-4c68-995d-37b1b1560b94"
+        "startSceneId": "d0fa3d2a-5c50-4014-a1a8-de4899482b2b",
+        "playerSpriteSheetId": "f193c90e-2413-4e24-b219-30f8f219cebd"
     },
     "scenes": [
         {
-            "id": "2bb7db4c-e9b2-4365-af83-d052e5ea19ab",
+            "id": "d0fa3d2a-5c50-4014-a1a8-de4899482b2b",
             "name": "Scene",
-            "backgroundId": "9e71f532-aa8b-459d-9168-3e30b615bb8d",
+            "backgroundId": "1dd4285d-d162-4869-bca1-bceff1a60ed0",
             "width": 32,
             "height": 32,
             "x": 1200,
@@ -27,8 +27,8 @@
             "collisions": [],
             "actors": [
                 {
-                    "id": "250fe633-20a0-4978-bc1b-a378184f49ed",
-                    "spriteSheetId": "f8bc2bc8-2c80-4010-a110-7eeac1daf726",
+                    "id": "237963f3-9a93-424a-88d9-cd1a3828548d",
+                    "spriteSheetId": "54f03d56-59f4-43d7-a334-47275e76d930",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
@@ -45,14 +45,14 @@
     "variables": [],
     "backgrounds": [
         {
-            "id": "9e71f532-aa8b-459d-9168-3e30b615bb8d",
+            "id": "1dd4285d-d162-4869-bca1-bceff1a60ed0",
             "name": "stars",
             "width": 32,
             "height": 32,
             "imageWidth": 256,
             "imageHeight": 256,
             "filename": "stars.png",
-            "_v": 1593720546886,
+            "_v": 1594152726004,
             "_generator_metadata": {
                 "pixel_width": 256,
                 "pixel_height": 256,
@@ -63,11 +63,11 @@
     ],
     "spriteSheets": [
         {
-            "id": "4b186fe5-f671-4c68-995d-37b1b1560b94",
+            "id": "f193c90e-2413-4e24-b219-30f8f219cebd",
             "name": "actor_animated",
             "type": "actor_animated",
             "filename": "actor_animated.png",
-            "_v": 1593720546848,
+            "_v": 1594152725988,
             "_generator_metadata": {
                 "pixel_width": 96,
                 "pixel_height": 16,
@@ -77,11 +77,11 @@
             "frames": 6
         },
         {
-            "id": "f8bc2bc8-2c80-4010-a110-7eeac1daf726",
+            "id": "54f03d56-59f4-43d7-a334-47275e76d930",
             "name": "rock",
             "type": "static",
             "filename": "rock.png",
-            "_v": 1593720546879,
+            "_v": 1594152726004,
             "_generator_metadata": {
                 "pixel_width": 16,
                 "pixel_height": 16,
@@ -91,11 +91,11 @@
             "frames": 1
         },
         {
-            "id": "16ea75f9-f066-4af0-b0c4-a4b33a17cca2",
+            "id": "73a9d4e8-94e4-410c-93f4-2d2f20ffdc37",
             "name": "duck",
             "type": "animated",
             "filename": "duck.png",
-            "_v": 1593720546880,
+            "_v": 1594152726004,
             "_generator_metadata": {
                 "pixel_width": 32,
                 "pixel_height": 16,
@@ -105,25 +105,11 @@
             "frames": 2
         },
         {
-            "id": "58346a2c-274e-43a1-8c7a-695243e3a40a",
+            "id": "a9e6cc9f-bd20-497a-92dd-cfc97c1346c1",
             "name": "tower",
             "type": "static",
             "filename": "tower.png",
-            "_v": 1593720546881,
-            "_generator_metadata": {
-                "pixel_width": 16,
-                "pixel_height": 16,
-                "image_format": "PNG",
-                "image_mode": "P"
-            },
-            "frames": 1
-        },
-        {
-            "id": "adcab192-d884-40e0-bc36-6d6aedaf2181",
-            "name": "tower",
-            "type": "static",
-            "filename": "tower.png",
-            "_v": 1593720546887,
+            "_v": 1594152726005,
             "_generator_metadata": {
                 "pixel_width": 16,
                 "pixel_height": 16,
@@ -135,10 +121,10 @@
     ],
     "music": [
         {
-            "id": "4ed36489-3436-47f8-83fd-67bf21b58c5a",
+            "id": "bffd2540-a767-4b07-bebc-834099a6dbc6",
             "name": "template",
             "filename": "template.mod",
-            "_v": 1593720546887
+            "_v": 1594152726005
         }
     ],
     "customEvents": [],

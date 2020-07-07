@@ -157,7 +157,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     initializeGenerator(asset_folder=args.assets)
     project = createRockWorld()
-    writeProjectToDisk(project, output_path=args.destination)
+    writeProjectToDisk(project, output_path=args.destination, assets_path="assets/")
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

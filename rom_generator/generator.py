@@ -29,7 +29,7 @@ class bcolors:
 # Make Project
 
 # Ordinarily, global variables are bad things. But these aren't global variables
-# in the classic sense: all variable in Python exist in a scope. In this case,
+# in the classic sense: all variables in Python exist in a scope. In this case,
 # these are localized to the module. You can think of the entire module as
 # being a little bit like a class with one instance in Java, encapsulating a
 # bunch of functions and variables.
@@ -112,14 +112,16 @@ def getImageInfo(image_filename, image_type="sprites"):
     im = Image.open(Path(main_asset_folder).joinpath(image_type, image_filename))
     return {"pixel_width": im.size[0], "pixel_height": im.size[1], "image_format": im.format, "image_mode": im.mode}
 
-## The way I decided to implment the API is that there are two kinds of
+## The way I decided to implement the API is that there are two kinds of
 ## functions that create stuff that will go into the project structure.
 ## The functions that start with 'make' create the element and return it.
 ## The functions that start with 'add' create the element and add it directly
 ## to the project. Mostly by calling the 'make' function to create the thing.
 ##
 
-
+### A sprite sheet is a collection of images to display at the location of an actor or player.
+### A sprite sheet can be one 16x16 static image...
+### ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.  
 def makeSpriteSheet(filename, name=None, type="static", frames=None):
     """
     Create a sprite sheet.
@@ -148,6 +150,9 @@ def addSpriteSheet(project, filename, name=None, type="static", frames=None):
     project.spriteSheets.append(element)
     return element
 
+### A background is a static image that players and actors traverse across on screen.
+### GBStudio imports .png images in dimensions that are multiples of 8, breaks them into 8x8 pixels.
+### The current released version of GBStudio has a maximum of 192 unique background tiles.
 def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width=None, height=None):
     if name is None:
         name = filename
@@ -169,9 +174,10 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     if height is None:
         element["height"] = element["_generator_metadata"]["pixel_height"] // 8
     if (element["_generator_metadata"]["pixel_width"] % 8 != 0) or (element["_generator_metadata"]["pixel_height"] % 8 != 0):
-        logging.warning(f"{filename} has a dimention that is not a multiple of 8")
+        logging.warning(f"{filename} has a dimension that is not a multiple of 8")
     return element
 
+### An actor is an object on the screen that the player can interact with.
 def makeActor(sprite, x, y, movementType="static"):
     element = makeElement()
     element["spriteSheetId"] = sprite["id"]
@@ -182,6 +188,7 @@ def makeActor(sprite, x, y, movementType="static"):
     element["y"] = y
     return element
 
+### A trigger causes a script to play when the player reaches the trigger's location.
 def makeTrigger(trigger, x, y, width, height, script=[]):
   element = makeElement()
   element["x"] = x
@@ -235,6 +242,7 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     element["triggers"] = triggers
     return element
 
+### Makes script to connect two scenes together.
 def makeScriptConnectionToScene(target_scene, direction="right", location=None):
     destination_location = {
         "right": (1, target_scene["height"] // 2),
@@ -262,6 +270,7 @@ def makeScriptConnectionToScene(target_scene, direction="right", location=None):
 
 reverse_direction = {"left": "right", "right": "left", "up": "down", "down": "up"}
 
+### Adds trigger for scene connection.
 def addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite=None):
     source_location = {
         "right": (scene["width"] - 1, (scene["height"] // 2) - 1),
@@ -290,7 +299,7 @@ def addTriggerConnectionToScene(project, scene, destination_scene, direction, do
         actor_connector = makeActor(doorway_sprite, source_location[direction][0] - sign_offset[direction][0], (source_location[direction][1] - sign_offset[direction][1]) + 1, movementType="static")
         scene["actors"].append(actor_connector)
 
-
+### Adds connections between scenes to the project.
 def addSymmetricSceneConnections(project, scene, destination_scene, direction, doorway_sprite=None):
     addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite)
     addTriggerConnectionToScene(project, destination_scene, scene, reverse_direction[direction], doorway_sprite)
@@ -457,12 +466,12 @@ def createExampleProject():
 ### Run the generator
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
-    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
-    args = parser.parse_args()
-    initializeGenerator(asset_folder = args.assets)
-    project = createExampleProject()
-    writeProjectToDisk(project, output_path = args.destination)
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/") # Use these commands to change the project destination.
+    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/") # Use these commands to change the place where the generator looks for assets.
+    args = parser.parse_args() # Define the above as "args"
+    initializeGenerator(asset_folder = args.assets) # Prepare the generator by showing it the location of the assets folder.
+    project = createExampleProject() # Generate your project file
+    writeProjectToDisk(project, output_path = args.destination) # Save the project file in the destination location.
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

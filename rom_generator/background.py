@@ -13,7 +13,7 @@ def getTileList(list_of_tile_files=[]):
         tile_list.append(tile_image)
     return tile_list
 
-def makeCheckerboard(width, height):
+def makeCheckerboardArray(width, height):
     board = np.zeros([width, height], dtype=int)
     for j in range(height):
         for i in range(width):
@@ -58,5 +58,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     tile_list = getTileList(["black_tile.png", "white_tile.png"])
 
-    tile_array = makeCheckerboard(14, 14)
+    tile_array = makeCheckerboardArray(14, 14)
     background_image = generateBackgroundTiles(tile_array, tile_list)

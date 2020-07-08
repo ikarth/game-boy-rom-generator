@@ -2,6 +2,7 @@ import generator
 import argparse
 import os
 import numpy as np
+import uuid
 from PIL import Image
 from pathlib import Path
 
@@ -21,7 +22,7 @@ def makeCheckerboardArray(width, height):
     board = np.fromfunction(lambda i,j: (i + (j * height) + (j % 2)) % 2, (width, height), dtype=int)
     return board.reshape([width, height]).tolist()
 
-def generateBackgroundTiles(array_of_tiles, list_of_sprites):
+def generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites):
     """
     Given an array of tiles assemble a background image composed of those tiles.
 
@@ -39,12 +40,17 @@ def generateBackgroundTiles(array_of_tiles, list_of_sprites):
     for row_index, row in enumerate(array_of_tiles):
         for col_index, col in enumerate(row):
             coords = (list_of_sprites[0].size[1] * col_index, list_of_sprites[0].size[0] * row_index)
-            print(coords)
+            #print(coords)
             background_image.paste(list_of_sprites[col], coords)
     gen_filepath = "../assets/backgrounds/generated/generated.png"
-    Path(os.path.basename(gen_filepath)).mkdir(parents=True, exist_ok=True)
-    background_image.save(gen_filepath)
-    return gen_filepath
+    local_image_filename = "generated_" + str(uuid.uuid4()) + ".png"
+
+    abs_gen_filepath = os.path.abspath(Path(os.path.dirname(gen_filepath)))
+    Path(abs_gen_filepath).mkdir(parents=True, exist_ok=True)
+    background_image.save(Path(abs_gen_filepath).joinpath(local_image_filename))
+    bkg_abspath = Path(abs_gen_filepath).joinpath(local_image_filename)
+    bkg_path = os.path.relpath(bkg_abspath)
+    return str(bkg_abspath)
 
 def generate_processing_background():
     return
@@ -59,4 +65,4 @@ if __name__ == '__main__':
     tile_list = getTileList(["black_tile.png", "white_tile.png"])
 
     tile_array = makeCheckerboardArray(14, 14)
-    background_image = generateBackgroundTiles(tile_array, tile_list)
+    background_image = generateBackgroundImageFromTiles(tile_array, tile_list)

@@ -1,7 +1,8 @@
 import argparse
 import copy
 import random
-from generator import makeElement, makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
+from generator import makeElement, makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, addSceneBackground
+from background import getTileList, makeCheckerboardArray, generateBackgroundImageFromTiles
 
 def createYourNameWorld():
     """
@@ -21,8 +22,18 @@ def createYourNameWorld():
     # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
+
     a_scene = makeScene(f"Scene", default_bkg)
     project.scenes.append(a_scene)
+
+    checker_background_tile_list = getTileList(["black_tile.png", "white_tile.png"])
+    checker_background_tile_array = makeCheckerboardArray(14, 14)
+    checker_background_image_path = generateBackgroundImageFromTiles(checker_background_tile_array, checker_background_tile_list)
+    checker_background = makeBackground(checker_background_image_path, "checker_background")
+    project.backgrounds.append(checker_background)
+    #addSceneBackground(project, a_scene, checker_background)
+    b_scene = makeScene(f"Scene", checker_background)
+    project.scenes.append(b_scene)
 
     actor = makeActor(a_rock_sprite, 9, 8)
     a_scene['actors'].append(actor)
@@ -66,7 +77,7 @@ class bcolors:
 ### Run the generator
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects/")
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
     args = parser.parse_args()
     initializeGenerator(asset_folder = args.assets)

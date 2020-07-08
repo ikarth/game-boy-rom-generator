@@ -9,10 +9,21 @@ import ntpath
 import copy
 import logging
 import argparse
+import os
+from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
 
 # Utilities
+
+@contextmanager
+def cd(newdir):
+    prevdir = os.getcwd()
+    os.chdir(os.path.expanduser(newdir))
+    try:
+        yield
+    finally:
+        os.chdir(prevdir)
 
 ## Just some colors for fancy printing
 class bcolors:
@@ -41,12 +52,13 @@ def initializeGenerator(asset_folder = "../assets/", new_seed=None):
     global main_asset_folder
     global scene_count
     main_asset_folder = asset_folder
-    print(main_asset_folder)
+    print(f"Using assets from {os.path.abspath(Path(main_asset_folder))}")
     scene_count = 0
     global generator_seed
     if not new_seed is None:
         generator_seed = new_seed
     random.seed(generator_seed)
+
 
 base_gb_project = {
 "settings": {},
@@ -177,7 +189,8 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
         logging.warning(f"{filename} has a dimention that is not a multiple of 8")
     return element
 
-def makeActor(sprite, x, y, movementType="static"):
+
+def makeActor(sprite, x, y, movementType="static", animate=True):
     element = makeElement()
     element["spriteSheetId"] = sprite["id"]
     element["movementType"] = movementType
@@ -185,7 +198,9 @@ def makeActor(sprite, x, y, movementType="static"):
     element["animSpeed"] = "3"
     element["x"] = x
     element["y"] = y
+    element["animate"] = animate
     return element
+
 
 def makeTrigger(trigger, x, y, width, height, script=[]):
   element = makeElement()
@@ -239,6 +254,7 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     element["actors"] = actors
     element["triggers"] = triggers
     return element
+
 
 def makeScriptConnectionToScene(target_scene, direction="right", location=None):
     destination_location = {
@@ -370,6 +386,43 @@ def makeBasicProject():
     {"filename": "emotes.png", "asset_file_name": "original/emotes.png"},
     {"filename": "frame.png", "asset_file_name": "original/frame.png"}]
     return project
+
+def makeColBorder(scenex):
+    wid = scenex["width"]
+    hei = scenex["height"]
+    tilenum = wid * hei
+    work = [False] * tilenum
+    for x in range(0, wid-1):
+        work[x] = True
+    y = 0 + wid
+    while y < (wid * hei) - wid:
+        work[y] = True
+        y = y + wid
+    z = wid - 1
+    while z < (wid * hei):
+        work[z] = True
+        z = z + wid
+    w = (wid * hei) - wid
+    while w < (wid * hei):
+        work[w] = True
+        w = w + 1
+    bytez = wid * hei
+    cc = []
+    max = 0
+    while max < wid * hei - 1:
+        g = 1
+        j = " "
+        while g < 9:
+            if work[max] == True:
+                j = j + "1"
+            elif work[max] == False:
+                j = j + "0"
+            max = max + 1
+            g = g + 1
+        jnum = int(j, 2)
+        cc.insert(0, jnum)
+    scenex["collisions"] = cc
+
 
 # def createWithCallback(callback_func):
 #     # Set up a barebones project

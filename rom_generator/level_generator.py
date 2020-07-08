@@ -9,11 +9,6 @@ def AnikaProject123():
     """
     pass
 
-def createVijayaWorld():
-    """
-    Create an empty world
-    """
-    pass
 
 def SachitasGame():
     pass
@@ -55,12 +50,12 @@ def createVijayaWorld():
     return project
 
 def createAaronGame():
-    '''
-    test
-    '''
     project = makeBasicProject()
+
     player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+
+
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
 
@@ -156,16 +151,13 @@ class bcolors:
 
 # Run the generator
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str,
-                        help="destination folder name", default="../gbprojects/projects/")
-    parser.add_argument('--assets', '-a', type=str,
-                        help="asset folder name", default="assets/")
+    parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects2/")
+    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
     args = parser.parse_args()
     initializeGenerator(asset_folder=args.assets)
-    project = createAaronGame()
-    writeProjectToDisk(project, output_path=args.destination)
+    project = createRockWorld()
+    writeProjectToDisk(project, output_path=args.destination, assets_path="assets/")
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

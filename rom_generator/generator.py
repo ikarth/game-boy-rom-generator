@@ -9,11 +9,21 @@ import ntpath
 import copy
 import logging
 import argparse
+import os
+from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
 
-
 # Utilities
+
+@contextmanager
+def cd(newdir):
+    prevdir = os.getcwd()
+    os.chdir(os.path.expanduser(newdir))
+    try:
+        yield
+    finally:
+        os.chdir(prevdir)
 
 ## Just some colors for fancy printing
 class bcolors:
@@ -42,11 +52,13 @@ def initializeGenerator(asset_folder = "../assets/", new_seed=None):
     global main_asset_folder
     global scene_count
     main_asset_folder = asset_folder
+    print(f"Using assets from {os.path.abspath(Path(main_asset_folder))}")
     scene_count = 0
     global generator_seed
     if not new_seed is None:
         generator_seed = new_seed
     random.seed(generator_seed)
+
 
 base_gb_project = {
 "settings": {},
@@ -104,12 +116,17 @@ def makeMusic(name, filename):
     element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
     return element
 
+def getImage(image_filename, image_type="sprites"):
+    print(Path(main_asset_folder).joinpath(image_type, image_filename))
+    im = Image.open(Path(main_asset_folder).joinpath(image_type, image_filename))
+    return im
+
 def getImageInfo(image_filename, image_type="sprites"):
     """
     Get information about the image file from disk.
     image_type is a path that tells it where to look in the asset folder.
     """
-    im = Image.open(Path(main_asset_folder).joinpath(image_type, image_filename))
+    im = getImage(image_filename, image_type)
     return {"pixel_width": im.size[0], "pixel_height": im.size[1], "image_format": im.format, "image_mode": im.mode}
 
 ## The way I decided to implment the API is that there are two kinds of
@@ -157,7 +174,7 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     element["height"] = height
     element["imageWidth"] = imageWidth
     element["imageHeight"] = imageHeight
-    element["filename"] = filename
+    element["filename"] = str(os.path.basename(Path(filename)))
     element["_v"] = int(round(time.time() * 1000.0))
     element["_generator_metadata"] = getImageInfo(filename, image_type="backgrounds")
     if imageWidth is None:
@@ -180,7 +197,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     element["moveSpeed"] = "1"
     element["animSpeed"] = "3"
     element["x"] = x
-    element["y"] = y   
+    element["y"] = y
     element["animate"] = animate
     return element
 
@@ -193,6 +210,15 @@ def makeTrigger(trigger, x, y, width, height, script=[]):
   element["height"] = height
   element["script"] = script
   return element
+
+def addSceneBackground(project, scene, background):
+    print(scene)
+    print(background)
+    scene["backgroundId"] = background["id"]
+    scene["width"] = background["width"]
+    scene["height"] = background["height"]
+    [print(s) for s in project.scenes if s["id"] == scene["id"]]
+    return scene
 
 def makeScene(name, background, width=None, height=None, x=None, y=None, collisions=[], actors=[], triggers=[]):
     """Creates a scene element.
@@ -305,39 +331,54 @@ def addSymmetricSceneConnections(project, scene, destination_scene, direction, d
 def writeUIAssets(ui_asset_array, asset_path):
     ui_assets = []
     for ui_asset in ui_asset_array:
-        temp_file = Path("assets/ui/" + ui_asset["filename"])
+        temp_file = Path(asset_path).joinpath("temp/ui/").joinpath(ui_asset["filename"])
         try:
             copy_path = os.path.abspath(Path(asset_path).joinpath(ui_asset["asset_file_name"]))
+            logging.info(f"UI file copy: {copy_path} -> {temp_file}")
+            os.makedirs(os.path.dirname(temp_file), exist_ok=True)
             shutil.copy2(copy_path, temp_file)
             ui_assets.append({"filename": ui_asset["filename"]})
         except FileNotFoundError as err:
-            print(f"Asset File Missing: {err}")
+            print(f"UI Asset File Missing: {err}")
             logging.warning(f"Asset File Missing: {err}")
-
     return ui_assets
 
+def findFileInAssets(assets_path, filename):
+    cur_directory = os.path.abspath(assets_path)
+    for root, dirs, files in os.walk(assets_path):
+        if filename in files:
+            return os.path.join(root, filename)
+    logging.error("File search failed")
+    raise FileNotFoundError
 
-def writeAssets(asset_array, output_path, asset_path):
+def writeAssets(asset_array, output_path, input_assets_path, output_assets_path):
     Path(output_path + "assets/temp/").mkdir(parents=True, exist_ok=True)
-    Path(output_path).joinpath(asset_path).mkdir(parents=True, exist_ok=True)
+    Path(output_path).joinpath(output_assets_path).mkdir(parents=True, exist_ok=True)
     for element in asset_array:
         f_name = element["filename"]
         print(f_name)
         temp_file = os.path.abspath(Path(output_path + "assets/temp/scratch.file"))
         try:
-            copy_path = os.path.abspath(Path(asset_path).joinpath(f_name))
-            destination_path = Path(output_path).joinpath(asset_path, f_name)
+            #copy_path = os.path.abspath(Path("../").joinpath(Path(asset_path).joinpath(f_name)))
+            copy_path = os.path.abspath(Path(input_assets_path).joinpath(f_name))
+            if not os.path.isfile(copy_path):
+                # Search assets folder for file
+                found_filename = findFileInAssets(input_assets_path, f_name)
+                copy_path = os.path.abspath(found_filename)
+                print(f"Found {copy_path}")
+            destination_path = Path(output_path).joinpath(output_assets_path, f_name)
+            logging.info(f"Asset file copy: {copy_path} -> {temp_file} -> {destination_path}")
             shutil.copy2(copy_path, temp_file)
             os.replace(Path(temp_file), destination_path)
-            logging.info(f"Wrote {destination_path}")
+            logging.info(f"Wrote {os.path.abspath(destination_path)}")
         except FileNotFoundError as err:
-            print(f"Asset File Missing: {err}")
+            print(f"Asset File Missing for writeAssets(): {err}")
             logging.warning(f"Asset File Missing: {err}")
     if not shutil.rmtree.avoids_symlink_attacks:
         logging.info("Temp directory deletion potentially vulnerable to symlink attacks.")
     shutil.rmtree(Path(output_path + "assets/temp/"))
 
-def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="../gbprojects/projects/"):
+def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="../../gbprojects/projects/", input_assets_path ="../assets/", output_assets_path ="assets/"):
     # Write project to JSON
     logging.info(f"Writing {filename} project file...")
     gb_project_without_ui_elements = copy.deepcopy(gb_project)
@@ -351,11 +392,13 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="../gbpr
 
     # Copy assets to projects
     print("*** Writing assets ***")
-    writeAssets(gb_project.spriteSheets, output_path, Path(main_asset_folder + "sprites/"))
-    writeAssets(gb_project.music, output_path, Path(main_asset_folder + "music/"))
-    writeAssets(gb_project.backgrounds, output_path, Path(main_asset_folder + "backgrounds/"))
-    ui_asset_array = writeUIAssets(gb_project.ui, Path(main_asset_folder +"ui/"))
-    writeAssets(ui_asset_array, output_path, Path(main_asset_folder + "ui/"))
+    writeAssets(gb_project.spriteSheets, output_path, Path(input_assets_path + "sprites/"), Path(output_assets_path + "sprites/"))
+    writeAssets(gb_project.music,        output_path, Path(input_assets_path + "music/"), Path(output_assets_path + "music/"))
+    writeAssets(gb_project.backgrounds,  output_path, Path(input_assets_path + "backgrounds/"), Path(output_assets_path + "backgrounds/"))
+    ui_asset_array = writeUIAssets(gb_project.ui, Path(input_assets_path + "ui/"))
+    writeAssets(ui_asset_array,          output_path, Path(input_assets_path + "ui/"), Path(output_assets_path + "ui/"))
+
+    print(f"Wrote project to {os.path.abspath(output_path)}")
 
 def makeBasicProject():
     project = types.SimpleNamespace(**base_gb_project)
@@ -375,7 +418,7 @@ def makeColBorder(scenex):
     work = [False] * tilenum
     for x in range(0, wid-1):
         work[x] = True
-    y = 0 + wid    
+    y = 0 + wid
     while y < (wid * hei) - wid:
         work[y] = True
         y = y + wid
@@ -386,8 +429,8 @@ def makeColBorder(scenex):
     w = (wid * hei) - wid
     while w < (wid * hei):
         work[w] = True
-        w = w + 1    
-    bytez = wid * hei 
+        w = w + 1
+    bytez = wid * hei
     cc = []
     max = 0
     while max < wid * hei - 1:
@@ -520,12 +563,14 @@ def createExampleProject():
 ### Run the generator
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
-    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects/")
+    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
+    parser.add_argument('--subfolder', '-s', type=bool, help="asset folder name", default=False)
     args = parser.parse_args()
-    initializeGenerator(asset_folder = args.assets)
+    initializeGenerator(asset_folder=args.assets)
     project = createExampleProject()
-    writeProjectToDisk(project, output_path = args.destination)
+    writeProjectToDisk(project, output_path = args.destination, assets_path=args.assets)
+
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

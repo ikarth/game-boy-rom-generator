@@ -1,104 +1,313 @@
 ### Script Commands ###
 script_commands = {
-"EVENT_END": {},
-"EVENT_STOP": {}, # Same as End except explicitly user created
-"EVENT_WAIT": {},
-# Scenes
-"EVENT_SWITCH_SCENE": {},
-"EVENT_START_BATTLE": {},
-"EVENT_RETURN_TO_TITLE": {},
-"EVENT_SCENE_PUSH_STATE": {},
-"EVENT_SCENE_POP_STATE": {},
-"EVENT_SCENE_RESET_STATE": {},
-"EVENT_SCENE_POP_ALL_STATE": {},
-# Data
-"EVENT_LOAD_DATA": {},
-"EVENT_SAVE_DATA": {},
-"EVENT_CLEAR_DATA": {},
-# Conditional
-"EVENT_IF_TRUE": {},
-"EVENT_IF_FALSE": {},
-"EVENT_IF_VALUE": {"variable": "L3", "operator": ">", "comparator": 2, "__collapseElse": False},
-"EVENT_IF_VALUE_COMPARE": {},
-"EVENT_IF_INPUT": {},
-"EVENT_IF_ACTOR_DIRECTION": {},
-"EVENT_IF_SAVED_DATA": {},
-"EVENT_IF_ACTOR_AT_POSITION": {},
-"EVENT_SET_TRUE": {},
-"EVENT_SET_FALSE": {},
-"EVENT_CHOICE": {},
-"EVENT_RESET_VARIABLES": {},
-"EVENT_LOOP": {},
-"EVENT_GROUP": {},
-"EVENT_MENU": {},
-"EVENT_COMMENT": {},
-# Background Scripts
-"EVENT_SET_INPUT_SCRIPT": {},
-"EVENT_SET_BACKGROUND_SCRIPT": {},
-"EVENT_REMOVE_INPUT_SCRIPT": {},
-# Math
-"EVENT_VARIABLE_MATH": {},
-"EVENT_SET_VALUE": {},
-"EVENT_SET_RANDOM_VALUE": {},
-"EVENT_INC_VALUE": {},
-"EVENT_DEC_VALUE": {},
-"EVENT_MATH_ADD": {},
-"EVENT_MATH_SUB": {},
-"EVENT_MATH_MUL": {},
-"EVENT_MATH_DIV": {},
-"EVENT_MATH_MOD": {},
-"EVENT_MATH_ADD_VALUE": {},
-"EVENT_MATH_SUB_VALUE": {},
-"EVENT_MATH_MUL_VALUE": {},
-"EVENT_MATH_DIV_VALUE": {},
-"EVENT_MATH_MOD_VALUE": {},
-"EVENT_COPY_VALUE": {},
-"EVENT_SET_FLAGS": {},
-"EVENT_ADD_FLAGS": {},
-"EVENT_CLEAR_FLAGS": {},
-"EVENT_IF_FLAGS_COMPARE": {},
-# Input
-"EVENT_AWAIT_INPUT": {},
-# Actor
-"EVENT_TEXT": {},
-"EVENT_TEXT_SET_ANIMATION_SPEED": {},
-"EVENT_ACTOR_SET_DIRECTION": {},
-"EVENT_ACTOR_SET_DIRECTION_TO_VALUE": {},
-"EVENT_ACTOR_SET_POSITION": {},
-"EVENT_ACTOR_SET_POSITION_RELATIVE": {},
-"EVENT_ACTOR_MOVE_RELATIVE": {},
-"EVENT_ACTOR_MOVE_TO": {},
-"EVENT_ACTOR_PUSH": {},
-"EVENT_ACTOR_SET_ANIMATION_SPEED": {},
-"EVENT_ACTOR_SET_MOVEMENT_SPEED": {},
-"EVENT_ACTOR_EMOTE": {},
-"EVENT_PLAYER_SET_SPRITE": {},
-"EVENT_ACTOR_GET_POSITION": {},
-"EVENT_ACTOR_GET_DIRECTION": {},
-"EVENT_ACTOR_SET_POSITION_TO_VALUE": {},
-"EVENT_ACTOR_MOVE_TO_VALUE": {},
-"EVENT_ACTOR_INVOKE": {},
-"EVENT_ACTOR_SET_FRAME": {},
-"EVENT_ACTOR_SET_FRAME_TO_VALUE": {},
-# Camera
-"EVENT_CAMERA_MOVE_TO": {},
-"EVENT_CAMERA_LOCK": {},
-"EVENT_CAMERA_SHAKE": {},
-"EVENT_FADE_OUT": {},
-"EVENT_FADE_IN": {},
-"EVENT_SHOW_SPRITES": {},
-"EVENT_HIDE_SPRITES": {},
-"EVENT_ACTOR_SHOW": {},
-"EVENT_ACTOR_HIDE": {},
-# Overlay
-"EVENT_OVERLAY_SHOW": {"color": "black", "x": 0, "y": 0},
-"EVENT_OVERLAY_HIDE": {},
-"EVENT_OVERLAY_MOVE_TO": {"x": 0, "y": 0, "speed": "1"},
-# Music
-"EVENT_MUSIC_PLAY": {},
-"EVENT_MUSIC_STOP": {},
-# Sound
-"EVENT_SOUND_PLAY_BEEP": {},
-# Call CustomEvent
-"EVENT_CALL_CUSTOM_EVENT": {}
+    "EVENT_END": {},  # no arguments
+    "EVENT_STOP": {},  # no arguments, same as end
+    "EVENT_WAIT": {
+        "time": 0.5
+    },
+    # Scenes
+    "EVENT_SWITCH_SCENE": {
+        "sceneId": "498cfdcf-3000-453f-9b52-fe5d8d81cac2",
+        "x": 7,
+        "y": 6,
+        "direction": "",
+        "fadeSpeed": "2"
+    },
+    "EVENT_START_BATTLE": {},
+    "EVENT_RETURN_TO_TITLE": {},
+    "EVENT_SCENE_PUSH_STATE": {},  # no arguments
+    "EVENT_SCENE_POP_STATE": {
+        "fadeSpeed": "2"
+    },
+    "EVENT_SCENE_RESET_STATE": {},  # no arguments
+    "EVENT_SCENE_POP_ALL_STATE": {
+        "fadeSpeed": "2"
+    },
+    # Data
+    "EVENT_LOAD_DATA": {},  # no arguments
+    "EVENT_SAVE_DATA": {},  # no arguments
+    "EVENT_CLEAR_DATA": {},  # no arguments
+    # Conditional
+    "EVENT_IF_TRUE": {
+        "variable": "L0",
+        "__collapseElse": False
+    },
+    "EVENT_IF_FALSE": {
+        "variable": "L0",
+        "__collapseElse": False
+    },
+    "EVENT_IF_VALUE": {
+        "variable": "L3",
+        "operator": ">",
+        "comparator": 2,
+        "__collapseElse": False
+    },
+    "EVENT_IF_VALUE_COMPARE": {},
+    "EVENT_IF_INPUT": {
+        "input": [
+            "a",
+            "b"
+        ],
+        "__collapseElse": False
+    },
+    "EVENT_IF_ACTOR_DIRECTION": {
+        "actorId": "player",
+        "direction": "up",
+        "__collapseElse": False
+    },
+    "EVENT_IF_SAVED_DATA": {
+        "__collapseElse": False
+    },
+    "EVENT_IF_ACTOR_AT_POSITION": {
+        "actorId": "player",
+        "x": 0,
+        "y": 0,
+        "__collapseElse": False
+    },
+    "EVENT_SET_TRUE": {
+        "variable": "L0"
+    },
+    "EVENT_SET_FALSE": {
+        "variable": "L0"
+    },
+    "EVENT_CHOICE": {
+        "variable": "L0",
+        "trueText": "",
+        "falseText": ""
+    },
+    "EVENT_RESET_VARIABLES": {},  # no arguments
+    "EVENT_LOOP": {},  # no arguments
+    "EVENT_GROUP": {},  # no arguments
+    "EVENT_MENU": {
+        "variable": "L0",
+        "items": 2,
+        "option1": "",
+        "option2": "",
+        "option3": "",
+        "option4": "",
+        "option5": "",
+        "option6": "",
+        "option7": "",
+        "option8": "",
+        "cancelOnB": true,
+        "layout": "dialogue"
+    },
+    "EVENT_COMMENT": {
+        "text": ""
+    },
+    # Background Scripts
+    "EVENT_SET_INPUT_SCRIPT": {
+        "input": "b"
+    },
+    "EVENT_SET_BACKGROUND_SCRIPT": {},
+    "EVENT_REMOVE_INPUT_SCRIPT": {  # look into more, is the remove imput scrip
+        "input": [
+            "b"
+        ]
+    },
+    # Math
+    "EVENT_VARIABLE_MATH": {
+        "vectorX": "L0",
+        "operation": "set",
+        "other": "true",
+        "vectorY": "L0",
+        "value": "1",
+        "minValue": "0",
+        "maxValue": "255"
+    },
+    "EVENT_SET_VALUE": {
+        "variable": "L0",
+        "value": "0"
+    },
+    "EVENT_SET_RANDOM_VALUE": {},
+    "EVENT_INC_VALUE": {
+        "variable": "L0"
+    },
+    "EVENT_DEC_VALUE": {
+        "variable": "L0"
+    },
+    "EVENT_MATH_ADD": {},
+    "EVENT_MATH_SUB": {},
+    "EVENT_MATH_MUL": {},
+    "EVENT_MATH_DIV": {},
+    "EVENT_MATH_MOD": {},
+    "EVENT_MATH_ADD_VALUE": {},
+    "EVENT_MATH_SUB_VALUE": {},
+    "EVENT_MATH_MUL_VALUE": {},
+    "EVENT_MATH_DIV_VALUE": {},
+    "EVENT_MATH_MOD_VALUE": {},
+    "EVENT_COPY_VALUE": {},
+    "EVENT_SET_FLAGS": {
+        "variable": "L0",
+        "flag1": False,
+        "flag2": False,
+        "flag3": False,
+        "flag4": False,
+        "flag5": False,
+        "flag6": False,
+        "flag7": False,
+        "flag8": False
+    },
+    "EVENT_ADD_FLAGS": {
+        "variable": "L0",
+        "flag1": False,
+        "flag2": False,
+        "flag3": False,
+        "flag4": False,
+        "flag5": False,
+        "flag6": False,
+        "flag7": False,
+        "flag8": False
+    },
+    "EVENT_CLEAR_FLAGS": {
+        "variable": "L0",
+        "flag1": False,
+        "flag2": False,
+        "flag3": False,
+        "flag4": False,
+        "flag5": False,
+        "flag6": False,
+        "flag7": False,
+        "flag8": False
+    },
+    "EVENT_IF_FLAGS_COMPARE": {
+        "variable": "L0",
+        "flag": 1,
+        "__collapseElse": False
+    },
+    # Input
+    "EVENT_AWAIT_INPUT": {
+        "input": [
+            "a",
+            "b"
+        ]
+    },
+    # Actor
+    "EVENT_TEXT": {
+        "text": "'push",
+        "avatarId": ""
+    },
+    "EVENT_TEXT_SET_ANIMATION_SPEED": {
+        "speedIn": 1,
+        "speedOut": 1,
+        "speed": 1
+    },
+    "EVENT_ACTOR_SET_DIRECTION": {
+        "actorId": "player",
+        "direction": "up"
+    },
+    "EVENT_ACTOR_SET_DIRECTION_TO_VALUE": {
+        "actorId": "player",
+        "variable": "L0"
+    },
+    "EVENT_ACTOR_SET_POSITION": {
+        "actorId": "player",
+        "x": 0,
+        "y": 0
+    },
+    "EVENT_ACTOR_SET_POSITION_RELATIVE": {
+        "actorId": "player",
+        "x": 0,
+        "y": 0},
+    "EVENT_ACTOR_MOVE_RELATIVE": {
+        "actorId": "player",
+        "x": 0,
+        "y": 0
+    },
+    "EVENT_ACTOR_MOVE_TO": {},
+    "EVENT_ACTOR_PUSH": {
+        "continue": False
+    },
+    "EVENT_ACTOR_SET_ANIMATION_SPEED": {
+        "actorId": "player",
+        "speed": "3"
+    },
+    "EVENT_ACTOR_SET_MOVEMENT_SPEED": {
+        "actorId": "player",
+        "speed": "1"
+    },
+    "EVENT_ACTOR_EMOTE": {
+        "actorId": "player",
+        "emoteId": 0
+    },
+    "EVENT_PLAYER_SET_SPRITE": {
+        "spriteSheetId": "468ef314-e09e-42e2-8778-99e1331e8beb"
+    },
+    "EVENT_ACTOR_GET_POSITION": {
+        "actorId": "player",
+        "vectorX": "L0",
+        "vectorY": "L0"
+    },
+    "EVENT_ACTOR_GET_DIRECTION": {
+        "actorId": "player",
+        "direction": "L0"
+    },
+    "EVENT_ACTOR_SET_POSITION_TO_VALUE": {
+        "actorId": "player",
+        "vectorX": "L0",
+        "vectorY": "L0"
+    },
+    "EVENT_ACTOR_MOVE_TO_VALUE": {
+        "actorId": "player",
+        "vectorX": "L0",
+        "vectorY": "L0"
+    },
+    "EVENT_ACTOR_INVOKE": {
+        "actorId": "82444b20-65df-436a-b1c1-191aacf2258d"
+    },
+    "EVENT_ACTOR_SET_FRAME": {
+        "actorId": "82444b20-65df-436a-b1c1-191aacf2258d",
+        "frame": 0
+    },
+    "EVENT_ACTOR_SET_FRAME_TO_VALUE": {
+        "actorId": "82444b20-65df-436a-b1c1-191aacf2258d",
+        "variable": "L0"
+    },
+    # Camera
+    "EVENT_CAMERA_MOVE_TO": {
+        "x": 0,
+        "y": 0,
+        "speed": "0"
+    },
+    "EVENT_CAMERA_LOCK": {
+        "speed": "0"
+    },
+    "EVENT_CAMERA_SHAKE": {
+        "time": 0.5
+    },
+    "EVENT_FADE_OUT": {
+        "speed": "2"
+    },
+    "EVENT_FADE_IN": {
+        "speed": "2"
+    },
+    "EVENT_SHOW_SPRITES": {},  # no arguments
+    "EVENT_HIDE_SPRITES": {},  # no arguments
+    "EVENT_ACTOR_SHOW": {
+        "actorId": "player"
+    },
+    "EVENT_ACTOR_HIDE": {
+        "actorId": "player"
+    },
+    # Overlay
+    "EVENT_OVERLAY_SHOW": {
+        "color": "black",
+        "x": 0,
+        "y": 0
+    },
+    "EVENT_OVERLAY_HIDE": {},  # no arguments
+    "EVENT_OVERLAY_MOVE_TO": {"x": 0, "y": 0, "speed": "1"},
+    # Music
+    "EVENT_MUSIC_PLAY": {
+        "musicId": "56622189-8327-4a64-bd29-2fbcf243c97e",
+        "loop": True
+    },
+    "EVENT_MUSIC_STOP": {},  # no arguments
+    # Sound
+    "EVENT_SOUND_PLAY_BEEP": {},
+    # Call CustomEvent
+    "EVENT_CALL_CUSTOM_EVENT": {
+        "customEventId": "4bf11658-2bb2-4e79-ad96-22577c9a8353",
+        "__name": "Custom Event 1"
+    }
 }

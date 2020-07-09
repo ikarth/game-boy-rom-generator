@@ -133,3 +133,9 @@ dmypy.json
 
 
 .DS_Store
+
+# Don't include the temporary image assets...
+assets/temp/*
+
+# Also don't include the generated image assets...
+assets/backgrounds/generated/*

@@ -3,7 +3,7 @@ import copy
 import random
 from generator import makeElement, makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
-def createYourNameWorld():
+def createAaronWorld():
     """
     Create an empty world as an example to build future projects from.
     """
@@ -70,8 +70,8 @@ if __name__ == '__main__':
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
     args = parser.parse_args()
     initializeGenerator(asset_folder = args.assets)
-    project = createYourNameWorld()
-    writeProjectToDisk(project, output_path = args.destination)
+    project = createAaronWorld()
+    writeProjectToDisk(project, output_path=args.destination, filename="test.gbsproj", assets_path=args.assets)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

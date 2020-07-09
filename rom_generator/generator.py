@@ -367,6 +367,7 @@ def makeBasicProject():
     {"filename": "frame.png", "asset_file_name": "original/frame.png"}]
     return project
 
+#makes a border of collisions around a scene
 def makeColBorder(scenex):
     wid = scenex["width"]
     hei = scenex["height"]
@@ -403,7 +404,28 @@ def makeColBorder(scenex):
         cc.insert(0, jnum)
     scenex["collisions"] = cc
 
-    
+def makeCol(array01, scene01):
+    """
+    takes in 1D array (later 2D array) of 0s and 1s, puts in collisions accordingly
+    """
+    wid = scene01["width"]
+    hei = scene01["height"]
+    cc = []
+    max = 0
+    while max < wid * hei - 1:
+        g = 1
+        j = " "
+        while g < 9:
+            if array01[max] == 1:
+                j = j + "1"
+            elif array01[max] == 0:
+                j = j + "0"
+            max = max + 1
+            g = g + 1
+        jnum = int(j, 2)
+        cc.insert(0, jnum)
+    scene01["collisions"] = cc
+  
 # def createWithCallback(callback_func):
 #     # Set up a barebones project
 #     project = makeBasicProject()

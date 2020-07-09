@@ -1,7 +1,7 @@
 import argparse
 import copy
 import random
-from generator import makeBasicProject, addSpriteSheet, makeColBorder, makeBackground, makeScene, makeActor, makeElement, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
+from generator import makeBasicProject, addSpriteSheet, makeColBorder, makeCol, makeBackground, makeScene, makeActor, makeElement, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
 
 def vijayaGame():
@@ -46,7 +46,8 @@ def vijayaGame():
     
     # Add scenes with some actors
     a_scene2 = copy.deepcopy(makeScene(f"Scene", default_bkg))
-    print(makeColBorder(a_scene2))
+    hello = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+    makeCol(hello, a_scene2)
     a_scene2["actors"].append(dog_actor)
     scene2_script = []
     element = makeElement()
@@ -56,7 +57,8 @@ def vijayaGame():
     print ("this is num: ") 
     print (num)
     for y in range(num):
-        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))       
+        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))   
+        makeColBorder(a_scene)    
         if y%2 == 0:
             a_scene["actors"].append(actor)
         if y%3 == 0:
@@ -68,7 +70,7 @@ def vijayaGame():
     scene_connections = [[True, True, True, True] for n in range(num)]
     for y in range(num):
         for attempts in range(num):
-            other_scene = random.randint(0, 2 - 2)
+            other_scene = random.randint(0, num - 2)
             if other_scene >= y:
                 other_scene += 1
             chosen_direction = random.choice(["right", "left", "up", "down"])

@@ -1,12 +1,15 @@
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__),os.pardir,"rom_generator"))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),os.pardir)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),os.pardir,"rom_generator")))
+print(sys.path)
 
 from rom_generator.generator import initializeGenerator, makeBasicProject, writeProjectToDisk, addSpriteSheet, makeBackground, makeScene, makeActor, makeElement, makeMusic, getImage
 from rom_generator.background import generateBackground, getTileList, makeCheckerboardArray, makeBackgroundCollisions, generateBackgroundImageFromTiles
+from PIL import Image
 
-def test_background_generator():
+def test_background_generator(asset_folder = "assets/", running_in_folder="."):
 
-    initializeGenerator(asset_folder = "assets/")
+    initializeGenerator(asset_folder)
 
     project = makeBasicProject()
 
@@ -62,14 +65,14 @@ def test_background_generator():
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
 
-    writeProjectToDisk(project, "../gbprojects/test_background")
+    writeProjectToDisk(project, output_path="../gbprojects/test_background", input_assets_path ="../assets/")
 
     # check the project data
     assert("checker_background" == project.backgrounds[1]["name"])
     assert(224 == project.backgrounds[1]["imageWidth"])
 
     # check the generated background image file...
-    background_image_filename = "gbprojects/test_background/assets/generated/backgrounds/generated/" + checker_background["filename"]
+    background_image_filename = "gbprojects/test_background/assets/backgrounds/generated/" + checker_background["filename"]
     print(background_image_filename)
     bkg_img_from_file = Image.open(background_image_filename)
     assert(os.path.isfile(bkg_img_from_file))
@@ -77,3 +80,5 @@ def test_background_generator():
     bkg_img_from_file.close()
 
     import pdb; pdb.set_trace()
+
+test_background_generator(asset_folder = "assets/")

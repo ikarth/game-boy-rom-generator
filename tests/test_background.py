@@ -1,14 +1,13 @@
-import argparse
-import copy
-import random
-from generator import makeElement, makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, addSceneBackground
-from background import getTileList, makeCheckerboardArray, generateBackgroundImageFromTiles, generateBackground, makeBackgroundCollisions
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__),os.pardir,"rom_generator"))
 
-def createYourNameWorld():
-    """
-    Create an empty world as an example to build future projects from.
-    """
-    # Set up a barebones project
+from rom_generator.generator import initializeGenerator, makeBasicProject, writeProjectToDisk, addSpriteSheet, makeBackground, makeScene, makeActor, makeElement, makeMusic, getImage
+from rom_generator.background import generateBackground, getTileList, makeCheckerboardArray, makeBackgroundCollisions, generateBackgroundImageFromTiles
+
+def test_background_generator():
+
+    initializeGenerator(asset_folder = "assets/")
+
     project = makeBasicProject()
 
     # Create sprite sheet for the player sprite
@@ -22,9 +21,6 @@ def createYourNameWorld():
     # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
-
-    #a_scene = makeScene(f"Scene", default_bkg)
-    #project.scenes.append(a_scene)
 
     checker_background_tile_list = getTileList(["black_tile.png", "white_tile.png"])
     checker_background_tile_array = makeCheckerboardArray(14, 14)
@@ -65,28 +61,19 @@ def createYourNameWorld():
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project
 
-# Utilities
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    writeProjectToDisk(project, "../gbprojects/test_background")
 
-### Run the generator
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects_yourname/")
-    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
-    args = parser.parse_args()
-    initializeGenerator(asset_folder = args.assets)
-    project = createYourNameWorld()
-    writeProjectToDisk(project, output_path = args.destination)
-    if args.destination == "../gbprojects/projects/":
-        print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
-        print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")
+    # check the project data
+    assert("checker_background" == project.backgrounds[1]["name"])
+    assert(224 == project.backgrounds[1]["imageWidth"])
+
+    # check the generated background image file...
+    background_image_filename = "gbprojects/test_background/assets/generated/backgrounds/generated/" + checker_background["filename"]
+    print(background_image_filename)
+    bkg_img_from_file = Image.open(background_image_filename)
+    assert(os.path.isfile(bkg_img_from_file))
+
+    bkg_img_from_file.close()
+
+    import pdb; pdb.set_trace()

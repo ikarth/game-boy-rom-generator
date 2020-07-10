@@ -59,6 +59,9 @@ def initializeGenerator(asset_folder = "../assets/", new_seed=None):
         generator_seed = new_seed
     random.seed(generator_seed)
 
+def getAssetsPath():
+    return main_asset_folder
+
 
 base_gb_project = {
 "settings": {},
@@ -262,7 +265,7 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     element["collisions"] = collisions
     element["actors"] = actors
     element["triggers"] = triggers
-    return element
+    return copy.deepcopy(element)
 
 
 def makeScriptConnectionToScene(target_scene, direction="right", location=None):

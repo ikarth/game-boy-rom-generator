@@ -3,13 +3,21 @@ import argparse
 import os
 import numpy as np
 import uuid
+import logging
 from PIL import Image
 from pathlib import Path
 
 
 def getTileList(list_of_tile_files=[]):
     tile_list = []
+    input_assets_path = "assets" #generator.getAssetsPath()
     for tile in list_of_tile_files:
+        tile_image = None
+        if not os.path.isfile(tile):
+            # Search assets folder for file
+            found_filename = generator.findFileInAssets(input_assets_path, tile)
+            tile = os.path.abspath(found_filename)
+            logging.warning(f"Found {tile}")
         tile_image = generator.getImage(tile, image_type="tiles")
         tile_list.append(tile_image)
     return tile_list
@@ -22,6 +30,13 @@ def makeCheckerboardArray(width, height):
     board = np.fromfunction(lambda i,j: (i + (j * height) + (j % 2)) % 2, (width, height), dtype=int)
     return board.reshape([width, height]).tolist()
 
+def makeBackgroundCollisions(background_array):
+    return []
+
+def generateBackground(background_name, array_of_tiles, list_of_sprites):
+    image_path = generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites)
+    return generator.makeBackground(image_path, "generated_background")
+
 def generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites):
     """
     Given an array of tiles assemble a background image composed of those tiles.
@@ -33,6 +48,7 @@ def generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites):
     Generates the image, places it in the assets folder, returns the path to
     the new background image.
     """
+    print(array_of_tiles)
     print(list_of_sprites)
     width = list_of_sprites[0].size[0] * len(array_of_tiles[0])
     height = list_of_sprites[0].size[1] * len(array_of_tiles)

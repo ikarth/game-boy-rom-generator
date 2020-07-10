@@ -1,4 +1,4 @@
-import sys,os
+import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),os.pardir,"rom_generator"))
 
 import generator

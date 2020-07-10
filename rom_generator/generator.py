@@ -9,10 +9,21 @@ import ntpath
 import copy
 import logging
 import argparse
+import os
+from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
 
 # Utilities
+
+@contextmanager
+def cd(newdir):
+    prevdir = os.getcwd()
+    os.chdir(os.path.expanduser(newdir))
+    try:
+        yield
+    finally:
+        os.chdir(prevdir)
 
 ## Just some colors for fancy printing
 class bcolors:
@@ -41,12 +52,13 @@ def initializeGenerator(asset_folder = "../assets/", new_seed=None):
     global main_asset_folder
     global scene_count
     main_asset_folder = asset_folder
-    print(main_asset_folder)
+    print(f"Using assets from {os.path.abspath(Path(main_asset_folder))}")
     scene_count = 0
     global generator_seed
     if not new_seed is None:
         generator_seed = new_seed
     random.seed(generator_seed)
+
 
 base_gb_project = {
 "settings": {},
@@ -167,7 +179,7 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     element["height"] = height
     element["imageWidth"] = imageWidth
     element["imageHeight"] = imageHeight
-    element["filename"] = filename
+    element["filename"] = str(os.path.basename(Path(filename)))
     element["_v"] = int(round(time.time() * 1000.0))
     element["_generator_metadata"] = getImageInfo(filename, image_type="backgrounds")
     if imageWidth is None:
@@ -183,7 +195,7 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     return element
 
 ### An actor is an object on the screen that the player can interact with.
-def makeActor(sprite, x, y, movementType="static"):
+def makeActor(sprite, x, y, movementType="static", animate=True):
     element = makeElement()
     element["spriteSheetId"] = sprite["id"]
     element["movementType"] = movementType
@@ -191,6 +203,7 @@ def makeActor(sprite, x, y, movementType="static"):
     element["animSpeed"] = "3"
     element["x"] = x
     element["y"] = y
+    element["animate"] = animate
     return element
 
 ### A trigger causes a script to play when the player reaches the trigger's location.
@@ -202,6 +215,15 @@ def makeTrigger(trigger, x, y, width, height, script=[]):
   element["height"] = height
   element["script"] = script
   return element
+
+def addSceneBackground(project, scene, background):
+    print(scene)
+    print(background)
+    scene["backgroundId"] = background["id"]
+    scene["width"] = background["width"]
+    scene["height"] = background["height"]
+    [print(s) for s in project.scenes if s["id"] == scene["id"]]
+    return scene
 
 def makeScene(name, background, width=None, height=None, x=None, y=None, collisions=[], actors=[], triggers=[]):
     """Creates a scene element.
@@ -315,7 +337,7 @@ def addSymmetricSceneConnections(project, scene, destination_scene, direction, d
 def writeUIAssets(ui_asset_array, asset_path):
     ui_assets = []
     for ui_asset in ui_asset_array:
-        temp_file = Path("assets/temp/ui/" + ui_asset["filename"])
+        temp_file = Path(asset_path).joinpath("temp/ui/").joinpath(ui_asset["filename"])
         try:
             copy_path = os.path.abspath(Path(asset_path).joinpath(ui_asset["asset_file_name"]))
             logging.info(f"UI file copy: {copy_path} -> {temp_file}")
@@ -327,22 +349,34 @@ def writeUIAssets(ui_asset_array, asset_path):
             logging.warning(f"Asset File Missing: {err}")
     return ui_assets
 
+def findFileInAssets(assets_path, filename):
+    cur_directory = os.path.abspath(assets_path)
+    for root, dirs, files in os.walk(assets_path):
+        if filename in files:
+            return os.path.join(root, filename)
+    logging.error("File search failed")
+    raise FileNotFoundError
 
-def writeAssets(asset_array, output_path, asset_path):
+def writeAssets(asset_array, output_path, input_assets_path, output_assets_path):
     Path(output_path + "assets/temp/").mkdir(parents=True, exist_ok=True)
-    Path(output_path).joinpath(asset_path).mkdir(parents=True, exist_ok=True)
+    Path(output_path).joinpath(output_assets_path).mkdir(parents=True, exist_ok=True)
     for element in asset_array:
         f_name = element["filename"]
         print(f_name)
         temp_file = os.path.abspath(Path(output_path + "assets/temp/scratch.file"))
         try:
             #copy_path = os.path.abspath(Path("../").joinpath(Path(asset_path).joinpath(f_name)))
-            copy_path = os.path.abspath(Path(asset_path).joinpath(f_name))
-            destination_path = Path(output_path).joinpath(asset_path, f_name)
+            copy_path = os.path.abspath(Path(input_assets_path).joinpath(f_name))
+            if not os.path.isfile(copy_path):
+                # Search assets folder for file
+                found_filename = findFileInAssets(input_assets_path, f_name)
+                copy_path = os.path.abspath(found_filename)
+                print(f"Found {copy_path}")
+            destination_path = Path(output_path).joinpath(output_assets_path, f_name)
             logging.info(f"Asset file copy: {copy_path} -> {temp_file} -> {destination_path}")
             shutil.copy2(copy_path, temp_file)
             os.replace(Path(temp_file), destination_path)
-            logging.info(f"Wrote {destination_path}")
+            logging.info(f"Wrote {os.path.abspath(destination_path)}")
         except FileNotFoundError as err:
             print(f"Asset File Missing for writeAssets(): {err}")
             logging.warning(f"Asset File Missing: {err}")
@@ -350,7 +384,7 @@ def writeAssets(asset_array, output_path, asset_path):
         logging.info("Temp directory deletion potentially vulnerable to symlink attacks.")
     shutil.rmtree(Path(output_path + "assets/temp/"))
 
-def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="../gbprojects/projects/", assets_path ="../assets/"):
+def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="../../gbprojects/projects/", input_assets_path ="../assets/", output_assets_path ="assets/"):
     # Write project to JSON
     logging.info(f"Writing {filename} project file...")
     gb_project_without_ui_elements = copy.deepcopy(gb_project)
@@ -364,11 +398,13 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="../gbpr
 
     # Copy assets to projects
     print("*** Writing assets ***")
-    writeAssets(gb_project.spriteSheets, output_path, Path(assets_path + "sprites/"))
-    writeAssets(gb_project.music, output_path, Path(assets_path + "music/"))
-    writeAssets(gb_project.backgrounds, output_path, Path(assets_path + "backgrounds/"))
-    ui_asset_array = writeUIAssets(gb_project.ui, Path(assets_path + "ui/"))
-    writeAssets(ui_asset_array, output_path, Path(assets_path + "ui/"))
+    writeAssets(gb_project.spriteSheets, output_path, Path(input_assets_path + "sprites/"), Path(output_assets_path + "sprites/"))
+    writeAssets(gb_project.music,        output_path, Path(input_assets_path + "music/"), Path(output_assets_path + "music/"))
+    writeAssets(gb_project.backgrounds,  output_path, Path(input_assets_path + "backgrounds/"), Path(output_assets_path + "backgrounds/"))
+    ui_asset_array = writeUIAssets(gb_project.ui, Path(input_assets_path + "ui/"))
+    writeAssets(ui_asset_array,          output_path, Path(input_assets_path + "ui/"), Path(output_assets_path + "ui/"))
+
+    print(f"Wrote project to {os.path.abspath(output_path)}")
 
 def makeBasicProject():
     project = types.SimpleNamespace(**base_gb_project)
@@ -380,6 +416,65 @@ def makeBasicProject():
     {"filename": "frame.png", "asset_file_name": "original/frame.png"}]
     return project
 
+#makes a border of collisions around a scene
+def makeColBorder(scenex):
+    wid = scenex["width"]
+    hei = scenex["height"]
+    tilenum = wid * hei
+    work = [False] * tilenum
+    for x in range(0, wid-1):
+        work[x] = True
+    y = 0 + wid
+    while y < (wid * hei) - wid:
+        work[y] = True
+        y = y + wid
+    z = wid - 1
+    while z < (wid * hei):
+        work[z] = True
+        z = z + wid
+    w = (wid * hei) - wid
+    while w < (wid * hei):
+        work[w] = True
+        w = w + 1
+    bytez = wid * hei
+    cc = []
+    max = 0
+    while max < wid * hei - 1:
+        g = 1
+        j = " "
+        while g < 9:
+            if work[max] == True:
+                j = j + "1"
+            elif work[max] == False:
+                j = j + "0"
+            max = max + 1
+            g = g + 1
+        jnum = int(j, 2)
+        cc.insert(0, jnum)
+    scenex["collisions"] = cc
+
+def makeCol(array01, scene01):
+    """
+    takes in 1D array (later 2D array) of 0s and 1s, puts in collisions accordingly
+    """
+    wid = scene01["width"]
+    hei = scene01["height"]
+    cc = []
+    max = 0
+    while max < wid * hei - 1:
+        g = 1
+        j = " "
+        while g < 9:
+            if array01[max] == 1:
+                j = j + "1"
+            elif array01[max] == 0:
+                j = j + "0"
+            max = max + 1
+            g = g + 1
+        jnum = int(j, 2)
+        cc.insert(0, jnum)
+    scene01["collisions"] = cc
+  
 # def createWithCallback(callback_func):
 #     # Set up a barebones project
 #     project = makeBasicProject()

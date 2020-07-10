@@ -89,7 +89,7 @@ script_commands = {
         "option6": "",
         "option7": "",
         "option8": "",
-        "cancelOnB": true,
+        "cancelOnB": True,
         "layout": "dialogue"
     },
     "EVENT_COMMENT": {
@@ -311,3 +311,7 @@ script_commands = {
         "__name": "Custom Event 1"
     }
 }
+
+
+def getScript():
+    return script_commands

@@ -89,7 +89,7 @@ script_commands = {
         "option6": "",
         "option7": "",
         "option8": "",
-        "cancelOnB": true,
+        "cancelOnB": True,
         "layout": "dialogue"
     },
     "EVENT_COMMENT": {

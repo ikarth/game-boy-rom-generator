@@ -143,14 +143,16 @@ def getImageInfo(image_filename, image_type="sprites"):
     im.close()
     return res
 
-## The way I decided to implment the API is that there are two kinds of
+## The way I decided to implement the API is that there are two kinds of
 ## functions that create stuff that will go into the project structure.
 ## The functions that start with 'make' create the element and return it.
 ## The functions that start with 'add' create the element and add it directly
 ## to the project. Mostly by calling the 'make' function to create the thing.
 ##
 
-
+### A sprite sheet is a collection of images to display at the location of an actor or player.
+### A sprite sheet can be one 16x16 static image...
+### ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.  
 def makeSpriteSheet(filename, name=None, type="static", frames=None):
     """
     Create a sprite sheet.
@@ -179,6 +181,9 @@ def addSpriteSheet(project, filename, name=None, type="static", frames=None):
     project.spriteSheets.append(element)
     return element
 
+### A background is a static image that players and actors traverse across on screen.
+### GBStudio imports .png images in dimensions that are multiples of 8, breaks them into 8x8 pixels.
+### The current released version of GBStudio has a maximum of 192 unique background tiles.
 def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width=None, height=None):
     if name is None:
         name = filename
@@ -201,10 +206,10 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     if height is None:
         element["height"] = element["_generator_metadata"]["pixel_height"] // 8
     if (element["_generator_metadata"]["pixel_width"] % 8 != 0) or (element["_generator_metadata"]["pixel_height"] % 8 != 0):
-        logging.warning(f"{filename} has a dimention that is not a multiple of 8")
+        logging.warning(f"{filename} has a dimension that is not a multiple of 8")
     return element
 
-
+### An actor is an object on the screen that the player can interact with.
 def makeActor(sprite, x, y, movementType="static", animate=True):
     element = makeElement()
     element["spriteSheetId"] = sprite["id"]
@@ -216,7 +221,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     element["animate"] = animate
     return element
 
-
+### A trigger causes a script to play when the player reaches the trigger's location.
 def makeTrigger(trigger, x, y, width, height, script=[]):
   element = makeElement()
   element["x"] = x
@@ -232,7 +237,7 @@ def addSceneBackground(project, scene, background):
     scene["backgroundId"] = background["id"]
     scene["width"] = background["width"]
     scene["height"] = background["height"]
-    # [print(s) for s in project.scenes if s["id"] == scene["id"]]
+    [print(s) for s in project.scenes if s["id"] == scene["id"]]
     return scene
 
 def makeScene(name, background, width=None, height=None, x=None, y=None, collisions=[], actors=[], triggers=[]):
@@ -277,9 +282,9 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     element["collisions"] = collisions
     element["actors"] = actors
     element["triggers"] = triggers
-    return copy.deepcopy(element)
+    return element
 
-
+### Makes script to connect two scenes together.
 def makeScriptConnectionToScene(target_scene, direction="right", location=None):
     destination_location = {
         "right": (1, target_scene["height"] // 2),
@@ -307,6 +312,7 @@ def makeScriptConnectionToScene(target_scene, direction="right", location=None):
 
 reverse_direction = {"left": "right", "right": "left", "up": "down", "down": "up"}
 
+### Adds trigger for scene connection.
 def addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite=None):
     source_location = {
         "right": (scene["width"] - 1, (scene["height"] // 2) - 1),
@@ -335,7 +341,7 @@ def addTriggerConnectionToScene(project, scene, destination_scene, direction, do
         actor_connector = makeActor(doorway_sprite, source_location[direction][0] - sign_offset[direction][0], (source_location[direction][1] - sign_offset[direction][1]) + 1, movementType="static")
         scene["actors"].append(actor_connector)
 
-
+### Adds connections between scenes to the project.
 def addSymmetricSceneConnections(project, scene, destination_scene, direction, doorway_sprite=None):
     addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite)
     addTriggerConnectionToScene(project, destination_scene, scene, reverse_direction[direction], doorway_sprite)
@@ -542,7 +548,7 @@ def createExampleProject():
         # Create a scene
         a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
         # Create an actor
-        for x in range(2): # Maximum number of actors in GB Studio is 9
+        for x in range(8): # Maximum number of actors in GB Studio is 9
             actor_x = random.randint(1,(bkg_width-3)) # Second value subtracted by 1 to keep sprite within bounds of the screen
             actor_y = random.randint(2,bkg_height-2) # First value added by 1 to keep sprite within bounds of the screen
             example_rock = makeActor(a_rock_sprite, actor_x, actor_y)

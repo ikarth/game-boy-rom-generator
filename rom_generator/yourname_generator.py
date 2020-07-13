@@ -83,7 +83,6 @@ class bcolors:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects_yourname/")
-    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
     args = parser.parse_args()
     initializeGenerator()
     project = createYourNameWorld()

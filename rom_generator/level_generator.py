@@ -9,33 +9,16 @@ def AnikaProject123():
     """
     pass
 
-def createVijayaWorld():
-    pass
 
 def SachitasGame():
     pass
 
+
 def Harvin():
     pass
 
-def createAaronGame():
-    project = makeBasicProject()
-    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
-    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
-    default_bkg = makeBackground("placeholder.png", "placeholder")
-    project.backgrounds.append(default_bkg)
 
-    project.music.append(makeMusic("template", "template.mod"))
-
-    # Set the starting scene
-    project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project
-
-
-def createEmptyWorld():
-    """
-    Create an empty world as an example to build future projects from.
-    """
+def createVijayaWorld():
     # Set up a barebones project
     project = makeBasicProject()
 
@@ -62,10 +45,26 @@ def createEmptyWorld():
 
     # Add some music
     project.music.append(makeMusic("template", "template.mod"))
+    project.settings["startSceneId"] = project.scenes[0]["id"]
+    
+    return project
+
+def createAaronGame():
+    project = makeBasicProject()
+
+    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+
+
+    default_bkg = makeBackground("placeholder.png", "placeholder")
+    project.backgrounds.append(default_bkg)
+
+    project.music.append(makeMusic("template", "template.mod"))
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
+
 
 def createRockWorld():
     # Set up a barebones project
@@ -97,7 +96,8 @@ def createRockWorld():
     number_of_scenes_to_make = 7
     for make_scene_num in range(number_of_scenes_to_make):
         # Create a scene
-        a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
+        a_scene = copy.deepcopy(
+        makeScene(f"Scene {make_scene_num}", default_bkg))
         # Create an actor
         for x in range(2): # Maximum number of actors in GB Studio is 9
             actor_x = random.randint(1,(bkg_width-3)) # Second value subtracted by 1 to keep sprite within bounds of the screen

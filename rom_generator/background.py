@@ -10,14 +10,10 @@ from pathlib import Path
 
 def getTileList(list_of_tile_files=[]):
     tile_list = []
-    input_assets_path = "assets" #generator.getAssetsPath()
+    input_assets_path = "assets"
     for tile in list_of_tile_files:
         tile_image = None
-        if not os.path.isfile(tile):
-            # Search assets folder for file
-            found_filename = generator.findFileInAssets(input_assets_path, tile)
-            tile = os.path.abspath(found_filename)
-            logging.warning(f"Found {tile}")
+        print(tile)
         tile_image = generator.getImage(tile, image_type="tiles")
         tile_list.append(tile_image)
     return tile_list
@@ -35,6 +31,7 @@ def makeBackgroundCollisions(background_array):
 
 def generateBackground(background_name, array_of_tiles, list_of_sprites):
     image_path = generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites)
+    print(image_path)
     return generator.makeBackground(image_path, "generated_background")
 
 def generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites):
@@ -58,12 +55,13 @@ def generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites):
             coords = (list_of_sprites[0].size[1] * col_index, list_of_sprites[0].size[0] * row_index)
             #print(coords)
             background_image.paste(list_of_sprites[col], coords)
-    gen_filepath = "../assets/backgrounds/generated/generated.png"
-    local_image_filename = "generated_" + str(uuid.uuid4()) + ".png"
+    gen_filepath = Path(generator.getAssetFolder()).joinpath("backgrounds/generated/generated.png")
+    local_image_filename = "_generated_" + str(uuid.uuid4()) + ".png"
 
     abs_gen_filepath = os.path.abspath(Path(os.path.dirname(gen_filepath)))
     Path(abs_gen_filepath).mkdir(parents=True, exist_ok=True)
     background_image.save(Path(abs_gen_filepath).joinpath(local_image_filename))
+    print(f"Saved generated background to {Path(abs_gen_filepath).joinpath(local_image_filename)}")
     bkg_abspath = Path(abs_gen_filepath).joinpath(local_image_filename)
     bkg_path = os.path.relpath(bkg_abspath)
     return str(bkg_abspath)

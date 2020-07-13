@@ -36,6 +36,7 @@ def createYourNameWorld():
     project.scenes.append(a_scene)
 
     checker_background = generateBackground("checker_background", checker_background_tile_array, checker_background_tile_list)
+    print(checker_background)
     b_scene = makeScene(f"Scene", checker_background, collisions=checker_background_collisions)
     project.scenes.append(b_scene)
 
@@ -84,7 +85,7 @@ if __name__ == '__main__':
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects_yourname/")
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
     args = parser.parse_args()
-    initializeGenerator(asset_folder = args.assets)
+    initializeGenerator()
     project = createYourNameWorld()
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":

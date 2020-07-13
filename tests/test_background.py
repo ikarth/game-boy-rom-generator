@@ -7,9 +7,9 @@ from rom_generator.generator import initializeGenerator, makeBasicProject, write
 from rom_generator.background import generateBackground, getTileList, makeCheckerboardArray, makeBackgroundCollisions, generateBackgroundImageFromTiles
 from PIL import Image
 
-def test_background_generator(asset_folder = "assets/", running_in_folder="."):
+def test_background_generator():
 
-    initializeGenerator(asset_folder)
+    initializeGenerator()
 
     project = makeBasicProject()
 
@@ -34,8 +34,8 @@ def test_background_generator(asset_folder = "assets/", running_in_folder="."):
     a_scene = makeScene(f"Scene", checker_background)
     project.scenes.append(a_scene)
 
-    checker_background = generateBackground("checker_background", checker_background_tile_array, checker_background_tile_list)
-    b_scene = makeScene(f"Scene", checker_background, collisions=checker_background_collisions)
+    checker_background2 = generateBackground("checker_background", checker_background_tile_array, checker_background_tile_list)
+    b_scene = makeScene(f"Scene", checker_background2, collisions=checker_background_collisions)
     project.scenes.append(b_scene)
 
     actor = makeActor(a_rock_sprite, 9, 8)
@@ -65,20 +65,17 @@ def test_background_generator(asset_folder = "assets/", running_in_folder="."):
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
 
-    writeProjectToDisk(project, output_path="../gbprojects/test_background", input_assets_path ="../assets/")
+    writeProjectToDisk(project, output_path="../gbprojects/test_background")
 
     # check the project data
     assert("checker_background" == project.backgrounds[1]["name"])
     assert(224 == project.backgrounds[1]["imageWidth"])
 
+    print(checker_background)
+    print(checker_background2)
     # check the generated background image file...
-    background_image_filename = "gbprojects/test_background/assets/backgrounds/generated/" + checker_background["filename"]
+    background_image_filename = "../gbprojects/test_background/assets/backgrounds/generated/" + checker_background["filename"]
     print(background_image_filename)
+    assert(os.path.isfile(background_image_filename))
     bkg_img_from_file = Image.open(background_image_filename)
-    assert(os.path.isfile(bkg_img_from_file))
-
     bkg_img_from_file.close()
-
-    import pdb; pdb.set_trace()
-
-test_background_generator(asset_folder = "assets/")

@@ -5,7 +5,7 @@ import generator
 import level_generator
 
 def test_RockWorld(tmpdir):
-    generator.initializeGenerator(asset_folder = "assets/")
+    generator.initializeGenerator()
     project = level_generator.createRockWorld()
     generator.writeProjectToDisk(project, output_path = tmpdir)
     assert(project.scenes[0]["x"] == 200)

@@ -1,12 +1,12 @@
 from rom_generator.generator import initializeGenerator, createExampleProject, writeProjectToDisk
 
 def test_example_project_01(tmpdir):
-    initializeGenerator(asset_folder = "assets/")
+    initializeGenerator()
     project = createExampleProject()
     writeProjectToDisk(project, output_path=tmpdir)
 
 def test_example_project_02(tmpdir):
-    initializeGenerator(asset_folder = "assets/")
+    initializeGenerator()
     project = createExampleProject()
     assert(project.scenes[0]["x"] == 200)
     assert(project.scenes[0]["actors"][0]["movementType"] == "static")

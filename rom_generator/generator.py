@@ -112,10 +112,25 @@ def makeMusic(name, filename):
     element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
     return element
 
+def getAssetFolder():
+    with pkg_resources.path('assets', 'assets.txt') as asset_filename:
+        return os.path.dirname(Path(asset_filename))
+    raise FileNotFoundError("Asset folder not found")
+
 def getImage(image_filename, image_type="sprites"):
-    logging.info(f"Checking resources for {image_filename}: {pkg_resources.is_resource('assets', image_filename)}")
-    with pkg_resources.path(f'assets.{image_type}', f"{image_filename}") as img_path:
-        im = Image.open(img_path)
+    if os.path.basename(image_filename) != image_filename:
+        dir_path = os.path.basename(os.path.dirname(image_filename))
+        image_type = f"{image_type}.{dir_path}"
+        image_filename = os.path.basename(image_filename)
+    try:
+        logging.info(f"Checking resources for {image_filename}: {pkg_resources.is_resource('assets', image_filename)}")
+        with pkg_resources.path(f'assets.{image_type}', f"{image_filename}") as img_path:
+            im = Image.open(img_path)
+    except ValueError:
+        import pdb; pdb.set_trace()
+        f_name = os.path.basename(image_filename)
+        f_type = os.path.basename(os.path.dirname(image_filename))
+        return getImage(f_name, f_type)
     return im
 
 def getImageInfo(image_filename, image_type="sprites"):
@@ -174,6 +189,7 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     element["imageWidth"] = imageWidth
     element["imageHeight"] = imageHeight
     element["filename"] = str(os.path.basename(Path(filename)))
+    element["full_filepath"] = str(Path(filename))
     element["_v"] = int(round(time.time() * 1000.0))
     element["_generator_metadata"] = getImageInfo(filename, image_type="backgrounds")
     if imageWidth is None:
@@ -344,13 +360,13 @@ def writeUIAssets(ui_asset_array, asset_path):
             raise
     return ui_assets
 
-def findFileInAssets(assets_path, filename):
-    cur_directory = os.path.dirname(os.path.abspath(assets_path))
-    for root, dirs, files in os.walk(assets_path):
-        if filename in files:
-            return os.path.join(root, filename)
-    logging.error(f"File search for {filename} starting from {os.path.dirname(os.path.abspath(assets_path))} failed")
-    raise FileNotFoundError
+# def findFileInAssets(assets_path, filename):
+#     cur_directory = os.path.dirname(os.path.abspath(assets_path))
+#     for root, dirs, files in os.walk(assets_path):
+#         if filename in files:
+#             return os.path.join(root, filename)
+#     logging.error(f"File search for {filename} starting from {os.path.dirname(os.path.abspath(assets_path))} failed")
+#     raise FileNotFoundError
 
 def writeAssets(asset_array, output_path, sub_asset_path):
     output_assets_path = "assets/"
@@ -358,18 +374,38 @@ def writeAssets(asset_array, output_path, sub_asset_path):
     Path(output_path).joinpath(output_assets_path).mkdir(parents=True, exist_ok=True)
     for element in asset_array:
         f_name = element["filename"]
+        add_path = []
+        try:
+            full_filepath = element["full_filepath"]
+            rest = full_filepath
+            while len(rest) > 0:
+                rest = os.path.dirname(rest)
+                last = str(os.path.basename(rest))
+                if last == "assets":
+                    break
+                if len(last) > 0:
+                    add_path.append(last)
+            add_path.reverse()
+        except KeyError:
+            pass # doesn't have the full filepath
         print(f"writing {f_name}")
         logging.info(f"writing {f_name}")
         temp_file = os.path.abspath(Path(output_path).joinpath("assets/temp/scratch.file"))
         try:
-            with pkg_resources.path(f'assets.{sub_asset_path}', f_name) as img_path:
+            local_sub_asset_path = [sub_asset_path]
+            local_sub_asset_path_str = sub_asset_path
+            if (len(add_path)) > 0:
+                local_sub_asset_path = add_path
+                local_sub_asset_path_str = ".".join(add_path)
+            with pkg_resources.path(f'assets.{local_sub_asset_path_str}', f_name) as img_path:
                 copy_path = Path(img_path)
             if not os.path.isfile(copy_path):
                 raise FileNotFoundError(f"Can't find {copy_path}")
-            destination_path = Path(output_path).joinpath(output_assets_path, sub_asset_path, f_name)
+            destination_path = Path(output_path).joinpath(output_assets_path).joinpath(*local_sub_asset_path).joinpath(f_name)
+            Path(os.path.dirname(copy_path)).mkdir(parents=True, exist_ok=True)
+            Path(os.path.dirname(destination_path)).mkdir(parents=True, exist_ok=True)
             logging.info(f"Asset file copy: {copy_path} -> {temp_file} -> {destination_path}")
             new_file = shutil.copy2(copy_path, temp_file)
-            Path(os.path.dirname(destination_path)).mkdir(parents=True, exist_ok=True)
             os.replace(new_file, destination_path)
             logging.info(f"Wrote {os.path.abspath(destination_path)}")
         except FileNotFoundError as err:

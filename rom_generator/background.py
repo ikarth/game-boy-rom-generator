@@ -7,7 +7,6 @@ import logging
 from PIL import Image
 from pathlib import Path
 
-
 def getTileList(list_of_tile_files=[]):
     tile_list = []
     input_assets_path = "assets"

@@ -22,6 +22,7 @@ except ImportError:
 # Path hack for running modules within the rom_generator folder
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
+import assets
 
 # Utilities
 
@@ -152,7 +153,7 @@ def getImageInfo(image_filename, image_type="sprites"):
 
 ### A sprite sheet is a collection of images to display at the location of an actor or player.
 ### A sprite sheet can be one 16x16 static image...
-### ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.  
+### ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.
 def makeSpriteSheet(filename, name=None, type="static", frames=None):
     """
     Create a sprite sheet.

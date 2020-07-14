@@ -10,6 +10,7 @@ import copy
 import logging
 import argparse
 import os
+from datetime import datetime
 from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
@@ -468,7 +469,36 @@ def makeCol(array01, scene01):
         jnum = int(j, 2)
         cc.insert(0, jnum)
     scene01["collisions"] = cc
-  
+
+def genQuestions(txtfile, scriptt):
+    #counting number of lines in txt file
+    count = 0
+    with open(txtfile, 'r') as f:
+        for line in f:
+            count += 1
+    #generating random line number
+    random.seed(datetime.now())
+    numz = random.randint(0, (count / 3) - 1) * 3
+    #reading file
+    f = open(txtfile, 'r')
+    file_contents = f.readlines()
+    #elements
+    element = makeElement()
+    element["command"] = "EVENT_TEXT"
+    element["args"] = {
+        "text": [file_contents[numz]], 
+        "avatarId": ""
+    }
+    scriptt.append(element)
+    element = makeElement()
+    element["command"] = "EVENT_CHOICE"
+    element["args"] = {
+        "variable": "L0",
+        "trueText": [file_contents[numz + 1].strip()],
+        "falseText": [file_contents[numz + 2].strip()]
+    }
+    scriptt.append(element)
+   
 # def createWithCallback(callback_func):
 #     # Set up a barebones project
 #     project = makeBasicProject()
@@ -569,7 +599,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     initializeGenerator(asset_folder=args.assets)
     project = createExampleProject()
-    writeProjectToDisk(project, output_path = args.destination, assets_path=args.assets)
+    writeProjectToDisk(project, output_path = args.destination)
 
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")

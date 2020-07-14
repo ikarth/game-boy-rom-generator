@@ -46,7 +46,6 @@ def createVijayaWorld():
     # Add some music
     project.music.append(makeMusic("template", "template.mod"))
     project.settings["startSceneId"] = project.scenes[0]["id"]
-
     return project
 
 def createAaronGame():
@@ -154,7 +153,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
     args = parser.parse_args()
-    initializeGenerator()
+
+    initializeGenerator(asset_folder=args.assets)
     project = createRockWorld()
     writeProjectToDisk(project, output_path=args.destination, assets_path="assets/")
     if args.destination == "../gbprojects/projects/":

@@ -131,11 +131,12 @@ dmypy.json
 #Vscode Environment
 .vscode/*
 
-# We don't want the .DS_Store files...
+
 .DS_Store
 
 # Don't include the temporary image assets...
 assets/temp/*
+assets/temp
 
 # Also don't include the generated image assets...
 assets/backgrounds/generated/*

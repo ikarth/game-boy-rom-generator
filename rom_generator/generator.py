@@ -366,13 +366,6 @@ def writeUIAssets(ui_asset_array, asset_path):
             raise
     return ui_assets
 
-# def findFileInAssets(assets_path, filename):
-#     cur_directory = os.path.dirname(os.path.abspath(assets_path))
-#     for root, dirs, files in os.walk(assets_path):
-#         if filename in files:
-#             return os.path.join(root, filename)
-#     logging.error(f"File search for {filename} starting from {os.path.dirname(os.path.abspath(assets_path))} failed")
-#     raise FileNotFoundError
 
 def writeAssets(asset_array, output_path, sub_asset_path):
     output_assets_path = "assets/"

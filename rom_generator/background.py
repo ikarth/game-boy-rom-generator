@@ -7,7 +7,6 @@ import logging
 from PIL import Image
 from pathlib import Path
 
-
 def getTileList(list_of_tile_files=[]):
     tile_list = []
     input_assets_path = "assets"
@@ -60,6 +59,7 @@ def generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites):
 
     abs_gen_filepath = os.path.abspath(Path(os.path.dirname(gen_filepath)))
     Path(abs_gen_filepath).mkdir(parents=True, exist_ok=True)
+    Path(abs_gen_filepath).joinpath('__init__.py').touch()
     background_image.save(Path(abs_gen_filepath).joinpath(local_image_filename))
     print(f"Saved generated background to {Path(abs_gen_filepath).joinpath(local_image_filename)}")
     bkg_abspath = Path(abs_gen_filepath).joinpath(local_image_filename)

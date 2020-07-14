@@ -3,9 +3,10 @@ import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
-def AnikaProject123():
+
+def createAnikasWorld():
     """
-    This is my change
+    Create an empty world as an example to build future projects from.
     """
     pass
 
@@ -65,7 +66,7 @@ def createAaronGame():
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
 
-
+==== BASE ====
 def createRockWorld():
     # Set up a barebones project
     project = makeBasicProject()
@@ -96,14 +97,13 @@ def createRockWorld():
     number_of_scenes_to_make = 7
     for make_scene_num in range(number_of_scenes_to_make):
         # Create a scene
-        a_scene = copy.deepcopy(
-        makeScene(f"Scene {make_scene_num}", default_bkg))
+        a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
         # Create an actor
         for x in range(2): # Maximum number of actors in GB Studio is 9
             actor_x = random.randint(1,(bkg_width-3)) # Second value subtracted by 1 to keep sprite within bounds of the screen
             actor_y = random.randint(2,bkg_height-2) # First value added by 1 to keep sprite within bounds of the screen
-            a_rock = makeActor(a_rock_sprite, 5, 6)
-            a_scene["actors"].append(a_rock)
+            example_rock = makeActor(a_rock_sprite, actor_x, actor_y)
+            a_scene["actors"].append(example_rock)
         # Add scene to project
         project.scenes.append(copy.deepcopy(a_scene))
 
@@ -130,8 +130,8 @@ def createRockWorld():
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project
-
+    return project  
+==== BASE ====
 # Utilities
 class bcolors:
     HEADER = '\033[95m'
@@ -148,8 +148,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
     args = parser.parse_args()
-    initializeGenerator()
+==== BASE ====
+    initializeGenerator(asset_folder = args.assets)
     project = createRockWorld()
+==== BASE ====
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")

@@ -22,6 +22,7 @@ except ImportError:
 # Path hack for running modules within the rom_generator folder
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
+import assets
 
 # Utilities
 
@@ -152,7 +153,7 @@ def getImageInfo(image_filename, image_type="sprites"):
 
 ### A sprite sheet is a collection of images to display at the location of an actor or player.
 ### A sprite sheet can be one 16x16 static image...
-### ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.  
+### ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.
 def makeSpriteSheet(filename, name=None, type="static", frames=None):
     """
     Create a sprite sheet.
@@ -366,13 +367,6 @@ def writeUIAssets(ui_asset_array, asset_path):
             raise
     return ui_assets
 
-# def findFileInAssets(assets_path, filename):
-#     cur_directory = os.path.dirname(os.path.abspath(assets_path))
-#     for root, dirs, files in os.walk(assets_path):
-#         if filename in files:
-#             return os.path.join(root, filename)
-#     logging.error(f"File search for {filename} starting from {os.path.dirname(os.path.abspath(assets_path))} failed")
-#     raise FileNotFoundError
 
 def writeAssets(asset_array, output_path, sub_asset_path):
     output_assets_path = "assets/"

@@ -136,6 +136,7 @@ dmypy.json
 
 # Don't include the temporary image assets...
 assets/temp/*
+assets/temp
 
 # Also don't include the generated image assets...
 assets/backgrounds/generated/*

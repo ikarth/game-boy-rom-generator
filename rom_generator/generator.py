@@ -9,10 +9,20 @@ import ntpath
 import copy
 import logging
 import argparse
-import os
+import sys
 from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
+try:
+    import importlib.resources as pkg_resources
+except ImportError:
+    # Try backported to PY<37 `importlib_resources`.
+    import importlib_resources as pkg_resources
+
+# Path hack for running modules within the rom_generator folder
+sys.path.append(os.path.abspath('.'))
+sys.path.append(os.path.abspath('..'))
+import assets
 
 # Utilities
 
@@ -37,28 +47,15 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 # Make Project
-
-# Ordinarily, global variables are bad things. But these aren't global variables
-# in the classic sense: all variable in Python exist in a scope. In this case,
-# these are localized to the module. You can think of the entire module as
-# being a little bit like a class with one instance in Java, encapsulating a
-# bunch of functions and variables.
-main_asset_folder = "../assets/"
-
 scene_count = 0
 generator_seed = "game boy generator"
 
-def initializeGenerator(asset_folder = "../assets/", new_seed=None):
-    global main_asset_folder
-    global scene_count
-    main_asset_folder = asset_folder
-    print(f"Using assets from {os.path.abspath(Path(main_asset_folder))}")
+def initializeGenerator(new_seed=None):
     scene_count = 0
     global generator_seed
     if not new_seed is None:
         generator_seed = new_seed
     random.seed(generator_seed)
-
 
 base_gb_project = {
 "settings": {},
@@ -116,9 +113,25 @@ def makeMusic(name, filename):
     element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
     return element
 
+def getAssetFolder():
+    with pkg_resources.path('assets', 'assets.txt') as asset_filename:
+        return os.path.dirname(Path(asset_filename))
+    raise FileNotFoundError("Asset folder not found")
+
 def getImage(image_filename, image_type="sprites"):
-    print(Path(main_asset_folder).joinpath(image_type, image_filename))
-    im = Image.open(Path(main_asset_folder).joinpath(image_type, image_filename))
+    if os.path.basename(image_filename) != image_filename:
+        dir_path = os.path.basename(os.path.dirname(image_filename))
+        image_type = f"{image_type}.{dir_path}"
+        image_filename = os.path.basename(image_filename)
+    try:
+        logging.info(f"Checking resources for {image_filename}: {pkg_resources.is_resource('assets', image_filename)}")
+        with pkg_resources.path(f'assets.{image_type}', f"{image_filename}") as img_path:
+            im = Image.open(img_path)
+    except ValueError:
+        import pdb; pdb.set_trace()
+        f_name = os.path.basename(image_filename)
+        f_type = os.path.basename(os.path.dirname(image_filename))
+        return getImage(f_name, f_type)
     return im
 
 def getImageInfo(image_filename, image_type="sprites"):
@@ -127,16 +140,20 @@ def getImageInfo(image_filename, image_type="sprites"):
     image_type is a path that tells it where to look in the asset folder.
     """
     im = getImage(image_filename, image_type)
-    return {"pixel_width": im.size[0], "pixel_height": im.size[1], "image_format": im.format, "image_mode": im.mode}
+    res = {"pixel_width": im.size[0], "pixel_height": im.size[1], "image_format": im.format, "image_mode": im.mode}
+    im.close()
+    return res
 
-## The way I decided to implment the API is that there are two kinds of
+## The way I decided to implement the API is that there are two kinds of
 ## functions that create stuff that will go into the project structure.
 ## The functions that start with 'make' create the element and return it.
 ## The functions that start with 'add' create the element and add it directly
 ## to the project. Mostly by calling the 'make' function to create the thing.
 ##
 
-
+### A sprite sheet is a collection of images to display at the location of an actor or player.
+### A sprite sheet can be one 16x16 static image...
+### ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.
 def makeSpriteSheet(filename, name=None, type="static", frames=None):
     """
     Create a sprite sheet.
@@ -165,6 +182,9 @@ def addSpriteSheet(project, filename, name=None, type="static", frames=None):
     project.spriteSheets.append(element)
     return element
 
+### A background is a static image that players and actors traverse across on screen.
+### GBStudio imports .png images in dimensions that are multiples of 8, breaks them into 8x8 pixels.
+### The current released version of GBStudio has a maximum of 192 unique background tiles.
 def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width=None, height=None):
     if name is None:
         name = filename
@@ -175,6 +195,7 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     element["imageWidth"] = imageWidth
     element["imageHeight"] = imageHeight
     element["filename"] = str(os.path.basename(Path(filename)))
+    element["full_filepath"] = str(Path(filename))
     element["_v"] = int(round(time.time() * 1000.0))
     element["_generator_metadata"] = getImageInfo(filename, image_type="backgrounds")
     if imageWidth is None:
@@ -186,10 +207,10 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     if height is None:
         element["height"] = element["_generator_metadata"]["pixel_height"] // 8
     if (element["_generator_metadata"]["pixel_width"] % 8 != 0) or (element["_generator_metadata"]["pixel_height"] % 8 != 0):
-        logging.warning(f"{filename} has a dimention that is not a multiple of 8")
+        logging.warning(f"{filename} has a dimension that is not a multiple of 8")
     return element
 
-
+### An actor is an object on the screen that the player can interact with.
 def makeActor(sprite, x, y, movementType="static", animate=True):
     element = makeElement()
     element["spriteSheetId"] = sprite["id"]
@@ -201,7 +222,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     element["animate"] = animate
     return element
 
-
+### A trigger causes a script to play when the player reaches the trigger's location.
 def makeTrigger(trigger, x, y, width, height, script=[]):
   element = makeElement()
   element["x"] = x
@@ -264,7 +285,7 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     element["triggers"] = triggers
     return element
 
-
+### Makes script to connect two scenes together.
 def makeScriptConnectionToScene(target_scene, direction="right", location=None):
     destination_location = {
         "right": (1, target_scene["height"] // 2),
@@ -292,6 +313,7 @@ def makeScriptConnectionToScene(target_scene, direction="right", location=None):
 
 reverse_direction = {"left": "right", "right": "left", "up": "down", "down": "up"}
 
+### Adds trigger for scene connection.
 def addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite=None):
     source_location = {
         "right": (scene["width"] - 1, (scene["height"] // 2) - 1),
@@ -320,7 +342,7 @@ def addTriggerConnectionToScene(project, scene, destination_scene, direction, do
         actor_connector = makeActor(doorway_sprite, source_location[direction][0] - sign_offset[direction][0], (source_location[direction][1] - sign_offset[direction][1]) + 1, movementType="static")
         scene["actors"].append(actor_connector)
 
-
+### Adds connections between scenes to the project.
 def addSymmetricSceneConnections(project, scene, destination_scene, direction, doorway_sprite=None):
     addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite)
     addTriggerConnectionToScene(project, destination_scene, scene, reverse_direction[direction], doorway_sprite)
@@ -331,9 +353,10 @@ def addSymmetricSceneConnections(project, scene, destination_scene, direction, d
 def writeUIAssets(ui_asset_array, asset_path):
     ui_assets = []
     for ui_asset in ui_asset_array:
-        temp_file = Path(asset_path).joinpath("temp/ui/").joinpath(ui_asset["filename"])
+        temp_file = os.path.abspath(Path('temp').joinpath(ui_asset["asset_file_name"]))
         try:
-            copy_path = os.path.abspath(Path(asset_path).joinpath(ui_asset["asset_file_name"]))
+            with pkg_resources.path(f'assets.{asset_path}', os.path.basename(ui_asset["asset_file_name"])) as img_path:
+                copy_path = Path(img_path)
             logging.info(f"UI file copy: {copy_path} -> {temp_file}")
             os.makedirs(os.path.dirname(temp_file), exist_ok=True)
             shutil.copy2(copy_path, temp_file)
@@ -341,62 +364,77 @@ def writeUIAssets(ui_asset_array, asset_path):
         except FileNotFoundError as err:
             print(f"UI Asset File Missing: {err}")
             logging.warning(f"Asset File Missing: {err}")
+            raise
     return ui_assets
 
-def findFileInAssets(assets_path, filename):
-    cur_directory = os.path.abspath(assets_path)
-    for root, dirs, files in os.walk(assets_path):
-        if filename in files:
-            return os.path.join(root, filename)
-    logging.error("File search failed")
-    raise FileNotFoundError
 
-def writeAssets(asset_array, output_path, input_assets_path, output_assets_path):
-    Path(output_path + "assets/temp/").mkdir(parents=True, exist_ok=True)
+def writeAssets(asset_array, output_path, sub_asset_path):
+    output_assets_path = "assets/"
+    Path(output_path).joinpath("assets/temp/").mkdir(parents=True, exist_ok=True)
     Path(output_path).joinpath(output_assets_path).mkdir(parents=True, exist_ok=True)
     for element in asset_array:
         f_name = element["filename"]
-        print(f_name)
-        temp_file = os.path.abspath(Path(output_path + "assets/temp/scratch.file"))
+        add_path = []
         try:
-            #copy_path = os.path.abspath(Path("../").joinpath(Path(asset_path).joinpath(f_name)))
-            copy_path = os.path.abspath(Path(input_assets_path).joinpath(f_name))
+            full_filepath = element["full_filepath"]
+            rest = full_filepath
+            while len(rest) > 0:
+                rest = os.path.dirname(rest)
+                last = str(os.path.basename(rest))
+                if last == "assets":
+                    break
+                if len(last) > 0:
+                    add_path.append(last)
+            add_path.reverse()
+        except KeyError:
+            pass # doesn't have the full filepath
+        print(f"writing {f_name}")
+        logging.info(f"writing {f_name}")
+        temp_file = os.path.abspath(Path(output_path).joinpath("assets/temp/scratch.file"))
+        try:
+            local_sub_asset_path = [sub_asset_path]
+            local_sub_asset_path_str = sub_asset_path
+            if (len(add_path)) > 0:
+                local_sub_asset_path = add_path
+                local_sub_asset_path_str = ".".join(add_path)
+            with pkg_resources.path(f'assets.{local_sub_asset_path_str}', f_name) as img_path:
+                copy_path = Path(img_path)
             if not os.path.isfile(copy_path):
-                # Search assets folder for file
-                found_filename = findFileInAssets(input_assets_path, f_name)
-                copy_path = os.path.abspath(found_filename)
-                print(f"Found {copy_path}")
-            destination_path = Path(output_path).joinpath(output_assets_path, f_name)
+                raise FileNotFoundError(f"Can't find {copy_path}")
+            destination_path = Path(output_path).joinpath(output_assets_path).joinpath(*local_sub_asset_path).joinpath(f_name)
+            Path(os.path.dirname(copy_path)).mkdir(parents=True, exist_ok=True)
+            Path(os.path.dirname(destination_path)).mkdir(parents=True, exist_ok=True)
             logging.info(f"Asset file copy: {copy_path} -> {temp_file} -> {destination_path}")
-            shutil.copy2(copy_path, temp_file)
-            os.replace(Path(temp_file), destination_path)
+            new_file = shutil.copy2(copy_path, temp_file)
+            os.replace(new_file, destination_path)
             logging.info(f"Wrote {os.path.abspath(destination_path)}")
         except FileNotFoundError as err:
             print(f"Asset File Missing for writeAssets(): {err}")
             logging.warning(f"Asset File Missing: {err}")
+            raise
     if not shutil.rmtree.avoids_symlink_attacks:
         logging.info("Temp directory deletion potentially vulnerable to symlink attacks.")
-    shutil.rmtree(Path(output_path + "assets/temp/"))
+    shutil.rmtree(Path(output_path).joinpath("assets/temp/"))
 
-def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="../../gbprojects/projects/", input_assets_path ="../assets/", output_assets_path ="assets/"):
+def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/"):
     # Write project to JSON
+    output_path = os.path.abspath(Path(os.path.dirname(__file__)).joinpath('..').joinpath(output_path))
+    logging.info(f"writeProjectToDisk: {bcolors.OKGREEN}{os.path.abspath(output_path)}{bcolors.ENDC}")
     logging.info(f"Writing {filename} project file...")
     gb_project_without_ui_elements = copy.deepcopy(gb_project)
-    print(gb_project)
     gb_project_without_ui_elements.ui = None
     generated_project = json.dumps(gb_project_without_ui_elements.__dict__, indent=4)
-    print(generated_project)
     Path(output_path).mkdir(parents=True, exist_ok=True)
-    with open(f"{output_path}{filename}", "w") as wfile:
+    with open(Path(output_path).joinpath(filename), "w") as wfile:
         wfile.write(generated_project)
 
     # Copy assets to projects
     print("*** Writing assets ***")
-    writeAssets(gb_project.spriteSheets, output_path, Path(input_assets_path + "sprites/"), Path(output_assets_path + "sprites/"))
-    writeAssets(gb_project.music,        output_path, Path(input_assets_path + "music/"), Path(output_assets_path + "music/"))
-    writeAssets(gb_project.backgrounds,  output_path, Path(input_assets_path + "backgrounds/"), Path(output_assets_path + "backgrounds/"))
-    ui_asset_array = writeUIAssets(gb_project.ui, Path(input_assets_path + "ui/"))
-    writeAssets(ui_asset_array,          output_path, Path(input_assets_path + "ui/"), Path(output_assets_path + "ui/"))
+    writeAssets(gb_project.spriteSheets, output_path, "sprites")
+    writeAssets(gb_project.music,        output_path, "music")
+    writeAssets(gb_project.backgrounds,  output_path, "backgrounds")
+    ui_asset_array = writeUIAssets(gb_project.ui, "ui")
+    writeAssets(ui_asset_array,          output_path, "ui")
 
     print(f"Wrote project to {os.path.abspath(output_path)}")
 
@@ -404,12 +442,13 @@ def makeBasicProject():
     project = types.SimpleNamespace(**base_gb_project)
     project.settings = default_project_settings.copy()
     project.ui = [
-    {"filename": "ascii.png", "asset_file_name": "original/ascii.png"},
+    {"filename": "ascii.png",  "asset_file_name": "original/ascii.png"},
     {"filename": "cursor.png", "asset_file_name": "original/cursor.png"},
     {"filename": "emotes.png", "asset_file_name": "original/emotes.png"},
-    {"filename": "frame.png", "asset_file_name": "original/frame.png"}]
+    {"filename": "frame.png",  "asset_file_name": "original/frame.png"}]
     return project
 
+#makes a border of collisions around a scene
 def makeColBorder(scenex):
     wid = scenex["width"]
     hei = scenex["height"]
@@ -446,27 +485,27 @@ def makeColBorder(scenex):
         cc.insert(0, jnum)
     scenex["collisions"] = cc
 
-
-# def createWithCallback(callback_func):
-#     # Set up a barebones project
-#     project = makeBasicProject()
-#
-#     # Add some music
-#     project.music.append(makeMusic("template", "template.mod"))
-#
-#     # Create sprite sheets
-#     player_sprite_sheet = makeSpriteSheet("actor_animated", "actor_animated", "actor_animated.png")
-#
-#     # Set the starting scene and player sprite
-#     project.settings["startSceneId"] = project.scenes[0]["id"]
-#     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
-#
-#     instructions = callback_func(project)
-#
-#     write_project_to_disk(project, output_path=main_project_output_path)
-#
-#
-
+def makeCol(array01, scene01):
+    """
+    takes in 1D array (later 2D array) of 0s and 1s, puts in collisions accordingly
+    """
+    wid = scene01["width"]
+    hei = scene01["height"]
+    cc = []
+    max = 0
+    while max < wid * hei - 1:
+        g = 1
+        j = " "
+        while g < 9:
+            if array01[max] == 1:
+                j = j + "1"
+            elif array01[max] == 0:
+                j = j + "0"
+            max = max + 1
+            g = g + 1
+        jnum = int(j, 2)
+        cc.insert(0, jnum)
+    scene01["collisions"] = cc
 
 def createExampleProject():
     # Set up a barebones project
@@ -503,7 +542,7 @@ def createExampleProject():
         # Create a scene
         a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
         # Create an actor
-        for x in range(2): # Maximum number of actors in GB Studio is 9
+        for x in range(8): # Maximum number of actors in GB Studio is 9
             actor_x = random.randint(1,(bkg_width-3)) # Second value subtracted by 1 to keep sprite within bounds of the screen
             actor_y = random.randint(2,bkg_height-2) # First value added by 1 to keep sprite within bounds of the screen
             example_rock = makeActor(a_rock_sprite, actor_x, actor_y)
@@ -541,13 +580,11 @@ def createExampleProject():
 ### Run the generator
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects/")
-    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
-    parser.add_argument('--subfolder', '-s', type=bool, help="asset folder name", default=False)
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects3/")
     args = parser.parse_args()
-    initializeGenerator(asset_folder=args.assets)
+    initializeGenerator()
     project = createExampleProject()
-    writeProjectToDisk(project, output_path = args.destination, assets_path=args.assets)
+    writeProjectToDisk(project, output_path = args.destination)
 
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")

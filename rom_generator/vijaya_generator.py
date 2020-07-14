@@ -57,12 +57,8 @@ def vijayaGame():
     print ("this is num: ")
     print (num)
     for y in range(num):
-<<<<<<< HEAD
-        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))   
-        makeColBorder(a_scene)    
-=======
         a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))
->>>>>>> upstream/develop
+        makeColBorder(a_scene)
         if y%2 == 0:
             a_scene["actors"].append(actor)
         if y%3 == 0:

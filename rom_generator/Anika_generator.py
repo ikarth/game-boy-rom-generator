@@ -22,7 +22,7 @@ def createAnikasWorld():
 
     # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
-    project.backgrounds.append(default_bkg)
+    project.backgrounds.append(default_bkg) 
     a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))
     project.scenes.append(a_scene)
 

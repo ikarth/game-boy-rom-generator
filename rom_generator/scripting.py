@@ -311,3 +311,7 @@ script_commands = {
         "__name": "Custom Event 1"
     }
 }
+
+
+def getScript():
+    return script_commands

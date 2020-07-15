@@ -47,7 +47,7 @@ def createVijayaWorld():
     # Add some music
     project.music.append(makeMusic("template", "template.mod"))
     project.settings["startSceneId"] = project.scenes[0]["id"]
-    
+
     return project
 
 def createAaronGame():
@@ -66,7 +66,6 @@ def createAaronGame():
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
 
-==== BASE ====
 def createRockWorld():
     # Set up a barebones project
     project = makeBasicProject()
@@ -130,8 +129,8 @@ def createRockWorld():
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project  
-==== BASE ====
+    return project
+
 # Utilities
 class bcolors:
     HEADER = '\033[95m'
@@ -148,10 +147,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
     args = parser.parse_args()
-==== BASE ====
-    initializeGenerator(asset_folder = args.assets)
+    initializeGenerator(asset_folder)
     project = createRockWorld()
-==== BASE ====
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")

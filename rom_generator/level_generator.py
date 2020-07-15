@@ -3,9 +3,10 @@ import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
-def AnikaProject123():
+
+def createAnikasWorld():
     """
-    This is my change
+    Create an empty world as an example to build future projects from.
     """
     pass
 
@@ -46,6 +47,7 @@ def createVijayaWorld():
     # Add some music
     project.music.append(makeMusic("template", "template.mod"))
     project.settings["startSceneId"] = project.scenes[0]["id"]
+
     return project
 
 def createAaronGame():
@@ -64,14 +66,12 @@ def createAaronGame():
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
 
-
 def createRockWorld():
-        # Set up a barebones project
+    # Set up a barebones project
     project = makeBasicProject()
 
     # Create sprite sheet for the player sprite
-    player_sprite_sheet = addSpriteSheet(
-        project, "actor_animated.png", "actor_animated", "actor_animated")
+    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
     # add a sprite we can use for the rocks
@@ -96,24 +96,21 @@ def createRockWorld():
     number_of_scenes_to_make = 7
     for make_scene_num in range(number_of_scenes_to_make):
         # Create a scene
-        a_scene = copy.deepcopy(
-            makeScene(f"Scene {make_scene_num}", default_bkg))
+        a_scene = copy.deepcopy(makeScene(f"Scene {make_scene_num}", default_bkg))
         # Create an actor
         for x in range(2): # Maximum number of actors in GB Studio is 9
             actor_x = random.randint(1,(bkg_width-3)) # Second value subtracted by 1 to keep sprite within bounds of the screen
             actor_y = random.randint(2,bkg_height-2) # First value added by 1 to keep sprite within bounds of the screen
-            a_rock = makeActor(a_rock_sprite, 5, 6)
-            a_scene["actors"].append(a_rock)
+            example_rock = makeActor(a_rock_sprite, actor_x, actor_y)
+            a_scene["actors"].append(example_rock)
         # Add scene to project
         project.scenes.append(copy.deepcopy(a_scene))
 
     # Add some connections between the scenes.
     # This just throws down a bunch of random connections and tries to
     # make sure that they don't overlap
-    scene_connections_translations = {
-        "right": 0, "left": 1, "up": 2, "down": 3}
-    scene_connections = [[True, True, True, True]
-                         for n in range(number_of_scenes_to_make)]
+    scene_connections_translations = {"right":0, "left":1, "up":2, "down":3}
+    scene_connections = [[True, True, True, True] for n in range(number_of_scenes_to_make)]
     for y in range(number_of_scenes_to_make):
         for attempts in range(3):
             other_scene = random.randint(0, number_of_scenes_to_make - 2)
@@ -124,8 +121,7 @@ def createRockWorld():
                 if scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]]:
                     scene_connections[y][scene_connections_translations[chosen_direction]] = False
                     scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]] = False
-                    addSymmetricSceneConnections(
-                        project, project.scenes[y], project.scenes[other_scene], chosen_direction, doorway_sprite)
+                    addSymmetricSceneConnections(project, project.scenes[y], project.scenes[other_scene], chosen_direction, doorway_sprite)
                     break
 
     # Add some music
@@ -134,7 +130,6 @@ def createRockWorld():
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
-
 
 # Utilities
 class bcolors:
@@ -147,16 +142,14 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-
-# Run the generator
+### Run the generator
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
     args = parser.parse_args()
-
-    initializeGenerator(asset_folder=args.assets)
+    initializeGenerator()
     project = createRockWorld()
-    writeProjectToDisk(project, output_path=args.destination, assets_path="assets/")
+    writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

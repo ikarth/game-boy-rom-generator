@@ -89,7 +89,7 @@ def generatemaze():
 
    # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
-    project.backgrounds.append(default_bkg) 
+    project.backgrounds.append(default_bkg)
     a_scene = copy.deepcopy(makeScene("Scene", default_bkg))
     project.scenes.append(a_scene)
 
@@ -128,14 +128,12 @@ class bcolors:
 ### Run the generator
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects_maze/")
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
     args = parser.parse_args()
-    initializeGenerator(asset_folder = args.assets)
+    initializeGenerator()
     project = generatemaze()
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")
-
-

@@ -121,7 +121,9 @@ def getAssetFolder():
 def getImage(image_filename, image_type="sprites"):
     if os.path.basename(image_filename) != image_filename:
         dir_path = os.path.basename(os.path.dirname(image_filename))
-        image_type = f"{image_type}.{dir_path}"
+        parent_dir = os.path.basename(os.path.dirname(os.path.dirname(image_filename)))
+        if "assets" != parent_dir:
+            image_type = f"{image_type}.{dir_path}"
         image_filename = os.path.basename(image_filename)
     try:
         logging.info(f"Checking resources for {image_filename}: {pkg_resources.is_resource('assets', image_filename)}")
@@ -220,6 +222,11 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     element["x"] = x
     element["y"] = y
     element["animate"] = animate
+    return element
+
+def addActor(scene, sprite, x, y, movementType="static", animate=True):
+    element = makeActor(sprite, x, y, movementType, animate)
+    scene["actors"].append(element)
     return element
 
 ### A trigger causes a script to play when the player reaches the trigger's location.

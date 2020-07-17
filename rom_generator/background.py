@@ -30,7 +30,9 @@ def makeBackgroundCollisions(background_array):
 
 def generateBackground(background_name, array_of_tiles, list_of_sprites):
     image_path = generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites)
+    print('---')
     print(image_path)
+    print(os.path.basename(image_path))
     return generator.makeBackground(image_path, "generated_background")
 
 def generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites):
@@ -54,10 +56,12 @@ def generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites):
             coords = (list_of_sprites[0].size[1] * col_index, list_of_sprites[0].size[0] * row_index)
             #print(coords)
             background_image.paste(list_of_sprites[col], coords)
-    gen_filepath = Path(generator.getAssetFolder()).joinpath("backgrounds/generated/generated.png")
+    gen_filepath = Path(generator.getAssetFolder()).joinpath("backgrounds/_generated.png")
     local_image_filename = "_generated_" + str(uuid.uuid4()) + ".png"
 
     abs_gen_filepath = os.path.abspath(Path(os.path.dirname(gen_filepath)))
+    print('---')
+    print(abs_gen_filepath)
     Path(abs_gen_filepath).mkdir(parents=True, exist_ok=True)
     Path(abs_gen_filepath).joinpath('__init__.py').touch()
     background_image.save(Path(abs_gen_filepath).joinpath(local_image_filename))

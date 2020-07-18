@@ -74,7 +74,7 @@ def test_background_generator():
     print(checker_background)
     print(checker_background2)
     # check the generated background image file...
-    background_image_filename = "../gbprojects/test_background/assets/backgrounds/generated/" + checker_background["filename"]
+    background_image_filename = "../gbprojects/test_background/assets/backgrounds/" + checker_background["filename"]
     print(background_image_filename)
     assert(os.path.isfile(background_image_filename))
     bkg_img_from_file = Image.open(background_image_filename)

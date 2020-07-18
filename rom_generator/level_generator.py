@@ -2,7 +2,7 @@ import argparse
 import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, makeKey, makeLock
-
+from scriptFunctions import actorHide, end
 def AnikaProject123():
     """
     This is my change
@@ -51,17 +51,48 @@ def createVijayaWorld():
 def createAaronGame():
     project = makeBasicProject()
 
-    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+    # Create sprite sheet for the player sprite
+    player_sprite_sheet = addSpriteSheet(
+        project, "actor_animated.png", "actor_animated", "actor_animated")
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
+    # add a sprite we can use for the rocks
+    a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
 
+    doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
+
+    # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
+
+    # Get information about the background
+    bkg_x = default_bkg["imageWidth"]
+    bkg_y = default_bkg["imageHeight"]
+    bkg_width = default_bkg["width"]
+    bkg_height = default_bkg["height"]
+
+    a_scene = copy.deepcopy(
+            makeScene(f"Scene {1}", default_bkg))
+
+    key = makeKey(a_rock_sprite, 2, 2)
+    a_scene["actors"].append(key)
+    lock = makeLock(doorway_sprite, 4, 5)
+    a_scene["actors"].append(lock)
+
+    key2 = makeKey(a_rock_sprite, 6, 6)
+    a_scene["actors"].append(key2)
+
+    lock2= makeLock(doorway_sprite, 7, 7)
+    a_scene["actors"].append(lock2)
+    
+
+    project.scenes.append(copy.deepcopy(a_scene))
 
     project.music.append(makeMusic("template", "template.mod"))
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
+
     return project
 
 
@@ -76,6 +107,7 @@ def createRockWorld():
 
     # add a sprite we can use for the rocks
     a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
+
 
     # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
@@ -102,7 +134,7 @@ def createRockWorld():
         for x in range(2): # Maximum number of actors in GB Studio is 9
             actor_x = random.randint(1,(bkg_width-3)) # Second value subtracted by 1 to keep sprite within bounds of the screen
             actor_y = random.randint(2,bkg_height-2) # First value added by 1 to keep sprite within bounds of the screen
-            a_rock = makeActor(a_rock_sprite, 5, 6)
+            a_rock = makeKey(a_rock_sprite, 5, 6)
             a_scene["actors"].append(a_rock)
         # Add scene to project
         project.scenes.append(copy.deepcopy(a_scene))
@@ -154,9 +186,9 @@ if __name__ == '__main__':
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
     args = parser.parse_args()
 
-    initializeGenerator(asset_folder=args.assets)
-    project = createRockWorld()
-    writeProjectToDisk(project, output_path=args.destination, assets_path="assets/")
+    initializeGenerator()
+    project = createAaronGame()
+    writeProjectToDisk(project, output_path=args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

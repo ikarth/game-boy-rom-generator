@@ -10,6 +10,7 @@ def pickUpKey():
 def addKey(sprite, x, y):
     key = makeActor(sprite, x, y, animate = False)
     #key["startScript"].append()  Plan on disabling collisions here
+    key["script"]
     key["script"].append(scripts.actorHide(actorId = key["spriteSheetId"]))
     key["script"].append(scripts.setTrue(variable = curKeyNumber))
     return key

@@ -222,6 +222,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     element["x"] = x
     element["y"] = y
     element["animate"] = animate
+    element["script"] = []
     return element
 
 ### A trigger causes a script to play when the player reaches the trigger's location.
@@ -353,18 +354,20 @@ def addSymmetricSceneConnections(project, scene, destination_scene, direction, d
 def makeKey(sprite, x, y):
     key = makeActor(sprite, x, y, animate = False)
     #key["startScript"].append()  Plan on disabling collisions here
-    key["script"].append(scripts.actorHide(actorId = key["spriteSheetId"]))
+    key["script"].append(scripts.actorHide(actorId = "$self$"))
     key["script"].append(scripts.setTrue(variable = curKeyNumber))
+    key["script"].append(scripts.end())
     return key
 
 ### creates a lock for the key (This must be created directly after the key creation to work)
 def makeLock(sprite, x, y):
+    global curKeyNumber 
     lock = makeActor(sprite, x, y, animate = False)
     trueCommands = [
         scripts.setFalse(variable = curKeyNumber),
-        scripts.actorHide(actorId = lock["spriteSheetId"])
+        scripts.actorHide(actorId = "$self$")
     ]
-    lock["script"].append(scripts.ifTrue(variable = curKeyNumber))
+    lock["script"].append(scripts.ifTrue(variable = curKeyNumber, trueCommands = trueCommands))
     curKeyNumber = curKeyNumber - 1
     return lock
 

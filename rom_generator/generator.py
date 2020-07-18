@@ -489,8 +489,32 @@ def makeColBorder(scenex):
             max = max + 1
             g = g + 1
         jnum = int(j, 2)
-        cc.insert(0, jnum)
+        cc.insert(0, jnum[::-1])
     scenex["collisions"] = cc
+
+def toByteStrings(grid):
+    print(grid)
+    byte_strings_array = []
+    byte_consumer = ""
+    def consume():
+        nonlocal byte_consumer, byte_strings_array
+        byte_strings_array.append(int(byte_consumer[::-1], 2))
+        byte_consumer = ""
+
+    for row_num, row in enumerate(grid):
+        for col_num, column in enumerate(row):
+            truth_val = 0
+            if (column == True) or (column != 0):
+                truth_val = 1
+            byte_consumer += str(truth_val)
+            if len(byte_consumer) >= 8:
+                consume()
+    if len(byte_consumer) > 0:
+        while len(byte_consumer) < 8:
+            byte_consumer += "0"
+    consume()
+
+    return byte_strings_array
 
 def makeCol(array01, scene01):
     """
@@ -500,9 +524,10 @@ def makeCol(array01, scene01):
     hei = scene01["height"]
     cc = []
     max = 0
+    total_collision_spaces = ((wid * hei - 1) % 8) + (wid * hei - 1)
     while max < wid * hei - 1:
-        g = 1
         j = " "
+        g = 1
         while g < 9:
             if array01[max] == 1:
                 j = j + "1"
@@ -510,9 +535,13 @@ def makeCol(array01, scene01):
                 j = j + "0"
             max = max + 1
             g = g + 1
-        jnum = int(j, 2)
+        jnum = int(j[::-1], 2) # reverse the string because the collision data is big-endian
         cc.insert(0, jnum)
-    scene01["collisions"] = cc
+    # Need to add this in case the total number of collision tiles isn't evenly
+    # divisible by 8
+    if max <= total_collision_spaces:
+        cc.insert(0, 0)
+    scene01["collisions"] = cc[::-1]
 
 def createExampleProject():
     # Set up a barebones project
@@ -542,8 +571,25 @@ def createExampleProject():
     doorway_sprite = makeSpriteSheet("tower.png", "tower", "static")
     project.spriteSheets.append(doorway_sprite)
 
+    c_bkg = makeBackground("c_test_3.png", "c_test")
+    project.backgrounds.append(c_bkg)
+    c_scene = makeScene("c_scene", c_bkg)
+    collisions = [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    makeCol(collisions, c_scene)
+    print(c_scene["collisions"])
+    project.scenes.append(c_scene)
+    d_scene = makeScene("d_scene", c_bkg)
+    collisions = [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]
+    collision_string = toByteStrings(collisions)
+    d_scene["collisions"] = collision_string
+    project.scenes.append(d_scene)
+    print(collision_string)
+
+
+
     # We want to create a bunch of scenes.
     # Here I'm just creating them randomly.
+    prior_scenes = len(project.scenes)
     number_of_scenes_to_make = 7
     for make_scene_num in range(number_of_scenes_to_make):
         # Create a scene
@@ -572,7 +618,7 @@ def createExampleProject():
                 if scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]]:
                     scene_connections[y][scene_connections_translations[chosen_direction]] = False
                     scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]] = False
-                    addSymmetricSceneConnections(project, project.scenes[y], project.scenes[other_scene], chosen_direction, doorway_sprite)
+                    addSymmetricSceneConnections(project, project.scenes[y + prior_scenes], project.scenes[other_scene + prior_scenes], chosen_direction, doorway_sprite)
                     break
 
     # Add some music

@@ -1,21 +1,30 @@
-from generator import makeElement
+import uuid
+import copy
+
+### Create a basic GBS element, with a unique ID
+def makeElement():
+    element = {}
+    element["id"] = str(uuid.uuid4())
+    return copy.deepcopy(element)
+
+
 def end():
     element = makeElement()
-    element["commands"] = "EVENT_END"
+    element["command"] = "EVENT_END"
     element["args"] = {
     }
     return element
 
 def stop():
     element = makeElement()
-    element["commands"] = "EVENT_STOP"
+    element["command"] = "EVENT_STOP"
     element["args"] = {
     }
     return element
 
 def wait(time = "0.5"):
     element = makeElement()
-    element["commands"] = "EVENT_WAIT"
+    element["command"] = "EVENT_WAIT"
     element["args"] = {
         "time": time,
     }
@@ -23,7 +32,7 @@ def wait(time = "0.5"):
 
 def switchScene(sceneId = "498cfdcf-3000-453f-9b52-fe5d8d81cac2", x = "7", y = "6", direction = "", fadeSpeed = "2"):
     element = makeElement()
-    element["commands"] = "EVENT_SWITCH_SCENE"
+    element["command"] = "EVENT_SWITCH_SCENE"
     element["args"] = {
         "sceneId": sceneId,
         "x": x,
@@ -35,28 +44,28 @@ def switchScene(sceneId = "498cfdcf-3000-453f-9b52-fe5d8d81cac2", x = "7", y = "
 
 def startBattle():
     element = makeElement()
-    element["commands"] = "EVENT_START_BATTLE"
+    element["command"] = "EVENT_START_BATTLE"
     element["args"] = {
     }
     return element
 
 def returnToTitle():
     element = makeElement()
-    element["commands"] = "EVENT_RETURN_TO_TITLE"
+    element["command"] = "EVENT_RETURN_TO_TITLE"
     element["args"] = {
     }
     return element
 
 def scenePushState():
     element = makeElement()
-    element["commands"] = "EVENT_SCENE_PUSH_STATE"
+    element["command"] = "EVENT_SCENE_PUSH_STATE"
     element["args"] = {
     }
     return element
 
 def scenePopState(fadeSpeed = "2"):
     element = makeElement()
-    element["commands"] = "EVENT_SCENE_POP_STATE"
+    element["command"] = "EVENT_SCENE_POP_STATE"
     element["args"] = {
         "fadeSpeed": fadeSpeed,
     }
@@ -64,14 +73,14 @@ def scenePopState(fadeSpeed = "2"):
 
 def sceneResetState():
     element = makeElement()
-    element["commands"] = "EVENT_SCENE_RESET_STATE"
+    element["command"] = "EVENT_SCENE_RESET_STATE"
     element["args"] = {
     }
     return element
 
 def scenePopAllState(fadeSpeed = "2"):
     element = makeElement()
-    element["commands"] = "EVENT_SCENE_POP_ALL_STATE"
+    element["command"] = "EVENT_SCENE_POP_ALL_STATE"
     element["args"] = {
         "fadeSpeed": fadeSpeed,
     }
@@ -79,34 +88,34 @@ def scenePopAllState(fadeSpeed = "2"):
 
 def loadData():
     element = makeElement()
-    element["commands"] = "EVENT_LOAD_DATA"
+    element["command"] = "EVENT_LOAD_DATA"
     element["args"] = {
     }
     return element
 
 def saveData():
     element = makeElement()
-    element["commands"] = "EVENT_SAVE_DATA"
+    element["command"] = "EVENT_SAVE_DATA"
     element["args"] = {
     }
     return element
 
 def clearData():
     element = makeElement()
-    element["commands"] = "EVENT_CLEAR_DATA"
+    element["command"] = "EVENT_CLEAR_DATA"
     element["args"] = {
     }
     return element
 
 def ifTrue(variable = "L0", __collapseElse = "False", trueCommands = [], falseCommands = []):
     element = makeElement()
-    element["commands"] = "EVENT_IF_TRUE"
+    element["command"] = "EVENT_IF_TRUE"
     element["args"] = {
         "variable": variable,
         "__collapseElse": __collapseElse,
     }
-    trueCommands.add(end())
-    falseCommands.add(end())
+    trueCommands.append(end())
+    falseCommands.append(end())
     element["children"] = {
         "true": trueCommands,
         "false": falseCommands
@@ -115,13 +124,13 @@ def ifTrue(variable = "L0", __collapseElse = "False", trueCommands = [], falseCo
 
 def ifFalse(variable = "L0", __collapseElse = "False", trueCommands = [], falseCommands = []):
     element = makeElement()
-    element["commands"] = "EVENT_IF_FALSE"
+    element["command"] = "EVENT_IF_FALSE"
     element["args"] = {
         "variable": variable,
         "__collapseElse": __collapseElse,
     }
-    trueCommands.add(end())
-    falseCommands.add(end())
+    trueCommands.append(end())
+    falseCommands.append(end())
     element["children"] = {
         "true": trueCommands,
         "false": falseCommands
@@ -130,15 +139,15 @@ def ifFalse(variable = "L0", __collapseElse = "False", trueCommands = [], falseC
 
 def ifValue(variable = "L3", operator = ">", comparator = "2", __collapseElse = "False", trueCommands = [], falseCommands = []):
     element = makeElement()
-    element["commands"] = "EVENT_IF_VALUE"
+    element["command"] = "EVENT_IF_VALUE"
     element["args"] = {
         "variable": variable,
         "operator": operator,
         "comparator": comparator,
         "__collapseElse": __collapseElse,
     }
-    trueCommands.add(end())
-    falseCommands.add(end())
+    trueCommands.append(end())
+    falseCommands.append(end())
     element["children"] = {
         "true": trueCommands,
         "false": falseCommands
@@ -147,20 +156,20 @@ def ifValue(variable = "L3", operator = ">", comparator = "2", __collapseElse = 
 
 def ifValueCompare():
     element = makeElement()
-    element["commands"] = "EVENT_IF_VALUE_COMPARE"
+    element["command"] = "EVENT_IF_VALUE_COMPARE"
     element["args"] = {
     }
     return element
 
 def ifInput(input = "['a', 'b']", __collapseElse = "False", trueCommands = [], falseCommands = []):
     element = makeElement()
-    element["commands"] = "EVENT_IF_INPUT"
+    element["command"] = "EVENT_IF_INPUT"
     element["args"] = {
         "input": input,
         "__collapseElse": __collapseElse,
     }
-    trueCommands.add(end())
-    falseCommands.add(end())
+    trueCommands.append(end())
+    falseCommands.append(end())
     element["children"] = {
         "true": trueCommands,
         "false": falseCommands
@@ -169,14 +178,14 @@ def ifInput(input = "['a', 'b']", __collapseElse = "False", trueCommands = [], f
 
 def ifActorDirection(actorId = "player", direction = "up", __collapseElse = "False", trueCommands = [], falseCommands = []):
     element = makeElement()
-    element["commands"] = "EVENT_IF_ACTOR_DIRECTION"
+    element["command"] = "EVENT_IF_ACTOR_DIRECTION"
     element["args"] = {
         "actorId": actorId,
         "direction": direction,
         "__collapseElse": __collapseElse,
     }
-    trueCommands.add(end())
-    falseCommands.add(end())
+    trueCommands.append(end())
+    falseCommands.append(end())
     element["children"] = {
         "true": trueCommands,
         "false": falseCommands
@@ -185,12 +194,12 @@ def ifActorDirection(actorId = "player", direction = "up", __collapseElse = "Fal
 
 def ifSavedData(__collapseElse = "False", trueCommands = [], falseCommands = []):
     element = makeElement()
-    element["commands"] = "EVENT_IF_SAVED_DATA"
+    element["command"] = "EVENT_IF_SAVED_DATA"
     element["args"] = {
         "__collapseElse": __collapseElse,
     }
-    trueCommands.add(end())
-    falseCommands.add(end())
+    trueCommands.append(end())
+    falseCommands.append(end())
     element["children"] = {
         "true": trueCommands,
         "false": falseCommands
@@ -199,15 +208,15 @@ def ifSavedData(__collapseElse = "False", trueCommands = [], falseCommands = [])
 
 def ifActorAtPosition(actorId = "player", x = "0", y = "0", __collapseElse = "False", trueCommands = [], falseCommands = []):
     element = makeElement()
-    element["commands"] = "EVENT_IF_ACTOR_AT_POSITION"
+    element["command"] = "EVENT_IF_ACTOR_AT_POSITION"
     element["args"] = {
         "actorId": actorId,
         "x": x,
         "y": y,
         "__collapseElse": __collapseElse,
     }
-    trueCommands.add(end())
-    falseCommands.add(end())
+    trueCommands.append(end())
+    falseCommands.append(end())
     element["children"] = {
         "true": trueCommands,
         "false": falseCommands
@@ -216,7 +225,7 @@ def ifActorAtPosition(actorId = "player", x = "0", y = "0", __collapseElse = "Fa
 
 def setTrue(variable = "L0"):
     element = makeElement()
-    element["commands"] = "EVENT_SET_TRUE"
+    element["command"] = "EVENT_SET_TRUE"
     element["args"] = {
         "variable": variable,
     }
@@ -224,7 +233,7 @@ def setTrue(variable = "L0"):
 
 def setFalse(variable = "L0"):
     element = makeElement()
-    element["commands"] = "EVENT_SET_FALSE"
+    element["command"] = "EVENT_SET_FALSE"
     element["args"] = {
         "variable": variable,
     }
@@ -232,7 +241,7 @@ def setFalse(variable = "L0"):
 
 def choice(variable = "L0", trueText = "", falseText = ""):
     element = makeElement()
-    element["commands"] = "EVENT_CHOICE"
+    element["command"] = "EVENT_CHOICE"
     element["args"] = {
         "variable": variable,
         "trueText": trueText,
@@ -242,14 +251,14 @@ def choice(variable = "L0", trueText = "", falseText = ""):
 
 def resetVariables():
     element = makeElement()
-    element["commands"] = "EVENT_RESET_VARIABLES"
+    element["command"] = "EVENT_RESET_VARIABLES"
     element["args"] = {
     }
     return element
 
 def loop(loopCommand):
     element = makeElement()
-    element["commands"] = "EVENT_LOOP"
+    element["command"] = "EVENT_LOOP"
     element["args"] = {
     }
     loopCommand.add(end())
@@ -260,7 +269,7 @@ def loop(loopCommand):
 
 def group(groupCommands):
     element = makeElement()
-    element["commands"] = "EVENT_GROUP"
+    element["command"] = "EVENT_GROUP"
     element["args"] = {
     }
     groupCommands.add(end())
@@ -271,7 +280,7 @@ def group(groupCommands):
 
 def menu(variable = "L0", items = "2", option1 = "", option2 = "", option3 = "", option4 = "", option5 = "", option6 = "", option7 = "", option8 = "", cancelOnB = "True", layout = "dialogue"):
     element = makeElement()
-    element["commands"] = "EVENT_MENU"
+    element["command"] = "EVENT_MENU"
     element["args"] = {
         "variable": variable,
         "items": items,
@@ -290,15 +299,15 @@ def menu(variable = "L0", items = "2", option1 = "", option2 = "", option3 = "",
 
 def comment(text = ""):
     element = makeElement()
-    element["commands"] = "EVENT_COMMENT"
+    element["command"] = "EVENT_COMMENT"
     element["args"] = {
         "text": text,
     }
     return element
-
+    
 def setInputScript(input = "b",scripts=[]):
     element = makeElement()
-    element["commands"] = "EVENT_SET_INPUT_SCRIPT"
+    element["command"] = "EVENT_SET_INPUT_SCRIPT"
     element["args"] = {
         "input": input,
     }
@@ -310,14 +319,14 @@ def setInputScript(input = "b",scripts=[]):
 
 def setBackgroundScript():
     element = makeElement()
-    element["commands"] = "EVENT_SET_BACKGROUND_SCRIPT"
+    element["command"] = "EVENT_SET_BACKGROUND_SCRIPT"
     element["args"] = {
     }
     return element
 
 def removeInputScript(input = "['b']"):
     element = makeElement()
-    element["commands"] = "EVENT_REMOVE_INPUT_SCRIPT"
+    element["command"] = "EVENT_REMOVE_INPUT_SCRIPT"
     element["args"] = {
         "input": input,
     }
@@ -325,7 +334,7 @@ def removeInputScript(input = "['b']"):
 
 def variableMath(vectorX = "L0", operation = "set", other = "true", vectorY = "L0", value = "1", minValue = "0", maxValue = "255"):
     element = makeElement()
-    element["commands"] = "EVENT_VARIABLE_MATH"
+    element["command"] = "EVENT_VARIABLE_MATH"
     element["args"] = {
         "vectorX": vectorX,
         "operation": operation,
@@ -339,7 +348,7 @@ def variableMath(vectorX = "L0", operation = "set", other = "true", vectorY = "L
 
 def setValue(variable = "L0", value = "0"):
     element = makeElement()
-    element["commands"] = "EVENT_SET_VALUE"
+    element["command"] = "EVENT_SET_VALUE"
     element["args"] = {
         "variable": variable,
         "value": value,
@@ -348,14 +357,14 @@ def setValue(variable = "L0", value = "0"):
 
 def setRandomValue():
     element = makeElement()
-    element["commands"] = "EVENT_SET_RANDOM_VALUE"
+    element["command"] = "EVENT_SET_RANDOM_VALUE"
     element["args"] = {
     }
     return element
 
 def incValue(variable = "L0"):
     element = makeElement()
-    element["commands"] = "EVENT_INC_VALUE"
+    element["command"] = "EVENT_INC_VALUE"
     element["args"] = {
         "variable": variable,
     }
@@ -363,7 +372,7 @@ def incValue(variable = "L0"):
 
 def decValue(variable = "L0"):
     element = makeElement()
-    element["commands"] = "EVENT_DEC_VALUE"
+    element["command"] = "EVENT_DEC_VALUE"
     element["args"] = {
         "variable": variable,
     }
@@ -371,84 +380,84 @@ def decValue(variable = "L0"):
 
 def mathAdd():
     element = makeElement()
-    element["commands"] = "EVENT_MATH_ADD"
+    element["command"] = "EVENT_MATH_ADD"
     element["args"] = {
     }
     return element
 
 def mathSub():
     element = makeElement()
-    element["commands"] = "EVENT_MATH_SUB"
+    element["command"] = "EVENT_MATH_SUB"
     element["args"] = {
     }
     return element
 
 def mathMul():
     element = makeElement()
-    element["commands"] = "EVENT_MATH_MUL"
+    element["command"] = "EVENT_MATH_MUL"
     element["args"] = {
     }
     return element
 
 def mathDiv():
     element = makeElement()
-    element["commands"] = "EVENT_MATH_DIV"
+    element["command"] = "EVENT_MATH_DIV"
     element["args"] = {
     }
     return element
 
 def mathMod():
     element = makeElement()
-    element["commands"] = "EVENT_MATH_MOD"
+    element["command"] = "EVENT_MATH_MOD"
     element["args"] = {
     }
     return element
 
 def mathAddValue():
     element = makeElement()
-    element["commands"] = "EVENT_MATH_ADD_VALUE"
+    element["command"] = "EVENT_MATH_ADD_VALUE"
     element["args"] = {
     }
     return element
 
 def mathSubValue():
     element = makeElement()
-    element["commands"] = "EVENT_MATH_SUB_VALUE"
+    element["command"] = "EVENT_MATH_SUB_VALUE"
     element["args"] = {
     }
     return element
 
 def mathMulValue():
     element = makeElement()
-    element["commands"] = "EVENT_MATH_MUL_VALUE"
+    element["command"] = "EVENT_MATH_MUL_VALUE"
     element["args"] = {
     }
     return element
 
 def mathDivValue():
     element = makeElement()
-    element["commands"] = "EVENT_MATH_DIV_VALUE"
+    element["command"] = "EVENT_MATH_DIV_VALUE"
     element["args"] = {
     }
     return element
 
 def mathModValue():
     element = makeElement()
-    element["commands"] = "EVENT_MATH_MOD_VALUE"
+    element["command"] = "EVENT_MATH_MOD_VALUE"
     element["args"] = {
     }
     return element
 
 def copyValue():
     element = makeElement()
-    element["commands"] = "EVENT_COPY_VALUE"
+    element["command"] = "EVENT_COPY_VALUE"
     element["args"] = {
     }
     return element
 
 def setFlags(variable = "L0", flag1 = "False", flag2 = "False", flag3 = "False", flag4 = "False", flag5 = "False", flag6 = "False", flag7 = "False", flag8 = "False"):
     element = makeElement()
-    element["commands"] = "EVENT_SET_FLAGS"
+    element["command"] = "EVENT_SET_FLAGS"
     element["args"] = {
         "variable": variable,
         "flag1": flag1,
@@ -464,7 +473,7 @@ def setFlags(variable = "L0", flag1 = "False", flag2 = "False", flag3 = "False",
 
 def addFlags(variable = "L0", flag1 = "False", flag2 = "False", flag3 = "False", flag4 = "False", flag5 = "False", flag6 = "False", flag7 = "False", flag8 = "False"):
     element = makeElement()
-    element["commands"] = "EVENT_ADD_FLAGS"
+    element["command"] = "EVENT_ADD_FLAGS"
     element["args"] = {
         "variable": variable,
         "flag1": flag1,
@@ -480,7 +489,7 @@ def addFlags(variable = "L0", flag1 = "False", flag2 = "False", flag3 = "False",
 
 def clearFlags(variable = "L0", flag1 = "False", flag2 = "False", flag3 = "False", flag4 = "False", flag5 = "False", flag6 = "False", flag7 = "False", flag8 = "False"):
     element = makeElement()
-    element["commands"] = "EVENT_CLEAR_FLAGS"
+    element["command"] = "EVENT_CLEAR_FLAGS"
     element["args"] = {
         "variable": variable,
         "flag1": flag1,
@@ -496,14 +505,14 @@ def clearFlags(variable = "L0", flag1 = "False", flag2 = "False", flag3 = "False
 
 def ifFlagsCompare(variable = "L0", flag = "1", __collapseElse = "False", trueCommands = [], falseCommands = []):
     element = makeElement()
-    element["commands"] = "EVENT_IF_FLAGS_COMPARE"
+    element["command"] = "EVENT_IF_FLAGS_COMPARE"
     element["args"] = {
         "variable": variable,
         "flag": flag,
         "__collapseElse": __collapseElse,
     }
-    trueCommands.add(end())
-    falseCommands.add(end())
+    trueCommands.append(end())
+    falseCommands.append(end())
     element["children"] = {
         "true": trueCommands,
         "false": falseCommands
@@ -512,7 +521,7 @@ def ifFlagsCompare(variable = "L0", flag = "1", __collapseElse = "False", trueCo
 
 def awaitInput(input = "['a', 'b']"):
     element = makeElement()
-    element["commands"] = "EVENT_AWAIT_INPUT"
+    element["command"] = "EVENT_AWAIT_INPUT"
     element["args"] = {
         "input": input,
     }
@@ -520,7 +529,7 @@ def awaitInput(input = "['a', 'b']"):
 
 def text(text = "'push", avatarId = ""):
     element = makeElement()
-    element["commands"] = "EVENT_TEXT"
+    element["command"] = "EVENT_TEXT"
     element["args"] = {
         "text": text,
         "avatarId": avatarId,
@@ -529,7 +538,7 @@ def text(text = "'push", avatarId = ""):
 
 def textSetAnimationSpeed(speedIn = "1", speedOut = "1", speed = "1"):
     element = makeElement()
-    element["commands"] = "EVENT_TEXT_SET_ANIMATION_SPEED"
+    element["command"] = "EVENT_TEXT_SET_ANIMATION_SPEED"
     element["args"] = {
         "speedIn": speedIn,
         "speedOut": speedOut,
@@ -539,7 +548,7 @@ def textSetAnimationSpeed(speedIn = "1", speedOut = "1", speed = "1"):
 
 def actorSetDirection(actorId = "player", direction = "up"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_SET_DIRECTION"
+    element["command"] = "EVENT_ACTOR_SET_DIRECTION"
     element["args"] = {
         "actorId": actorId,
         "direction": direction,
@@ -548,7 +557,7 @@ def actorSetDirection(actorId = "player", direction = "up"):
 
 def actorSetDirectionToValue(actorId = "player", variable = "L0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_SET_DIRECTION_TO_VALUE"
+    element["command"] = "EVENT_ACTOR_SET_DIRECTION_TO_VALUE"
     element["args"] = {
         "actorId": actorId,
         "variable": variable,
@@ -557,7 +566,7 @@ def actorSetDirectionToValue(actorId = "player", variable = "L0"):
 
 def actorSetPosition(actorId = "player", x = "0", y = "0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_SET_POSITION"
+    element["command"] = "EVENT_ACTOR_SET_POSITION"
     element["args"] = {
         "actorId": actorId,
         "x": x,
@@ -567,7 +576,7 @@ def actorSetPosition(actorId = "player", x = "0", y = "0"):
 
 def actorSetPositionRelative(actorId = "player", x = "0", y = "0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_SET_POSITION_RELATIVE"
+    element["command"] = "EVENT_ACTOR_SET_POSITION_RELATIVE"
     element["args"] = {
         "actorId": actorId,
         "x": x,
@@ -577,7 +586,7 @@ def actorSetPositionRelative(actorId = "player", x = "0", y = "0"):
 
 def actorMoveRelative(actorId = "player", x = "0", y = "0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_MOVE_RELATIVE"
+    element["command"] = "EVENT_ACTOR_MOVE_RELATIVE"
     element["args"] = {
         "actorId": actorId,
         "x": x,
@@ -587,14 +596,14 @@ def actorMoveRelative(actorId = "player", x = "0", y = "0"):
 
 def actorMoveTo():
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_MOVE_TO"
+    element["command"] = "EVENT_ACTOR_MOVE_TO"
     element["args"] = {
     }
     return element
 
 def actorPush(doContinue = "False"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_PUSH"
+    element["command"] = "EVENT_ACTOR_PUSH"
     element["args"] = {
         "continue": doContinue,
     }
@@ -602,7 +611,7 @@ def actorPush(doContinue = "False"):
 
 def actorSetAnimationSpeed(actorId = "player", speed = "3"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_SET_ANIMATION_SPEED"
+    element["command"] = "EVENT_ACTOR_SET_ANIMATION_SPEED"
     element["args"] = {
         "actorId": actorId,
         "speed": speed,
@@ -611,7 +620,7 @@ def actorSetAnimationSpeed(actorId = "player", speed = "3"):
 
 def actorSetMovementSpeed(actorId = "player", speed = "1"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_SET_MOVEMENT_SPEED"
+    element["command"] = "EVENT_ACTOR_SET_MOVEMENT_SPEED"
     element["args"] = {
         "actorId": actorId,
         "speed": speed,
@@ -620,7 +629,7 @@ def actorSetMovementSpeed(actorId = "player", speed = "1"):
 
 def actorEmote(actorId = "player", emoteId = "0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_EMOTE"
+    element["command"] = "EVENT_ACTOR_EMOTE"
     element["args"] = {
         "actorId": actorId,
         "emoteId": emoteId,
@@ -629,7 +638,7 @@ def actorEmote(actorId = "player", emoteId = "0"):
 
 def playerSetSprite(spriteSheetId = "468ef314-e09e-42e2-8778-99e1331e8beb"):
     element = makeElement()
-    element["commands"] = "EVENT_PLAYER_SET_SPRITE"
+    element["command"] = "EVENT_PLAYER_SET_SPRITE"
     element["args"] = {
         "spriteSheetId": spriteSheetId,
     }
@@ -637,7 +646,7 @@ def playerSetSprite(spriteSheetId = "468ef314-e09e-42e2-8778-99e1331e8beb"):
 
 def actorGetPosition(actorId = "player", vectorX = "L0", vectorY = "L0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_GET_POSITION"
+    element["command"] = "EVENT_ACTOR_GET_POSITION"
     element["args"] = {
         "actorId": actorId,
         "vectorX": vectorX,
@@ -647,7 +656,7 @@ def actorGetPosition(actorId = "player", vectorX = "L0", vectorY = "L0"):
 
 def actorGetDirection(actorId = "player", direction = "L0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_GET_DIRECTION"
+    element["command"] = "EVENT_ACTOR_GET_DIRECTION"
     element["args"] = {
         "actorId": actorId,
         "direction": direction,
@@ -656,7 +665,7 @@ def actorGetDirection(actorId = "player", direction = "L0"):
 
 def actorSetPositionToValue(actorId = "player", vectorX = "L0", vectorY = "L0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_SET_POSITION_TO_VALUE"
+    element["command"] = "EVENT_ACTOR_SET_POSITION_TO_VALUE"
     element["args"] = {
         "actorId": actorId,
         "vectorX": vectorX,
@@ -666,7 +675,7 @@ def actorSetPositionToValue(actorId = "player", vectorX = "L0", vectorY = "L0"):
 
 def actorMoveToValue(actorId = "player", vectorX = "L0", vectorY = "L0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_MOVE_TO_VALUE"
+    element["command"] = "EVENT_ACTOR_MOVE_TO_VALUE"
     element["args"] = {
         "actorId": actorId,
         "vectorX": vectorX,
@@ -676,7 +685,7 @@ def actorMoveToValue(actorId = "player", vectorX = "L0", vectorY = "L0"):
 
 def actorInvoke(actorId = "82444b20-65df-436a-b1c1-191aacf2258d"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_INVOKE"
+    element["command"] = "EVENT_ACTOR_INVOKE"
     element["args"] = {
         "actorId": actorId,
     }
@@ -684,7 +693,7 @@ def actorInvoke(actorId = "82444b20-65df-436a-b1c1-191aacf2258d"):
 
 def actorSetFrame(actorId = "82444b20-65df-436a-b1c1-191aacf2258d", frame = "0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_SET_FRAME"
+    element["command"] = "EVENT_ACTOR_SET_FRAME"
     element["args"] = {
         "actorId": actorId,
         "frame": frame,
@@ -693,7 +702,7 @@ def actorSetFrame(actorId = "82444b20-65df-436a-b1c1-191aacf2258d", frame = "0")
 
 def actorSetFrameToValue(actorId = "82444b20-65df-436a-b1c1-191aacf2258d", variable = "L0"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_SET_FRAME_TO_VALUE"
+    element["command"] = "EVENT_ACTOR_SET_FRAME_TO_VALUE"
     element["args"] = {
         "actorId": actorId,
         "variable": variable,
@@ -702,7 +711,7 @@ def actorSetFrameToValue(actorId = "82444b20-65df-436a-b1c1-191aacf2258d", varia
 
 def cameraMoveTo(x = "0", y = "0", speed = "0"):
     element = makeElement()
-    element["commands"] = "EVENT_CAMERA_MOVE_TO"
+    element["command"] = "EVENT_CAMERA_MOVE_TO"
     element["args"] = {
         "x": x,
         "y": y,
@@ -712,7 +721,7 @@ def cameraMoveTo(x = "0", y = "0", speed = "0"):
 
 def cameraLock(speed = "0"):
     element = makeElement()
-    element["commands"] = "EVENT_CAMERA_LOCK"
+    element["command"] = "EVENT_CAMERA_LOCK"
     element["args"] = {
         "speed": speed,
     }
@@ -720,7 +729,7 @@ def cameraLock(speed = "0"):
 
 def cameraShake(time = "0.5"):
     element = makeElement()
-    element["commands"] = "EVENT_CAMERA_SHAKE"
+    element["command"] = "EVENT_CAMERA_SHAKE"
     element["args"] = {
         "time": time,
     }
@@ -728,7 +737,7 @@ def cameraShake(time = "0.5"):
 
 def fadeOut(speed = "2"):
     element = makeElement()
-    element["commands"] = "EVENT_FADE_OUT"
+    element["command"] = "EVENT_FADE_OUT"
     element["args"] = {
         "speed": speed,
     }
@@ -736,7 +745,7 @@ def fadeOut(speed = "2"):
 
 def fadeIn(speed = "2"):
     element = makeElement()
-    element["commands"] = "EVENT_FADE_IN"
+    element["command"] = "EVENT_FADE_IN"
     element["args"] = {
         "speed": speed,
     }
@@ -744,21 +753,21 @@ def fadeIn(speed = "2"):
 
 def showSprites():
     element = makeElement()
-    element["commands"] = "EVENT_SHOW_SPRITES"
+    element["command"] = "EVENT_SHOW_SPRITES"
     element["args"] = {
     }
     return element
 
 def hideSprites():
     element = makeElement()
-    element["commands"] = "EVENT_HIDE_SPRITES"
+    element["command"] = "EVENT_HIDE_SPRITES"
     element["args"] = {
     }
     return element
 
 def actorShow(actorId = "player"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_SHOW"
+    element["command"] = "EVENT_ACTOR_SHOW"
     element["args"] = {
         "actorId": actorId,
     }
@@ -766,7 +775,7 @@ def actorShow(actorId = "player"):
 
 def actorHide(actorId = "player"):
     element = makeElement()
-    element["commands"] = "EVENT_ACTOR_HIDE"
+    element["command"] = "EVENT_ACTOR_HIDE"
     element["args"] = {
         "actorId": actorId,
     }
@@ -774,7 +783,7 @@ def actorHide(actorId = "player"):
 
 def overlayShow(color = "black", x = "0", y = "0"):
     element = makeElement()
-    element["commands"] = "EVENT_OVERLAY_SHOW"
+    element["command"] = "EVENT_OVERLAY_SHOW"
     element["args"] = {
         "color": color,
         "x": x,
@@ -784,14 +793,14 @@ def overlayShow(color = "black", x = "0", y = "0"):
 
 def overlayHide():
     element = makeElement()
-    element["commands"] = "EVENT_OVERLAY_HIDE"
+    element["command"] = "EVENT_OVERLAY_HIDE"
     element["args"] = {
     }
     return element
 
 def overlayMoveTo(x = "0", y = "0", speed = "1"):
     element = makeElement()
-    element["commands"] = "EVENT_OVERLAY_MOVE_TO"
+    element["command"] = "EVENT_OVERLAY_MOVE_TO"
     element["args"] = {
         "x": x,
         "y": y,
@@ -801,7 +810,7 @@ def overlayMoveTo(x = "0", y = "0", speed = "1"):
 
 def musicPlay(musicId = "56622189-8327-4a64-bd29-2fbcf243c97e", loop = "True"):
     element = makeElement()
-    element["commands"] = "EVENT_MUSIC_PLAY"
+    element["command"] = "EVENT_MUSIC_PLAY"
     element["args"] = {
         "musicId": musicId,
         "loop": loop,
@@ -810,21 +819,21 @@ def musicPlay(musicId = "56622189-8327-4a64-bd29-2fbcf243c97e", loop = "True"):
 
 def musicStop():
     element = makeElement()
-    element["commands"] = "EVENT_MUSIC_STOP"
+    element["command"] = "EVENT_MUSIC_STOP"
     element["args"] = {
     }
     return element
 
 def soundPlayBeep():
     element = makeElement()
-    element["commands"] = "EVENT_SOUND_PLAY_BEEP"
+    element["command"] = "EVENT_SOUND_PLAY_BEEP"
     element["args"] = {
     }
     return element
 
 def callCustomEvent(customEventId = "4bf11658-2bb2-4e79-ad96-22577c9a8353", __name = "Custom Event 1"):
     element = makeElement()
-    element["commands"] = "EVENT_CALL_CUSTOM_EVENT"
+    element["command"] = "EVENT_CALL_CUSTOM_EVENT"
     element["args"] = {
         "customEventId": customEventId,
         "__name": __name,

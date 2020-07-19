@@ -13,6 +13,7 @@ import sys
 from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
+import scriptFunctions as scripts
 try:
     import importlib.resources as pkg_resources
 except ImportError:
@@ -47,6 +48,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 # Make Project
+curKeyNumber = 511
 scene_count = 0
 generator_seed = "game boy generator"
 
@@ -222,6 +224,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     element["x"] = x
     element["y"] = y
     element["animate"] = animate
+    element["script"] = []
     return element
 
 def addActor(scene, sprite, x, y, movementType="static", animate=True):
@@ -353,6 +356,27 @@ def addTriggerConnectionToScene(project, scene, destination_scene, direction, do
 def addSymmetricSceneConnections(project, scene, destination_scene, direction, doorway_sprite=None):
     addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite)
     addTriggerConnectionToScene(project, destination_scene, scene, reverse_direction[direction], doorway_sprite)
+
+### creates a key to a lock
+def makeKey(sprite, x, y):
+    key = makeActor(sprite, x, y, animate = False)
+    #key["startScript"].append()  Plan on disabling collisions here
+    key["script"].append(scripts.actorHide(actorId = "$self$"))
+    key["script"].append(scripts.setTrue(variable = curKeyNumber))
+    key["script"].append(scripts.end())
+    return key
+
+### creates a lock for the key (This must be created directly after the key creation to work)
+def makeLock(sprite, x, y):
+    global curKeyNumber 
+    lock = makeActor(sprite, x, y, animate = False)
+    trueCommands = [
+        scripts.setFalse(variable = curKeyNumber),
+        scripts.actorHide(actorId = "$self$")
+    ]
+    lock["script"].append(scripts.ifTrue(variable = curKeyNumber, trueCommands = trueCommands))
+    curKeyNumber = curKeyNumber - 1
+    return lock
 
 
 ### Writing the project to disk ###

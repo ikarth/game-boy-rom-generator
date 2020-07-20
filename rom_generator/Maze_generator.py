@@ -1,111 +1,56 @@
 import argparse
 import copy
 import random
-from generator import makeSpriteSheet, makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
+from generator import makeSpriteSheet, makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, addActor, makeCol
+import background
+import numpy
 
 def generatemaze():
     project = makeBasicProject()
 
-    a_border_sprite = addSpriteSheet(project, "GreenBlock.png", "GreenBlock", "static", "none")
-    border = makeActor(a_border_sprite, 1, 2, "static")
-    border = makeActor(a_border_sprite, 1, 9, "static")
-    border = makeActor(a_border_sprite, 1, 16, "static")
-    border = makeActor(a_border_sprite, 2, 2, "static")
-    border = makeActor(a_border_sprite, 2, 9, "static")
-    border = makeActor(a_border_sprite, 2, 10, "static")
-    border = makeActor(a_border_sprite, 2, 11, "static")
-    border = makeActor(a_border_sprite, 2, 12, "static")
-    border = makeActor(a_border_sprite, 2, 13, "static")
-    border = makeActor(a_border_sprite, 2, 14, "static")
-    border = makeActor(a_border_sprite, 2, 16, "static")
-    border = makeActor(a_border_sprite, 3, 6, "static")
-    border = makeActor(a_border_sprite, 3, 9, "static")
-    border = makeActor(a_border_sprite, 3, 16, "static")
-    border = makeActor(a_border_sprite, 4, 6, "static")
-    border = makeActor(a_border_sprite, 4, 16, "static")
-    border = makeActor(a_border_sprite, 5, 1, "static")
-    border = makeActor(a_border_sprite, 5, 2, "static")
-    border = makeActor(a_border_sprite, 5, 3, "static")
-    border = makeActor(a_border_sprite, 5, 4, "static")
-    border = makeActor(a_border_sprite, 5, 5, "static")
-    border = makeActor(a_border_sprite, 5, 6, "static")
-    border = makeActor(a_border_sprite, 5, 16, "static")
-    border = makeActor(a_border_sprite, 6, 2, "static")
-    border = makeActor(a_border_sprite, 6, 6, "static")
-    border = makeActor(a_border_sprite, 6, 10, "static")
-    border = makeActor(a_border_sprite, 6, 11, "static")
-    border = makeActor(a_border_sprite, 6, 12, "static")
-    border = makeActor(a_border_sprite, 6, 13, "static")
-    border = makeActor(a_border_sprite, 6, 14, "static")
-    border = makeActor(a_border_sprite, 6, 15, "static")
-    border = makeActor(a_border_sprite, 6, 16, "static")
-    border = makeActor(a_border_sprite, 7, 2, "static")
-    border = makeActor(a_border_sprite, 7, 6, "static")
-    border = makeActor(a_border_sprite, 7, 16, "static")
-    border = makeActor(a_border_sprite, 8, 2, "static")
-    border = makeActor(a_border_sprite, 8, 12, "static")
-    border = makeActor(a_border_sprite, 8, 13, "static")
-    border = makeActor(a_border_sprite, 8, 14, "static")
-    border = makeActor(a_border_sprite, 8, 16, "static")
-    border = makeActor(a_border_sprite, 9, 8, "static")
-    border = makeActor(a_border_sprite, 9, 10, "static")
-    border = makeActor(a_border_sprite, 9, 16, "static")
-    border = makeActor(a_border_sprite, 10, 4, "static")
-    border = makeActor(a_border_sprite, 10, 5, "static")
-    border = makeActor(a_border_sprite, 10, 6, "static")
-    border = makeActor(a_border_sprite, 10, 7, "static")
-    border = makeActor(a_border_sprite, 10, 8, "static")
-    border = makeActor(a_border_sprite, 10, 10, "static")
-    border = makeActor(a_border_sprite, 10, 16, "static")
-    border = makeActor(a_border_sprite, 11, 4, "static")
-    border = makeActor(a_border_sprite, 11, 8, "static")
-    border = makeActor(a_border_sprite, 11, 10, "static")
-    border = makeActor(a_border_sprite, 11, 13, "static")
-    border = makeActor(a_border_sprite, 11, 14, "static")
-    border = makeActor(a_border_sprite, 11, 15, "static")
-    border = makeActor(a_border_sprite, 11, 16, "static")
-    border = makeActor(a_border_sprite, 12, 4, "static")
-    border = makeActor(a_border_sprite, 12, 7, "static")
-    border = makeActor(a_border_sprite, 12, 8, "static")
-    border = makeActor(a_border_sprite, 12, 16, "static")
-    border = makeActor(a_border_sprite, 13, 4, "static")
-    border = makeActor(a_border_sprite, 13, 12, "static")
-    border = makeActor(a_border_sprite, 13, 16, "static")
-    border = makeActor(a_border_sprite, 14, 4, "static")
-    border = makeActor(a_border_sprite, 14, 12, "static")
-    border = makeActor(a_border_sprite, 14, 16, "static")
-    border = makeActor(a_border_sprite, 15, 1, "static")
-    border = makeActor(a_border_sprite, 15, 2, "static")
-    border = makeActor(a_border_sprite, 15, 3, "static")
-    border = makeActor(a_border_sprite, 15, 4, "static")
-    border = makeActor(a_border_sprite, 15, 12, "static")
-    border = makeActor(a_border_sprite, 15, 16, "static")
-    border = makeActor(a_border_sprite, 16, 12, "static")
-    border = makeActor(a_border_sprite, 16, 13, "static")
-    border = makeActor(a_border_sprite, 16, 14, "static")
-    border = makeActor(a_border_sprite, 16, 15, "static")
-    border = makeActor(a_border_sprite, 16, 16, "static")
-    project.settings["playerSpriteSheetId"] = a_border_sprite["id"]
+      # Add a background image
+    #default_bkg = makeBackground("placeholder.png", "placeholder")
+    #project.backgrounds.append(default_bkg)
+    #a_scene = makeScene("Scene", default_bkg)
+    #project.scenes.append(a_scene)
 
-   # Add a background image
-    default_bkg = makeBackground("placeholder.png", "placeholder")
-    project.backgrounds.append(default_bkg) 
-    a_scene = copy.deepcopy(makeScene("Scene", default_bkg))
+    size_x, size_y = (19, 19)
+    maze_tile_names = ["GreenBlock8.png","MazeBlock8.png"]
+    maze_tile_list = background.getTileList(maze_tile_names)
+    maze_tile_array = [[0 for n in range(size_y)] for m in range(size_x) ]
+    maze_collisions = [[0 for n in range(size_y)] for m in range(size_x)]
+    def addBackgroundTile(tile_num, x, y):
+        print(x,y)
+        maze_tile_array[x][y] = tile_num
+        maze_collisions[x][y] = 1
+        return maze_tile_array
+    print(maze_tile_list)
+
+    maze_wall_tile = maze_tile_names.index("MazeBlock8.png")
+    tile_placement_list = [(1, 2), (1, 9), (1, 16),(2, 2),(2, 9),(2, 10),(2, 11),(2, 12),(2, 13),(2, 14),(2, 16),(3, 6),(3, 9),(3, 16),(4, 6),(4, 16),(5, 1),(5, 2),(5, 3),(5, 4),(5, 5),(5, 6),(5, 16),(6, 2),(6, 6),(6, 10),(6, 11),(6, 12),(6, 13), (6, 14), (6, 15), (6, 16), (7, 2), (7, 6), (7, 16), (8, 2), (8, 12), (8, 13), (8, 14), (8, 16), (9, 8), (9, 10), (9, 16), (10, 4), (10, 5), (10, 6), (10, 7), (10, 8), (10, 10), (10, 16), (11, 4), (11, 8), (11, 10), (11, 13), (11, 14), (11, 15), (11, 16), (12, 4), (12, 7), (12, 8), (12, 16), (13, 4), (13, 12), (13, 16), (14, 4), (14, 12), (14, 16), (15, 1), (15, 2), (15, 3), (15, 4), (15, 12), (15, 16), (16, 12), (16, 13), (16, 14), (16, 15), (16, 16)]
+    for x,y in tile_placement_list:
+        addBackgroundTile(maze_wall_tile, x, y)
+
+    maze_background_image_path = background.generateBackgroundImageFromTiles(maze_tile_array, maze_tile_list)
+    maze_background = makeBackground(maze_background_image_path, "maze_background")
+    project.backgrounds.append(maze_background)
+    a_scene = makeScene(f"Scene", maze_background)
+
+    #flat_maze_collisions = numpy.rot90(numpy.array(maze_collisions), 2, axes=(0,1)).flatten(order='C').tolist()
+    flat_maze_collisions = numpy.array(maze_collisions).flatten(order='C').tolist()
+    for y in range(numpy.array(maze_collisions).shape[1]):
+        print()
+        for x in range(numpy.array(maze_collisions).shape[0]):
+            print(flat_maze_collisions[x + (y * numpy.array(maze_collisions).shape[0])], end='')
+    print()
+
+    makeCol(flat_maze_collisions, a_scene)
+    print(maze_background)
     project.scenes.append(a_scene)
+    print(a_scene)
 
-    # Get information about the background
-    bkg_x = default_bkg["imageWidth"]
-    bkg_y = default_bkg["imageHeight"]
-    bkg_width = default_bkg["width"]
-    bkg_height = default_bkg["height"]
-
-    actor = makeActor(a_border_sprite, 9, 8)
-    a_scene['actors'].append(actor)
-    #import pdb; pdb.set_trace()
-
-    # add a sprite to indicate the location of a doorway
-    # a better way to do this in the actual levels is to alter the background image instead
-    doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
+    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
     # Add some music
     project.music.append(makeMusic("template", "template.mod"))
@@ -128,14 +73,12 @@ class bcolors:
 ### Run the generator
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects/")
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects_maze2/")
     parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="assets/")
     args = parser.parse_args()
-    initializeGenerator(asset_folder = args.assets)
+    initializeGenerator()
     project = generatemaze()
     writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")
-
-

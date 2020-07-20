@@ -13,6 +13,8 @@ import sys
 from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
+import scriptFunctions as scripts
+from utilities import makeElement
 try:
     import importlib.resources as pkg_resources
 except ImportError:
@@ -47,6 +49,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 # Make Project
+curKeyNumber = 511
 scene_count = 0
 generator_seed = "game boy generator"
 
@@ -100,10 +103,7 @@ def assignSceneLocation(scene_number):
     return (x, y)
 
 ### Create a basic GBS element, with a unique ID
-def makeElement():
-    element = {}
-    element["id"] = str(uuid.uuid4())
-    return copy.deepcopy(element)
+
 
 ### Create a music element
 def makeMusic(name, filename):
@@ -121,7 +121,9 @@ def getAssetFolder():
 def getImage(image_filename, image_type="sprites"):
     if os.path.basename(image_filename) != image_filename:
         dir_path = os.path.basename(os.path.dirname(image_filename))
-        image_type = f"{image_type}.{dir_path}"
+        parent_dir = os.path.basename(os.path.dirname(os.path.dirname(image_filename)))
+        if "assets" != parent_dir:
+            image_type = f"{image_type}.{dir_path}"
         image_filename = os.path.basename(image_filename)
     try:
         logging.info(f"Checking resources for {image_filename}: {pkg_resources.is_resource('assets', image_filename)}")
@@ -220,6 +222,12 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     element["x"] = x
     element["y"] = y
     element["animate"] = animate
+    element["script"] = []
+    return element
+
+def addActor(scene, sprite, x, y, movementType="static", animate=True):
+    element = makeActor(sprite, x, y, movementType, animate)
+    scene["actors"].append(element)
     return element
 
 ### A trigger causes a script to play when the player reaches the trigger's location.
@@ -347,10 +355,34 @@ def addSymmetricSceneConnections(project, scene, destination_scene, direction, d
     addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite)
     addTriggerConnectionToScene(project, destination_scene, scene, reverse_direction[direction], doorway_sprite)
 
+### creates a key to a lock
+def makeKey(sprite, x, y):
+    key = makeActor(sprite, x, y, animate = False)
+    #key["startScript"].append()  Plan on disabling collisions here
+    key["script"].append(scripts.actorHide(actorId = "$self$"))
+    key["script"].append(scripts.setTrue(variable = curKeyNumber))
+    key["script"].append(scripts.end())
+    return key
+
+### creates a lock for the key (This must be created directly after the key creation to work)
+def makeLock(sprite, x, y):
+    global curKeyNumber
+    lock = makeActor(sprite, x, y, animate = False)
+    trueCommands = [
+        scripts.setFalse(variable = curKeyNumber),
+        scripts.actorHide(actorId = "$self$")
+    ]
+    lock["script"].append(scripts.ifTrue(variable = curKeyNumber, trueCommands = trueCommands))
+    curKeyNumber = curKeyNumber - 1
+    return lock
+
 
 ### Writing the project to disk ###
 
 def writeUIAssets(ui_asset_array, asset_path):
+    """
+    Return the paths to the UI assets, because they're a somewhat special case.
+    """
     ui_assets = []
     for ui_asset in ui_asset_array:
         temp_file = os.path.abspath(Path('temp').joinpath(ui_asset["asset_file_name"]))
@@ -369,6 +401,9 @@ def writeUIAssets(ui_asset_array, asset_path):
 
 
 def writeAssets(asset_array, output_path, sub_asset_path):
+    """
+    Take the assets referenced by the project and write them to the project.
+    """
     output_assets_path = "assets/"
     Path(output_path).joinpath("assets/temp/").mkdir(parents=True, exist_ok=True)
     Path(output_path).joinpath(output_assets_path).mkdir(parents=True, exist_ok=True)
@@ -417,7 +452,12 @@ def writeAssets(asset_array, output_path, sub_asset_path):
     shutil.rmtree(Path(output_path).joinpath("assets/temp/"))
 
 def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/"):
-    # Write project to JSON
+    """
+     Write project to JSON
+
+     Writes out a GBStudio project file at the output_path folder, with the filename.
+     Also copies over the relevant images and other assets that the project uses.
+    """
     output_path = os.path.abspath(Path(os.path.dirname(__file__)).joinpath('..').joinpath(output_path))
     logging.info(f"writeProjectToDisk: {bcolors.OKGREEN}{os.path.abspath(output_path)}{bcolors.ENDC}")
     logging.info(f"Writing {filename} project file...")
@@ -439,6 +479,9 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
     print(f"Wrote project to {os.path.abspath(output_path)}")
 
 def makeBasicProject():
+    """
+    Make a basic, barebones project that our code can start to add to.
+    """
     project = types.SimpleNamespace(**base_gb_project)
     project.settings = default_project_settings.copy()
     project.ui = [
@@ -450,6 +493,9 @@ def makeBasicProject():
 
 #makes a border of collisions around a scene
 def makeColBorder(scenex):
+    """
+    Makes a border of collisions around a scene.
+    """
     wid = scenex["width"]
     hei = scenex["height"]
     tilenum = wid * hei
@@ -482,20 +528,54 @@ def makeColBorder(scenex):
             max = max + 1
             g = g + 1
         jnum = int(j, 2)
-        cc.insert(0, jnum)
+        cc.insert(0, jnum[::-1])
     scenex["collisions"] = cc
+
+def toByteStrings(grid):
+    """
+    Take a nested array of 0/1 or T/F values and translates into bit strings.
+
+    Should be functionally equivalent to the string-making behavior in makeCol.
+    """
+    print(grid)
+    byte_strings_array = []
+    byte_consumer = ""
+    def consume():
+        nonlocal byte_consumer, byte_strings_array
+        byte_strings_array.append(int(byte_consumer[::-1], 2))
+        byte_consumer = ""
+
+    for row_num, row in enumerate(grid):
+        for col_num, column in enumerate(row):
+            truth_val = 0
+            if (column == True) or (column != 0):
+                truth_val = 1
+            byte_consumer += str(truth_val)
+            if len(byte_consumer) >= 8:
+                consume()
+    if len(byte_consumer) > 0:
+        while len(byte_consumer) < 8:
+            byte_consumer += "0"
+    consume()
+
+    return byte_strings_array
 
 def makeCol(array01, scene01):
     """
-    takes in 1D array (later 2D array) of 0s and 1s, puts in collisions accordingly
+    Takes in 1D array of 0s and 1s, puts in collisions accordingly
+
+    Specifically, translates a 1D array of collision bits that represents
+    the 2d collision data into a list of strings, with each string as the
+    bitfield that holds the on/off collision data for 8 tiles.
     """
     wid = scene01["width"]
     hei = scene01["height"]
     cc = []
     max = 0
+    total_collision_spaces = ((wid * hei - 1) % 8) + (wid * hei - 1)
     while max < wid * hei - 1:
-        g = 1
         j = " "
+        g = 1
         while g < 9:
             if array01[max] == 1:
                 j = j + "1"
@@ -503,9 +583,13 @@ def makeCol(array01, scene01):
                 j = j + "0"
             max = max + 1
             g = g + 1
-        jnum = int(j, 2)
+        jnum = int(j[::-1], 2) # reverse the string because the collision data is big-endian
         cc.insert(0, jnum)
-    scene01["collisions"] = cc
+    # Need to add this in case the total number of collision tiles isn't evenly
+    # divisible by 8
+    if max <= total_collision_spaces:
+        cc.insert(0, 0)
+    scene01["collisions"] = cc[::-1]
 
 def createExampleProject():
     # Set up a barebones project
@@ -535,8 +619,25 @@ def createExampleProject():
     doorway_sprite = makeSpriteSheet("tower.png", "tower", "static")
     project.spriteSheets.append(doorway_sprite)
 
+    c_bkg = makeBackground("c_test_3.png", "c_test")
+    project.backgrounds.append(c_bkg)
+    c_scene = makeScene("c_scene", c_bkg)
+    collisions = [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    makeCol(collisions, c_scene)
+    print(c_scene["collisions"])
+    project.scenes.append(c_scene)
+    d_scene = makeScene("d_scene", c_bkg)
+    collisions = [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]
+    collision_string = toByteStrings(collisions)
+    d_scene["collisions"] = collision_string
+    project.scenes.append(d_scene)
+    print(collision_string)
+
+
+
     # We want to create a bunch of scenes.
     # Here I'm just creating them randomly.
+    prior_scenes = len(project.scenes)
     number_of_scenes_to_make = 7
     for make_scene_num in range(number_of_scenes_to_make):
         # Create a scene
@@ -565,7 +666,7 @@ def createExampleProject():
                 if scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]]:
                     scene_connections[y][scene_connections_translations[chosen_direction]] = False
                     scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]] = False
-                    addSymmetricSceneConnections(project, project.scenes[y], project.scenes[other_scene], chosen_direction, doorway_sprite)
+                    addSymmetricSceneConnections(project, project.scenes[y + prior_scenes], project.scenes[other_scene + prior_scenes], chosen_direction, doorway_sprite)
                     break
 
     # Add some music

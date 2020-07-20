@@ -10,7 +10,7 @@ from scripting import getScript
 REPLACE THIS TO LOOP
 def loop(loopCommand):
     element = makeElement()
-    element["commands"] = "EVENT_LOOP"
+    element["command"] = "EVENT_LOOP"
     element["args"] = {
     }
     loopCommand.add(end())
@@ -22,7 +22,7 @@ def loop(loopCommand):
 REPLACE THIS TO GROUP
 def group(groupCommands):
     element = makeElement()
-    element["commands"] = "EVENT_GROUP"
+    element["command"] = "EVENT_GROUP"
     element["args"] = {
     }
     groupCommands.add(end())
@@ -34,7 +34,7 @@ def group(groupCommands):
 REPLACE THIS TO SETINPUTSCRIPT
 def setInputScript(input = "b",scripts=[]):
     element = makeElement()
-    element["commands"] = "EVENT_SET_INPUT_SCRIPT"
+    element["command"] = "EVENT_SET_INPUT_SCRIPT"
     element["args"] = {
         "input": input,
     }
@@ -75,7 +75,7 @@ for i in methods:
     print(n)
     n = spacing + "element = makeElement()"
     print(n)
-    n = spacing + "element[\"commands\"] = \"" + i + "\""
+    n = spacing + "element[\"command\"] = \"" + i + "\""
     print(n)
     n = spacing + "element[\"args\"] = {"
     print(n)
@@ -85,9 +85,9 @@ for i in methods:
     print(spacing + "}")
 
     if f:
-        n = spacing + "trueCommands.add(end())"
+        n = spacing + "trueCommands.append(end())"
         print(n)
-        n = spacing + "falseCommands.add(end())"
+        n = spacing + "falseCommands.append(end())"
         print(n)
         n = spacing + "element[\"children\"] = {"
         print(n)
@@ -97,4 +97,4 @@ for i in methods:
         print(n)
         print(spacing + "}")
     print(spacing + "return element")
-    print()
+    print("")

@@ -2,11 +2,11 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__),os.pardir,"rom_generator"))
 
 import generator
-import level_generator
+import individual.level_generator
 
 def test_RockWorld(tmpdir):
     generator.initializeGenerator()
-    project = level_generator.createRockWorld()
+    project = individual.level_generator.createRockWorld()
     generator.writeProjectToDisk(project, output_path = tmpdir)
     assert(project.scenes[0]["x"] == 200)
     assert(project.scenes[0]["actors"][0]["movementType"] == "static")

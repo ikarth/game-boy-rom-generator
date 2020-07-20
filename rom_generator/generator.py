@@ -368,7 +368,7 @@ def makeKey(sprite, x, y):
 
 ### creates a lock for the key (This must be created directly after the key creation to work)
 def makeLock(sprite, x, y):
-    global curKeyNumber 
+    global curKeyNumber
     lock = makeActor(sprite, x, y, animate = False)
     trueCommands = [
         scripts.setFalse(variable = curKeyNumber),
@@ -382,6 +382,9 @@ def makeLock(sprite, x, y):
 ### Writing the project to disk ###
 
 def writeUIAssets(ui_asset_array, asset_path):
+    """
+    Return the paths to the UI assets, because they're a somewhat special case.
+    """
     ui_assets = []
     for ui_asset in ui_asset_array:
         temp_file = os.path.abspath(Path('temp').joinpath(ui_asset["asset_file_name"]))
@@ -400,6 +403,9 @@ def writeUIAssets(ui_asset_array, asset_path):
 
 
 def writeAssets(asset_array, output_path, sub_asset_path):
+    """
+    Take the assets referenced by the project and write them to the project.
+    """
     output_assets_path = "assets/"
     Path(output_path).joinpath("assets/temp/").mkdir(parents=True, exist_ok=True)
     Path(output_path).joinpath(output_assets_path).mkdir(parents=True, exist_ok=True)
@@ -448,7 +454,12 @@ def writeAssets(asset_array, output_path, sub_asset_path):
     shutil.rmtree(Path(output_path).joinpath("assets/temp/"))
 
 def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/"):
-    # Write project to JSON
+    """
+     Write project to JSON
+
+     Writes out a GBStudio project file at the output_path folder, with the filename.
+     Also copies over the relevant images and other assets that the project uses.
+    """
     output_path = os.path.abspath(Path(os.path.dirname(__file__)).joinpath('..').joinpath(output_path))
     logging.info(f"writeProjectToDisk: {bcolors.OKGREEN}{os.path.abspath(output_path)}{bcolors.ENDC}")
     logging.info(f"Writing {filename} project file...")
@@ -470,6 +481,9 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
     print(f"Wrote project to {os.path.abspath(output_path)}")
 
 def makeBasicProject():
+    """
+    Make a basic, barebones project that our code can start to add to.
+    """
     project = types.SimpleNamespace(**base_gb_project)
     project.settings = default_project_settings.copy()
     project.ui = [
@@ -481,6 +495,9 @@ def makeBasicProject():
 
 #makes a border of collisions around a scene
 def makeColBorder(scenex):
+    """
+    Makes a border of collisions around a scene.
+    """
     wid = scenex["width"]
     hei = scenex["height"]
     tilenum = wid * hei
@@ -517,6 +534,11 @@ def makeColBorder(scenex):
     scenex["collisions"] = cc
 
 def toByteStrings(grid):
+    """
+    Take a nested array of 0/1 or T/F values and translates into bit strings.
+
+    Should be functionally equivalent to the string-making behavior in makeCol.
+    """
     print(grid)
     byte_strings_array = []
     byte_consumer = ""
@@ -542,7 +564,11 @@ def toByteStrings(grid):
 
 def makeCol(array01, scene01):
     """
-    takes in 1D array (later 2D array) of 0s and 1s, puts in collisions accordingly
+    Takes in 1D array of 0s and 1s, puts in collisions accordingly
+
+    Specifically, translates a 1D array of collision bits that represents
+    the 2d collision data into a list of strings, with each string as the
+    bitfield that holds the on/off collision data for 8 tiles.
     """
     wid = scene01["width"]
     hei = scene01["height"]

@@ -8,6 +8,11 @@ from PIL import Image
 from pathlib import Path
 
 def getTileList(list_of_tile_files=[]):
+    """
+    Takes a list of tile filenames and loads them from assets/tiles as images.
+
+    Returns a list of Pillow image objects.
+    """
     tile_list = []
     input_assets_path = "assets"
     for tile in list_of_tile_files:
@@ -18,6 +23,15 @@ def getTileList(list_of_tile_files=[]):
     return tile_list
 
 def makeCheckerboardArray(width, height):
+    """
+    Make an array with a checkerboard pattern.
+
+    Originally implemented to have a test background, but can probably be
+    used as a basis for other background generation functions.
+
+    The important thing here is that it returns a 2D array with numbers
+    that correspond to the tile indexes.
+    """
     board = np.zeros([width, height], dtype=int)
     for j in range(height):
         for i in range(width):
@@ -29,10 +43,11 @@ def makeBackgroundCollisions(background_array):
     return []
 
 def generateBackground(background_name, array_of_tiles, list_of_sprites):
+    """
+    Given an array of tiles, generate a background image for them and return
+    a Background object to insert into a project.
+    """
     image_path = generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites)
-    print('---')
-    print(image_path)
-    print(os.path.basename(image_path))
     return generator.makeBackground(image_path, "generated_background")
 
 def generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites):
@@ -45,23 +60,30 @@ def generateBackgroundImageFromTiles(array_of_tiles, list_of_sprites):
 
     Generates the image, places it in the assets folder, returns the path to
     the new background image.
+
+    Note that it mostly assumes that you'll be using 8x8 tile images, with each
+    image occupying one tile in the grid. Tiles images that span multiple tiles
+    or have more complicated collisions should be handled prior to this.
     """
-    print(array_of_tiles)
-    print(list_of_sprites)
+
+    # Use the size of the first sprite to determine how many pixels we need.
     width = list_of_sprites[0].size[0] * len(array_of_tiles[0])
     height = list_of_sprites[0].size[1] * len(array_of_tiles)
     background_image = Image.new('RGB', (width, height))
     for row_index, row in enumerate(array_of_tiles):
         for col_index, col in enumerate(row):
             coords = (list_of_sprites[0].size[1] * col_index, list_of_sprites[0].size[0] * row_index)
-            #print(coords)
             background_image.paste(list_of_sprites[col], coords)
+
+    # Save the image to a file: we only keep the file path as a reference,
+    # rather than keeping the image in memory.
+    # TODO: The generated background just get dumped in the backgrounds/
+    # folder right now; I should figure out the path issues that will let me
+    # put them in their own subfolder so they produce less clutter --IJK
     gen_filepath = Path(generator.getAssetFolder()).joinpath("backgrounds/_generated.png")
     local_image_filename = "_generated_" + str(uuid.uuid4()) + ".png"
 
     abs_gen_filepath = os.path.abspath(Path(os.path.dirname(gen_filepath)))
-    print('---')
-    print(abs_gen_filepath)
     Path(abs_gen_filepath).mkdir(parents=True, exist_ok=True)
     Path(abs_gen_filepath).joinpath('__init__.py').touch()
     background_image.save(Path(abs_gen_filepath).joinpath(local_image_filename))

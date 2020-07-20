@@ -1,13 +1,6 @@
-import uuid
-import copy
+from utilities import makeElement
 
 ### Create a basic GBS element, with a unique ID
-def makeElement():
-    element = {}
-    element["id"] = str(uuid.uuid4())
-    return copy.deepcopy(element)
-
-
 def end():
     element = makeElement()
     element["command"] = "EVENT_END"

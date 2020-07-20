@@ -14,6 +14,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
 import scriptFunctions as scripts
+from utilities import makeElement
 try:
     import importlib.resources as pkg_resources
 except ImportError:
@@ -102,10 +103,7 @@ def assignSceneLocation(scene_number):
     return (x, y)
 
 ### Create a basic GBS element, with a unique ID
-def makeElement():
-    element = {}
-    element["id"] = str(uuid.uuid4())
-    return copy.deepcopy(element)
+
 
 ### Create a music element
 def makeMusic(name, filename):

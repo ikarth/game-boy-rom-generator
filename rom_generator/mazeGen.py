@@ -69,25 +69,27 @@ def run(num):
     global edges, n, parent, connections
     n = num
     initializeArrays()
-    print("length is " + str(len(edges)))
-    print("length is " + str(len(holding)))
-    print("n is " + str(n))
+    #print("length is " + str(len(edges)))
+    #print("length is " + str(len(holding)))
+    #print("n is " + str(n))
     random.seed()
     random.shuffle(edges) #randomize edges
-    print("length is " + str(len(edges)))
-    print(connections < (n * n))
-    print(len(edges) > 0)
-    print(connections < (n * n) and len(edges) > 0)
-    while len(edges) > 0:
+    #print("length is " + str(len(edges)))
+    #print(connections < (n * n))
+    #print(len(edges) > 0)
+    #print(connections < (n * n) and len(edges) > 0)
+    
+    while connections != (n * n - 1) and len(edges) > 0:
         index = random.randint(0, len(edges) - 1)
         temp = edges.pop(index)
-        print(temp.b * n + temp.a)
+        #print(temp.b * n + temp.a)
         
         if(union(temp.b * n + temp.a, (temp.b + ydir[temp.ind]) * n + temp.a + xdir[temp.ind])):
             holding[temp.a][temp.b].ar[temp.ind] = True
             #print("IT WORRRRRKRKRKKRKSRKRSKRSKSR")
         #print("EDgES " + str(len(edges)))
-    print("Connections " + str(connections))
+    #print("Connections " + str(connections))
+    holding[n - 1][n-1].ar[0] = True
 
 def getList():
     global holding

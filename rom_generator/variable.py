@@ -11,6 +11,8 @@ def getOpenVariable():
     global ar, counter
     while(ar[counter]):
         counter = counter + 1
+    ar[counter] = True
+    print("counter " + str(counter))
     return counter
 
 def deprecatedVariable(index):

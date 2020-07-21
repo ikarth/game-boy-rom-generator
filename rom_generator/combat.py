@@ -35,7 +35,7 @@ def setUpScene(scene, weapon, player, enemy = []):
     weaponScript.append(temp)
     weaponX = var.getOpenVariable()
     weaponY = var.getOpenVariable()
-    weaponScript.append(scripts.actorSetPositionToValue(weapon["id"], vectorX = weaponX, vectorY = weaponY)) #THIS MUCH BE CHANGED
+    weaponScript.append(scripts.actorGetPosition(weapon["id"], vectorX = weaponX, vectorY = weaponY)) #THIS MUCH BE CHANGED
 
     curIndex = 0
     offset = var.getOpenVariable()
@@ -48,7 +48,11 @@ def setUpScene(scene, weapon, player, enemy = []):
         temp = scripts.ifValueCompare(vectorX = offset, operator = "==", vectorY = weaponX, trueCommands = [scripts.actorHide(e["id"])], falseCommands = [scripts.variableMath(vectorX = offset, other = "var", vectorY = enemyLoc[curIndex]), 
                 scripts.variableMath(vectorX = offset, operation = "add", other = "val", vectorY = offset), temp])
 
-        #weaponScript.append(ifValueCompare(vectorX = enemyLoc[curIndex + 1], operator = "==", vectorY = weaponY, trueCommands = [scripts.ifValueCompare(vectorX = enemyLoc[curIndex], operator = "==", vectorY = weaponX, trueCommands = [scripts.actorHide(e["id"])], falseCommands = [])], falseCommands = [temp]))    
+        temp2 = scripts.ifValueCompare(vectorX = enemyLoc[curIndex], operator = "==", vectorY = weaponX, trueCommands = [scripts.actorHide(e["id"])], falseCommands = [])
+
+        temp3 = scripts.ifValueCompare(vectorX = enemyLoc[curIndex + 1], operator = "==", vectorY = weaponY, __collapseElse = False, trueCommands = [temp2], falseCommands = [temp])
+
+        weaponScript.append(temp3)
 
         
 

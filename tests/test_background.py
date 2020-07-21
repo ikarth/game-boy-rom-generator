@@ -1,14 +1,16 @@
-import argparse
-import copy
-import random
-from generator import makeElement, makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, addSceneBackground
-from background import getTileList, makeCheckerboardArray, generateBackgroundImageFromTiles, generateBackground, makeBackgroundCollisions
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),os.pardir)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),os.pardir,"rom_generator")))
+print(sys.path)
 
-def createYourNameWorld():
-    """
-    Create an empty world as an example to build future projects from.
-    """
-    # Set up a barebones project
+from rom_generator.generator import initializeGenerator, makeBasicProject, writeProjectToDisk, addSpriteSheet, makeBackground, makeScene, makeActor, makeElement, makeMusic, getImage
+from rom_generator.background import generateBackground, getTileList, makeCheckerboardArray, makeBackgroundCollisions, generateBackgroundImageFromTiles
+from PIL import Image
+
+def test_background_generator():
+
+    initializeGenerator()
+
     project = makeBasicProject()
 
     # Create sprite sheet for the player sprite
@@ -23,9 +25,6 @@ def createYourNameWorld():
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
 
-    #a_scene = makeScene(f"Scene", default_bkg)
-    #project.scenes.append(a_scene)
-
     checker_background_tile_list = getTileList(["black_tile.png", "white_tile.png"])
     checker_background_tile_array = makeCheckerboardArray(14, 14)
     checker_background_collisions = makeBackgroundCollisions(checker_background_tile_array)
@@ -35,9 +34,8 @@ def createYourNameWorld():
     a_scene = makeScene(f"Scene", checker_background)
     project.scenes.append(a_scene)
 
-    checker_background = generateBackground("checker_background", checker_background_tile_array, checker_background_tile_list)
-    print(checker_background)
-    b_scene = makeScene(f"Scene", checker_background, collisions=checker_background_collisions)
+    checker_background2 = generateBackground("checker_background", checker_background_tile_array, checker_background_tile_list)
+    b_scene = makeScene(f"Scene", checker_background2, collisions=checker_background_collisions)
     project.scenes.append(b_scene)
 
     actor = makeActor(a_rock_sprite, 9, 8)
@@ -66,27 +64,18 @@ def createYourNameWorld():
 
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project
 
-# Utilities
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    writeProjectToDisk(project, output_path="../gbprojects/test_background")
 
-### Run the generator
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects_yourname/")
-    args = parser.parse_args()
-    initializeGenerator()
-    project = createYourNameWorld()
-    writeProjectToDisk(project, output_path = args.destination)
-    if args.destination == "../gbprojects/projects/":
-        print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
-        print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")
+    # check the project data
+    assert("checker_background" == project.backgrounds[1]["name"])
+    assert(224 == project.backgrounds[1]["imageWidth"])
+
+    print(checker_background)
+    print(checker_background2)
+    # check the generated background image file...
+    background_image_filename = "../gbprojects/test_background/assets/backgrounds/" + checker_background["filename"]
+    print(background_image_filename)
+    assert(os.path.isfile(background_image_filename))
+    bkg_img_from_file = Image.open(background_image_filename)
+    bkg_img_from_file.close()

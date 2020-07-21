@@ -18,8 +18,8 @@ def generateKruskalMaze():
     size_x, size_y = (6, 6)
     maze_tile_names = ["GreenBlock8.png","MazeBlock8.png"]
     maze_tile_list = background.getTileList(maze_tile_names)
-    maze_tile_array = [[0 for n in range(size_y * 2)] for m in range(size_x * 2) ]
-    maze_collisions = [[0 for n in range(size_y * 2)] for m in range(size_x * 2)]
+    maze_tile_array = [[0 for n in range(size_y * 3)] for m in range(size_x * 3)]
+    maze_collisions = [[0 for n in range(size_y * 3)] for m in range(size_x * 3)]
     def addBackgroundTile(tile_num, x, y):
         #print(x,y)
         maze_tile_array[x][y] = tile_num
@@ -40,10 +40,12 @@ def generateKruskalMaze():
             #print("Index " + str(i) + " " + str(j))
             temp = array[i][j]
             if temp.ar[1] == False:
-                addBackgroundTile(maze_wall_tile, 2 * i + 1, 2 * j)
+                addBackgroundTile(maze_wall_tile, 2 * i + 1, 3 * j + 1)
+                addBackgroundTile(maze_wall_tile, 2 * i + 1, 3 * j)
             if temp.ar[0] == False:
-                addBackgroundTile(maze_wall_tile, 2 * i, 2 * j + 1)
-            addBackgroundTile(maze_wall_tile, 2 * i + 1, 2 * j + 1)
+                addBackgroundTile(maze_wall_tile, 2 * i, 3 * j + 2)
+            addBackgroundTile(maze_wall_tile, 2 * i + 1, 3 * j + 2)
+
     
 
     maze_background_image_path = background.generateBackgroundImageFromTiles(maze_tile_array, maze_tile_list)

@@ -9,7 +9,6 @@ counter = 0
 
 def getOpenVariable():
     global ar, counter
-
     while(ar[counter]):
         counter = counter + 1
     return counter

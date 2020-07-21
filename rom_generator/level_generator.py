@@ -234,6 +234,7 @@ if __name__ == '__main__':
     initializeGenerator()
     project = aaronTest()
     writeProjectToDisk(project, output_path=args.destination)
+
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

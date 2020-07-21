@@ -333,7 +333,7 @@ def writeAssets(asset_array, output_path, asset_path):
             logging.info(f"Asset file copy: {copy_path} -> {temp_file} -> {destination_path}")
             shutil.copy2(copy_path, temp_file)
             os.replace(Path(temp_file), destination_path)
-            logging.info(f"Wrote {destination_path}")
+            print(f"Wrote {destination_path}")
         except FileNotFoundError as err:
             print(f"Asset File Missing for writeAssets(): {err}")
             logging.warning(f"Asset File Missing: {err}")

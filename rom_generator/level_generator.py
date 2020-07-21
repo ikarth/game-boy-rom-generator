@@ -185,10 +185,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
     args = parser.parse_args()
-
-    initializeGenerator()
-    project = createAaronGame()
-    writeProjectToDisk(project, output_path=args.destination)
+    initializeGenerator(asset_folder = args.assets)
+    project = createRockWorld()
+    writeProjectToDisk(project, output_path = args.destination)
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

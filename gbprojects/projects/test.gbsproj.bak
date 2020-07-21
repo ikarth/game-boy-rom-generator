@@ -1,0 +1,191 @@
+{
+    "settings": {
+        "showCollisions": true,
+        "showConnections": true,
+        "worldScrollX": 0,
+        "worldScrollY": 0,
+        "zoom": 100,
+        "customColorsWhite": "E8F8E0",
+        "customColorsLight": "B0F088",
+        "customColorsDark": "509878",
+        "customColorsBlack": "202850",
+        "startX": 9,
+        "startY": 9,
+        "startDirection": "down",
+        "startSceneId": "ec2fe9d3-49ca-49fd-a48b-2bbe44b2922f",
+        "playerSpriteSheetId": "4bfe6879-651f-416e-a859-c0d5f049562e"
+    },
+    "scenes": [
+        {
+            "id": "ec2fe9d3-49ca-49fd-a48b-2bbe44b2922f",
+            "name": "Scene",
+            "backgroundId": "3e95e4b7-407b-4555-b634-aae3a8f91dd9",
+            "width": 32,
+            "height": 32,
+            "x": 1200,
+            "y": 0,
+            "collisions": [],
+            "actors": [
+                {
+                    "id": "f06dc5bb-0b23-4efa-986c-c008b23038ec",
+                    "spriteSheetId": "9e968d6a-fcbd-41db-b73f-a7ff2169a91b",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 3,
+                    "y": 8
+                },
+                {
+                    "id": "9fe8949a-0fff-427a-881b-7618a4f4494c",
+                    "spriteSheetId": "573a7b74-baad-41be-8640-c01129ece0c8",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 6,
+                    "y": 3
+                },
+                {
+                    "id": "36a3184b-ab0a-49ce-9f71-1e6b26d39aac",
+                    "spriteSheetId": "6ef7df17-7e66-4344-b8cd-4456dd35fa6d",
+                    "movementType": "animated",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 9,
+                    "y": 10
+                },
+                {
+                    "id": "f06dc5bb-0b23-4efa-986c-c008b23038ec",
+                    "spriteSheetId": "9e968d6a-fcbd-41db-b73f-a7ff2169a91b",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 3,
+                    "y": 8
+                },
+                {
+                    "id": "9fe8949a-0fff-427a-881b-7618a4f4494c",
+                    "spriteSheetId": "573a7b74-baad-41be-8640-c01129ece0c8",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 6,
+                    "y": 3
+                },
+                {
+                    "id": "16dc8707-4c1e-44e0-9440-4d3ee2fc804e",
+                    "spriteSheetId": "573a7b74-baad-41be-8640-c01129ece0c8",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 9,
+                    "y": 8
+                }
+            ],
+            "triggers": []
+        }
+    ],
+    "_version": "1.2.0",
+    "author": "Generator",
+    "name": "GenerationTest",
+    "variables": [],
+    "backgrounds": [
+        {
+            "id": "3e95e4b7-407b-4555-b634-aae3a8f91dd9",
+            "name": "stars",
+            "width": 32,
+            "height": 32,
+            "imageWidth": 256,
+            "imageHeight": 256,
+            "filename": "stars.png",
+            "_v": 1594262047334,
+            "_generator_metadata": {
+                "pixel_width": 256,
+                "pixel_height": 256,
+                "image_format": "PNG",
+                "image_mode": "P"
+            }
+        }
+    ],
+    "spriteSheets": [
+        {
+            "id": "4bfe6879-651f-416e-a859-c0d5f049562e",
+            "name": "actor_animated",
+            "type": "actor_animated",
+            "filename": "actor_animated.png",
+            "_v": 1594262047317,
+            "_generator_metadata": {
+                "pixel_width": 96,
+                "pixel_height": 16,
+                "image_format": "PNG",
+                "image_mode": "P"
+            },
+            "frames": 6
+        },
+        {
+            "id": "9e968d6a-fcbd-41db-b73f-a7ff2169a91b",
+            "name": "rock",
+            "type": "static",
+            "filename": "rock.png",
+            "_v": 1594262047332,
+            "_generator_metadata": {
+                "pixel_width": 16,
+                "pixel_height": 16,
+                "image_format": "PNG",
+                "image_mode": "P"
+            },
+            "frames": 1
+        },
+        {
+            "id": "573a7b74-baad-41be-8640-c01129ece0c8",
+            "name": "rock",
+            "type": "static",
+            "filename": "rock.png",
+            "_v": 1594262047333,
+            "_generator_metadata": {
+                "pixel_width": 16,
+                "pixel_height": 16,
+                "image_format": "PNG",
+                "image_mode": "P"
+            },
+            "frames": 1
+        },
+        {
+            "id": "6ef7df17-7e66-4344-b8cd-4456dd35fa6d",
+            "name": "duck",
+            "type": "animated",
+            "filename": "duck.png",
+            "_v": 1594262047334,
+            "_generator_metadata": {
+                "pixel_width": 32,
+                "pixel_height": 16,
+                "image_format": "PNG",
+                "image_mode": "P"
+            },
+            "frames": 2
+        },
+        {
+            "id": "4632766b-7a48-439e-ba48-4d50f6b0e572",
+            "name": "tower",
+            "type": "static",
+            "filename": "tower.png",
+            "_v": 1594262047336,
+            "_generator_metadata": {
+                "pixel_width": 16,
+                "pixel_height": 16,
+                "image_format": "PNG",
+                "image_mode": "P"
+            },
+            "frames": 1
+        }
+    ],
+    "music": [
+        {
+            "id": "71d5424d-6e7a-4ce7-8fc2-b638e3f51965",
+            "name": "template",
+            "filename": "template.mod",
+            "_v": 1594262047337
+        }
+    ],
+    "customEvents": [],
+    "ui": null
+}

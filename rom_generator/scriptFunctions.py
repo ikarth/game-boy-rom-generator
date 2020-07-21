@@ -147,10 +147,20 @@ def ifValue(variable = "L3", operator = ">", comparator = "2", __collapseElse = 
     }
     return element
 
-def ifValueCompare():
+def ifValueCompare(vectorX = "6", operator = "==", vectorY = "3", __collapseElse = "False", trueCommands = [], falseCommands = []):
     element = makeElement()
     element["command"] = "EVENT_IF_VALUE_COMPARE"
     element["args"] = {
+        "vectorX": vectorX,
+        "operator": operator,
+        "vectorY": vectorY,
+        "__collapseElse": __collapseElse,
+    }
+    trueCommands.append(end())
+    falseCommands.append(end())
+    element["children"] = {
+        "true": trueCommands,
+        "false": falseCommands
     }
     return element
 
@@ -304,7 +314,7 @@ def setInputScript(input = "b",scripts=[]):
     element["args"] = {
         "input": input,
     }
-    scripts.add(end())
+    scripts.append(end())
     element["children"] = {
         "true": scripts
     }

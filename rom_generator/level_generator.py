@@ -3,6 +3,7 @@ import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, makeKey, makeLock
 from scriptFunctions import actorHide, end
+import combat as combat
 def AnikaProject123():
     """
     This is my change
@@ -46,6 +47,50 @@ def createVijayaWorld():
     # Add some music
     project.music.append(makeMusic("template", "template.mod"))
     project.settings["startSceneId"] = project.scenes[0]["id"]
+    return project
+
+def aaronTest():
+    project = makeBasicProject()
+
+    # Create sprite sheet for the player sprite
+    player_sprite_sheet = addSpriteSheet(
+        project, "actor_animated.png", "actor_animated", "actor_animated")
+    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+
+    # add a sprite we can use for the rocks
+    a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
+
+    doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
+
+    # Add a background image
+    default_bkg = makeBackground("placeholder.png", "placeholder")
+    project.backgrounds.append(default_bkg)
+
+    # Get information about the background
+    bkg_x = default_bkg["imageWidth"]
+    bkg_y = default_bkg["imageHeight"]
+    bkg_width = default_bkg["width"]
+    bkg_height = default_bkg["height"]
+
+    a_scene = copy.deepcopy(
+            makeScene(f"Scene {1}", default_bkg))
+
+    key = makeActor(a_rock_sprite, 2, 2)
+    
+    weapon = makeActor(doorway_sprite, 5, 5)
+
+    combat.setUpScene(a_scene, weapon, player_sprite_sheet["id"], [key])
+
+    a_scene["actors"].append(key)
+    a_scene["actors"].append(weapon)
+
+    project.scenes.append(copy.deepcopy(a_scene))
+
+    project.music.append(makeMusic("template", "template.mod"))
+
+    # Set the starting scene
+    project.settings["startSceneId"] = project.scenes[0]["id"]
+
     return project
 
 def createAaronGame():
@@ -185,9 +230,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
     parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
     args = parser.parse_args()
-    initializeGenerator(asset_folder = args.assets)
-    project = createRockWorld()
-    writeProjectToDisk(project, output_path = args.destination)
+
+    initializeGenerator()
+    project = aaronTest()
+    writeProjectToDisk(project, output_path=args.destination)
+
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

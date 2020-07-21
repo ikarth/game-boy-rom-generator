@@ -291,6 +291,7 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     element["collisions"] = collisions
     element["actors"] = actors
     element["triggers"] = triggers
+    element["script"] = []
     return element
 
 ### Makes script to connect two scenes together.

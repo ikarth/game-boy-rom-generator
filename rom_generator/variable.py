@@ -17,4 +17,5 @@ def getOpenVariable():
 def deprecatedVariable(index):
     global ar, counter
     ar[index] = False
-    counter = index
+    if index < counter:
+        counter = index

@@ -71,9 +71,9 @@ def catalog():
     Returns a list of scene functions from this part of the library.
     """
     scene_library = []
-    scene_library.append(sceneGenHall_02)
-    scene_library.append(sceneGenHall_03)
-    scene_library.append(sceneGenHall_04)
+    scene_library.append({"scene_func": sceneGenHall_02})
+    scene_library.append({"scene_func": sceneGenHall_03})
+    scene_library.append({"scene_func": sceneGenHall_04})
     return scene_library
 
 def createExampleProject():

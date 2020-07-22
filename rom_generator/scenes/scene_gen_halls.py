@@ -23,7 +23,7 @@ def sceneGenHall_03():
 
     collision_string_03 = [ 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 252, 63, 0, 0, 255, 3, 0, 240, 63, 0, 0, 255, 127, 254, 255, 255, 231, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 ]
     hall_bkg = generator.makeBackground("halls_03.png")
-    hall = generator.makeScene("_gen_hall_04", hall_bkg, collisions=collision_string_03, actors=actor_list)
+    hall = generator.makeScene("_gen_hall_03", hall_bkg, collisions=collision_string_03, actors=actor_list)
 
     # 3
     connections = [{"out": (11, 24, 2, 1), "in": (11, 23)},
@@ -47,7 +47,7 @@ def sceneGenHall_02():
                         script.setTrue(key_script_flag_variable),
                         script.text("You picked up the key."),
                         script.end()]
-    key_script_hide_on_init = [script.ifTrue(key_script_flag_variable, trueCommands=[script.actorHide(), script.end()], falseCommands=[script.end()]), script.end()]
+    key_script_hide_on_init = [script.ifTrue(key_script_flag_variable, trueCommands=[script.actorHide(actorId="$self$"), script.end()], falseCommands=[script.end()]), script.end()]
 
     key_actor["script"] = key_script_pickup
     key_actor["startScript"] = key_script_hide_on_init
@@ -58,7 +58,8 @@ def sceneGenHall_02():
     hall = generator.makeScene("_gen_hall_02", hall_bkg, collisions=collision_string_02, actors=actor_list)
 
     connections = [{"out": (15, 27, 2, 1), "in": (15, 26)},
-                   {"out": ( 8,  5, 2, 1), "in": ( 8, 6)},
+                   {"out": ( 8,  5, 2, 1), "in": ( 8,  6)},
+                   {"out": (20,  7, 2, 1), "in": (20,  8)},
                    {"out": ( 1, 10, 1, 2), "in": ( 2, 11)}]
 
     scene_data = {"scene": hall, "background": hall_bkg, "sprites": [key_sprite], "connections": connections, "tags": []}
@@ -79,7 +80,7 @@ def createExampleProject():
     scene_data_list.append(sceneGenHall_03())
     scene_data_list.append(sceneGenHall_04())
 
-    #generator.connectScenesRandomly(scene_data_list)
+    generator.connectScenesRandomlySymmetric(scene_data_list)
 
     for sdata in scene_data_list:
         generator.addSceneData(project, sdata)

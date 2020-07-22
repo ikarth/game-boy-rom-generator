@@ -2,7 +2,7 @@ import argparse
 import copy
 import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, makeKey, makeLock
-from scriptFunctions import actorHide, end
+from script_functions import actorHide, end
 import combat as combat
 def AnikaProject123():
     """
@@ -76,7 +76,7 @@ def aaronTest():
             makeScene(f"Scene {1}", default_bkg))
 
     key = makeActor(a_rock_sprite, 2, 2)
-    
+
     weapon = makeActor(doorway_sprite, 5, 5)
 
     combat.setUpScene(a_scene, weapon, player_sprite_sheet["id"], [key])
@@ -129,7 +129,7 @@ def createAaronGame():
 
     lock2= makeLock(doorway_sprite, 7, 7)
     a_scene["actors"].append(lock2)
-    
+
 
     project.scenes.append(copy.deepcopy(a_scene))
 
@@ -238,4 +238,3 @@ if __name__ == '__main__':
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")
-

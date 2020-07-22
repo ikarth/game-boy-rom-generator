@@ -41,6 +41,7 @@ def sceneGenHall_02():
     key_actor = generator.makeActor(key_sprite, x=key_location[0], y=key_location[1])
 
     key_script_flag_variable = str(25) # TODO: make this dynamic
+    # TODO: also add information about the key to an inventory system
 
     self_id = key_actor["id"]
     key_script_pickup = [script.actorHide(actorId="$self$"),

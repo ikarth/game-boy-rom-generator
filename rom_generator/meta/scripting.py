@@ -42,7 +42,12 @@ script_commands = {
         "comparator": 2,
         "__collapseElse": False
     },
-    "EVENT_IF_VALUE_COMPARE": {},
+    "EVENT_IF_VALUE_COMPARE": {
+        "vectorX": "6",
+        "operator": "==",
+        "vectorY": "3",
+        "__collapseElse": False,
+    },
     "EVENT_IF_INPUT": {
         "input": [
             "a",

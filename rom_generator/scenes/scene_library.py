@@ -1,5 +1,6 @@
 ##### Scene Library #####
 
+from rom_generator import generator
 import scene_gen_halls
 
 
@@ -23,7 +24,7 @@ def createExampleProject():
     scene_data_list = []
     for s_func in scene_catalog:
         scene_data_list.append(s_func["scene_func"]())
-        
+
     generator.connectScenesRandomlySymmetric(scene_data_list)
 
     for sdata in scene_data_list:

@@ -13,8 +13,8 @@ import sys
 from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
-import scriptFunctions as scripts
-from utilities import makeElement
+from rom_generator import script_functions as scripts
+from rom_generator.utilities import makeElement
 try:
     import importlib.resources as pkg_resources
 except ImportError:
@@ -176,7 +176,7 @@ def makeSpriteSheet(filename, name=None, type="static", frames=None):
         element["frames"] = width // 16
     else:
         element["frames"] = frames
-    return element
+    return copy.deepcopy(element)
 
 def addSpriteSheet(project, filename, name=None, type="static", frames=None):
     """Create a sprite sheet and add it to the project."""
@@ -210,7 +210,7 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
         element["height"] = element["_generator_metadata"]["pixel_height"] // 8
     if (element["_generator_metadata"]["pixel_width"] % 8 != 0) or (element["_generator_metadata"]["pixel_height"] % 8 != 0):
         logging.warning(f"{filename} has a dimension that is not a multiple of 8")
-    return element
+    return copy.deepcopy(element)
 
 ### An actor is an object on the screen that the player can interact with.
 def makeActor(sprite, x, y, movementType="static", animate=True):
@@ -223,7 +223,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     element["y"] = y
     element["animate"] = animate
     element["script"] = []
-    return element
+    return copy.deepcopy(element)
 
 def addActor(scene, sprite, x, y, movementType="static", animate=True):
     element = makeActor(sprite, x, y, movementType, animate)
@@ -238,7 +238,7 @@ def makeTrigger(trigger, x, y, width, height, script=[]):
   element["width"] = width
   element["height"] = height
   element["script"] = script
-  return element
+  return copy.deepcopy(element)
 
 def addSceneBackground(project, scene, background):
     print(scene)
@@ -291,7 +291,27 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     element["collisions"] = collisions
     element["actors"] = actors
     element["triggers"] = triggers
-    return element
+    return copy.deepcopy(element)
+
+def addSceneData(project, scene_data):
+    """
+    Given a data structure containing a scene and its referenced elements,
+    insert them into the project.
+
+    Expects that scene_data is a dictionary with the following elements:
+    - "scene": the generated scene itself
+    - "background": the background image
+    - "sprites": list of spriteSheets
+    - "connections": list of connection slots
+    - "tags": list of tags for this scene
+    """
+    project.scenes.append(scene_data["scene"])
+    # TODO: Check for existing assets and don't re-add duplicates
+    project.backgrounds.append(scene_data["background"])
+    for sprite_sheet in scene_data["sprites"]:
+        project.spriteSheets.append(sprite_sheet)
+
+
 
 ### Makes script to connect two scenes together.
 def makeScriptConnectionToScene(target_scene, direction="right", location=None):
@@ -404,6 +424,7 @@ def writeAssets(asset_array, output_path, sub_asset_path):
     """
     Take the assets referenced by the project and write them to the project.
     """
+    check_for_duplicates = set()
     output_assets_path = "assets/"
     Path(output_path).joinpath("assets/temp/").mkdir(parents=True, exist_ok=True)
     Path(output_path).joinpath(output_assets_path).mkdir(parents=True, exist_ok=True)
@@ -425,6 +446,9 @@ def writeAssets(asset_array, output_path, sub_asset_path):
             pass # doesn't have the full filepath
         print(f"writing {f_name}")
         logging.info(f"writing {f_name}")
+        if f_name in check_for_duplicates:
+            logging.warning(f"Duplicate {f_name} found.")
+        check_for_duplicates.add(f_name)
         temp_file = os.path.abspath(Path(output_path).joinpath("assets/temp/scratch.file"))
         try:
             local_sub_asset_path = [sub_asset_path]

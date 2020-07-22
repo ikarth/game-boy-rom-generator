@@ -1,4 +1,4 @@
-from utilities import makeElement
+from rom_generator.utilities import makeElement
 
 ### Create a basic GBS element, with a unique ID
 def end():
@@ -297,7 +297,7 @@ def comment(text = ""):
         "text": text,
     }
     return element
-    
+
 def setInputScript(input = "b",scripts=[]):
     element = makeElement()
     element["command"] = "EVENT_SET_INPUT_SCRIPT"

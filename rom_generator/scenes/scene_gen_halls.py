@@ -65,6 +65,17 @@ def sceneGenHall_02():
     scene_data = {"scene": hall, "background": hall_bkg, "sprites": [key_sprite], "connections": connections, "tags": []}
     return scene_data
 
+
+def catalog():
+    """
+    Returns a list of scene functions from this part of the library.
+    """
+    scene_library = []
+    scene_library.append(sceneGenHall_02)
+    scene_library.append(sceneGenHall_03)
+    scene_library.append(sceneGenHall_04)
+    return scene_library
+
 def createExampleProject():
     """
     Demonstration of how the scene generators in this file can be used.

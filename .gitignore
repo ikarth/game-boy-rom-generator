@@ -141,3 +141,9 @@ temp/*
 
 # Also don't include the generated image assets...
 assets/backgrounds/generated/*
+
+# also don't include output files or assets in the wrong place...
+gbprojects/*
+gbprojects/
+rom_generator/assets/*
+rom_generator/assets/

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="14" height="14" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="Old Halls by AFI (x16).tsx"/>
+ <layer id="1" name="Tile Layer 1" width="14" height="14">
+  <data encoding="base64" compression="zstd">
+   KLUv/WAQAg0EAEIEDRVQh5cAEJNYaXgGuhDYcFJloXV8+weCQHMH8Eqa2iCC2GPYcsj60V547hThj/Lki/HixIcioIBswuVwgjNzswMBqQ9lEK6Yf25k93Xf0KBNu169l9d9vOEu+4b0a9ne+M0xwRvSr6XZG/kzMoxf3IpFxOtR2EksSvZRylH1Aw==
+  </data>
+ </layer>
+</map>

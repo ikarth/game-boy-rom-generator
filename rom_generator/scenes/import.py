@@ -7,13 +7,16 @@ import copy
 def generate_{func_id}():
 
 """
+
+indent_string = "   "
+
 code_line_num = 0
 def generateCode(code_tree, indent_depth=0):
-    # global code_line_num
-    # code_line_num += 1
+    global code_line_num
+    code_line_num += 1
     # print(code_line_num)
     # print(code_tree)
-    indent_string = "   "
+
     code_string = ""
     if isinstance(code_tree, str):
         return code_tree + "\n"
@@ -43,7 +46,10 @@ def findFilenameById(proj_data, file_id):
     file_id = filtered[0]["id"]
     return filename
 
+scene_num = 0
 def importScene(scene_data, proj_data):
+    global scene_num
+    scene_num += 1
     template = copy.deepcopy(scene_data)
     template.pop("id")
     if "template" in template["name"]:
@@ -68,11 +74,18 @@ def importScene(scene_data, proj_data):
     code_con = f"gen_scene_connections = []"
 
     code_scn_data = 'scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}'
-    code_func_def = f"def scene{generated_scene_name}():"
-    generate_lines = [code_func_def, [code_act, code_col, code_bkg, code_scn, code_con, code_scn_data, "return scene_data"]]
+    code_func_def = f"scene{generated_scene_name}_{scene_num:05d}"
+    generate_lines = ["def " + code_func_def + "(callback):", [code_act, code_col, code_bkg, code_scn, code_con, code_scn_data, "return scene_data"]]
     generated_code = generateCode(generate_lines)
     # print(generated_code)
-    return generated_code
+    return generated_code, code_func_def
+
+code_catalog_func = '''
+def catalog():
+   """
+   Returns a list of scene functions from this part of the library.
+   """
+   return '''
 
 def importFromGBS(filename):
     proj_data = {}
@@ -82,13 +95,16 @@ def importFromGBS(filename):
     #print(proj_data)
     scenes = proj_data["scenes"]
     scene_templates = []
+    scene_func_names = []
     for scene in scenes:
-        scene_templates.append(importScene(scene, proj_data))
-    return scene_templates
+        scene_code, scene_func_name = importScene(scene, proj_data)
+        scene_templates.append(scene_code)
+        scene_func_names.append(scene_func_name)
 
-def makeTemplateFunction():
-    return
-
+    func_list = f",\n{indent_string}{indent_string}".join(scene_func_names)
+    code_catalog = "\n" + code_catalog_func + f"[{func_list}]\n"
+    generated_code = "\n\n".join(scene_templates) + code_catalog
+    return generated_code
 
 if __name__ == '__main__':
     import argparse

@@ -2,11 +2,8 @@
 
 import json
 import copy
-
-"""
-def generate_{func_id}():
-
-"""
+import logging
+from ..utilities import bcolors
 
 indent_string = "   "
 
@@ -30,7 +27,7 @@ def generateCode(code_tree, indent_depth=0):
                 code_text = generateCode(code_line, indent_depth + 1)
                 code_string += code_text
             else:
-                print(f"! {code_line}")
+                logging.error(f"unknown line! {code_line}")
     return code_string
 
 def findFilenameById(proj_data, file_id):
@@ -53,7 +50,7 @@ def importScene(scene_data, proj_data):
     template = copy.deepcopy(scene_data)
     template.pop("id")
     if "template" in template["name"]:
-        print(f"Found template: {template['name']}")
+        print(f"{bcolors.OKBLUE}Found template:{bcolors.ENDC} {template['name']}")
 
     generated_scene_name = "_gen_" + template["name"]
     # TODO: sanity-check generated_scene_name to make sure it's valid as a
@@ -65,7 +62,6 @@ def importScene(scene_data, proj_data):
     background_file_id = template.pop("backgroundId")
     background_filename = findFilenameById(proj_data, background_file_id)
 
-
     # Create the lines of source code
     code_act = f"actor_list = []"
     code_col = f"collision_data_list = {collision_data}"
@@ -75,7 +71,8 @@ def importScene(scene_data, proj_data):
 
     code_scn_data = 'scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}'
     code_func_def = f"scene{generated_scene_name}_{scene_num:05d}"
-    generate_lines = ["def " + code_func_def + "(callback):", [code_act, code_col, code_bkg, code_scn, code_con, code_scn_data, "return scene_data"]]
+    generate_lines = ["def " + code_func_def + "(callback):",
+                        [code_act, code_col, code_bkg, code_scn, code_con, code_scn_data, "return scene_data"]]
     generated_code = generateCode(generate_lines)
     # print(generated_code)
     return generated_code, code_func_def

@@ -20,6 +20,7 @@ try:
 except ImportError:
     # Try backported to PY<37 `importlib_resources`.
     import importlib_resources as pkg_resources
+from utilities import bcolors
 
 # Path hack for running modules within the rom_generator folder
 sys.path.append(os.path.abspath('.'))
@@ -37,16 +38,7 @@ def cd(newdir):
     finally:
         os.chdir(prevdir)
 
-## Just some colors for fancy printing
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+
 
 # Make Project
 curKeyNumber = 511

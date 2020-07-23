@@ -25,3 +25,4 @@ setuptools==47.3.0
 wheel==0.34.2
 wincertstore==0.2
 moviepy==1.0.3
+tracery==0.1.1

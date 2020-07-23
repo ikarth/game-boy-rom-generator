@@ -147,3 +147,6 @@ gbprojects/*
 gbprojects/
 rom_generator/assets/*
 rom_generator/assets/
+
+# Don't include the recursive assets
+gbs_projects/assets

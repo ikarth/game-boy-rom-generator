@@ -62,11 +62,10 @@ def convertScripts(scripts):
         if "children" in scr:
             for k_arg, v_arg in scr["children"].items():
                 print(k_arg, v_arg)
-            breakpoint()
+                convertScripts(v_arg)
         func_call_text += ", ".join(arg_text) + ")"
         print(func_call_text)
         converted_scripts.append(func_call_text)
-    breakpoint()
     return converted_scripts
 
 
@@ -182,13 +181,16 @@ def createExampleProject():
 
     return project
 
+def runTest(test_dir):
+    generator.initializeGenerator()
+    project = createExampleProject()
+    generator.writeProjectToDisk(project, output_path = test_dir)
+
 # test creating scenes...
 if __name__ == '__main__':
     destination = "../gbprojects/generated_export_test/"
-    generator.initializeGenerator()
-    project = createExampleProject()
-    generator.writeProjectToDisk(project, output_path = destination)
-
+    runTest(destination)
+    
 '''
 
 def importFromGBS(filename):

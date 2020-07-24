@@ -73,10 +73,13 @@ def createExampleProject():
 
     return project
 
+def runTest(test_dir):
+    generator.initializeGenerator()
+    project = createExampleProject()
+    generator.writeProjectToDisk(project, output_path = test_dir)
+
 # test creating scenes...
 if __name__ == '__main__':
     destination = "../gbprojects/generated_export_test/"
-    generator.initializeGenerator()
-    project = createExampleProject()
-    generator.writeProjectToDisk(project, output_path = destination)
-
+    runTest(destination)
+    

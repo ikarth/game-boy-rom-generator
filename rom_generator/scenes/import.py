@@ -5,7 +5,8 @@ import copy
 import logging
 import os
 from pathlib import Path
-from ..utilities import bcolors
+from ..utilities import bcolors, translateScriptCommandNames
+from rom_generator.meta import scripting
 
 indent_string = "   "
 
@@ -45,6 +46,64 @@ def findFilenameById(proj_data, file_id):
     filename = filtered[0]["filename"]
     return filename
 
+def convertScripts(scripts):
+    converted_scripts = []
+    for scr in scripts:
+        print(scr)
+        # [s for s in scripting.script_commands where s["command"] = scr["command"]]
+        func_call_text = translateScriptCommandNames(scr["command"]) + "("
+
+        arg_text = []
+        for k_arg, v_arg in scr["args"].items():
+            if isinstance(v_arg, str):
+                v_arg = f"'{v_arg}'"
+            arg_text.append(f"'{k_arg}'={v_arg}")
+        print(scr)
+        if "children" in scr:
+            for k_arg, v_arg in scr["children"].items():
+                print(k_arg, v_arg)
+            breakpoint()
+        func_call_text += ", ".join(arg_text) + ")"
+        print(func_call_text)
+        converted_scripts.append(func_call_text)
+    breakpoint()
+    return converted_scripts
+
+
+def convertTriggers(trigger_list):
+    elements = []
+    for element in trigger_list:
+        #print(element)
+        #print()
+        # pattern-matching on triggers
+
+        # Connection
+        script = element["script"]
+        convertScripts(script)
+        if script[0]["command"] == "EVENT_SWITCH_SCENE":
+            pass
+    return element
+
+def convertActors(actor_list):
+    elements = []
+    for element in actor_list:
+        #print(element)
+        #print()
+        # pattern-matching on triggers
+
+        if "startScript" in element.keys():
+            script = element["startScript"]
+            convertScripts(script)
+
+        if "script" in element.keys():
+            script = element["script"]
+            convertScripts(script)
+
+
+        if script[0]["command"] == "EVENT_SWITCH_SCENE":
+            pass
+    return elements
+
 scene_num = 0
 def importScene(scene_data, proj_data):
     global scene_num
@@ -58,7 +117,14 @@ def importScene(scene_data, proj_data):
     # TODO: sanity-check generated_scene_name to make sure it's valid as a
     # Python function name.
 
+    #start_script = template.pop("startScript")
+
     actors = template.pop("actors")
+    triggers = template.pop("triggers")
+    print(actors)
+    print(triggers)
+    code_actors = convertActors(actors)
+    code_triggers = convertTriggers(triggers)
 
     collision_data = template.pop("collisions")
     background_file_id = template.pop("backgroundId")
@@ -118,7 +184,7 @@ def createExampleProject():
 
 # test creating scenes...
 if __name__ == '__main__':
-    destination = "../gbprojects/scene_gen_halls_test/"
+    destination = "../gbprojects/generated_export_test/"
     generator.initializeGenerator()
     project = createExampleProject()
     generator.writeProjectToDisk(project, output_path = destination)
@@ -160,5 +226,5 @@ if __name__ == '__main__':
     parser.add_argument('--export_folder', '-e', type=str, help="gbsproj file to import", default="rom_generator/scenes/imported/")
     args = parser.parse_args()
     templates = importFromGBS(args.import_file)
-    print(templates)
+    #print(templates)
     exportTemplates(templates, args.export_folder)

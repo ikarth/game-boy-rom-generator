@@ -1,3 +1,4 @@
+import keyword
 from .scripting import getScript
 
 ''' Current issues in this generator
@@ -57,7 +58,7 @@ for cmd_key, cmd_list in children.items():
 
 
 def generateScriptMethods():
-    emitted_code = ""
+    emitted_code = "# Generated methods for scripts\nfrom rom_generator.utilities import makeElement\n\n"
     def emit_code(input_str):
         nonlocal emitted_code
         print(input_str)
@@ -86,14 +87,17 @@ def generateScriptMethods():
             if str(k) == "children":
                 has_children = True
             else:
+                k_str = str(k)
+                if keyword.iskeyword(k):
+                    k_str = "do_" + str(k)
                 arg_def = scriptCommands[input_method][k]
                 arg_type = str(type(arg_def).__name__)
-                argument_list.append(str(k) + f": {arg_type} with a default value of \"{str(arg_def)}\"")
-                code_line_string += k + " = \"" + str(scriptCommands[input_method][k]) + "\", "
+                argument_list.append(k_str + f": {arg_type} with a default value of \"{str(arg_def)}\"")
+                code_line_string += k_str + " = \"" + str(scriptCommands[input_method][k]) + "\", "
 
         if has_collapse_else_f or has_children:
             code_line_string += "children = {"
-            child_entry_strings = [f"{child_entry}: []" for child_entry in scriptCommands[input_method]["children"]]
+            child_entry_strings = [f"\'{child_entry}\': []" for child_entry in scriptCommands[input_method]["children"]]
             code_line_string += ", ".join(child_entry_strings)
             code_line_string += "}"
         elif len(list_of_cmds) > 0:
@@ -117,7 +121,10 @@ def generateScriptMethods():
             if "children" is k:
                 pass
             else:
-                code_line_string = spacing + spacing + "\"" + k + "\": " + k + ","
+                k_str = str(k)
+                if keyword.iskeyword(k):
+                    k_str = "do_" + str(k)
+                code_line_string = spacing + spacing + "\"" + str(k) + "\": " + k_str + ","
                 emit_code(code_line_string)
         emit_code(spacing + "}")
 
@@ -132,6 +139,20 @@ def generateScriptMethods():
     return emitted_code
 
 if __name__ == '__main__':
+    import os
+    rename_number = 0
     emitted = generateScriptMethods()
-    with open("rom_generator\\_script_functions.py", "w", encoding='utf-8') as py_file:
+    rename_source = "rom_generator\\script_functions.py"
+    while rename_number >= 0:
+        rename_target = f"rom_generator\\script_functions.{rename_number:07d}"
+        try:
+            os.rename(rename_source, rename_target)
+            rename_number = -1
+            break
+        except FileExistsError as err:
+            if rename_number > 9999999:
+                raise err
+        rename_number += 1
+
+    with open("rom_generator\\script_functions.py", "w", encoding='utf-8') as py_file:
         py_file.write(emitted)

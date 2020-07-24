@@ -1,3 +1,6 @@
+# Generated methods for scripts
+from rom_generator.utilities import makeElement
+
 
 # EVENT_END
 def end():
@@ -185,7 +188,7 @@ def clearData():
 
 
 # EVENT_IF_TRUE
-def ifTrue(variable = "L0", __collapseElse = "False", children = {true: [], false: []}):
+def ifTrue(variable = "L0", __collapseElse = "False", children = {'true': [], 'false': []}):
     """
     Generated method for the GBS script action EVENT_IF_TRUE.
 
@@ -207,7 +210,7 @@ def ifTrue(variable = "L0", __collapseElse = "False", children = {true: [], fals
 
 
 # EVENT_IF_FALSE
-def ifFalse(variable = "L0", __collapseElse = "False", children = {true: [], false: []}):
+def ifFalse(variable = "L0", __collapseElse = "False", children = {'true': [], 'false': []}):
     """
     Generated method for the GBS script action EVENT_IF_FALSE.
 
@@ -229,7 +232,7 @@ def ifFalse(variable = "L0", __collapseElse = "False", children = {true: [], fal
 
 
 # EVENT_IF_VALUE
-def ifValue(variable = "L3", operator = ">", comparator = "2", __collapseElse = "False", children = {true: [], false: []}):
+def ifValue(variable = "L3", operator = ">", comparator = "2", __collapseElse = "False", children = {'true': [], 'false': []}):
     """
     Generated method for the GBS script action EVENT_IF_VALUE.
 
@@ -255,7 +258,7 @@ def ifValue(variable = "L3", operator = ">", comparator = "2", __collapseElse = 
 
 
 # EVENT_IF_VALUE_COMPARE
-def ifValueCompare(vectorX = "6", operator = "==", vectorY = "3", __collapseElse = "False", children = {true: [], false: []}):
+def ifValueCompare(vectorX = "6", operator = "==", vectorY = "3", __collapseElse = "False", children = {'true': [], 'false': []}):
     """
     Generated method for the GBS script action EVENT_IF_VALUE_COMPARE.
 
@@ -281,7 +284,7 @@ def ifValueCompare(vectorX = "6", operator = "==", vectorY = "3", __collapseElse
 
 
 # EVENT_IF_INPUT
-def ifInput(input = "['a', 'b']", __collapseElse = "False", children = {true: [], false: []}):
+def ifInput(input = "['a', 'b']", __collapseElse = "False", children = {'true': [], 'false': []}):
     """
     Generated method for the GBS script action EVENT_IF_INPUT.
 
@@ -303,7 +306,7 @@ def ifInput(input = "['a', 'b']", __collapseElse = "False", children = {true: []
 
 
 # EVENT_IF_ACTOR_DIRECTION
-def ifActorDirection(actorId = "player", direction = "up", __collapseElse = "False", children = {true: [], false: []}):
+def ifActorDirection(actorId = "player", direction = "up", __collapseElse = "False", children = {'true': [], 'false': []}):
     """
     Generated method for the GBS script action EVENT_IF_ACTOR_DIRECTION.
 
@@ -327,7 +330,7 @@ def ifActorDirection(actorId = "player", direction = "up", __collapseElse = "Fal
 
 
 # EVENT_IF_SAVED_DATA
-def ifSavedData(__collapseElse = "False", children = {true: [], false: []}):
+def ifSavedData(__collapseElse = "False", children = {'true': [], 'false': []}):
     """
     Generated method for the GBS script action EVENT_IF_SAVED_DATA.
 
@@ -347,7 +350,7 @@ def ifSavedData(__collapseElse = "False", children = {true: [], false: []}):
 
 
 # EVENT_IF_ACTOR_AT_POSITION
-def ifActorAtPosition(actorId = "player", x = "0", y = "0", __collapseElse = "False", children = {true: [], false: []}):
+def ifActorAtPosition(actorId = "player", x = "0", y = "0", __collapseElse = "False", children = {'true': [], 'false': []}):
     """
     Generated method for the GBS script action EVENT_IF_ACTOR_AT_POSITION.
 
@@ -435,7 +438,7 @@ def resetVariables():
 
 
 # EVENT_LOOP
-def loop(children = {true: []}):
+def loop(children = {'true': []}):
     """
     Generated method for the GBS script action EVENT_LOOP.
 
@@ -453,7 +456,7 @@ def loop(children = {true: []}):
 
 
 # EVENT_GROUP
-def group(children = {true: []}):
+def group(children = {'true': []}):
     """
     Generated method for the GBS script action EVENT_GROUP.
 
@@ -523,7 +526,7 @@ def comment(text = ""):
 
 
 # EVENT_SET_INPUT_SCRIPT
-def setInputScript(input = "b", children = {true: []}):
+def setInputScript(input = "b", children = {'true': []}):
     """
     Generated method for the GBS script action EVENT_SET_INPUT_SCRIPT.
 
@@ -894,7 +897,7 @@ def clearFlags(variable = "L0", flag1 = "False", flag2 = "False", flag3 = "False
 
 
 # EVENT_IF_FLAGS_COMPARE
-def ifFlagsCompare(variable = "L0", flag = "1", __collapseElse = "False", children = {true: [], false: []}):
+def ifFlagsCompare(variable = "L0", flag = "1", __collapseElse = "False", children = {'true': [], 'false': []}):
     """
     Generated method for the GBS script action EVENT_IF_FLAGS_COMPARE.
 
@@ -1073,16 +1076,16 @@ def actorMoveTo():
 
 
 # EVENT_ACTOR_PUSH
-def actorPush(continue = "False"):
+def actorPush(do_continue = "False"):
     """
     Generated method for the GBS script action EVENT_ACTOR_PUSH.
 
-    continue: bool with a default value of "False"
+    do_continue: bool with a default value of "False"
     """
     element = makeElement()
     element["command"] = "EVENT_ACTOR_PUSH"
     element["args"] = {
-        "continue": continue,
+        "continue": do_continue,
     }
     return element
 

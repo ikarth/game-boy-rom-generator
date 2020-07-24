@@ -20,7 +20,7 @@ try:
 except ImportError:
     # Try backported to PY<37 `importlib_resources`.
     import importlib_resources as pkg_resources
-from utilities import bcolors
+from rom_generator.utilities import bcolors
 
 # Path hack for running modules within the rom_generator folder
 sys.path.append(os.path.abspath('.'))

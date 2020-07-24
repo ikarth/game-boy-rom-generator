@@ -3,6 +3,8 @@
 import json
 import copy
 import logging
+import os
+from pathlib import Path
 from ..utilities import bcolors
 
 indent_string = "   "
@@ -40,7 +42,7 @@ def findFilenameById(proj_data, file_id):
         filtered = [sprite for sprite in proj_data["spriteSheets"] if sprite["id"] == file_id]
     if len(filtered) == 0:
         raise ValueError("no matching ID found in gbs project")
-    file_id = filtered[0]["id"]
+    filename = filtered[0]["filename"]
     return filename
 
 scene_num = 0
@@ -65,8 +67,8 @@ def importScene(scene_data, proj_data):
     # Create the lines of source code
     code_act = f"actor_list = []"
     code_col = f"collision_data_list = {collision_data}"
-    code_bkg = f"gen_scene_bkg = generator.makeBackground({background_filename})"
-    code_scn = f"gen_scene_scn = generator.makeScene({generated_scene_name}, gen_scene_bkg, collisions=collision_data_list)"
+    code_bkg = f"gen_scene_bkg = generator.makeBackground(\"{background_filename}\")"
+    code_scn = f"gen_scene_scn = generator.makeScene(\"{generated_scene_name}\", gen_scene_bkg, collisions=collision_data_list)"
     code_con = f"gen_scene_connections = []"
 
     code_scn_data = 'scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}'
@@ -84,11 +86,50 @@ def catalog():
    """
    return '''
 
+appendix = '''
+def createExampleProject():
+    """
+    Demonstration of how the scene generators in this file can be used.
+    """
+    project = generator.makeBasicProject()
+
+    # Create sprite sheet for the player sprite
+    player_sprite_sheet = generator.addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+
+    scene_data_list = []
+    for s in catalog():
+        scene_data_list.append(s(None))
+
+    generator.connectScenesRandomlySymmetric(scene_data_list)
+
+    for sdata in scene_data_list:
+        generator.addSceneData(project, sdata)
+
+    # Add some music
+    project.music.append(generator.makeMusic("template", "template.mod"))
+
+    # Set the starting scene
+    project.settings["startSceneId"] = project.scenes[0]["id"]
+    project.settings["startX"] = 7
+    project.settings["startY"] = 21
+
+    return project
+
+# test creating scenes...
+if __name__ == '__main__':
+    destination = "../gbprojects/scene_gen_halls_test/"
+    generator.initializeGenerator()
+    project = createExampleProject()
+    generator.writeProjectToDisk(project, output_path = destination)
+
+'''
+
 def importFromGBS(filename):
     proj_data = {}
     with open(filename, "r", encoding="utf-8") as proj_file:
         proj_data = json.load(proj_file)
-    #print(json.dumps(proj_data, sort_keys=True, indent=3))
+    print(json.dumps(proj_data, sort_keys=True, indent=3))
     #print(proj_data)
     scenes = proj_data["scenes"]
     scene_templates = []
@@ -100,13 +141,24 @@ def importFromGBS(filename):
 
     func_list = f",\n{indent_string}{indent_string}".join(scene_func_names)
     code_catalog = "\n" + code_catalog_func + f"[{func_list}]\n"
-    generated_code = "\n\n".join(scene_templates) + code_catalog
+
+    output_filename = os.path.basename(filename).split(".")[0] + ".py"
+    generated_code = f"# Generated Scene Functions\n# {output_filename}\n\nfrom rom_generator import generator\n\n" + "\n\n".join(scene_templates) + code_catalog + "\n\n\n" + appendix
     return generated_code
+
+def exportTemplates(generated_code, folder):
+    codelines = generated_code.splitlines()
+    filename = codelines[1][2:]
+    print(f"<{filename}>")
+    with open(folder + filename, 'w', encoding='utf-8') as py_file:
+        py_file.write(generated_code)
 
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description="Import gbsproj file and translate it into generator templates")
     parser.add_argument('--import_file', '-i', type=str, help="gbsproj file to import", default="gbs_projects/scene_templates_test_halls.gbsproj")
+    parser.add_argument('--export_folder', '-e', type=str, help="gbsproj file to import", default="rom_generator/scenes/imported/")
     args = parser.parse_args()
     templates = importFromGBS(args.import_file)
     print(templates)
+    exportTemplates(templates, args.export_folder)

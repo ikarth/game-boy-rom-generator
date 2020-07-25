@@ -4,11 +4,12 @@ import json
 import copy
 import logging
 import os
+import textwrap
 from pathlib import Path
 from ..utilities import bcolors, translateScriptCommandNames
 from rom_generator.meta import scripting
 
-indent_string = "   "
+indent_string = "    "
 
 code_line_num = 0
 def generateCode(code_tree, indent_depth=0):
@@ -85,16 +86,27 @@ def convertTriggers(trigger_list):
 
 def convertActors(actor_list):
     elements = []
+    code_elements = []
+    code_sprites = []
+
+    # Convert sprites
     for element in actor_list:
-        #print(element)
-        #print()
+        pass
+
+    for element in actor_list:
+        print("element:")
+        print(element)
+        print()
         # pattern-matching on triggers
+        sprite_id = "x"
+
+        code_elements.append(f"generator.makeActor(None, {element['x']}, {element['y']}, {element['movementType']}, {element['animate']}, {element['moveSpeed']}, {element['animSpeed']}, script=script_data, sprite_id={sprite_id})")
 
         if "startScript" in element.keys():
             script = element["startScript"]
-            convertScripts(script)
+            element = convertScripts(script)
 
-        if "script" in element.keys():
+        if "script" in element:
             script = element["script"]
             convertScripts(script)
 
@@ -102,6 +114,10 @@ def convertActors(actor_list):
         if script[0]["command"] == "EVENT_SWITCH_SCENE":
             pass
     return elements
+
+def importSprite(sprite_sheet_data):
+    code_spritesheet = f"generator.makeSpriteSheet('{sprite_sheet_data['filename']}', name='{sprite_sheet_data['name']}', type='{sprite_sheet_data['type']}', frames={sprite_sheet_data['numFrames']})"
+    return code_spritesheet
 
 scene_num = 0
 def importScene(scene_data, proj_data):
@@ -118,12 +134,16 @@ def importScene(scene_data, proj_data):
 
     #start_script = template.pop("startScript")
 
+
+
     actors = template.pop("actors")
     triggers = template.pop("triggers")
     print(actors)
     print(triggers)
     code_actors = convertActors(actors)
     code_triggers = convertTriggers(triggers)
+
+    print(code_actors)
 
     collision_data = template.pop("collisions")
     background_file_id = template.pop("backgroundId")
@@ -142,14 +162,16 @@ def importScene(scene_data, proj_data):
                         [code_act, code_col, code_bkg, code_scn, code_con, code_scn_data, "return scene_data"]]
     generated_code = generateCode(generate_lines)
     # print(generated_code)
+
+    print(template)
     return generated_code, code_func_def
 
 code_catalog_func = '''
 def catalog():
-   """
-   Returns a list of scene functions from this part of the library.
-   """
-   return '''
+    """
+    Returns a list of scene functions from this part of the library.
+    """
+    return '''
 
 appendix = '''
 def createExampleProject():
@@ -163,8 +185,11 @@ def createExampleProject():
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
     scene_data_list = []
-    for s in catalog():
-        scene_data_list.append(s(None))
+    catalog, sprites = scene_generation()
+    for scn_func in catalog():
+        scene_data_list.append(scn_func(None))
+    for element_sprite in sprites:
+        project.spriteSheets.append(element_sprite)
 
     generator.connectScenesRandomlySymmetric(scene_data_list)
 
@@ -190,7 +215,7 @@ def runTest(test_dir):
 if __name__ == '__main__':
     destination = "../gbprojects/generated_export_test/"
     runTest(destination)
-    
+
 '''
 
 def importFromGBS(filename):
@@ -199,6 +224,33 @@ def importFromGBS(filename):
         proj_data = json.load(proj_file)
     print(json.dumps(proj_data, sort_keys=True, indent=3))
     #print(proj_data)
+
+    # Sprites
+    spritesheet_code = []
+    sheets = proj_data["spriteSheets"]
+    for sheet in sheets:
+        sprite_code = importSprite(sheet)
+        spritesheet_code.append(sprite_code)
+
+
+    code_load_sprites = "sprite_sheet_data = [\n        " + ",\n        ".join(spritesheet_code) + "]"
+    code_find_sprite = """
+    def findSpriteByName(sprite_name):
+        '''
+        Returns first sprite that matches the name given.
+        '''
+        try:
+            return [s for s in sprite_sheet_data if (s['name'] == sprite_name)][0]
+        except:
+            return None
+    """
+
+    #breakpoint()
+
+    # Backgrounds
+    bkgs = proj_data["backgrounds"]
+
+    # Scenes
     scenes = proj_data["scenes"]
     scene_templates = []
     scene_func_names = []
@@ -211,11 +263,22 @@ def importFromGBS(filename):
     code_catalog = "\n" + code_catalog_func + f"[{func_list}]\n"
 
     output_filename = os.path.basename(filename).split(".")[0] + ".py"
-    generated_code = f"# Generated Scene Functions\n# {output_filename}\n\nfrom rom_generator import generator\n\n" + "\n\n".join(scene_templates) + code_catalog + "\n\n\n" + appendix
+    generated_code = f"""# Generated Scene Functions\n# {output_filename}\n\nfrom rom_generator import generator\n\n"""
+    generated_code += "def scene_generation():\n"
+    generated_code += indent_string + code_load_sprites + "\n"
+    generated_code += indent_string + code_find_sprite + "\n"
+    generated_code += textwrap.indent("\n\n".join(scene_templates) + str(code_catalog) + "\nreturn catalog, sprite_sheet_data", indent_string)
+
+    generated_code += "\n\n\n" + appendix
     return generated_code
 
+
 def exportTemplates(generated_code, folder):
-    codelines = generated_code.splitlines()
+    print(f"generated_code: {generated_code}")
+    try:
+        codelines = generated_code.splitlines()
+    except:
+        breakpoint()
     filename = codelines[1][2:]
     print(f"<{filename}>")
     with open(folder + filename, 'w', encoding='utf-8') as py_file:

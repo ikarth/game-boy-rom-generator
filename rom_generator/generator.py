@@ -142,12 +142,30 @@ def getImageInfo(image_filename, image_type="sprites"):
 ## to the project. Mostly by calling the 'make' function to create the thing.
 ##
 
+record_of_sprites = []
+def recordSprite(sprite):
+    """
+    Check to see if this sprite already exists in this run.
+    If so, return the first instance of it.
+    """
+    global record_of_sprites
+    found = [sp for sp in record_of_sprites if ((sp["filename"] == sprite["filename"]) and (sp["type"] == sprite["type"]) and(sp["frames"] == sprite["frames"]))]
+    if (len(found) > 0):
+        return found[0]
+    # this is a new sprite
+    record_of_sprites.append(sprite)
+    return None
+
 ### A sprite sheet is a collection of images to display at the location of an actor or player.
 ### A sprite sheet can be one 16x16 static image...
 ### ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.
 def makeSpriteSheet(filename, name=None, type="static", frames=None):
     """
     Create a sprite sheet.
+
+    A sprite sheet is a collection of images to display at the location of an actor or player.
+    A sprite sheet can be one 16x16 static image...
+    ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.
     """
     if name is None:
         name = filename
@@ -155,7 +173,7 @@ def makeSpriteSheet(filename, name=None, type="static", frames=None):
     element["name"] = name
     element["type"] = type
     element["filename"] = filename
-    element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
+    # element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
     element["_generator_metadata"] = getImageInfo(filename)
     width = element["_generator_metadata"]["pixel_width"]
     height = element["_generator_metadata"]["pixel_height"]
@@ -165,6 +183,9 @@ def makeSpriteSheet(filename, name=None, type="static", frames=None):
         element["frames"] = width // 16
     else:
         element["frames"] = frames
+    record = recordSprite(element)
+    if None != record:
+        return record
     return copy.deepcopy(element)
 
 def addSpriteSheet(project, filename, name=None, type="static", frames=None):
@@ -202,12 +223,15 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     return copy.deepcopy(element)
 
 ### An actor is an object on the screen that the player can interact with.
-def makeActor(sprite, x, y, movementType="static", animate=True):
+def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", animSpeed="3", script=[], sprite_id=None):
     element = makeElement()
-    element["spriteSheetId"] = sprite["id"]
+    if sprite == None:
+        element["spriteSheetId"] = sprite_id
+    else:
+        element["spriteSheetId"] = sprite["id"]
     element["movementType"] = movementType
-    element["moveSpeed"] = "1"
-    element["animSpeed"] = "3"
+    element["moveSpeed"] = moveSpeed
+    element["animSpeed"] = animSpeed
     element["x"] = x
     element["y"] = y
     element["animate"] = animate
@@ -215,6 +239,9 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     return copy.deepcopy(element)
 
 def addActor(scene, sprite, x, y, movementType="static", animate=True):
+    """
+    Creates an actor and adds it to the scene it is given.
+    """
     element = makeActor(sprite, x, y, movementType, animate)
     scene["actors"].append(element)
     return element
@@ -559,6 +586,19 @@ def writeAssets(asset_array, output_path, sub_asset_path):
         logging.info("Temp directory deletion potentially vulnerable to symlink attacks.")
     shutil.rmtree(Path(output_path).joinpath("assets/temp/"))
 
+def uniques(list_of_elements):
+    """
+    Returns the argument, filtered to remove duplicates
+    """
+    seen = set()
+    dedupe = []
+    for element in list_of_elements:
+        e_tup = json.dumps(element, sort_keys=True)
+        if e_tup not in seen:
+            seen.add(e_tup)
+            dedupe.append(element)
+    return dedupe
+
 def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/"):
     """
      Write project to JSON
@@ -571,6 +611,8 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
     logging.info(f"Writing {filename} project file...")
     gb_project_without_ui_elements = copy.deepcopy(gb_project)
     gb_project_without_ui_elements.ui = None
+    gb_project_without_ui_elements.spriteSheets = uniques(gb_project_without_ui_elements.spriteSheets)
+    gb_project_without_ui_elements.backgrounds = uniques(gb_project_without_ui_elements.backgrounds)
     generated_project = json.dumps(gb_project_without_ui_elements.__dict__, indent=4)
     Path(output_path).mkdir(parents=True, exist_ok=True)
     with open(Path(output_path).joinpath(filename), "w") as wfile:

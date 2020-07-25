@@ -3,44 +3,59 @@
 
 from rom_generator import generator
 
-def scene_gen_template_hall_02_00001(callback):
-   actor_list = []
-   collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 207, 255, 255, 255, 240, 255, 255, 15, 255, 252, 3, 240, 207, 63, 0, 255, 252, 1, 240, 207, 31, 0, 255, 252, 3, 240, 207, 63, 0, 255, 252, 3, 240, 207, 255, 63, 255, 252, 255, 243, 207, 255, 63, 255, 252, 255, 243, 207, 255, 63, 255, 252, 63, 240, 207, 255, 3, 255, 252, 63, 0, 0, 252, 63, 0, 192, 255, 3, 0, 252, 255, 195, 255, 255, 63, 252, 255, 255, 231, 255]
-   gen_scene_bkg = generator.makeBackground("halls_02.png")
-   gen_scene_scn = generator.makeScene("_gen_template_hall_02", gen_scene_bkg, collisions=collision_data_list)
-   gen_scene_connections = []
-   scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
-   return scene_data
+def scene_generation():
+    sprite_sheet_data = [
+        generator.makeSpriteSheet('actor_animated.png', name='actor_animated', type='actor_animated', frames=6),
+        generator.makeSpriteSheet('key_00.png', name='key_00', type='static', frames=1)]
+    
+    def findSpriteByName(sprite_name):
+        '''
+        Returns first sprite that matches the name given.
+        '''
+        try:
+            return [s for s in sprite_sheet_data if (s['name'] == sprite_name)][0]
+        except:
+            return None
+    
+    def scene_gen_template_hall_02_00001(callback):
+        actor_list = []
+        collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 207, 255, 255, 255, 240, 255, 255, 15, 255, 252, 3, 240, 207, 63, 0, 255, 252, 1, 240, 207, 31, 0, 255, 252, 3, 240, 207, 63, 0, 255, 252, 3, 240, 207, 255, 63, 255, 252, 255, 243, 207, 255, 63, 255, 252, 255, 243, 207, 255, 63, 255, 252, 63, 240, 207, 255, 3, 255, 252, 63, 0, 0, 252, 63, 0, 192, 255, 3, 0, 252, 255, 195, 255, 255, 63, 252, 255, 255, 231, 255]
+        gen_scene_bkg = generator.makeBackground("halls_02.png")
+        gen_scene_scn = generator.makeScene("_gen_template_hall_02", gen_scene_bkg, collisions=collision_data_list)
+        gen_scene_connections = []
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        return scene_data
 
 
-def scene_gen_template_hall_03_00002(callback):
-   actor_list = []
-   collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 252, 63, 0, 0, 255, 3, 0, 240, 63, 0, 0, 255, 127, 254, 255, 255, 231, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
-   gen_scene_bkg = generator.makeBackground("halls_03.png")
-   gen_scene_scn = generator.makeScene("_gen_template_hall_03", gen_scene_bkg, collisions=collision_data_list)
-   gen_scene_connections = []
-   scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
-   return scene_data
+    def scene_gen_template_hall_03_00002(callback):
+        actor_list = []
+        collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 252, 63, 0, 0, 255, 3, 0, 240, 63, 0, 0, 255, 127, 254, 255, 255, 231, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
+        gen_scene_bkg = generator.makeBackground("halls_03.png")
+        gen_scene_scn = generator.makeScene("_gen_template_hall_03", gen_scene_bkg, collisions=collision_data_list)
+        gen_scene_connections = []
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        return scene_data
 
 
-def scene_gen_template_hall_04_00003(callback):
-   actor_list = []
-   collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 252, 255, 255, 207, 255, 255, 255, 252, 255, 255, 207, 255, 255, 255, 252, 63, 255, 207, 255, 192, 255, 252, 15, 252, 207, 255, 192, 255, 252, 207, 255, 15, 0, 252, 255, 0, 192, 255, 15, 0, 252, 255, 0, 192, 255, 15, 0, 252, 255, 255, 249, 255, 255, 159, 255, 255, 255, 255, 255]
-   gen_scene_bkg = generator.makeBackground("halls_04.png")
-   gen_scene_scn = generator.makeScene("_gen_template_hall_04", gen_scene_bkg, collisions=collision_data_list)
-   gen_scene_connections = []
-   scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
-   return scene_data
+    def scene_gen_template_hall_04_00003(callback):
+        actor_list = []
+        collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 252, 255, 255, 207, 255, 255, 255, 252, 255, 255, 207, 255, 255, 255, 252, 63, 255, 207, 255, 192, 255, 252, 15, 252, 207, 255, 192, 255, 252, 207, 255, 15, 0, 252, 255, 0, 192, 255, 15, 0, 252, 255, 0, 192, 255, 15, 0, 252, 255, 255, 249, 255, 255, 159, 255, 255, 255, 255, 255]
+        gen_scene_bkg = generator.makeBackground("halls_04.png")
+        gen_scene_scn = generator.makeScene("_gen_template_hall_04", gen_scene_bkg, collisions=collision_data_list)
+        gen_scene_connections = []
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        return scene_data
 
 
-def catalog():
-   """
-   Returns a list of scene functions from this part of the library.
-   """
-   return [scene_gen_template_hall_02_00001,
-      scene_gen_template_hall_03_00002,
-      scene_gen_template_hall_04_00003]
+    def catalog():
+        """
+        Returns a list of scene functions from this part of the library.
+        """
+        return [scene_gen_template_hall_02_00001,
+            scene_gen_template_hall_03_00002,
+            scene_gen_template_hall_04_00003]
 
+    return catalog, sprite_sheet_data
 
 
 
@@ -55,8 +70,11 @@ def createExampleProject():
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
     scene_data_list = []
-    for s in catalog():
-        scene_data_list.append(s(None))
+    catalog, sprites = scene_generation()
+    for scn_func in catalog():
+        scene_data_list.append(scn_func(None))
+    for element_sprite in sprites:
+        project.spriteSheets.append(element_sprite)
 
     generator.connectScenesRandomlySymmetric(scene_data_list)
 
@@ -82,4 +100,4 @@ def runTest(test_dir):
 if __name__ == '__main__':
     destination = "../gbprojects/generated_export_test/"
     runTest(destination)
-    
+

@@ -47,27 +47,48 @@ def findFilenameById(proj_data, file_id):
     filename = filtered[0]["filename"]
     return filename
 
+child_count = 0
 def convertScripts(scripts):
+    global child_count
+    print("============")
+    print(scripts)
     converted_scripts = []
     for scr in scripts:
         print(scr)
-        # [s for s in scripting.script_commands where s["command"] = scr["command"]]
-        func_call_text = "script." + translateScriptCommandNames(scr["command"]) + "("
         arg_text = []
         for k_arg, v_arg in scr["args"].items():
             if isinstance(v_arg, str):
                 v_arg = f"'{v_arg}'"
             arg_text.append(f"{k_arg}={v_arg}")
         if "children" in scr:
+            child_scripts = {}
             for k_arg, v_arg in scr["children"].items():
                 print(k_arg, v_arg)
-                convertScripts(v_arg)
+                child_args = convertScripts(v_arg)
+                child_scripts.update({k_arg: child_args})
+                print("children:")
+            print(child_scripts)
+            #converted_scripts.append(f"code_children_{child_count:05d} = {child_scripts}")
+            #arg_text.append(f"code_children_{child_count:05d}")
+            child_scripts_processed = ""
+            child_scripts_processed += "{\n"
+            subscripts = []
+            for k_i, v_i in child_scripts.items():
+                subscripts.append(f"            '{k_i}': [" + ", ".join(v_i) + "]")
+            child_scripts_processed += ",\n".join(subscripts)
+            child_scripts_processed += "\n        }"
+
+            arg_text.append('children = ' + str(child_scripts_processed))
+            child_count += 1
+
+        func_call_text = "script." + translateScriptCommandNames(scr["command"]) + "("
         func_call_text += ", ".join(arg_text) + ")"
         converted_scripts.append(func_call_text)
         print('=>')
         print(func_call_text)
         print()
     print(converted_scripts)
+    #breakpoint()
     return converted_scripts
 
 

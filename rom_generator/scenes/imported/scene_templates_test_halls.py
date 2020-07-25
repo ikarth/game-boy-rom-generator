@@ -8,7 +8,7 @@ def scene_generation():
     sprite_sheet_data = [
         generator.makeSpriteSheet('actor_animated.png', name='actor_animated', type='actor_animated', frames=6),
         generator.makeSpriteSheet('key_00.png', name='key_00', type='static', frames=1)]
-    
+
     def findSpriteByName(sprite_name):
         '''
         Returns first sprite that matches the name given.
@@ -17,11 +17,14 @@ def scene_generation():
             return [s for s in sprite_sheet_data if (s['name'] == sprite_name)][0]
         except:
             return None
-    
+
     def scene_gen_template_hall_02_00001(callback):
         actor_00 = generator.makeActor(None, 6, 11, 'static', True, 1, 3, script=[], sprite_id=findSpriteByName('key_00')['id'])
         actor_00['startScript'] = [
-            script.ifTrue(variable='25', __collapseElse='False'),
+            script.ifTrue(variable='25', __collapseElse='False', children = {
+                'true': [script.actorHide(actorId='$self$'), script.end(), script.end()],
+                'false': [script.end(), script.end()]
+            }),
             script.end()
         ]
         actor_00['script'] = [
@@ -37,7 +40,6 @@ def scene_generation():
         gen_scene_connections = []
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
         return scene_data
-
 
     def scene_gen_template_hall_03_00002(callback):
         actor_list = []
@@ -112,4 +114,3 @@ def runTest(test_dir):
 if __name__ == '__main__':
     destination = "../gbprojects/generated_export_test/"
     runTest(destination)
-

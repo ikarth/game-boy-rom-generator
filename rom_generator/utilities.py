@@ -9,7 +9,7 @@ def makeElement():
 
 # Translate GBStudio script commands to our function names...
 def translateScriptCommandNames(i):
-    n = "def " + i[6].lower()
+    n = i[6].lower()
     for j in range(7, len(i)):
         if(i[j] != '_'):
             if(i[j - 1] == '_'):

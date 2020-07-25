@@ -52,25 +52,26 @@ def convertScripts(scripts):
     for scr in scripts:
         print(scr)
         # [s for s in scripting.script_commands where s["command"] = scr["command"]]
-        func_call_text = translateScriptCommandNames(scr["command"]) + "("
-
+        func_call_text = "script." + translateScriptCommandNames(scr["command"]) + "("
         arg_text = []
         for k_arg, v_arg in scr["args"].items():
             if isinstance(v_arg, str):
                 v_arg = f"'{v_arg}'"
-            arg_text.append(f"'{k_arg}'={v_arg}")
-        print(scr)
+            arg_text.append(f"{k_arg}={v_arg}")
         if "children" in scr:
             for k_arg, v_arg in scr["children"].items():
                 print(k_arg, v_arg)
                 convertScripts(v_arg)
         func_call_text += ", ".join(arg_text) + ")"
-        print(func_call_text)
         converted_scripts.append(func_call_text)
+        print('=>')
+        print(func_call_text)
+        print()
+    print(converted_scripts)
     return converted_scripts
 
 
-def convertTriggers(trigger_list):
+def convertTriggers(trigger_list, proj_data):
     elements = []
     for element in trigger_list:
         #print(element)
@@ -84,36 +85,51 @@ def convertTriggers(trigger_list):
             pass
     return element
 
-def convertActors(actor_list):
+def convertActors(actor_list, proj_data):
     elements = []
     code_elements = []
-    code_sprites = []
-
-    # Convert sprites
-    for element in actor_list:
-        pass
-
-    for element in actor_list:
-        print("element:")
-        print(element)
-        print()
+    actor_name_list = []
+    for actor_count, element in enumerate(actor_list):
         # pattern-matching on triggers
-        sprite_id = "x"
 
-        code_elements.append(f"generator.makeActor(None, {element['x']}, {element['y']}, {element['movementType']}, {element['animate']}, {element['moveSpeed']}, {element['animSpeed']}, script=script_data, sprite_id={sprite_id})")
+        sprites = proj_data["spriteSheets"]
+        find_sprite = [s for s in sprites if s['id'] == element['spriteSheetId']]
+        if (len(find_sprite) < 1):
+            logging.error(f"Missing sprite with id of {element['spriteSheetId']}")
+        a_sprite = find_sprite[0]
+        # code_create_sprite = f"generator.makeSpriteSheet('{a_sprite['filename']}', name='{a_sprite['name']}', type='{a_sprite['type']}', frames={a_sprite['numFrames']})"
+        # code_elements.append(f"act_sprite_{sprite_count:04d} = " + copy.copy(code_create_sprite))
+        # code_sprites.append(copy.copy(code_create_sprite))
+        # code_elements.append(f"generator.makeActor(None, {element['x']}, {element['y']}, {element['movementType']}, {element['animate']}, {element['moveSpeed']}, {element['animSpeed']}, script=script_data, sprite_id=act_sprite_{sprite_count:04d}['id'])")
 
+        code_elements.append(f"actor_{actor_count:02d} = generator.makeActor(None, {element['x']}, {element['y']}, '{element['movementType']}', {element['animate']}, {element['moveSpeed']}, {element['animSpeed']}, script=[], sprite_id=findSpriteByName('{a_sprite['name']}')['id'])")
+        # sprite_count += 1
+
+        script_start = []
         if "startScript" in element.keys():
             script = element["startScript"]
-            element = convertScripts(script)
+            script_start = convertScripts(script)
 
+        if len(script_start) > 0:
+            code_elements.append(f"actor_{actor_count:02d}['startScript'] = [\n        " + ",\n        ".join(script_start) + "\n    ]")
+
+        script_main = []
         if "script" in element:
             script = element["script"]
-            convertScripts(script)
+            script_main = convertScripts(script)
 
+        if len(script_main) > 0:
+            code_elements.append(f"actor_{actor_count:02d}['script'] = [\n        " + ",\n        ".join(script_main) + "\n    ]")
+
+        actor_name_list.append(f"actor_{actor_count:02d}")
 
         if script[0]["command"] == "EVENT_SWITCH_SCENE":
             pass
-    return elements
+        #print(script_start, script_main)
+        #code_elements += script_start
+        #code_elements += script_main
+    code_elements.append("actor_list = [" + ", ".join(actor_name_list) + "]")
+    return code_elements
 
 def importSprite(sprite_sheet_data):
     code_spritesheet = f"generator.makeSpriteSheet('{sprite_sheet_data['filename']}', name='{sprite_sheet_data['name']}', type='{sprite_sheet_data['type']}', frames={sprite_sheet_data['numFrames']})"
@@ -134,14 +150,14 @@ def importScene(scene_data, proj_data):
 
     #start_script = template.pop("startScript")
 
-
+    code_actors = [f"actor_list = []"]
 
     actors = template.pop("actors")
     triggers = template.pop("triggers")
     print(actors)
     print(triggers)
-    code_actors = convertActors(actors)
-    code_triggers = convertTriggers(triggers)
+    code_actors = convertActors(actors, proj_data)
+    code_triggers = convertTriggers(triggers, proj_data)
 
     print(code_actors)
 
@@ -150,16 +166,16 @@ def importScene(scene_data, proj_data):
     background_filename = findFilenameById(proj_data, background_file_id)
 
     # Create the lines of source code
-    code_act = f"actor_list = []"
+
     code_col = f"collision_data_list = {collision_data}"
     code_bkg = f"gen_scene_bkg = generator.makeBackground(\"{background_filename}\")"
-    code_scn = f"gen_scene_scn = generator.makeScene(\"{generated_scene_name}\", gen_scene_bkg, collisions=collision_data_list)"
+    code_scn = f"gen_scene_scn = generator.makeScene(\"{generated_scene_name}\", gen_scene_bkg, collisions=collision_data_list, actors=actor_list)"
     code_con = f"gen_scene_connections = []"
 
     code_scn_data = 'scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}'
     code_func_def = f"scene{generated_scene_name}_{scene_num:05d}"
     generate_lines = ["def " + code_func_def + "(callback):",
-                        [code_act, code_col, code_bkg, code_scn, code_con, code_scn_data, "return scene_data"]]
+                        code_actors + [code_col, code_bkg, code_scn, code_con, code_scn_data, "return scene_data"]]
     generated_code = generateCode(generate_lines)
     # print(generated_code)
 
@@ -263,7 +279,7 @@ def importFromGBS(filename):
     code_catalog = "\n" + code_catalog_func + f"[{func_list}]\n"
 
     output_filename = os.path.basename(filename).split(".")[0] + ".py"
-    generated_code = f"""# Generated Scene Functions\n# {output_filename}\n\nfrom rom_generator import generator\n\n"""
+    generated_code = f"""# Generated Scene Functions\n# {output_filename}\n\nfrom rom_generator import generator\nfrom rom_generator import script_functions as script\n\n"""
     generated_code += "def scene_generation():\n"
     generated_code += indent_string + code_load_sprites + "\n"
     generated_code += indent_string + code_find_sprite + "\n"

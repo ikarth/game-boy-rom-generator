@@ -208,7 +208,7 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     element["imageHeight"] = imageHeight
     element["filename"] = str(os.path.basename(Path(filename)))
     element["full_filepath"] = str(Path(filename))
-    element["_v"] = int(round(time.time() * 1000.0))
+    #element["_v"] = int(round(time.time() * 1000.0))
     element["_generator_metadata"] = getImageInfo(filename, image_type="backgrounds")
     if imageWidth is None:
         element["imageWidth"] = element["_generator_metadata"]["pixel_width"]

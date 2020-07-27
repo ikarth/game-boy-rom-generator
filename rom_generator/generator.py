@@ -194,6 +194,21 @@ def addSpriteSheet(project, filename, name=None, type="static", frames=None):
     project.spriteSheets.append(element)
     return element
 
+
+record_of_backgrounds = []
+def recordBackground(sprite):
+    """
+    Check to see if this sprite already exists in this run.
+    If so, return the first instance of it.
+    """
+    global record_of_backgrounds
+    found = [sp for sp in record_of_backgrounds if ((sp["filename"] == sprite["filename"]) and (sp["width"] == sprite["width"]) and(sp["height"] == sprite["height"]))]
+    if (len(found) > 0):
+        return found[0]
+    # this is a new sprite
+    record_of_backgrounds.append(sprite)
+    return sprite
+
 ### A background is a static image that players and actors traverse across on screen.
 ### GBStudio imports .png images in dimensions that are multiples of 8, breaks them into 8x8 pixels.
 ### The current released version of GBStudio has a maximum of 192 unique background tiles.
@@ -220,7 +235,7 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
         element["height"] = element["_generator_metadata"]["pixel_height"] // 8
     if (element["_generator_metadata"]["pixel_width"] % 8 != 0) or (element["_generator_metadata"]["pixel_height"] % 8 != 0):
         logging.warning(f"{filename} has a dimension that is not a multiple of 8")
-    return copy.deepcopy(element)
+    return copy.deepcopy(recordBackground(element))
 
 ### An actor is an object on the screen that the player can interact with.
 def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", animSpeed="3", script=[], sprite_id=None, direction=None):

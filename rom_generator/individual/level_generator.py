@@ -4,6 +4,7 @@ import random
 from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, makeKey, makeLock
 from script_functions import actorHide, end
 import combat as combat
+import roomGen as roomGen
 def AnikaProject123():
     """
     This is my change
@@ -212,29 +213,7 @@ def createRockWorld():
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
 
-
-# Utilities
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+def grammarTest():
+    return roomGen.makeGame()
 
 
-# Run the generator
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
-    args = parser.parse_args()
-
-    initializeGenerator()
-    project = aaronTest()
-    writeProjectToDisk(project, output_path=args.destination)
-
-    if args.destination == "../gbprojects/projects/":
-        print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
-        print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

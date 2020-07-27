@@ -119,7 +119,7 @@ def generateScriptMethods():
             code_line_string = spacing + "element[\"args\"] = {"
             emit_code(code_line_string)
             for k in list_of_cmds:
-                if "children" is k:
+                if "children" == k:
                     pass
                 else:
                     k_str = str(k)

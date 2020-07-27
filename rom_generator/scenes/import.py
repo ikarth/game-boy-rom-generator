@@ -200,12 +200,12 @@ def importScene(scene_data, proj_data):
 
     actors = template.pop("actors")
     triggers = template.pop("triggers")
-    print(actors)
-    print(triggers)
+    #print(actors)
+    #print(triggers)
     code_actors = convertActors(actors, proj_data)
     code_triggers = convertTriggers(triggers, proj_data)
 
-    print(code_actors)
+    #print(code_actors)
 
     collision_data = template.pop("collisions")
     background_file_id = template.pop("backgroundId")
@@ -282,22 +282,22 @@ if __name__ == '__main__':
 '''
 
 import collections.abc
-def replaceKeyInData(data, target_key, replace_func, recursion_level=0):
-    print(recursion_level)
-    if recursion_level > 3:
-        print(data)
-        if recursion_level > 13:
-            breakpoint()
-    if (isinstance(data, list)):
-        for scn_idx, scn_val in enumerate(data):
-            data[scn_idx] = replaceKeyInData(data[scn_idx], target_key, replace_func, recursion_level+1)
-    if (isinstance(data, collections.abc.Mapping)):
-        for scn_idx, scn_val in data.items():
-            if target_key == scn_idx:
-                data[scn_idx] = replace_func
-            else:
-                data[scn_idx] = replaceKeyInData(data[scn_idx], target_key, replace_func, recursion_level+1)
-    return data
+# def replaceKeyInData(data, target_key, replace_func, recursion_level=0):
+#     print(recursion_level)
+#     if recursion_level > 3:
+#         print(data)
+#         if recursion_level > 13:
+#             breakpoint()
+#     if (isinstance(data, list)):
+#         for scn_idx, scn_val in enumerate(data):
+#             data[scn_idx] = replaceKeyInData(data[scn_idx], target_key, replace_func, recursion_level+1)
+#     if (isinstance(data, collections.abc.Mapping)):
+#         for scn_idx, scn_val in data.items():
+#             if target_key == scn_idx:
+#                 data[scn_idx] = replace_func
+#             else:
+#                 data[scn_idx] = replaceKeyInData(data[scn_idx], target_key, replace_func, recursion_level+1)
+#     return data
 
 
 def replaceInDataByKey(data, target_key, replace_func, recursion_level=0):
@@ -317,19 +317,20 @@ def importFromGBS(filename):
     proj_data = {}
     with open(filename, "r", encoding="utf-8") as proj_file:
         proj_data = json.load(proj_file)
-    #print(json.dumps(proj_data, sort_keys=True, indent=3))
+    logging.debug(json.dumps(proj_data, sort_keys=True, indent=3))
     #pprint.pprint(proj_data)
 
     scene_indexes = {v["id"]: k for k, v in enumerate(proj_data["scenes"])}
 
     template_connections = []
 
+    # Find scene ids in scripts and notate them.
     for scn_idx, scn_val in enumerate(proj_data["scenes"]):
         current_scene_id = scn_val["id"]
         print(current_scene_id)
         replacement_func = lambda scn_id: "INSERT*STRING*HERE"
         def scene_id_replace(s_id):
-            print(s_id, '\t', current_scene_id, '\t', str(s_id) == str(current_scene_id))
+            logging.info(f"{s_id}\t{current_scene_id}\t{str(s_id)} == {str(current_scene_id)}")
             if str(s_id) == str(current_scene_id):
                 return "♔SCENE_REFERENCE_TO_SELF"
             else:
@@ -353,7 +354,6 @@ def importFromGBS(filename):
     for sheet in sheets:
         sprite_code = importSprite(sheet)
         spritesheet_code.append(sprite_code)
-
 
     code_load_sprites = "sprite_sheet_data = [\n        " + ",\n        ".join(spritesheet_code) + "]"
     code_find_sprite = """
@@ -415,6 +415,12 @@ def importFromGBS(filename):
     #         search_func_call = f"getBySceneLabel('{new_target_id}')"
     #         revised_string = revised_string[:first_ref.start()] + search_func_call + revised_string[first_ref.end():]
     #     scene_templates[s_index] = revised_string
+
+
+    # TODO:
+    # - customEvents
+    # music
+    # variables
 
     func_list = f",\n{indent_string}{indent_string}".join(scene_func_names)
     code_catalog = "\n" + code_catalog_func + f"[{func_list}]\n"

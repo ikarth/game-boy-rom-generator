@@ -99,7 +99,7 @@ def makeMusic(name, filename):
     element = makeElement()
     element["name"] = name
     element["filename"] = filename
-    element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
+    #element["_v"] = int(round(time.time() * 1000.0)) # set creation time (for versioning?)
     return element
 
 def getAssetFolder():

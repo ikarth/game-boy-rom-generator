@@ -18,9 +18,6 @@ code_line_num = 0
 def generateCode(code_tree, indent_depth=0):
     global code_line_num
     code_line_num += 1
-    # print(code_line_num)
-    # print(code_tree)
-
     code_string = ""
     if isinstance(code_tree, str):
         return code_tree + "\n"
@@ -193,19 +190,13 @@ def importScene(scene_data, proj_data):
     # TODO: sanity-check generated_scene_name to make sure it's valid as a
     # Python function name.
 
-    #start_script = template.pop("startScript")
-
     code_actors = [f"actor_list = []"]
     code_triggers = [f"trigger_list = []"]
-
     actors = template.pop("actors")
     triggers = template.pop("triggers")
-    #print(actors)
-    #print(triggers)
     code_actors = convertActors(actors, proj_data)
     code_triggers = convertTriggers(triggers, proj_data)
 
-    #print(code_actors)
 
     collision_data = template.pop("collisions")
     background_file_id = template.pop("backgroundId")
@@ -224,9 +215,9 @@ def importScene(scene_data, proj_data):
     generate_lines = ["def " + code_func_name+ "(callback):",
                         code_actors + code_triggers + [code_col, code_bkg, code_scn, code_con, code_scn_data, "return scene_data"]]
     generated_code = generateCode(generate_lines)
-    # print(generated_code)
 
-    print(template)
+    # print(generated_code)
+    #print(template)
     return generated_code, code_func_name, scene_original_id
 
 code_catalog_func = '''
@@ -282,23 +273,6 @@ if __name__ == '__main__':
 '''
 
 import collections.abc
-# def replaceKeyInData(data, target_key, replace_func, recursion_level=0):
-#     print(recursion_level)
-#     if recursion_level > 3:
-#         print(data)
-#         if recursion_level > 13:
-#             breakpoint()
-#     if (isinstance(data, list)):
-#         for scn_idx, scn_val in enumerate(data):
-#             data[scn_idx] = replaceKeyInData(data[scn_idx], target_key, replace_func, recursion_level+1)
-#     if (isinstance(data, collections.abc.Mapping)):
-#         for scn_idx, scn_val in data.items():
-#             if target_key == scn_idx:
-#                 data[scn_idx] = replace_func
-#             else:
-#                 data[scn_idx] = replaceKeyInData(data[scn_idx], target_key, replace_func, recursion_level+1)
-#     return data
-
 
 def replaceInDataByKey(data, target_key, replace_func, recursion_level=0):
     if (isinstance(data, list)):
@@ -318,7 +292,6 @@ def importFromGBS(filename):
     with open(filename, "r", encoding="utf-8") as proj_file:
         proj_data = json.load(proj_file)
     logging.debug(json.dumps(proj_data, sort_keys=True, indent=3))
-    #pprint.pprint(proj_data)
 
     scene_indexes = {v["id"]: k for k, v in enumerate(proj_data["scenes"])}
 
@@ -336,17 +309,6 @@ def importFromGBS(filename):
             else:
                 return "♔SCENE_REFERENCE_TO_ANOTHER_SCENE"
         proj_data["scenes"][scn_idx] = replaceInDataByKey(proj_data["scenes"][scn_idx], 'sceneId', scene_id_replace)
-
-    # for scn_idx, scn_val in enumerate(proj_data["scenes"]):
-    #     current_scene_id = scn_val["id"]
-    #     def sceneIdReplace(s_id):
-    #         if s_id == current_scene_id:
-    #             return "<♔SCENE_REFERENCE_SELF♔>"
-    #         return s_id # "<♔SCENE_REFERENCE_" + proj_data["scenes"][scene_indexes[s_id]]["name"] + "♔>"
-    #     proj_data["scenes"][scn_idx] = replaceKeyInData(proj_data["scenes"], 'sceneId', "sceneIdReplace")
-    #
-
-    #breakpoint()
 
     # Sprites
     spritesheet_code = []
@@ -379,8 +341,6 @@ def importFromGBS(filename):
         return s_id
     """
 
-    #breakpoint()
-
     # Backgrounds
     bkgs = proj_data["backgrounds"]
 
@@ -394,28 +354,6 @@ def importFromGBS(filename):
         scene_templates.append(scene_code)
         scene_func_names.append(scene_func_name)
         scene_original_ids.append(scene_original_id)
-
-    # def findSceneByOriginalId(orig_id):
-    #     return scene_func_names[scene_original_ids.index(orig_id)]
-    #
-    # for s_index, s_template in enumerate(scene_templates):
-    #     revised_string = s_template
-    #     while True:
-    #         id_references = (m for m in re.finditer("<♔.*♔>", revised_string))
-    #         first_ref = next(id_references, None)
-    #         if first_ref is None:
-    #             break
-    #         new_target_id = "'000-0000-000'"
-    #         old_target_id_pos = re.search("\|'.*'♔>", revised_string[first_ref.start():first_ref.end()])
-    #         old_target_id = revised_string[first_ref.start():first_ref.end()][old_target_id_pos.start():old_target_id_pos.end()][2:-3]
-    #         print(revised_string[first_ref.start():first_ref.end()])
-    #         print(old_target_id)
-    #         new_target_id = findSceneByOriginalId(old_target_id)
-    #         print(new_target_id)
-    #         search_func_call = f"getBySceneLabel('{new_target_id}')"
-    #         revised_string = revised_string[:first_ref.start()] + search_func_call + revised_string[first_ref.end():]
-    #     scene_templates[s_index] = revised_string
-
 
     # TODO:
     # - customEvents

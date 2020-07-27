@@ -74,7 +74,7 @@ def convertScripts(scripts):
                     if keyword.iskeyword(k_arg):
                         k_str = "do_" + str(k_arg)
                     if k_str == "sceneId":
-                        v_arg = {v_arg} #f"<♔sceneId|{v_arg}♔>"
+                        v_arg = v_arg #f"<♔sceneId|{v_arg}♔>"
                         # TODO: have way to point sceneId at new target
                     arg_text.append(f"{k_str}={v_arg}")
             if "children" in scr:
@@ -308,6 +308,7 @@ def importFromGBS(filename):
                 return "♔SCENE_REFERENCE_TO_SELF"
             else:
                 return "♔SCENE_REFERENCE_TO_ANOTHER_SCENE"
+            return s_id
         proj_data["scenes"][scn_idx] = replaceInDataByKey(proj_data["scenes"][scn_idx], 'sceneId', scene_id_replace)
 
     # Sprites

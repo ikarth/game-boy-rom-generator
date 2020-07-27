@@ -632,8 +632,39 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
     logging.info(f"Writing {filename} project file...")
     gb_project_without_ui_elements = copy.deepcopy(gb_project)
     gb_project_without_ui_elements.ui = None
-    gb_project_without_ui_elements.spriteSheets = uniques(gb_project_without_ui_elements.spriteSheets)
-    gb_project_without_ui_elements.backgrounds = uniques(gb_project_without_ui_elements.backgrounds)
+
+    # TODO: duplicates need to be unified in ID values as well, so we don't end up with missing images...
+    # gb_project_without_ui_elements.spriteSheets = uniques(gb_project_without_ui_elements.spriteSheets)
+    # gb_project_without_ui_elements.backgrounds = uniques(gb_project_without_ui_elements.backgrounds)
+
+    DEBUG_TEST_TYPES = False
+    if DEBUG_TEST_TYPES:
+        import collections.abc
+        import pprint
+        def recursivePrintType(data, func):
+            length = ""
+            try:
+                length = str(len(data))
+            except:
+                pass
+            if isinstance(data, int) or isinstance(data, str):
+                pass
+            else:
+                print(f"{func(data)}\t{length}")
+            if (isinstance(data, set)):
+                pprint.pprint(data)
+                breakpoint()
+            if (isinstance(data, list)):
+                for data_key, data_val in enumerate(data):
+                    recursivePrintType(data_val, func)
+            if (isinstance(data, collections.abc.Mapping)):
+                for data_key, data_val in data.items():
+                    recursivePrintType(data_val, func)
+            if (isinstance(data, types.SimpleNamespace)):
+                for data_key, data_val in data.__dict__.items():
+                    recursivePrintType(data_val, func)
+        recursivePrintType(gb_project_without_ui_elements, type)
+
     generated_project = json.dumps(gb_project_without_ui_elements.__dict__, indent=4)
     Path(output_path).mkdir(parents=True, exist_ok=True)
     with open(Path(output_path).joinpath(filename), "w") as wfile:

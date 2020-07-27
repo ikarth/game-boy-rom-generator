@@ -115,18 +115,19 @@ def generateScriptMethods():
         emit_code(code_line_string)
         code_line_string = spacing + "element[\"command\"] = \"" + input_method + "\""
         emit_code(code_line_string)
-        code_line_string = spacing + "element[\"args\"] = {"
-        emit_code(code_line_string)
-        for k in list_of_cmds:
-            if "children" is k:
-                pass
-            else:
-                k_str = str(k)
-                if keyword.iskeyword(k):
-                    k_str = "do_" + str(k)
-                code_line_string = spacing + spacing + "\"" + str(k) + "\": " + k_str + ","
-                emit_code(code_line_string)
-        emit_code(spacing + "}")
+        if (len(list_of_cmds) > 0):
+            code_line_string = spacing + "element[\"args\"] = {"
+            emit_code(code_line_string)
+            for k in list_of_cmds:
+                if "children" is k:
+                    pass
+                else:
+                    k_str = str(k)
+                    if keyword.iskeyword(k):
+                        k_str = "do_" + str(k)
+                    code_line_string = spacing + spacing + "\"" + str(k) + "\": " + k_str + ","
+                    emit_code(code_line_string)
+            emit_code(spacing + "}")
 
         if has_collapse_else_f or has_children:
             child_code_lines = child_clause.splitlines()

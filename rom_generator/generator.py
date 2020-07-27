@@ -223,15 +223,18 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     return copy.deepcopy(element)
 
 ### An actor is an object on the screen that the player can interact with.
-def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", animSpeed="3", script=[], sprite_id=None):
+def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", animSpeed="3", script=[], sprite_id=None, direction=None):
     element = makeElement()
     if sprite == None:
         element["spriteSheetId"] = sprite_id
     else:
         element["spriteSheetId"] = sprite["id"]
     element["movementType"] = movementType
-    element["moveSpeed"] = moveSpeed
+    if not moveSpeed is None:
+        element["moveSpeed"] = moveSpeed
     element["animSpeed"] = animSpeed
+    if not direction is None:
+        element["direction"] = direction
     element["x"] = x
     element["y"] = y
     element["animate"] = animate
@@ -247,8 +250,9 @@ def addActor(scene, sprite, x, y, movementType="static", animate=True):
     return element
 
 ### A trigger causes a script to play when the player reaches the trigger's location.
-def makeTrigger(trigger, x, y, width, height, script=[]):
+def makeTrigger(trigger_name, x, y, width, height, script=[]):
   element = makeElement()
+  element["trigger"] = trigger_name
   element["x"] = x
   element["y"] = y
   element["width"] = width
@@ -265,7 +269,22 @@ def addSceneBackground(project, scene, background):
     [print(s) for s in project.scenes if s["id"] == scene["id"]]
     return scene
 
-def makeScene(name, background, width=None, height=None, x=None, y=None, collisions=[], actors=[], triggers=[]):
+record_of_scenes = []
+def recordScene(scene, scene_label):
+    """
+    Record the scenes that have been created so far this session.
+    """
+    global record_of_scenes
+    record_of_sprites.append((scene_label, scene))
+
+def getSceneIdByLabel(scene_label):
+    scene_iter = (rs[1] for rs in record_of_scenes if rs[0] == scene_label)
+    found_scene = next(scene_iter, None)
+    if found_scene is None:
+        return None
+    return found_scene['id']
+
+def makeScene(name, background, width=None, height=None, x=None, y=None, collisions=[], actors=[], triggers=[], scene_label="Scene"):
     """Creates a scene element.
     name is the scene name (arbitrary string)
     background is a background element (background data element).
@@ -280,7 +299,7 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     scene_count += 1
     element = makeElement()
     if name is None:
-        element["name"] = f"Scene_{scene_count:04}"
+        element["name"] = f"{scene_label}_{scene_count:04}"
     else:
         element["name"] = name
     element["backgroundId"] = background["id"]
@@ -307,7 +326,9 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     element["collisions"] = collisions
     element["actors"] = actors
     element["triggers"] = triggers
-    return copy.deepcopy(element)
+    record_scene = copy.deepcopy(element)
+    recordScene(record_scene, scene_label)
+    return record_scene
 
 def addSceneData(project, scene_data):
     """

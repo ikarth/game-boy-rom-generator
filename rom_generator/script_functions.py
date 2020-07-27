@@ -10,8 +10,6 @@ def end():
     """
     element = makeElement()
     element["command"] = "EVENT_END"
-    element["args"] = {
-    }
     return element
 
 
@@ -23,8 +21,6 @@ def stop():
     """
     element = makeElement()
     element["command"] = "EVENT_STOP"
-    element["args"] = {
-    }
     return element
 
 
@@ -74,8 +70,6 @@ def startBattle():
     """
     element = makeElement()
     element["command"] = "EVENT_START_BATTLE"
-    element["args"] = {
-    }
     return element
 
 
@@ -87,8 +81,6 @@ def returnToTitle():
     """
     element = makeElement()
     element["command"] = "EVENT_RETURN_TO_TITLE"
-    element["args"] = {
-    }
     return element
 
 
@@ -100,8 +92,6 @@ def scenePushState():
     """
     element = makeElement()
     element["command"] = "EVENT_SCENE_PUSH_STATE"
-    element["args"] = {
-    }
     return element
 
 
@@ -128,8 +118,6 @@ def sceneResetState():
     """
     element = makeElement()
     element["command"] = "EVENT_SCENE_RESET_STATE"
-    element["args"] = {
-    }
     return element
 
 
@@ -156,8 +144,6 @@ def loadData():
     """
     element = makeElement()
     element["command"] = "EVENT_LOAD_DATA"
-    element["args"] = {
-    }
     return element
 
 
@@ -169,8 +155,6 @@ def saveData():
     """
     element = makeElement()
     element["command"] = "EVENT_SAVE_DATA"
-    element["args"] = {
-    }
     return element
 
 
@@ -182,8 +166,6 @@ def clearData():
     """
     element = makeElement()
     element["command"] = "EVENT_CLEAR_DATA"
-    element["args"] = {
-    }
     return element
 
 
@@ -432,8 +414,6 @@ def resetVariables():
     """
     element = makeElement()
     element["command"] = "EVENT_RESET_VARIABLES"
-    element["args"] = {
-    }
     return element
 
 
@@ -553,8 +533,6 @@ def setBackgroundScript():
     """
     element = makeElement()
     element["command"] = "EVENT_SET_BACKGROUND_SCRIPT"
-    element["args"] = {
-    }
     return element
 
 
@@ -625,8 +603,6 @@ def setRandomValue():
     """
     element = makeElement()
     element["command"] = "EVENT_SET_RANDOM_VALUE"
-    element["args"] = {
-    }
     return element
 
 
@@ -668,8 +644,6 @@ def mathAdd():
     """
     element = makeElement()
     element["command"] = "EVENT_MATH_ADD"
-    element["args"] = {
-    }
     return element
 
 
@@ -681,8 +655,6 @@ def mathSub():
     """
     element = makeElement()
     element["command"] = "EVENT_MATH_SUB"
-    element["args"] = {
-    }
     return element
 
 
@@ -694,8 +666,6 @@ def mathMul():
     """
     element = makeElement()
     element["command"] = "EVENT_MATH_MUL"
-    element["args"] = {
-    }
     return element
 
 
@@ -707,8 +677,6 @@ def mathDiv():
     """
     element = makeElement()
     element["command"] = "EVENT_MATH_DIV"
-    element["args"] = {
-    }
     return element
 
 
@@ -720,8 +688,6 @@ def mathMod():
     """
     element = makeElement()
     element["command"] = "EVENT_MATH_MOD"
-    element["args"] = {
-    }
     return element
 
 
@@ -733,8 +699,6 @@ def mathAddValue():
     """
     element = makeElement()
     element["command"] = "EVENT_MATH_ADD_VALUE"
-    element["args"] = {
-    }
     return element
 
 
@@ -746,8 +710,6 @@ def mathSubValue():
     """
     element = makeElement()
     element["command"] = "EVENT_MATH_SUB_VALUE"
-    element["args"] = {
-    }
     return element
 
 
@@ -759,8 +721,6 @@ def mathMulValue():
     """
     element = makeElement()
     element["command"] = "EVENT_MATH_MUL_VALUE"
-    element["args"] = {
-    }
     return element
 
 
@@ -772,8 +732,6 @@ def mathDivValue():
     """
     element = makeElement()
     element["command"] = "EVENT_MATH_DIV_VALUE"
-    element["args"] = {
-    }
     return element
 
 
@@ -785,8 +743,6 @@ def mathModValue():
     """
     element = makeElement()
     element["command"] = "EVENT_MATH_MOD_VALUE"
-    element["args"] = {
-    }
     return element
 
 
@@ -798,8 +754,6 @@ def copyValue():
     """
     element = makeElement()
     element["command"] = "EVENT_COPY_VALUE"
-    element["args"] = {
-    }
     return element
 
 
@@ -1070,8 +1024,6 @@ def actorMoveTo():
     """
     element = makeElement()
     element["command"] = "EVENT_ACTOR_MOVE_TO"
-    element["args"] = {
-    }
     return element
 
 
@@ -1366,8 +1318,6 @@ def showSprites():
     """
     element = makeElement()
     element["command"] = "EVENT_SHOW_SPRITES"
-    element["args"] = {
-    }
     return element
 
 
@@ -1379,8 +1329,6 @@ def hideSprites():
     """
     element = makeElement()
     element["command"] = "EVENT_HIDE_SPRITES"
-    element["args"] = {
-    }
     return element
 
 
@@ -1441,8 +1389,6 @@ def overlayHide():
     """
     element = makeElement()
     element["command"] = "EVENT_OVERLAY_HIDE"
-    element["args"] = {
-    }
     return element
 
 
@@ -1490,8 +1436,6 @@ def musicStop():
     """
     element = makeElement()
     element["command"] = "EVENT_MUSIC_STOP"
-    element["args"] = {
-    }
     return element
 
 
@@ -1503,8 +1447,6 @@ def soundPlayBeep():
     """
     element = makeElement()
     element["command"] = "EVENT_SOUND_PLAY_BEEP"
-    element["args"] = {
-    }
     return element
 
 

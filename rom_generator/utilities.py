@@ -1,5 +1,6 @@
 import uuid
 import copy
+import keyword
 
 ### Create a basic GBS element, with a unique ID
 def makeElement():
@@ -16,7 +17,10 @@ def translateScriptCommandNames(i):
                 n+=i[j]
             else:
                 n += i[j].lower()
-    return n
+    cmd_str = str(n)
+    #if keyword.iskeyword(n):
+    #    cmd_str = "do_" + str(n)
+    return cmd_str
 
 
 ## Just some colors for fancy printing

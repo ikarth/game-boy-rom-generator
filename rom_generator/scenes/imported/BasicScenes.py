@@ -97,17 +97,17 @@ def scene_generation():
         actor_list = [actor_00, actor_01, actor_02, actor_03, actor_04, actor_05, actor_06]
         trigger_00 = generator.makeTrigger('trigger_00', 25, 13, 2, 2)
         trigger_00['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_ANOTHER_SCENE', x=21, y=29, direction='up', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE', x=21, y=29, direction='up', fadeSpeed='2'),
             script.end()
         ]
         trigger_01 = generator.makeTrigger('trigger_01', 24, 8, 2, 1)
         trigger_01['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_ANOTHER_SCENE', x=9, y=15, direction='up', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE', x=9, y=15, direction='up', fadeSpeed='2'),
             script.end()
         ]
         trigger_02 = generator.makeTrigger('trigger_02', 10, 8, 2, 1)
         trigger_02['script'] = [
-            script.switchScene(x=9, y=14, direction='up', sceneId='♔SCENE_REFERENCE_TO_ANOTHER_SCENE', fadeSpeed='2'),
+            script.switchScene(x=9, y=14, direction='up', sceneId='♔REFERENCE_SCENE', fadeSpeed='2'),
             script.end()
         ]
         trigger_list = [trigger_00, trigger_01, trigger_02]
@@ -144,7 +144,7 @@ def scene_generation():
         actor_list = [actor_00, actor_01, actor_02, actor_03, actor_04, actor_05]
         trigger_00 = generator.makeTrigger('trigger_00', 9, 17, 2, 1)
         trigger_00['script'] = [
-            script.switchScene(x=24, y=9, direction='down', sceneId='♔SCENE_REFERENCE_TO_ANOTHER_SCENE', fadeSpeed='2'),
+            script.switchScene(x=24, y=9, direction='down', sceneId='♔REFERENCE_SCENE', fadeSpeed='2'),
             script.end()
         ]
         trigger_list = [trigger_00]
@@ -192,7 +192,7 @@ def scene_generation():
         actor_list = [actor_00, actor_01, actor_02, actor_03, actor_04]
         trigger_00 = generator.makeTrigger('trigger_00', 9, 16, 2, 1)
         trigger_00['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_ANOTHER_SCENE', x=10, y=9, direction='down', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE', x=10, y=9, direction='down', fadeSpeed='2'),
             script.end()
         ]
         trigger_list = [trigger_00]
@@ -286,7 +286,7 @@ def scene_generation():
         actor_list = [actor_00, actor_01, actor_02, actor_03, actor_04]
         trigger_00 = generator.makeTrigger('trigger_00', 21, 30, 2, 2)
         trigger_00['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_ANOTHER_SCENE', x=25, y=15, direction='down', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE', x=25, y=15, direction='down', fadeSpeed='2'),
             script.end()
         ]
         trigger_list = [trigger_00]
@@ -356,17 +356,17 @@ def scene_generation():
         actor_list = [actor_00, actor_01]
         trigger_00 = generator.makeTrigger('trigger_00', 15, 27, 2, 1)
         trigger_00['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_SELF', x=15, y=26, direction='up', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE_SELF', x=15, y=26, direction='up', fadeSpeed='2'),
             script.end()
         ]
         trigger_01 = generator.makeTrigger('trigger_01', 8, 5, 2, 1)
         trigger_01['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_SELF', x=8, y=6, direction='down', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE_SELF', x=8, y=6, direction='down', fadeSpeed='2'),
             script.end()
         ]
         trigger_02 = generator.makeTrigger('trigger_02', 1, 10, 1, 2)
         trigger_02['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_SELF', x=2, y=11, direction='right', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE_SELF', x=2, y=11, direction='right', fadeSpeed='2'),
             script.end()
         ]
         trigger_list = [trigger_00, trigger_01, trigger_02]
@@ -382,18 +382,18 @@ def scene_generation():
         actor_list = []
         trigger_00 = generator.makeTrigger('trigger_00', 11, 24, 2, 1)
         trigger_00['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_SELF', x=11, y=23, direction='up', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE_SELF', x=11, y=23, direction='up', fadeSpeed='2'),
             script.end()
         ]
         trigger_01 = generator.makeTrigger('trigger_01', 20, 19, 2, 1)
         trigger_01['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_SELF', x=20, y=20, direction='down', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE_SELF', x=20, y=20, direction='down', fadeSpeed='2'),
             script.end()
         ]
         trigger_02 = generator.makeTrigger('trigger_02', 14, 7, 2, 1)
         trigger_02['script'] = [
             script.ifTrue(variable='25', children = {
-                'true': [script.switchScene(sceneId='♔SCENE_REFERENCE_TO_ANOTHER_SCENE', x=9, y=16, direction='', fadeSpeed='2'), script.end()],
+                'true': [script.switchScene(sceneId='♔REFERENCE_SCENE', x=9, y=16, direction='', fadeSpeed='2'), script.end()],
                 'false': [script.text(text=['The door is\nlocked.'], avatarId=''), script.end()]
             }),
             script.end()
@@ -411,17 +411,17 @@ def scene_generation():
         actor_list = []
         trigger_00 = generator.makeTrigger('trigger_00', 18, 15, 2, 1)
         trigger_00['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_SELF', x=18, y=16, direction='down', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE_SELF', x=18, y=16, direction='down', fadeSpeed='2'),
             script.end()
         ]
         trigger_01 = generator.makeTrigger('trigger_01', 13, 26, 2, 1)
         trigger_01['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_SELF', x=13, y=25, direction='up', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE_SELF', x=13, y=25, direction='up', fadeSpeed='2'),
             script.end()
         ]
         trigger_02 = generator.makeTrigger('trigger_02', 4, 11, 2, 1)
         trigger_02['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_SELF', x=4, y=12, direction='down', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE_SELF', x=4, y=12, direction='down', fadeSpeed='2'),
             script.end()
         ]
         trigger_list = [trigger_00, trigger_01, trigger_02]
@@ -442,7 +442,7 @@ def scene_generation():
         ]
         trigger_01 = generator.makeTrigger('trigger_01', 9, 17, 2, 1)
         trigger_01['script'] = [
-            script.switchScene(sceneId='♔SCENE_REFERENCE_TO_ANOTHER_SCENE', x=14, y=8, direction='', fadeSpeed='2'),
+            script.switchScene(sceneId='♔REFERENCE_SCENE', x=14, y=8, direction='', fadeSpeed='2'),
             script.end()
         ]
         trigger_list = [trigger_00, trigger_01]

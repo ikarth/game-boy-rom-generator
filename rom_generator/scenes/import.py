@@ -287,6 +287,23 @@ def replaceInDataByKey(data, target_key, replace_func, recursion_level=0):
 
     return data
 
+def getEntityIds(data, path=[], id_list=[]):
+    if (isinstance(data, list)):
+        for scn_idx, scn_val in enumerate(data):
+            id_list = getEntityIds(scn_val, path + [scn_idx], id_list)
+    if (isinstance(data, collections.abc.Mapping)):
+        for scn_idx, scn_val in data.items():
+            if "id" == scn_idx:
+                name = str(path[0]) + "_" + str(path[-1])
+                print
+                if "name" in data:
+                    name = data["name"]
+                if "filename" in data:
+                    name = data["filename"]
+                id_list.append([path, data["id"], name])
+            id_list = getEntityIds(scn_val, path + [scn_idx], id_list)
+    return id_list
+
 def importFromGBS(filename):
     proj_data = {}
     with open(filename, "r", encoding="utf-8") as proj_file:
@@ -294,6 +311,12 @@ def importFromGBS(filename):
     logging.debug(json.dumps(proj_data, sort_keys=True, indent=3))
 
     scene_indexes = {v["id"]: k for k, v in enumerate(proj_data["scenes"])}
+
+    entity_ids = getEntityIds(proj_data)
+    map_ids_to_names = {i:n for p,i,n in entity_ids}
+    map_names_to_ids = {n:i for p,i,n in entity_ids}
+    #pprint.pprint(map_ids_to_names)
+    #breakpoint()
 
     template_connections = []
 
@@ -305,9 +328,9 @@ def importFromGBS(filename):
         def scene_id_replace(s_id):
             logging.info(f"{s_id}\t{current_scene_id}\t{str(s_id)} == {str(current_scene_id)}")
             if str(s_id) == str(current_scene_id):
-                return "♔SCENE_REFERENCE_TO_SELF"
+                return "♔REFERENCE_SCENE_SELF"
             else:
-                return "♔SCENE_REFERENCE_TO_ANOTHER_SCENE"
+                return "♔REFERENCE_SCENE"
             return s_id
         proj_data["scenes"][scn_idx] = replaceInDataByKey(proj_data["scenes"][scn_idx], 'sceneId', scene_id_replace)
 

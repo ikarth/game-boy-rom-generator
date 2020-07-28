@@ -12,14 +12,14 @@
         "startX": 9,
         "startY": 9,
         "startDirection": "down",
-        "startSceneId": "7178a00e-9ea4-4390-afa9-dd986dda1969",
-        "playerSpriteSheetId": "d5cf3d36-0ee7-4e30-9676-686f47007010"
+        "startSceneId": "9afa749a-afd3-4d7c-8878-c6d7735722d1",
+        "playerSpriteSheetId": "c27152ff-6976-491d-8470-7a26e29a5974"
     },
     "scenes": [
         {
-            "id": "7178a00e-9ea4-4390-afa9-dd986dda1969",
+            "id": "9afa749a-afd3-4d7c-8878-c6d7735722d1",
             "name": "Scene",
-            "backgroundId": "8d6b24c6-d87e-4c9f-9a5e-1bf7b3c94e86",
+            "backgroundId": "9f772ca8-43f0-458e-b1b6-e90c85af3127",
             "width": 32,
             "height": 32,
             "x": 200,
@@ -27,17 +27,8 @@
             "collisions": [],
             "actors": [
                 {
-                    "id": "f0c794d0-6773-470b-9eee-50341f323405",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 1,
-                    "y": 1
-                },
-                {
-                    "id": "fdf85b64-23d9-446f-8998-e69dbf4062e1",
-                    "spriteSheetId": "0f6312ce-ce31-40a8-a03b-77f476379804",
+                    "id": "24e3ac18-93f7-49f0-bd13-5ed4032e596b",
+                    "spriteSheetId": "4bc0cd17-3505-4789-a692-65978de458dd",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
@@ -45,116 +36,89 @@
                     "y": 2
                 },
                 {
-                    "id": "32623d29-2ad6-4231-b60e-711eddec501f",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "54bc6fe7-a335-4d82-aee3-26ce991119be",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
-                    "x": 5,
-                    "y": 5
+                    "x": 27,
+                    "y": 25
                 },
                 {
-                    "id": "fad455c9-fa49-499c-af19-32fa5ad6856d",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "512b7b56-c21d-47ff-9cf2-05af86937d0c",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
-                    "x": 5,
-                    "y": 3
+                    "x": 27,
+                    "y": 25
                 },
                 {
-                    "id": "d5998155-a3e1-466e-bb18-714f370c3b76",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "0da09907-d267-4258-9cf6-d71b8e8ca6c3",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
-                    "x": 5,
-                    "y": 7
+                    "x": 27,
+                    "y": 25
                 },
                 {
-                    "id": "a4b96c56-5d5f-476b-b6a2-2dde56613a09",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "02c57461-f1fd-43e4-96b4-b3d2c2d5d063",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
-                    "x": 5,
-                    "y": 9
+                    "x": 27,
+                    "y": 25
                 },
                 {
-                    "id": "74af2f7c-6880-400a-8284-f324de26f915",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "bd3f2a27-ed11-42ab-9b96-56fee27aeb7d",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
-                    "x": 10,
-                    "y": 0
+                    "x": 15,
+                    "y": 13
                 },
                 {
-                    "id": "616d506e-d922-4386-9d72-85774ffb0e9b",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "739c7cf7-4e8e-4bdd-8a09-0abb117dd278",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
-                    "x": 10,
-                    "y": 2
+                    "x": 17,
+                    "y": 13
                 },
                 {
-                    "id": "bdb67ef5-570b-4917-b31b-bbbe04636704",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "10c014ad-2b02-4a9e-98e7-89a20622aac3",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
-                    "x": 10,
-                    "y": 4
+                    "x": 19,
+                    "y": 13
                 },
                 {
-                    "id": "024a377d-1dac-4c56-8c5b-005f006d6954",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "4b554e3b-8cef-4c3a-8b11-550d47e60793",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
-                    "x": 16,
-                    "y": 4
-                },
-                {
-                    "id": "bea9c4a2-e90c-4277-abe7-22e837b39405",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 16,
-                    "y": 6
-                },
-                {
-                    "id": "de0d588b-d21f-4c7c-8db1-410268b23c0c",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 16,
-                    "y": 8
-                },
-                {
-                    "id": "59615e67-909d-4c09-aadd-986a051b8c40",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 16,
+                    "x": 24,
                     "y": 10
                 },
                 {
-                    "id": "94357343-a20c-4337-9738-7eb2fa1c9b23",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "20da7317-5d02-4840-aa08-d72ea5ba5254",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
-                    "x": 18,
+                    "x": 22,
                     "y": 10
                 },
                 {
-                    "id": "ab59baa4-e637-4f42-a981-c9bf0d059486",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "220e1229-d4ef-4256-b44a-4eca129da436",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
@@ -162,526 +126,139 @@
                     "y": 10
                 },
                 {
-                    "id": "89f5b79c-692c-4287-a6fc-4ca6ceab4a0d",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 22,
-                    "y": 10
-                },
-                {
-                    "id": "b68a9690-8f75-4b23-b18d-903075766a04",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 22,
-                    "y": 8
-                },
-                {
-                    "id": "a9269edb-81c6-406e-b80d-81fb2dcbbacd",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 22,
-                    "y": 6
-                },
-                {
-                    "id": "6bd6ea15-87c6-41dc-9edb-dc5c1853079b",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 24,
-                    "y": 6
-                },
-                {
-                    "id": "ec21dbb2-8aca-4e75-bad4-e885ccf29dca",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 26,
-                    "y": 6
-                },
-                {
-                    "id": "ade557b3-3ac9-466f-baf2-e947c4c32ef5",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 28,
-                    "y": 6
-                },
-                {
-                    "id": "ecb009cd-7a31-4e4b-8af8-263fc02be94a",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 4
-                },
-                {
-                    "id": "e7cfd59a-970f-4afa-80dc-a3669c43158a",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 8
-                },
-                {
-                    "id": "eb0ce81d-8ef8-403c-b54d-be9d4f4e1edd",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 10
-                },
-                {
-                    "id": "abad95fd-04a4-4011-974e-4d0ba315e97f",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 12
-                },
-                {
-                    "id": "9f28e3c2-a1a1-43a8-bb31-f8dd84202d11",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 14
-                },
-                {
-                    "id": "225e6f3b-1539-4725-81e8-9b1722cb90e6",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 16
-                },
-                {
-                    "id": "a23d2084-1d80-48e5-96a1-d9885f61bf87",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 20
-                },
-                {
-                    "id": "6857f53e-05e7-4cc1-828c-d1a7059b5dcb",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 4
-                },
-                {
-                    "id": "65881a8c-29f7-4d8a-919f-8f65bc58a1b8",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 25,
-                    "y": 20
-                },
-                {
-                    "id": "279f55af-3dfb-48ee-8db3-c95122fbca01",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 23,
-                    "y": 20
-                },
-                {
-                    "id": "2c78bbf7-b024-416f-9c1c-424e33ac78cf",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 21,
-                    "y": 20
-                },
-                {
-                    "id": "60c97912-e4bf-4ce1-ae94-2a2b289e1d27",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 19,
-                    "y": 20
-                },
-                {
-                    "id": "9cdd299c-80ed-440d-bd57-e4ae7ebd10d1",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 17,
-                    "y": 20
-                },
-                {
-                    "id": "9e74ccc1-1863-4807-88ba-17c90ac957d4",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 18
-                },
-                {
-                    "id": "f35e5711-3e55-4d41-8bb3-c69ffc300d73",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 29,
-                    "y": 18
-                },
-                {
-                    "id": "9545e860-d394-4576-b919-68d10af2c210",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 31,
-                    "y": 18
-                },
-                {
-                    "id": "5bde25bb-9ec6-4ac0-8531-3662209cc509",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 18
-                },
-                {
-                    "id": "4bf77d2e-4f45-4462-8700-385fae0827e5",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 23,
-                    "y": 26
-                },
-                {
-                    "id": "70224344-d3a5-4a77-a6e8-aac8be5e71c3",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 23,
-                    "y": 28
-                },
-                {
-                    "id": "e9804473-166f-4728-a260-55976ac2cf88",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 23,
-                    "y": 24
-                },
-                {
-                    "id": "e776660b-c8b4-468c-b4eb-6cb3df8dd629",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 23,
-                    "y": 22
-                },
-                {
-                    "id": "56656b9f-631f-4ab7-b850-35003facaee9",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 18
-                },
-                {
-                    "id": "7f986e97-3594-49d0-8638-4a2898b36b02",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 17,
-                    "y": 24
-                },
-                {
-                    "id": "ab0d54eb-98b8-433f-a1e7-3a7bfcfe522a",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 27,
-                    "y": 18
-                },
-                {
-                    "id": "ce69595f-b048-4ff0-b411-5b53a8e48f68",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 11,
-                    "y": 21
-                },
-                {
-                    "id": "b19b04c4-85e9-4233-b730-14b89c2ba927",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 11,
-                    "y": 23
-                },
-                {
-                    "id": "f1059933-53eb-4f7f-b9be-595b6de14e1b",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 11,
-                    "y": 28
-                },
-                {
-                    "id": "51f70f94-3148-43d0-9b71-d00eaff08084",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 13,
-                    "y": 28
-                },
-                {
-                    "id": "64301b0c-fe3d-4074-acae-442ed6b3cc6f",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 15,
-                    "y": 28
-                },
-                {
-                    "id": "77dae34b-20e9-4342-a667-36daaa8ca32c",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 17,
-                    "y": 28
-                },
-                {
-                    "id": "80949682-e1f7-4c06-bc43-b8c54df995a9",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 17,
-                    "y": 30
-                },
-                {
-                    "id": "12802871-81eb-43d0-b84e-f4203bbd9411",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 4,
-                    "y": 20
-                },
-                {
-                    "id": "6287cc79-4eee-44d9-b856-aa3ae920b643",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 4,
-                    "y": 22
-                },
-                {
-                    "id": "c21ca7ea-a6d1-49c9-a7d0-cbad2ff7d353",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 4,
-                    "y": 24
-                },
-                {
-                    "id": "239ba82b-ec7a-413a-978d-70d956845168",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 4,
-                    "y": 26
-                },
-                {
-                    "id": "9b0523c1-6478-45ea-a77a-a2f0996266c9",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 4,
-                    "y": 28
-                },
-                {
-                    "id": "82a30d4b-1314-4a09-a5f2-a4ca32f86d91",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 2,
-                    "y": 28
-                },
-                {
-                    "id": "d506c021-8c52-40ac-8b6a-2917082fe069",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 0,
-                    "y": 28
-                },
-                {
-                    "id": "997d3fa9-fc97-46af-bbd5-ddf5165d0c2f",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 15,
-                    "y": 20
-                },
-                {
-                    "id": "9b9ed0fd-2780-45ce-b792-569f1f38cda2",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 13,
-                    "y": 20
-                },
-                {
-                    "id": "79a9b90e-082e-4f3c-9a40-6893a8edae8d",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 17,
-                    "y": 22
-                },
-                {
-                    "id": "8af9774b-a23b-4764-b338-4c964152ac4b",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 0,
-                    "y": 15
-                },
-                {
-                    "id": "7b63ecb9-b10e-4554-898b-05a88fa556a8",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 2,
-                    "y": 15
-                },
-                {
-                    "id": "f556dba2-87ba-452a-9d2d-1ca8a1dcd8ea",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 4,
-                    "y": 15
-                },
-                {
-                    "id": "d83690b7-7487-4696-8c9e-5044a101d556",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 6,
-                    "y": 15
-                },
-                {
-                    "id": "d7af83ba-55ad-4d9e-bb1d-264190e31ca1",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 8,
-                    "y": 15
-                },
-                {
-                    "id": "6f9c1dba-c489-4962-9773-557cf076db1e",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 10,
-                    "y": 15
-                },
-                {
-                    "id": "8f79ec30-ac0e-4b8f-9a99-3a8d197791c5",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 12,
-                    "y": 15
-                },
-                {
-                    "id": "c5b66d72-0762-445b-a713-2f25b4f6b1d8",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 14,
-                    "y": 15
-                },
-                {
-                    "id": "99f5d4b1-b3a4-49f2-9a80-1c60dc764d15",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
-                    "movementType": "static",
-                    "moveSpeed": "1",
-                    "animSpeed": "3",
-                    "x": 16,
-                    "y": 15
-                },
-                {
-                    "id": "428030fa-9fc4-4970-a993-febc55301ab8",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "f290a1e2-43d5-4b35-978f-8caefe9fafbe",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
                     "x": 18,
-                    "y": 15
+                    "y": 10
                 },
                 {
-                    "id": "0c246b93-d5b7-4fc0-8df7-3a596b8c67a8",
-                    "spriteSheetId": "16799fa1-732b-46fc-a969-baaf739d3cde",
+                    "id": "d4e4c461-1873-48a0-bdd9-569b2d048313",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
                     "movementType": "static",
                     "moveSpeed": "1",
                     "animSpeed": "3",
-                    "x": 10,
+                    "x": 14,
+                    "y": 5
+                },
+                {
+                    "id": "c9bd5151-632f-4dd4-8975-2d70f449d962",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 14,
+                    "y": 7
+                },
+                {
+                    "id": "89604aaf-f38e-4bba-a2b4-d0f27714404c",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 14,
+                    "y": 9
+                },
+                {
+                    "id": "76e556a7-1735-4606-a337-2b6a208f14af",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 4,
+                    "y": 14
+                },
+                {
+                    "id": "546f3185-957d-4664-b61d-3d676828acda",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 6,
+                    "y": 14
+                },
+                {
+                    "id": "9e1dc27e-60dc-42cc-a099-ce7af17559ae",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 8,
+                    "y": 14
+                },
+                {
+                    "id": "f4769644-98ab-47d0-8cb5-8cd1b14bd7f4",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 11,
+                    "y": 15
+                },
+                {
+                    "id": "172dc2b0-3096-459d-950a-e2d2d285316e",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 11,
                     "y": 13
+                },
+                {
+                    "id": "d1a0a057-519f-4219-8f92-120df7e034c8",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 11,
+                    "y": 11
+                },
+                {
+                    "id": "ba7968a1-bd46-4f4f-b04d-38f5deaa0694",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 18,
+                    "y": 24
+                },
+                {
+                    "id": "0152fac7-9422-405c-bd3d-fbe285e28bcd",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 18,
+                    "y": 24
+                },
+                {
+                    "id": "d6fe9d69-a4ec-4726-bcdb-54f712a6d406",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 5,
+                    "y": 16
+                },
+                {
+                    "id": "ceef0504-704b-43ca-bbdd-f556d8615ddc",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 5,
+                    "y": 14
+                },
+                {
+                    "id": "5b278aca-6b2c-4bb9-91ef-4d92d450ddb4",
+                    "spriteSheetId": "47e47ded-2485-4166-9a5d-6fa280a26c80",
+                    "movementType": "static",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "x": 5,
+                    "y": 12
                 }
             ],
             "triggers": []
@@ -693,14 +270,14 @@
     "variables": [],
     "backgrounds": [
         {
-            "id": "8d6b24c6-d87e-4c9f-9a5e-1bf7b3c94e86",
+            "id": "9f772ca8-43f0-458e-b1b6-e90c85af3127",
             "name": "stars",
             "width": 32,
             "height": 32,
             "imageWidth": 256,
             "imageHeight": 256,
             "filename": "stars.png",
-            "_v": 1595277311727,
+            "_v": 1595956073074,
             "_generator_metadata": {
                 "pixel_width": 256,
                 "pixel_height": 256,
@@ -711,11 +288,11 @@
     ],
     "spriteSheets": [
         {
-            "id": "d5cf3d36-0ee7-4e30-9676-686f47007010",
+            "id": "c27152ff-6976-491d-8470-7a26e29a5974",
             "name": "actor_animated",
             "type": "actor_animated",
             "filename": "actor_animated.png",
-            "_v": 1595277311702,
+            "_v": 1595956073052,
             "_generator_metadata": {
                 "pixel_width": 96,
                 "pixel_height": 16,
@@ -725,11 +302,11 @@
             "frames": 6
         },
         {
-            "id": "4f26ff61-561c-4ce1-b3a6-43f6ec5b522f",
+            "id": "6b81306a-9f54-4aee-8a99-dd68f9861f01",
             "name": "duck",
             "type": "animated",
             "filename": "duck.png",
-            "_v": 1595277311724,
+            "_v": 1595956073071,
             "_generator_metadata": {
                 "pixel_width": 32,
                 "pixel_height": 16,
@@ -739,11 +316,11 @@
             "frames": 2
         },
         {
-            "id": "0f6312ce-ce31-40a8-a03b-77f476379804",
+            "id": "4bc0cd17-3505-4789-a692-65978de458dd",
             "name": "tower",
             "type": "static",
             "filename": "tower.png",
-            "_v": 1595277311725,
+            "_v": 1595956073072,
             "_generator_metadata": {
                 "pixel_width": 16,
                 "pixel_height": 16,
@@ -753,11 +330,11 @@
             "frames": 1
         },
         {
-            "id": "8d017fad-1d52-4ca4-bf2e-6c6e2a5da642",
+            "id": "8ca35c99-fcac-4805-9eed-4eb2172e734d",
             "name": "rock",
             "type": "static",
             "filename": "rock.png",
-            "_v": 1595277311725,
+            "_v": 1595956073072,
             "_generator_metadata": {
                 "pixel_width": 16,
                 "pixel_height": 16,
@@ -767,11 +344,11 @@
             "frames": 1
         },
         {
-            "id": "16799fa1-732b-46fc-a969-baaf739d3cde",
+            "id": "47e47ded-2485-4166-9a5d-6fa280a26c80",
             "name": "rock",
             "type": "static",
             "filename": "rock.png",
-            "_v": 1595277311726,
+            "_v": 1595956073073,
             "_generator_metadata": {
                 "pixel_width": 16,
                 "pixel_height": 16,
@@ -783,10 +360,10 @@
     ],
     "music": [
         {
-            "id": "0260b2c3-32f6-43c9-ade0-42f261a921ca",
+            "id": "a1ca92ee-3c4f-4e11-b80e-f1183e33dccd",
             "name": "template",
             "filename": "template.mod",
-            "_v": 1595277311730
+            "_v": 1595956073076
         }
     ],
     "customEvents": [],

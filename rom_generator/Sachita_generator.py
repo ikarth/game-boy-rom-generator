@@ -21,18 +21,10 @@ def SachitasGame():
  actor4 = makeActor(a_rock_sprite, 15, 30)
  
  a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
- border = makeActor(a_rock_sprite, 1, 2, "static")
- border = makeActor(a_rock_sprite, 1, 9, "static")
- border = makeActor(a_rock_sprite, 1, 16, "static")
- border = makeActor(a_rock_sprite, 2, 2, "static")
- border = makeActor(a_rock_sprite, 2, 9, "static")
- border = makeActor(a_rock_sprite, 2, 10, "static")
- border = makeActor(a_rock_sprite, 2, 11, "static")
 
   # Add a background image
  default_bkg = makeBackground("stars.png", "stars")
  project.backgrounds.append(default_bkg)
- num = random.randint(1,20)
  a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))
  project.scenes.append(a_scene)
  #make a function for collisions
@@ -44,152 +36,116 @@ def SachitasGame():
  bkg_height = default_bkg["height"]
  actor = makeActor(a_rock_sprite, 1, 1)
  actor2 = makeActor(duck_sprite, 5,5)
- #actor3 = makeActor(a_doorway_sprite, 31, 31)
- a_scene['actors'].append(actor)
  a_scene['actors'].append(actor3)
- actor = makeActor(a_rock_sprite, 5, 5, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 5, 3, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 5, 7, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 5, 9, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 10, 0, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 10, 2, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 10, 4, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 16, 4, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 16, 6, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 16, 8, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 16, 10, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 18, 10, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 20, 10, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 22, 10, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 22, 8, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 22, 6, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 24, 6, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 26, 6, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 28, 6, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27, 4, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27, 8, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27, 10, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27, 12, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27, 14, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27, 16, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27, 20, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27, 4, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 25, 20, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 23, 20, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 21, 20, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 19, 20, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 17,  20, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27,  18, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 29,  18, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 31,  18, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27,  18, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 23,  26, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 23,  28, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 23,  24, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 23,  22, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27,  18, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 17,  24, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 27,  18, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 11,  21, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 11,  23, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 11,  28, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 13,  28, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 15,  28, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 17,  28, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 17,  30, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 4,  20, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 4,  22, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 4,  24, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 4,  26, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 4,  28, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 2,  28, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 0,  28, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 15,  20, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 13,  20, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 17,  22, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 0,  15, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 2,  15, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 4,  15, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 6,  15, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 8,  15, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 10,  15, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 12,  15, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 14,  15, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 16,  15, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 18,  15, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 10,  13, "static")
- a_scene['actors'].append(actor)
- actor = makeActor(a_rock_sprite, 10,  11, "static")
+
+ amount = random.randint(1, 5) 
+ arr = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+ increment = 0
+ #for x in range(amount): #choosing a random point and making a line of sprites. The amount is the loop #
+  # increment = increment + 2
+   #actor = makeActor(a_rock_sprite, xPos, increment, "static")
+   #a_scene['actors'].append(actor)
+ #amount = random.randint(1, 10)
+ 
+ for i in range(1, 20):
+   amount = random.randint(3, 5)
+   xPos = random.randint(1, 30)
+   yPos = random.randint(1, 30)
+   increment = 0
+   edgeBlock = 0
+   while xPos == 31 or xPos == 30 or xPos == 29: 
+    if arr[0][xPos-1] == 1:
+      xPos = random.randint(3, 29)
+      edgeBlock = 1
+    else:
+      edgeBlock = 1
+      break
+   while yPos == 31 or yPos == 30 or yPos == 29:
+    if arr[1][yPos-1] == 1:
+      yPos = random.randint(3, 29)
+      edgeBlock = 1
+    else: 
+      edgeBlock = 1
+      break
+      #avoiding out of bounds error
+    if edgeBlock == 1:
+      actor = makeActor(a_rock_sprite, xPos - increment, yPos - increment, "static")
+      a_scene['actors'].append(actor)
+      increment = increment + 2
+
+   while arr[0][xPos-1] == 1 or arr[0][xPos + 1] == 1 or arr[0][ xPos - 3] == 1:
+      xPos = random.randint(3, 29)
+   while arr[1][yPos-1] == 1 or arr[1][yPos + 1] == 1 or arr[1][yPos - 3] == 1:
+      yPos = random.randint(3, 29)
+
+   if(0 <= xPos <= 15) and (0 <= yPos <= 15): 
+    choose = random.randint(1,2)
+    if(choose == 1):
+      for a in range (amount):
+        increment = increment + 2
+        actor = makeActor(a_rock_sprite, xPos, yPos + increment, "static")
+        a_scene['actors'].append(actor)
+        arr[0][ xPos-1] = 1
+        arr[1][ yPos-1 + increment] = 1
+    if(choose == 2):
+      for b in range (amount):
+        increment = increment + 2
+        actor = makeActor(a_rock_sprite, xPos + increment, yPos, "static")
+        a_scene['actors'].append(actor)
+        arr[0][xPos-1 + increment] = 1
+        arr[1][yPos-1] = 1
+
+   if(0 <= xPos <= 15) and (15 <= yPos <= 28): 
+      choose = random.randint(1,2)
+      if(choose == 1):
+        for c in range (amount):
+          increment = increment + 2
+          actor = makeActor(a_rock_sprite, xPos + increment, yPos, "static")
+          a_scene['actors'].append(actor)
+          arr[0][xPos -1 + increment] = 1
+          arr[1][yPos-1] = 1
+      if(choose == 2):
+        for d in range (amount):
+          increment = increment + 2
+          actor = makeActor(a_rock_sprite, xPos, yPos - increment, "static")
+          a_scene['actors'].append(actor)
+          arr[0][xPos-1] = 1
+          arr[1][yPos-1 + increment] = 1
+          
+   if(15 <= xPos <= 28) and (15 <= yPos <= 28): 
+    choose = random.randint(1,2)
+    if(choose == 1):
+      for e in range (1, amount):
+            actor = makeActor(a_rock_sprite, xPos, yPos - increment, "static")
+            a_scene['actors'].append(actor)
+            arr[0][xPos-1] = 1
+            arr[1][yPos-1 - increment] = 1
+    if(choose == 2):
+      for f in range (1, amount):
+        increment = increment + 2
+        actor = makeActor(a_rock_sprite, xPos - increment, yPos, "static")
+        a_scene['actors'].append(actor)
+        arr[0][xPos-1 - increment] = 1
+        arr[1][yPos-1] = 1
+        increment = increment + 2
+
+   if(15 <= xPos <= 28) and (0 <= yPos <= 15): 
+    choose = random.randint(1,2)
+    if(choose == 1):
+      for g in range (1, amount):
+        actor = makeActor(a_rock_sprite, xPos, yPos + increment, "static")
+        a_scene['actors'].append(actor)
+        arr[0][xPos-1] = 1
+        arr[1][yPos -1 - increment] = 1
+        increment = increment + 2
+    if(choose == 2):
+      for h in range (1, amount):
+        actor = makeActor(a_rock_sprite, xPos - increment, yPos, "static")
+        a_scene['actors'].append(actor)
+        arr[0][xPos -1 + increment] = 1
+        arr[1][yPos-1] = 1
+        increment = increment + 2
+ 
  #import pdb; pdb.set_trace()
  # add a sprite to indicate the location of a doorway
  # a better way to do this in the actual levels is to alter the background image instead

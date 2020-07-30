@@ -325,6 +325,7 @@ def makeScene(name, background, width=None, height=None, x=None, y=None, collisi
     element["collisions"] = collisions
     element["actors"] = actors
     element["triggers"] = triggers
+    element["script"] = []
     return copy.deepcopy(element)
 
 
@@ -487,17 +488,9 @@ reverse_direction = {"left": "right",
 
 
 def makeTriggerAndSwitchScene(scene1, scene2, x, y, x1, y2):
-    element = makeElement()
-    element["x"] = x
-    element["y"] = y
-    element["width"] = 2
-    element["height"] = 1
+    scene1["triggers"].append(makeTrigger(scene1, x, y, 2, 1, [scripts.switchScene(sceneId = scene2["id"], x = x1, y = y2)]))
 
 
-
-    element["script"] = script.switchScene(sceneId = scene2["id"], x = x1, y = y2)
-
-    scene1["triggers"].append(element)
 
 
 # Adds trigger for scene connection.

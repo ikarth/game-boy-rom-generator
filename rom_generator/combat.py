@@ -1,5 +1,5 @@
-import script_functions as scripts
-import variable as var
+import rom_generator.script_functions as scripts
+import rom_generator.variable as var
 
 #set position probably has to move to set position to value
 
@@ -51,7 +51,7 @@ def setUpScene(scene, weapon, player, enemy = []):
         temp2 = scripts.ifValueCompare(vectorX = enemyLoc[curIndex], operator = "==", vectorY = weaponX, trueCommands = [scripts.actorHide(e["id"])], falseCommands = [])
 
         temp3 = scripts.ifValueCompare(vectorX = enemyLoc[curIndex + 1], operator = "==", vectorY = weaponY, __collapseElse = False, trueCommands = [temp2], falseCommands = [temp])
-
+        curIndex += 2
         weaponScript.append(temp3)
 
 

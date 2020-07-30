@@ -1,10 +1,10 @@
 import argparse
 import copy
 import random
-from generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, makeKey, makeLock
-from script_functions import actorHide, end
-import combat as combat
-import roomGen as roomGen
+from rom_generator.generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, makeKey, makeLock
+from rom_generator.script_functions import actorHide, end
+import rom_generator.combat as combat
+import rom_generator.roomGen as roomGen
 def AnikaProject123():
     """
     This is my change
@@ -77,12 +77,14 @@ def aaronTest():
             makeScene(f"Scene {1}", default_bkg))
 
     key = makeActor(a_rock_sprite, 2, 2)
+    key2 = makeActor(a_rock_sprite, 3, 3)
 
     weapon = makeActor(doorway_sprite, 5, 5)
 
-    combat.setUpScene(a_scene, weapon, player_sprite_sheet["id"], [key])
+    combat.setUpScene(a_scene, weapon, player_sprite_sheet["id"], [key, key2])
 
     a_scene["actors"].append(key)
+    a_scene["actors"].append(key2)
     a_scene["actors"].append(weapon)
 
     project.scenes.append(copy.deepcopy(a_scene))
@@ -215,5 +217,35 @@ def createRockWorld():
 
 def grammarTest():
     return roomGen.makeGame()
+    
+
+
+# Utilities
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
+# Run the generator
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description="Generate a Game Boy ROM via a GB Studio project file.")
+    parser.add_argument('--destination', '-d', type=str,
+                        help="destination folder name", default="../gbprojects/projects2/")
+    args = parser.parse_args()
+
+    initializeGenerator()
+    project = aaronTest()
+    writeProjectToDisk(project, output_path=args.destination)
+
+    if args.destination == "../gbprojects/projects/":
+        print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
+        print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")
 
 

@@ -51,7 +51,7 @@ def sceneGenHall_02():
     key_script_hide_on_init = [
         script.ifTrue(key_script_flag_variable, children={
             'true':[script.actorHide(actorId="$self$"), script.end()],
-            'false':[script.end()]), script.end()})
+            'false':[script.end(), script.end()})
 
     key_actor["script"] = key_script_pickup
     key_actor["startScript"] = key_script_hide_on_init

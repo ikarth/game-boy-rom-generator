@@ -252,30 +252,23 @@ def convertTriggers(trigger_list, proj_data):
         #     code_elements.append(f"trigger_{actor_count:02d}['startScript'] = [\n        " + ",\n        ".join(script_start) + "\n    ]")
 
 
-
+        script_list = []
+        if "startScript" in element:
+            script_list.append((element["startScript"], "startScript"))
         if "script" in element:
-            script = element["script"]
-            # TODO: detect template flags
-            # template_slots_pre = []
-            # ref_list = containsReference(script)
-            # if len(ref_list) > 0:
-            #     pprint.pprint(ref_list)
-            #     for ref in ref_list:
-            #         template_slots_pre.append({"script": script, "reference": ref[1], "path": ref[0], "command": ref[2]})
-            #     template_slots_processed = prepareTemplateScript(script, template_slots_pre)
-            #     template_slots = template_slots + template_slots_processed
-            # if len(template_slots) > 0:
-            #     pass
+            script_list.append((element["script"], "script"))
+
+        for script, script_type in script_list:
             print("\n\n* * *\n\n")
             pprint.pprint(script)
             ref_list = containsReference(script)
             template_slots_pre = []
             code_for_slot = []
 
-            def script_translation_function_CONNECTION(ref):
-                if ref in conversion.keys():
-                    converstion[ref]
-                return ref
+            # def script_translation_function_CONNECTION(ref):
+            #     if ref in conversion.keys():
+            #         conversion[ref]
+            #     return ref
 
             conversion_table = {
                 "♔REFERENCE_CONNECTION_DESTINATION♔": "destination_scene['id']",

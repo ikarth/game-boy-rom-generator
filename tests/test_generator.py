@@ -20,7 +20,7 @@ def createExampleProject():
     default_bkg = generator.makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
 
-    # Get information about the background
+        # Get information about the background
     bkg_x = default_bkg["imageWidth"]
     bkg_y = default_bkg["imageHeight"]
     bkg_width = default_bkg["width"]
@@ -81,7 +81,7 @@ def test_example_project_01(tmpdir):
 def test_example_project_02(tmpdir):
     initializeGenerator()
     project = createExampleProject()
-    assert(project.scenes[0]["x"] == 200)
+    assert(project.scenes[0]["width"] == 20)
     assert(project.scenes[0]["actors"][0]["movementType"] == "static")
     assert(project.scenes[0]["triggers"][0]["script"][1]["command"] == "EVENT_END")
     assert(project.spriteSheets[1]["name"] == "rock")

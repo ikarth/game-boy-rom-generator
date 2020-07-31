@@ -78,13 +78,15 @@ def aaronTest():
 
     key = makeActor(a_rock_sprite, 2, 2)
     key2 = makeActor(a_rock_sprite, 3, 3)
+    key3 = makeActor(a_rock_sprite, 7, 7)
 
     weapon = makeActor(doorway_sprite, 5, 5)
 
-    combat.setUpScene(a_scene, weapon, player_sprite_sheet["id"], [key, key2])
+    combat.setUpScene(a_scene, weapon, player_sprite_sheet["id"], [key, key2, key3])
 
     a_scene["actors"].append(key)
     a_scene["actors"].append(key2)
+    a_scene["actors"].append(key3)
     a_scene["actors"].append(weapon)
 
     project.scenes.append(copy.deepcopy(a_scene))
@@ -241,7 +243,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     initializeGenerator()
-    project = aaronTest()
+    project = grammarTest()
     writeProjectToDisk(project, output_path=args.destination)
 
     if args.destination == "../gbprojects/projects/":

@@ -87,6 +87,7 @@ def makeRooms(project):
         # Add Connections
 
         createConnection(a_scene, 2, 2)
+        makeRooms(project)
 
 
 def spawnEnemy(project, scene, weapon, playerID, num):
@@ -94,7 +95,6 @@ def spawnEnemy(project, scene, weapon, playerID, num):
     enemyList = []
     print(num)
     for i in range(num):  # spawns in the enemies
-        
         actor_x = random.randint(1, (scene["width"]-3))
         actor_y = random.randint(2, scene["height"]-2)
         a_enemy = gen.makeActor(doorway_sprite, actor_x, actor_y)
@@ -150,6 +150,7 @@ def endRoom(project):
 
 
 def makeGame():
+    random.seed()
     project = gen.makeBasicProject()
 
     # Create sprite sheet for the player sprite

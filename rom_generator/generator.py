@@ -159,9 +159,11 @@ def recordSprite(sprite):
     If so, return the first instance of it.
     """
     global record_of_sprites
-    found = [sp for sp in record_of_sprites if ((sp["filename"] == sprite["filename"]) and (sp["type"] == sprite["type"]) and(sp["frames"] == sprite["frames"]))]
-    if (len(found) > 0):
-        return found[0]
+
+    if (len(record_of_sprites)) > 0:
+        found = [sp for sp in record_of_sprites if ((sp["filename"] == sprite["filename"]) and (sp["type"] == sprite["type"]) and(sp["frames"] == sprite["frames"]))]
+        if (len(found) > 0):
+            return found[0]
     # this is a new sprite
     record_of_sprites.append(sprite)
     return None
@@ -177,6 +179,10 @@ def makeSpriteSheet(filename, name=None, type="static", frames=None):
     A sprite sheet can be one 16x16 static image...
     ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.
     """
+    from inspect import currentframe, getframeinfo
+    frameinfo = getframeinfo(currentframe())
+    print(frameinfo.filename, frameinfo.lineno)
+
     if name is None:
         name = filename
     element = makeElement()
@@ -193,7 +199,8 @@ def makeSpriteSheet(filename, name=None, type="static", frames=None):
         element["frames"] = width // 16
     else:
         element["frames"] = frames
-    record = recordSprite(element)
+    assert(isinstance(element, dict))
+    record = recordSprite(copy.deepcopy(element))
     if None != record:
         return record
     return copy.deepcopy(element)
@@ -300,7 +307,7 @@ def recordScene(scene, scene_label):
     Record the scenes that have been created so far this session.
     """
     global record_of_scenes
-    record_of_sprites.append((scene_label, scene))
+    record_of_scenes.append((scene_label, scene))
 
 def getSceneIdByLabel(scene_label):
     scene_iter = (rs[1] for rs in record_of_scenes if rs[0] == scene_label)
@@ -772,7 +779,13 @@ def makeBasicProject():
     {"filename": "cursor.png", "asset_file_name": "original/cursor.png"},
     {"filename": "emotes.png", "asset_file_name": "original/emotes.png"},
     {"filename": "frame.png",  "asset_file_name": "original/frame.png"}]
-    return project
+
+    # TODO: these being globals is causing issues, these should be project specific
+    global record_of_sprites
+    global record_of_scenes
+    record_of_sprites = []
+    record_of_scenes = []
+    return copy.deepcopy(project)
 
 #makes a border of collisions around a scene
 def makeColBorder(scenex):

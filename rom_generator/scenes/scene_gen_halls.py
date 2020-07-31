@@ -1,7 +1,8 @@
-# Generate some basic example scenes
-
 from rom_generator import generator
 from rom_generator import script_functions as script
+
+# Generate some basic example scenes
+
 
 def sceneGenHall_04():
     actor_list = []

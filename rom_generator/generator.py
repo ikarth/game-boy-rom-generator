@@ -402,10 +402,13 @@ def connectScenesRandomly(scene_data_list):
             con_data = {"in": other_connection, "out": current_connection}
             connections_made.append(con_data)
         except IndexError as e:
+            breakpoint()
             pass
 
     print(connections_made)
     for c in connections_made:
+        breakpoint()
+
         source_scene = [s for s in scene_data_list if s["scene"]["id"] == c["out"][0]][0]
         out_position = (c["out"][2]["out"][0], c["out"][2]["out"][1])
         trigger_size = (c["out"][2]["out"][2], c["out"][2]["out"][3])

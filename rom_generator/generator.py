@@ -40,6 +40,16 @@ def cd(newdir):
 
 
 
+# Template Slots
+
+# def makeConnection(source_location, source_size, destination_scene, destination_location, destination_direction):
+#     trigger_00 = generator.makeTrigger('trigger_00', source_location[0], source_location[1], source_size[0], source_size[1])
+#     trigger_00['script'] = [
+#         script.switchScene(sceneId=destination_scene["id"], x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'),
+#         script.end()
+#     ]
+#     return trigger_00
+
 # Make Project
 curKeyNumber = 511
 scene_count = 0
@@ -431,6 +441,7 @@ def connectScenesRandomlySymmetric(scene_data_list):
                 connections_to_make.remove(other_connection)
             con_data = {"in": other_connection, "out": current_connection}
             con_data_two = {"in": current_connection, "out": other_connection}
+            print(f"Connecting\n\t{current_connection}\n\tto\n\t{other_connection}\n")
             connections_made.append(con_data)
             connections_made.append(con_data_two)
         except IndexError as e:
@@ -439,12 +450,15 @@ def connectScenesRandomlySymmetric(scene_data_list):
     # make the connections
     for connection in connections_made:
         source_scene = [s for s in scene_data_list if s["scene"]["id"] == connection["in"][0]][0]
-        out_position = connection["in"][2]["args"]["entrance_location"]
-        trigger_size = connection["in"][2]["args"]["entrance_size"]
-        destination_scene = connection["out"][2]["args"]["entrance"]
-        destination_position = connection["out"][2]["args"]["exit_location"]
-        destination_direction = connection["out"][2]["args"]["exit_direction"]
-        makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position, destination_direction)
+        try:
+            out_position = connection["in"][2]["args"]["entrance_location"]
+            trigger_size = connection["in"][2]["args"]["entrance_size"]
+            destination_scene = connection["out"][2]["args"]["entrance"]
+            destination_position = connection["out"][2]["args"]["exit_location"]
+            destination_direction = connection["out"][2]["args"]["exit_direction"]
+            makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position, destination_direction)
+        except:
+            breakpoint()
         # TODO: use function defined by connection reference instead?
 
 def connectScenesRandomlySymmetric_old(scene_data_list):

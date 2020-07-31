@@ -8,6 +8,7 @@ import textwrap
 import keyword
 import re
 import pprint
+import itertools
 from pathlib import Path
 import collections.abc
 from ..utilities import bcolors, translateScriptCommandNames
@@ -27,21 +28,26 @@ def replaceInDataByKey(data, target_key, replace_func, recursion_level=0):
                 data[scn_idx] = replaceInDataByKey(data[scn_idx], target_key, replace_func, recursion_level+1)
     return data
 
-def replaceInDataByPath(data, path, replace_func):
-    pprint.pprint(path)
-    pprint.pprint(data)
-    if (isinstance(data, str)):
-        print(f"<+ {data} +>")
-        if path == []:
-            data = replace_func(data)
+def getDataByPath(data, path):
+    if path == []:
+        return data
     if (isinstance(data, list)):
-        print(list(range(len(data))))
         if (isinstance(path[0], int)):
-            data = replaceInDataByPath(data[0], path[1:], replace_func)
+            return getDataByPath(data[path[0]], path[1:])
     if (isinstance(data, collections.abc.Mapping)):
-        pprint.pprint(data.keys())
-        data = replaceInDataByPath(data[path[0]], path[1:], replace_func)
-    pprint.pprint(data)
+        return getDataByPath(data[path[0]], path[1:])
+    return None
+
+def replaceInDataByPath(data, path, replace_func):
+    if (isinstance(data, str)) or (isinstance(data, int)):
+        if path == []:
+            return replace_func(data)
+    if (isinstance(data, list)):
+        if (isinstance(path[0], int)):
+            data[path[0]] = replaceInDataByPath(data[path[0]], path[1:], replace_func)
+            return data
+    if (isinstance(data, collections.abc.Mapping)):
+        data[path[0]] = replaceInDataByPath(data[path[0]], path[1:], replace_func)
     return data
 
 code_line_num = 0
@@ -54,7 +60,7 @@ def generateCode(code_tree, indent_depth=0):
     for code_line in code_tree:
         if isinstance(code_line, str):
             for n in range(indent_depth):
-                code_string = code_string + indent_string
+                code_line = textwrap.indent(code_line, indent_string)
             code_string = code_string + str(code_line) + "\n"
         else:
             if isinstance(code_line, list):
@@ -142,22 +148,37 @@ def convertScripts(scripts, reference_translation_func=None):
             converted_scripts.append(func_call_text)
     return converted_scripts
 
-def containsReference(script_data, path=[], reference_list=[], parent_command=None):
+def containsReference(script_data, path=[], script_reference_list=[], parent_command=None, recursion_depth=0):
     """
     returns list of non-bound references found in the script and its children.
     """
-    ref_list = reference_list
+    ref_list = copy.deepcopy(script_reference_list)
+    #print(f" >> {path} << ")
+    #print(ref_list)
+    #print()
     if (isinstance(script_data, str)):
+        #print(f"<+ {script_data} +>")
         if "♔" in script_data:
-            reference_list.append((path, script_data, parent_command))
+            #print("\t\t♔ + " + str(path))
+            ref_list.append((path, script_data, parent_command))
     if (isinstance(script_data, list)):
+        #print(list(range(len(script_data))))
         for scn_idx, scn_val in enumerate(script_data):
-            ref_list = containsReference(scn_val, path + [scn_idx], reference_list, parent_command)
+            ref_list = containsReference(scn_val, path + [scn_idx], ref_list, parent_command, recursion_depth=recursion_depth+1)
     if (isinstance(script_data, collections.abc.Mapping)):
+        #print(script_data.keys())
         if "command" in script_data.keys():
             parent_command = script_data["command"]
         for scn_idx, scn_val in script_data.items():
-            ref_list = containsReference(scn_val, path + [scn_idx], reference_list, parent_command)
+            #print(f" ---> {scn_idx}")
+            ref_list = containsReference(scn_val, path + [scn_idx], ref_list, parent_command, recursion_depth=recursion_depth+1)
+    #if recursion_depth == 0:
+    #    if script_data[0]["command"] == "EVENT_IF_TRUE":
+    #        print(script_data)
+    #        print(ref_list)
+    #        breakpoint()
+    #print(f" -- {recursion_depth} --")
+    #print(ref_list)
     return ref_list
 
 def recordCommandTemplate(script, reference, path):
@@ -175,21 +196,23 @@ def addConnection(script, destination, entrance_location, direction):
     return
 
 def slotConnection(slot_template):
+    #pprint.pprint(slot_template["script"])
+    #pprint.pprint(slot_template["path"])
+    #print("---")
+    location_x = getDataByPath(slot_template["script"], slot_template["path"][:-1] + ["x"])
+    location_y = getDataByPath(slot_template["script"], slot_template["path"][:-1] + ["y"])
+    location_direction = getDataByPath(slot_template["script"], slot_template["path"][:-1] + ["direction"])
     slot_template["script"] = replaceInDataByPath(slot_template["script"], slot_template["path"], lambda _: "♔REFERENCE_CONNECTION_DESTINATION♔")
     slot_template["script"] = replaceInDataByPath(slot_template["script"], slot_template["path"][:-1] + ["x"], lambda _: "♔REFERENCE_CONNECTION_ENTRANCE_X♔")
     slot_template["script"] = replaceInDataByPath(slot_template["script"], slot_template["path"][:-1] + ["y"], lambda _: "♔REFERENCE_CONNECTION_ENTRANCE_Y♔")
     slot_template["script"] = replaceInDataByPath(slot_template["script"], slot_template["path"][:-1] + ["direction"], lambda _: "♔REFERENCE_CONNECTION_ENTRANCE_DIRECTION♔")
-    pprint.pprint(slot_template)
-    return slot_template, ["destination_id", "entrance_location", "entrance_direction"]
+    return slot_template, {"direction": location_direction, "location": (location_x, location_y)} #["destination_id", "entrance_location", "entrance_direction"]
 
 slot_converstion = {
 "SLOT_CONNECTION": lambda slot: slotConnection(slot)
 }
 
 def prepareTemplateScript(script, template_slots):
-    pprint.pprint(template_slots)
-    pprint.pprint(script)
-    print('---')
     processed_templates = []
     for slot in template_slots:
         slot_type = slot["command"] + "_" + slot["reference"]
@@ -199,12 +222,12 @@ def prepareTemplateScript(script, template_slots):
                 break
 
         if slot_type[:4] == "SLOT":
+            slot_template, slot_arguments = slot_converstion[slot_type](slot)
             p_template = {"type": slot_type,
-            "script": slot_converstion[slot_type](slot)}
-
+                        "script": slot_template,
+                        "args": slot_arguments}
             processed_templates.append(p_template)
     return processed_templates
-
 
 def convertTriggers(trigger_list, proj_data):
     code_elements = []
@@ -215,21 +238,21 @@ def convertTriggers(trigger_list, proj_data):
         code_elements.append(f"trigger_{actor_count:02d} = generator.makeTrigger('trigger_{actor_count:02d}', {element['x']}, {element['y']}, {element['width']}, {element['height']})")
 
         script_start = []
-        if "startScript" in element.keys():
-            script = element["startScript"]
-            ref_list = containsReference(script)
-            if len(ref_list) > 0:
-                pprint.pprint(ref_list)
-                for ref in ref_list:
-                    template_slots_pre.append({"script": script, "reference": ref[1], "path": ["startScript"] + ref[0]})
-            #else:
-            script_start = convertScripts(script)
+        # if "startScript" in element.keys():
+        #     script = element["startScript"]
+        #     ref_list = containsReference(script)
+        #     if len(ref_list) > 0:
+        #         pprint.pprint(ref_list)
+        #         for ref in ref_list:
+        #             template_slots_pre.append({"script": script, "reference": ref[1], "path": ["startScript"] + ref[0]})
+        #     #else:
+        #     script_start = convertScripts(script)
+        #
+        # if len(script_start) > 0:
+        #     code_elements.append(f"trigger_{actor_count:02d}['startScript'] = [\n        " + ",\n        ".join(script_start) + "\n    ]")
 
-        if len(script_start) > 0:
-            code_elements.append(f"trigger_{actor_count:02d}['startScript'] = [\n        " + ",\n        ".join(script_start) + "\n    ]")
 
-        script_main = []
-        template_slots = []
+
         if "script" in element:
             script = element["script"]
             # TODO: detect template flags
@@ -243,14 +266,65 @@ def convertTriggers(trigger_list, proj_data):
             #     template_slots = template_slots + template_slots_processed
             # if len(template_slots) > 0:
             #     pass
+            print("\n\n* * *\n\n")
+            pprint.pprint(script)
+            ref_list = containsReference(script)
+            template_slots_pre = []
+            code_for_slot = []
 
-            script_main = convertScripts(script)
-            if len(script_main) > 0:
-                code_elements.append(f"trigger_{actor_count:02d}['script'] = [\n        " + ",\n        ".join(script_main) + "\n    ]")
-                actor_name_list.append(f"trigger_{actor_count:02d}")
+            def script_translation_function_CONNECTION(ref):
+                if ref in conversion.keys():
+                    converstion[ref]
+                return ref
 
+            conversion_table = {
+                "♔REFERENCE_CONNECTION_DESTINATION♔": "destination_scene['id']",
+                "♔REFERENCE_CONNECTION_ENTRANCE_X♔": "destination_location[0]",
+                "♔REFERENCE_CONNECTION_ENTRANCE_Y♔": "destination_location[1]",
+                "♔REFERENCE_CONNECTION_ENTRANCE_DIRECTION♔": "destination_direction"}
+
+            def translateReferences(source_text):
+                for pre, post in conversion_table.items():
+                    source_text = source_text.replace(f"\'{pre}\'", post)
+                print(source_text)
+                return source_text
+
+
+            if len(ref_list) > 0:
+                for ref in ref_list:
+                    template_slots_pre.append({"script": script, "reference": ref[1], "path": ref[0], "command": ref[2]})
+                template_slots_post = prepareTemplateScript(script, template_slots_pre)
+
+                for slot in template_slots_post:
+                    slot_name = ""
+                    if (slot["type"] == "SLOT_CONNECTION"):
+                        con_func_begin = [f"def addConnection_{actor_count:02d}(source_location, source_size, destination_scene, destination_location, destination_direction):"]
+                        con_func_begin.append(f"{indent_string}trigger_{actor_count:02d} = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])")
+                        con_func_begin.append(f"{indent_string}trigger_{actor_count:02d}['script'] = [")
+                        con_func_end = f"{indent_string}return trigger_{actor_count:02d}"
+                        con_func_code = translateReferences(textwrap.indent(",\n".join(convertScripts(script)), indent_string))
+
+                        code_for_slot = code_for_slot + con_func_begin + [[con_func_code]] + [f"{indent_string}]"] + [con_func_end]
+
+                        slot_dir = slot['args']['direction']
+                        if slot_dir == '':
+                            slot_dir='up'
+                        slot_name = f"connection_{actor_count:02d}"
+                        slot_args = f"'exit_location': {slot['args']['location']}, 'exit_direction': \'{slot_dir}\', 'entrance': gen_scene_scn['id'], 'entrance_location': {(element['x'], element['y'])}, 'entrance_size': {(element['width'], element['height'])} "
+                        slot_conn = f"{slot_name} = {{'type': 'SLOT_CONNECTION', 'creator': addConnection_{actor_count:02d}, 'args': {{ {slot_args} }} }}"
+
+                        code_for_slot.append(slot_conn + "\n")
+                        template_slots.append({"code": code_for_slot, "name": slot_name})
+
+            else:
+                script_main = convertScripts(script)
+                if len(script_main) > 0:
+                    code_elements.append(f"trigger_{actor_count:02d}['script'] = [\n        " + ",\n        ".join(script_main) + "\n    ]")
+                    actor_name_list.append(f"trigger_{actor_count:02d}")
 
     code_elements.append("trigger_list = [" + ", ".join(actor_name_list) + "]")
+
+
     return code_elements, template_slots
 
 def convertActors(actor_list, proj_data):
@@ -338,16 +412,17 @@ def importScene(scene_data, proj_data):
     code_col = f"collision_data_list = {collision_data}"
     code_bkg = f"gen_scene_bkg = generator.makeBackground(\"{background_filename}\")"
     code_scn = f"gen_scene_scn = generator.makeScene(\"{generated_scene_name}\", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label={code_func_name})"
-    code_con = f"gen_scene_connections = []"
 
     code_scn_data = 'scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}'
-
+    code_for_templates = "\n".join([str(x) for x in [t["code"] for t in template_slots]])
+    code_for_templates = [t["code"] for t in template_slots]
+    code_con = f"gen_scene_connections = [" + ", ".join([t["name"] for t in template_slots]) + "]"
     generate_lines = ["def " + code_func_name+ "(callback):",
-                        code_actors + code_triggers + [code_col, code_bkg, code_scn, code_con, code_scn_data, "return scene_data"]]
+                        code_actors + code_triggers + [code_col, code_bkg, code_scn],
+                        *code_for_templates,
+                        [code_con] + [code_scn_data, "return scene_data"]]
     generated_code = generateCode(generate_lines)
 
-    # print(generated_code)
-    #print(template)
     return generated_code, code_func_name, scene_original_id
 
 code_catalog_func = '''
@@ -432,8 +507,6 @@ def importFromGBS(filename):
     entity_ids = getEntityIds(proj_data)
     map_ids_to_names = {i:n for p,i,n in entity_ids}
     map_names_to_ids = {n:i for p,i,n in entity_ids}
-    #pprint.pprint(map_ids_to_names)
-    #breakpoint()
 
     template_connections = []
 
@@ -532,5 +605,4 @@ if __name__ == '__main__':
     parser.add_argument('--export_folder', '-e', type=str, help="folder to export to", default="rom_generator/scenes/imported/")
     args = parser.parse_args()
     templates = importFromGBS(args.import_file)
-    #print(templates)
     exportTemplates(templates, args.export_folder)

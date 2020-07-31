@@ -402,7 +402,6 @@ def connectScenesRandomly(scene_data_list):
             con_data = {"in": other_connection, "out": current_connection}
             connections_made.append(con_data)
         except IndexError as e:
-            breakpoint()
             pass
 
     print(connections_made)
@@ -453,55 +452,62 @@ def connectScenesRandomlySymmetric(scene_data_list):
     # make the connections
     for connection in connections_made:
         source_scene = [s for s in scene_data_list if s["scene"]["id"] == connection["in"][0]][0]
-        try:
-            out_position = connection["in"][2]["args"]["entrance_location"]
-            trigger_size = connection["in"][2]["args"]["entrance_size"]
-            destination_scene = connection["out"][2]["args"]["entrance"]
-            destination_position = connection["out"][2]["args"]["exit_location"]
-            destination_direction = connection["out"][2]["args"]["exit_direction"]
-            makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position, destination_direction)
-        except:
-            breakpoint()
-        # TODO: use function defined by connection reference instead?
+        creator_func = connection["in"][2]["creator"]
+        pprint.pprint(connection)
+        trigger = creator_func(source_location=connection["in"][2]["args"]["entrance_location"],
+                                source_size=connection["in"][2]["args"]["entrance_size"],
+                                destination_scene_id=connection["out"][0],
+                                destination_location=connection["out"][2]["args"]["exit_location"],
+                                destination_direction=connection["out"][2]["args"]["exit_direction"])
+        source_scene["scene"]["triggers"].append(trigger)
+        # try:
+        #     out_position = connection["in"][2]["args"]["entrance_location"]
+        #     trigger_size = connection["in"][2]["args"]["entrance_size"]
+        #     destination_scene = connection["out"][2]["args"]["entrance"]
+        #     destination_position = connection["out"][2]["args"]["exit_location"]
+        #     destination_direction = connection["out"][2]["args"]["exit_direction"]
+        #     makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position, destination_direction)
+        # except:
+        #     breakpoint()
 
-def connectScenesRandomlySymmetric_old(scene_data_list):
-    """
-    Connect scenes in the scene data list at random, using the connection slots.
-    Connections should be symmetric
-    """
-    connections_to_make = []
-    for scene_num, scene in enumerate(scene_data_list):
-        #other_scene_list = [s for s in scene_data_list if s["id"] != scene["id"]]
-        #other_scene = random.choice(other_scene_list)
-        for con_num, con in enumerate(scene["connections"]):
-            connections_to_make.append([scene["scene"]["id"], con_num, con])
-
-    connections_made = []
-    while len(connections_to_make) > 0:
-        current_connection = connections_to_make.pop()
-        filtered_other_connections = [c for c in connections_to_make if c[0] != current_connection[0]]
-        if len(filtered_other_connections) == 0:
-            filtered_other_connections = connections_to_make # if nothing else is left, it is allowed to relink to the same scene...
-        try:
-            other_connection = random.choice(filtered_other_connections)
-            if other_connection in connections_to_make:
-                connections_to_make.remove(other_connection)
-            con_data = {"in": other_connection, "out": current_connection}
-            con_data_two = {"in": current_connection, "out": other_connection}
-            connections_made.append(con_data)
-            connections_made.append(con_data_two)
-        except IndexError as e:
-            break
-
-    print(connections_made)
-    for c in connections_made:
-        source_scene = [s for s in scene_data_list if s["scene"]["id"] == c["out"][0]][0]
-        out_position = (c["out"][2]["out"][0], c["out"][2]["out"][1])
-        trigger_size = (c["out"][2]["out"][2], c["out"][2]["out"][3])
-        destination_scene = [s for s in scene_data_list if s["scene"]["id"] == c["in"][0]][0]
-        destination_position = (c["in"][2]["in"][0], c["in"][2]["in"][1])
-        print("out:", source_scene['scene']['id'], source_scene['scene']['name'], out_position, trigger_size, "\tin:", destination_scene['scene']['id'], destination_scene['scene']['name'], destination_position)
-        makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position)
+# def connectScenesRandomlySymmetric_old(scene_data_list):
+#     """
+#     Connect scenes in the scene data list at random, using the connection slots.
+#     Connections should be symmetric
+#     """
+#     connections_to_make = []
+#     for scene_num, scene in enumerate(scene_data_list):
+#         #other_scene_list = [s for s in scene_data_list if s["id"] != scene["id"]]
+#         #other_scene = random.choice(other_scene_list)
+#         for con_num, con in enumerate(scene["connections"]):
+#             connections_to_make.append([scene["scene"]["id"], con_num, con])
+#
+#     connections_made = []
+#     while len(connections_to_make) > 0:
+#         current_connection = connections_to_make.pop()
+#         filtered_other_connections = [c for c in connections_to_make if c[0] != current_connection[0]]
+#         if len(filtered_other_connections) == 0:
+#             filtered_other_connections = connections_to_make # if nothing else is left, it is allowed to relink to the same scene...
+#         try:
+#             other_connection = random.choice(filtered_other_connections)
+#             if other_connection in connections_to_make:
+#                 connections_to_make.remove(other_connection)
+#             con_data = {"in": other_connection, "out": current_connection}
+#             con_data_two = {"in": current_connection, "out": other_connection}
+#             connections_made.append(con_data)
+#             connections_made.append(con_data_two)
+#         except IndexError as e:
+#             break
+#
+#     print(connections_made)
+#     for c in connections_made:
+#         source_scene = [s for s in scene_data_list if s["scene"]["id"] == c["out"][0]][0]
+#         out_position = (c["out"][2]["out"][0], c["out"][2]["out"][1])
+#         trigger_size = (c["out"][2]["out"][2], c["out"][2]["out"][3])
+#         destination_scene = [s for s in scene_data_list if s["scene"]["id"] == c["in"][0]][0]
+#         destination_position = (c["in"][2]["in"][0], c["in"][2]["in"][1])
+#         print("out:", source_scene['scene']['id'], source_scene['scene']['name'], out_position, trigger_size, "\tin:", destination_scene['scene']['id'], destination_scene['scene']['name'], destination_position)
+#         makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position)
 
 
 ### Adds trigger for scene connection.

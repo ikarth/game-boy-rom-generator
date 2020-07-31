@@ -185,8 +185,9 @@ def recordCommandTemplate(script, reference, path):
     return [script]
 
 slot_classification = {
-(lambda slot: ((slot["command"] == "EVENT_SWITCH_SCENE") and (slot["reference"] == "♔REFERENCE_SCENE_SELF♔")), "SLOT_CONNECTION"),
-(lambda slot: ((slot["command"] == "EVENT_SWITCH_SCENE") and (slot["reference"] == "♔REFERENCE_SCENE♔")), "SLOT_CONNECTION")
+(lambda slot: ((slot["command"] == "EVENT_SWITCH_SCENE") and (slot["reference"] == "♔REFERENCE_SCENE_SELF♔")), "SLOT_CONNECTION")
+#,
+#(lambda slot: ((slot["command"] == "EVENT_SWITCH_SCENE") and (slot["reference"] == "♔REFERENCE_SCENE♔")), "SLOT_CONNECTION")
 }
 #slot_reference_definitions = {
 #"SLOT_CONNECTION": ["SLOT_CONNECTION", "direction"]
@@ -271,7 +272,7 @@ def convertTriggers(trigger_list, proj_data):
             #     return ref
 
             conversion_table = {
-                "♔REFERENCE_CONNECTION_DESTINATION♔": "destination_scene['id']",
+                "♔REFERENCE_CONNECTION_DESTINATION♔": "destination_scene_id",
                 "♔REFERENCE_CONNECTION_ENTRANCE_X♔": "destination_location[0]",
                 "♔REFERENCE_CONNECTION_ENTRANCE_Y♔": "destination_location[1]",
                 "♔REFERENCE_CONNECTION_ENTRANCE_DIRECTION♔": "destination_direction"}
@@ -291,7 +292,7 @@ def convertTriggers(trigger_list, proj_data):
                 for slot in template_slots_post:
                     slot_name = ""
                     if (slot["type"] == "SLOT_CONNECTION"):
-                        con_func_begin = [f"def addConnection_{actor_count:02d}(source_location, source_size, destination_scene, destination_location, destination_direction):"]
+                        con_func_begin = [f"def addConnection_{actor_count:02d}(source_location, source_size, destination_scene_id, destination_location, destination_direction):"]
                         con_func_begin.append(f"{indent_string}trigger_{actor_count:02d} = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])")
                         con_func_begin.append(f"{indent_string}trigger_{actor_count:02d}['script'] = [")
                         con_func_end = f"{indent_string}return trigger_{actor_count:02d}"

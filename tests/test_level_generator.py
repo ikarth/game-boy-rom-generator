@@ -8,7 +8,7 @@ def test_RockWorld(tmpdir):
     generator.initializeGenerator()
     project = individual.level_generator.createRockWorld()
     generator.writeProjectToDisk(project, output_path = tmpdir)
-    assert(project.scenes[0]["x"] == 200)
+    assert(project.scenes[0]["width"] == 20)
     assert(project.scenes[0]["actors"][0]["movementType"] == "static")
     assert(project.scenes[0]["triggers"][0]["script"][1]["command"] == "EVENT_END")
     assert(project.spriteSheets[1]["name"] == "rock")

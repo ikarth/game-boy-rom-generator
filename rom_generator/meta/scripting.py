@@ -30,44 +30,52 @@ script_commands = {
     # Conditional
     "EVENT_IF_TRUE": {
         "variable": "L0",
-        "__collapseElse": False
+        "__collapseElse": False,
+        "children": ["true", "false"]
     },
     "EVENT_IF_FALSE": {
         "variable": "L0",
-        "__collapseElse": False
+        "__collapseElse": False,
+        "children": ["true", "false"]
     },
     "EVENT_IF_VALUE": {
         "variable": "L3",
         "operator": ">",
         "comparator": 2,
-        "__collapseElse": False
+        "__collapseElse": False,
+        "children": ["true", "false"]
     },
     "EVENT_IF_VALUE_COMPARE": {
         "vectorX": "6",
         "operator": "==",
         "vectorY": "3",
         "__collapseElse": False,
+        "children": ["true", "false"]
     },
     "EVENT_IF_INPUT": {
         "input": [
             "a",
             "b"
         ],
-        "__collapseElse": False
+        "__collapseElse": False,
+        "children": ["true", "false"]
     },
     "EVENT_IF_ACTOR_DIRECTION": {
         "actorId": "player",
         "direction": "up",
-        "__collapseElse": False
+        "__collapseElse": False,
+        "children": ["true", "false"]
     },
     "EVENT_IF_SAVED_DATA": {
-        "__collapseElse": False
+        "__collapseElse": False,
+        "children": ["true", "false"]
     },
     "EVENT_IF_ACTOR_AT_POSITION": {
         "actorId": "player",
         "x": 0,
         "y": 0,
-        "__collapseElse": False
+        "__collapseElse": False,
+        "children": ["true", "false"]
     },
     "EVENT_SET_TRUE": {
         "variable": "L0"
@@ -81,8 +89,8 @@ script_commands = {
         "falseText": ""
     },
     "EVENT_RESET_VARIABLES": {},  # no arguments
-    "EVENT_LOOP": {},  # no arguments
-    "EVENT_GROUP": {},  # no arguments
+    "EVENT_LOOP": {"children": ["true"]},  # no arguments
+    "EVENT_GROUP": {"children": ["true"]},  # no arguments
     "EVENT_MENU": {
         "variable": "L0",
         "items": 2,
@@ -102,7 +110,8 @@ script_commands = {
     },
     # Background Scripts
     "EVENT_SET_INPUT_SCRIPT": {
-        "input": "b"
+        "input": "b",
+        "children": ["true"]
     },
     "EVENT_SET_BACKGROUND_SCRIPT": {},
     "EVENT_REMOVE_INPUT_SCRIPT": {  # look into more, is the remove imput scrip
@@ -178,7 +187,8 @@ script_commands = {
     "EVENT_IF_FLAGS_COMPARE": {
         "variable": "L0",
         "flag": 1,
-        "__collapseElse": False
+        "__collapseElse": False,
+        "children": ["true", "false"]
     },
     # Input
     "EVENT_AWAIT_INPUT": {

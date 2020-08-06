@@ -1,5 +1,5 @@
-import script_functions as scripts
-import variable as var
+import rom_generator.script_functions as scripts
+import rom_generator.variable as var
 
 #set position probably has to move to set position to value
 

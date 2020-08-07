@@ -1,10 +1,11 @@
 import argparse
 import copy
 import random
-from datetime import datetime
-from generator import makeBasicProject, makeElement, makeColBorder, makeCol, genQuestions, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
+from generator import makeElement, makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, addSceneBackground, makeCol, makeColBorder
+from background import getTileList, makeCheckerboardArray, generateBackgroundImageFromTiles, generateBackground, makeBackgroundCollisions
 
-def vijayaGame():
+
+def spriteChangeHarvin():
 
     # Set up a barebones project
     project = makeBasicProject()
@@ -16,19 +17,36 @@ def vijayaGame():
 
     # add sprites
     a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
-    doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
-    duck_sprite = addSpriteSheet(project, "duck.png", "duck", "animated", 2)
     a_dog_sprite = addSpriteSheet(project, "dog.png", "dog", "static")
 
     # Adding actors
     actor = makeActor(a_rock_sprite, 9, 8)
-    actor2 = makeActor(a_rock_sprite, 2, 3)
-    actor3 = makeActor(duck_sprite, 9, 10, "animated", True)
-
-    # Testing genQuestions with dog actor
-    dog_actor = makeActor(a_dog_sprite, 7, 8)
+    rock_script = []
+    element = makeElement()
+    element["command"] = "EVENT_PLAYER_SET_SPRITE"
+    element["args"] = {
+        "spriteSheetId": "7f5d7c09-6fca-4107-a6fe-cd370e64e667",
+        "__collapse": True
+    }
+    rock_script.append(element)
+    element = makeElement()
+    element["command"] = "EVENT_END"
+    rock_script.append(element)
+    actor["script"] = rock_script
+   
+    #dog script
+    dog_actor = makeActor(a_dog_sprite, 5, 6)
     dog_script = []
-    genQuestions('mc.txt', dog_script)
+    element = makeElement()
+    element["command"] = "EVENT_PLAYER_SET_SPRITE"
+    element["args"] = {
+        "spriteSheetId": "7f5d7c09-6fca-4107-a6fe-cd370e64e667",
+        "__collapse": True
+    }
+    dog_script.append(element)
+    element = makeElement()
+    element["command"] = "EVENT_END"
+    dog_script.append(element)
     dog_actor["script"] = dog_script
 
     # Add a background image
@@ -38,18 +56,18 @@ def vijayaGame():
     # Add scenes with some actors
     a_scene2 = copy.deepcopy(makeScene(f"Scene", default_bkg))
     a_scene2["actors"].append(dog_actor)
+    scene2_script = []
+    element = makeElement()
     project.scenes.append(copy.deepcopy(a_scene2))
-    
-    # Randomly generate num of scenes
-    random.seed(datetime.now())
+    random.seed(1)
     num = random.randint(1, 20)
+    print ("this is num: ")
+    print (num)
     for y in range(num):
-        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))   
-        makeColBorder(a_scene)    
+        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))
+     #   makeColBorder(a_scene)
         if y%2 == 0:
             a_scene["actors"].append(actor)
-        if y%3 == 0:
-            a_scene["actors"].append(actor3)
         project.scenes.append(copy.deepcopy(a_scene))
 
     # Adding connections
@@ -65,7 +83,7 @@ def vijayaGame():
                 if scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]]:
                     scene_connections[y][scene_connections_translations[chosen_direction]] = False
                     scene_connections[other_scene][scene_connections_translations[reverse_direction[chosen_direction]]] = False
-                    addSymmetricSceneConnections(project, project.scenes[y], project.scenes[other_scene], chosen_direction, doorway_sprite)
+              #      addSymmetricSceneConnections(project, project.scenes[y], project.scenes[other_scene], chosen_direction, doorway_sprite)
                     break
 
     # Get information about the background
@@ -74,9 +92,6 @@ def vijayaGame():
     bkg_width = default_bkg["width"]
     bkg_height = default_bkg["height"]
 
-    # add a sprite to indicate the location of a doorway
-    # a better way to do this in the actual levels is to alter the background image instead
-    doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
 
     # Add some music
     project.music.append(makeMusic("template", "template.mod"))
@@ -96,14 +111,14 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
+# Run the generator
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects/")
-    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
-    parser.add_argument('--subfolder', '-s', type=bool, help="asset folder name", default=False)
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects3/")
     args = parser.parse_args()
-    initializeGenerator(asset_folder=args.assets)
-    project = vijayaGame()
+    initializeGenerator()
+    project = spriteChangeHarvin()
     writeProjectToDisk(project, output_path = args.destination)
 
     if args.destination == "../gbprojects/projects/":

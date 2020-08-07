@@ -153,32 +153,17 @@ def containsReference(script_data, path=[], script_reference_list=[], parent_com
     returns list of non-bound references found in the script and its children.
     """
     ref_list = copy.deepcopy(script_reference_list)
-    #print(f" >> {path} << ")
-    #print(ref_list)
-    #print()
     if (isinstance(script_data, str)):
-        #print(f"<+ {script_data} +>")
         if "♔" in script_data:
-            #print("\t\t♔ + " + str(path))
             ref_list.append((path, script_data, parent_command))
     if (isinstance(script_data, list)):
-        #print(list(range(len(script_data))))
         for scn_idx, scn_val in enumerate(script_data):
             ref_list = containsReference(scn_val, path + [scn_idx], ref_list, parent_command, recursion_depth=recursion_depth+1)
     if (isinstance(script_data, collections.abc.Mapping)):
-        #print(script_data.keys())
         if "command" in script_data.keys():
             parent_command = script_data["command"]
         for scn_idx, scn_val in script_data.items():
-            #print(f" ---> {scn_idx}")
             ref_list = containsReference(scn_val, path + [scn_idx], ref_list, parent_command, recursion_depth=recursion_depth+1)
-    #if recursion_depth == 0:
-    #    if script_data[0]["command"] == "EVENT_IF_TRUE":
-    #        print(script_data)
-    #        print(ref_list)
-    #        breakpoint()
-    #print(f" -- {recursion_depth} --")
-    #print(ref_list)
     return ref_list
 
 def recordCommandTemplate(script, reference, path):
@@ -197,9 +182,6 @@ def addConnection(script, destination, entrance_location, direction):
     return
 
 def slotConnection(slot_template):
-    #pprint.pprint(slot_template["script"])
-    #pprint.pprint(slot_template["path"])
-    #print("---")
     location_x = getDataByPath(slot_template["script"], slot_template["path"][:-1] + ["x"])
     location_y = getDataByPath(slot_template["script"], slot_template["path"][:-1] + ["y"])
     location_direction = getDataByPath(slot_template["script"], slot_template["path"][:-1] + ["direction"])
@@ -238,21 +220,6 @@ def convertTriggers(trigger_list, proj_data):
         # TODO: pattern-matching on triggers
         code_elements.append(f"trigger_{actor_count:02d} = generator.makeTrigger('trigger_{actor_count:02d}', {element['x']}, {element['y']}, {element['width']}, {element['height']})")
 
-        script_start = []
-        # if "startScript" in element.keys():
-        #     script = element["startScript"]
-        #     ref_list = containsReference(script)
-        #     if len(ref_list) > 0:
-        #         pprint.pprint(ref_list)
-        #         for ref in ref_list:
-        #             template_slots_pre.append({"script": script, "reference": ref[1], "path": ["startScript"] + ref[0]})
-        #     #else:
-        #     script_start = convertScripts(script)
-        #
-        # if len(script_start) > 0:
-        #     code_elements.append(f"trigger_{actor_count:02d}['startScript'] = [\n        " + ",\n        ".join(script_start) + "\n    ]")
-
-
         script_list = []
         if "startScript" in element:
             script_list.append((element["startScript"], "startScript"))
@@ -260,16 +227,9 @@ def convertTriggers(trigger_list, proj_data):
             script_list.append((element["script"], "script"))
 
         for script, script_type in script_list:
-            print("\n\n* * *\n\n")
-            pprint.pprint(script)
             ref_list = containsReference(script)
             template_slots_pre = []
             code_for_slot = []
-
-            # def script_translation_function_CONNECTION(ref):
-            #     if ref in conversion.keys():
-            #         conversion[ref]
-            #     return ref
 
             conversion_table = {
                 "♔REFERENCE_CONNECTION_DESTINATION♔": "destination_scene_id",
@@ -280,7 +240,6 @@ def convertTriggers(trigger_list, proj_data):
             def translateReferences(source_text):
                 for pre, post in conversion_table.items():
                     source_text = source_text.replace(f"\'{pre}\'", post)
-                print(source_text)
                 return source_text
 
 
@@ -395,7 +354,6 @@ def importScene(scene_data, proj_data):
     code_actors, actor_data_list = convertActors(actors, proj_data)
     code_triggers, template_slots = convertTriggers(triggers, proj_data)
 
-
     collision_data = template.pop("collisions")
     background_file_id = template.pop("backgroundId")
     background_filename = findFilenameById(proj_data, background_file_id)
@@ -481,7 +439,6 @@ def getEntityIds(data, path=[], id_list=[]):
         for scn_idx, scn_val in data.items():
             if "id" == scn_idx:
                 name = str(path[0]) + "_" + str(path[-1])
-                print
                 if "name" in data:
                     name = data["name"]
                 if "filename" in data:

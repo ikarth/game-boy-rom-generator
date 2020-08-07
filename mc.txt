@@ -1,0 +1,12 @@
+Are apples green or orange?
+Green
+Orange
+Are squirrels real?
+No
+Yes
+Is water wet?
+No
+Yes
+Who's on the penny?
+Abraham Lincoln
+Mariah Carey

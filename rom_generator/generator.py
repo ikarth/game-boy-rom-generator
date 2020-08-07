@@ -1,3 +1,4 @@
+==== BASE ====
 import json
 import types
 import uuid
@@ -10,6 +11,7 @@ import copy
 import logging
 import argparse
 import sys
+from datetime import datetime
 from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
@@ -825,6 +827,56 @@ def makeCol(array01, scene01):
     if max <= total_collision_spaces:
         cc.insert(0, 0)
     scene01["collisions"] = cc[::-1]
+
+def genQuestions(txtfile, scriptt):
+    #counting number of lines in txt file
+    count = 0
+    with open(txtfile, 'r') as f:
+        for line in f:
+            count += 1
+    #generating random line number
+    random.seed(datetime.now())
+    numz = random.randint(0, (count / 3) - 1) * 3
+    #reading file
+    f = open(txtfile, 'r')
+    file_contents = f.readlines()
+    #elements
+    element = makeElement()
+    element["command"] = "EVENT_TEXT"
+    element["args"] = {
+        "text": [file_contents[numz]], 
+        "avatarId": ""
+    }
+    scriptt.append(element)
+    element = makeElement()
+    element["command"] = "EVENT_CHOICE"
+    element["args"] = {
+        "variable": "L0",
+        "trueText": [file_contents[numz + 1].strip()],
+        "falseText": [file_contents[numz + 2].strip()]
+    }
+    scriptt.append(element)
+   
+# def createWithCallback(callback_func):
+#     # Set up a barebones project
+#     project = makeBasicProject()
+#
+#     # Add some music
+#     project.music.append(makeMusic("template", "template.mod"))
+#
+#     # Create sprite sheets
+#     player_sprite_sheet = makeSpriteSheet("actor_animated", "actor_animated", "actor_animated.png")
+#
+#     # Set the starting scene and player sprite
+#     project.settings["startSceneId"] = project.scenes[0]["id"]
+#     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+#
+#     instructions = callback_func(project)
+#
+#     write_project_to_disk(project, output_path=main_project_output_path)
+#
+#
+
 
 def createExampleProject():
     # Set up a barebones project

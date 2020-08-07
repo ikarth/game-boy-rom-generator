@@ -1,4 +1,3 @@
-==== BASE ====
 import json
 import types
 import uuid
@@ -844,7 +843,7 @@ def genQuestions(txtfile, scriptt):
     element = makeElement()
     element["command"] = "EVENT_TEXT"
     element["args"] = {
-        "text": [file_contents[numz]], 
+        "text": [file_contents[numz]],
         "avatarId": ""
     }
     scriptt.append(element)
@@ -856,7 +855,7 @@ def genQuestions(txtfile, scriptt):
         "falseText": [file_contents[numz + 2].strip()]
     }
     scriptt.append(element)
-   
+
 # def createWithCallback(callback_func):
 #     # Set up a barebones project
 #     project = makeBasicProject()

@@ -225,6 +225,10 @@ def createRockWorld():
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
 
+def grammarTest():
+    return roomGen.makeGame()
+    
+
 
 # Utilities
 class bcolors:
@@ -251,3 +255,5 @@ if __name__ == '__main__':
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")
+
+

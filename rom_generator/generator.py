@@ -1,3 +1,4 @@
+import assets
 import json
 import types
 import uuid
@@ -501,7 +502,14 @@ def makeScriptConnectionToScene(target_scene, direction="right", location=None):
 reverse_direction = {"left": "right", "right": "left", "up": "down", "down": "up"}
 
 
-### Adds trigger for scene connection.
+
+def makeTriggerAndSwitchScene(scene1, scene2, x, y, x1, y2):
+    scene1["triggers"].append(makeTrigger(scene1, x, y, 2, 1, [scripts.switchScene(sceneId = scene2["id"], x = x1, y = y2)]))
+
+
+
+
+# Adds trigger for scene connection.
 def addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite=None):
     source_location = {
         "right": (scene["width"] - 1, (scene["height"] // 2) - 1),
@@ -727,7 +735,7 @@ def makeBasicProject():
     record_of_scenes = []
     return copy.deepcopy(project)
 
-#makes a border of collisions around a scene
+# makes a border of collisions around a scene
 def makeColBorder(scenex):
     """
     Makes a border of collisions around a scene.

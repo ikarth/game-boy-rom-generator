@@ -1,8 +1,8 @@
 import argparse
 import copy
 import random
-from generator import makeBasicProject, addSpriteSheet, makeColBorder, makeCol, makeBackground, makeScene, makeActor, makeElement, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
-
+from datetime import datetime
+from generator import makeBasicProject, makeElement, makeColBorder, makeCol, genQuestions, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk
 
 def vijayaGame():
 
@@ -25,19 +25,10 @@ def vijayaGame():
     actor2 = makeActor(a_rock_sprite, 2, 3)
     actor3 = makeActor(duck_sprite, 9, 10, "animated", True)
 
-    #dog script
-    dog_actor = makeActor(a_dog_sprite, 5, 6)
+    # Testing genQuestions with dog actor
+    dog_actor = makeActor(a_dog_sprite, 7, 8)
     dog_script = []
-    element = makeElement()
-    element["command"] = "EVENT_ACTOR_EMOTE"
-    element["args"] = {
-        "actorID" : "player",
-        "emoteId" : "2"
-    }
-    dog_script.append(element)
-    element = makeElement()
-    element["command"] = "EVENT_END"
-    dog_script.append(element)
+    genQuestions('mc.txt', dog_script)
     dog_actor["script"] = dog_script
 
     # Add a background image
@@ -46,19 +37,15 @@ def vijayaGame():
 
     # Add scenes with some actors
     a_scene2 = copy.deepcopy(makeScene(f"Scene", default_bkg))
-    hello = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
-    makeCol(hello, a_scene2)
     a_scene2["actors"].append(dog_actor)
-    scene2_script = []
-    element = makeElement()
     project.scenes.append(copy.deepcopy(a_scene2))
-    random.seed(1)
+    
+    # Randomly generate num of scenes
+    random.seed(datetime.now())
     num = random.randint(1, 20)
-    print ("this is num: ")
-    print (num)
     for y in range(num):
-        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))
-        makeColBorder(a_scene)
+        a_scene = copy.deepcopy(makeScene(f"Scene", default_bkg))   
+        makeColBorder(a_scene)    
         if y%2 == 0:
             a_scene["actors"].append(actor)
         if y%3 == 0:
@@ -109,19 +96,16 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-
-# Run the generator
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str,
-                        help="destination folder name", default="../gbprojects/projects/")
-    parser.add_argument('--assets', '-a', type=str,
-                        help="asset folder name", default="../assets/")
+    parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../../gbprojects/projects/")
+    parser.add_argument('--assets', '-a', type=str, help="asset folder name", default="../assets/")
+    parser.add_argument('--subfolder', '-s', type=bool, help="asset folder name", default=False)
     args = parser.parse_args()
     initializeGenerator(asset_folder=args.assets)
     project = vijayaGame()
-    writeProjectToDisk(project, output_path=args.destination, filename="test.gbsproj", assets_path=args.assets)
+    writeProjectToDisk(project, output_path = args.destination)
+
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")

@@ -385,7 +385,7 @@ def importScene(scene_data, proj_data):
     script_data = template["script"]
     code_script = convertScripts(script_data, proj_data=proj_data)
     print(code_script)
-    breakpoint()
+    #breakpoint()
 
     collision_data = template.pop("collisions")
     background_file_id = template.pop("backgroundId")
@@ -409,7 +409,7 @@ def importScene(scene_data, proj_data):
     generated_code = generateCode(generate_lines)
 
     pprint.pprint(template)
-    breakpoint()
+    #breakpoint()
 
     return generated_code, code_func_name, scene_original_id
 

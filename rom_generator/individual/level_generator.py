@@ -5,6 +5,7 @@ from rom_generator.generator import makeBasicProject, addSpriteSheet, makeBackgr
 from rom_generator.script_functions import actorHide, end
 import rom_generator.combat as combat
 import rom_generator.roomGen as roomGen
+import rom_generator.roomGen2 as roomGen2
 def AnikaProject123():
     """
     This is my change
@@ -218,7 +219,7 @@ def createRockWorld():
     return project
 
 def grammarTest():
-    return roomGen.makeGame()
+    return roomGen2.makeGame()
     
 
 

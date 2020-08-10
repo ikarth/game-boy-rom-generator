@@ -16,6 +16,7 @@ from pathlib import Path
 from PIL import Image
 from rom_generator import script_functions as scripts
 from rom_generator.utilities import makeElement
+import rom_generator.scriptFunctions2 as scripts2
 try:
     import importlib.resources as pkg_resources
 except ImportError:
@@ -250,6 +251,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True):
     element["y"] = y
     element["animate"] = animate
     element["script"] = []
+    element["startScript"] = []
     return copy.deepcopy(element)
 
 
@@ -529,8 +531,9 @@ def addSymmetricSceneConnections(project, scene, destination_scene, direction, d
 
 # creates a key to a lock
 def makeKey(sprite, x, y):
+    global curKeyNumber
     key = makeActor(sprite, x, y, animate = False)
-    # key["startScript"].append()  Plan on disabling collisions here
+    key["startScript"].append(scripts2.disableCollisions("$self$"))
     key["script"].append(scripts.actorHide(actorId = "$self$"))
     key["script"].append(scripts.setTrue(variable = curKeyNumber))
     key["script"].append(scripts.end())
@@ -547,6 +550,12 @@ def makeLock(sprite, x, y):
     lock["script"].append(scripts.ifTrue(variable = curKeyNumber, trueCommands = trueCommands))
     curKeyNumber = curKeyNumber - 1
     return lock
+
+#this makes a connection sprite
+def makeConnectionSprite(sprite, x, y):
+    con = makeActor(sprite, x, y, animate = False)
+    con["startScript"] = [scripts2.disableCollisions("$self$"), scripts.end()]
+    return con
 
 
 ### Writing the project to disk ###
@@ -766,6 +775,7 @@ def makeCol(array01, scene01):
     if max <= total_collision_spaces:
         cc.insert(0, 0)
     scene01["collisions"] = cc[::-1]
+
 
 def createExampleProject():
     # Set up a barebones project

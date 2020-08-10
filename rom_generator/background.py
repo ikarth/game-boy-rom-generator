@@ -1,4 +1,4 @@
-import generator
+import rom_generator.generator as generator
 import argparse
 import os
 import numpy as np

@@ -100,8 +100,36 @@ def convertFuncCallToTemplate(script_entry):
         return script_converion[script_entry["command"]](script_entry)
     return None
 
+def scenesInProject(proj_data):
+    scene_list = [(s['id'], s['name']) for s in proj_data["scenes"]]
+    scene_id_conversion = {}
+    for s in scene_list:
+        scene_id_conversion.update({s[0] : f"REFERENCE_TO_SCENES_{s[1]}"})
+    return scene_id_conversion
+
+def referencesInProject(proj_data):
+    ref_types = ["scenes", "spriteSheets", "backgrounds", "music", "customEvents"]
+    ref_id_conversion = {}
+    for r in ref_types:
+        data_list = [(s['id'], s['name']) for s in proj_data[r]]
+        for s in data_list:
+            ref_id_conversion.update({s[0] : f"REFERENCE_TO_{r.upper()}_<{s[1]}>"})
+    return ref_id_conversion
+
+def convertIdToRef(conversion_table, id):
+    result = None
+    try:
+        result = conversion_table[id]
+    except KeyError as err:
+        return None
+    return result
+
+
 child_count = 0
-def convertScripts(scripts, reference_translation_func=None):
+def convertScripts(scripts, reference_translation_func=None, proj_data=None):
+    if proj_data is not None:
+        references_in_project = referencesInProject(proj_data)
+
     global child_count
     converted_scripts = []
     for scr in scripts:
@@ -126,7 +154,7 @@ def convertScripts(scripts, reference_translation_func=None):
             if "children" in scr:
                 child_scripts = {}
                 for k_arg, v_arg in scr["children"].items():
-                    child_args = convertScripts(v_arg)
+                    child_args = convertScripts(v_arg, proj_data=proj_data)
                     child_scripts.update({k_arg: child_args})
                 child_scripts_processed = ""
                 child_scripts_processed += "{\n"
@@ -354,6 +382,16 @@ def importScene(scene_data, proj_data):
     code_actors, actor_data_list = convertActors(actors, proj_data)
     code_triggers, template_slots = convertTriggers(triggers, proj_data)
 
+    code_scene_script = ""
+    add_script_to_scene = ""
+    if "script" in template.keys():
+        script_data = template.pop("script")
+        code_script = convertScripts(script_data, proj_data=proj_data)
+        #print(code_script)
+        code_scene_script = f"scene_script = [\n" + ", ".join(code_script) + "\n]\n"
+        add_script_to_scene = "gen_scene_scn['script'] = scene_script"
+        #breakpoint()
+
     collision_data = template.pop("collisions")
     background_file_id = template.pop("backgroundId")
     background_filename = findFilenameById(proj_data, background_file_id)
@@ -365,15 +403,40 @@ def importScene(scene_data, proj_data):
     code_bkg = f"gen_scene_bkg = generator.makeBackground(\"{background_filename}\")"
     code_scn = f"gen_scene_scn = generator.makeScene(\"{generated_scene_name}\", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label={code_func_name})"
 
-    code_scn_data = 'scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}'
+    code_scn_data = 'scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}'
     code_for_templates = "\n".join([str(x) for x in [t["code"] for t in template_slots]])
     code_for_templates = [t["code"] for t in template_slots]
     code_con = f"gen_scene_connections = [" + ", ".join([t["name"] for t in template_slots]) + "]"
+
+    code_for_refs = [""]
+    code_ref = ""#f"gen_scene_references = [" + ", ".join([t["name"] for t in ref_template_slots]) + "]"
     generate_lines = ["def " + code_func_name+ "(callback):",
-                        code_actors + code_triggers + [code_col, code_bkg, code_scn],
+                        code_actors + code_triggers + [code_col, code_bkg, code_scene_script, code_scn, add_script_to_scene],
                         *code_for_templates,
                         [code_con] + [code_scn_data, "return scene_data"]]
+
+    # for line_index, line in enumerate(generate_lines):
+    #     print(line)
+    #     print('-')
+    #     some_references_remain = True
+    #     while some_references_remain:
+    #         if "♔" in line:
+    #             search_pattern = r"♔REFERENCE_TO_SCENES_\<(.*?<ref>)\>"
+    #             match = re.search(search_pattern)
+    #             found_id = "XXXXXXXXXXXXXXXXXX"
+    #             new_line = re.sub(search_pattern, found_id, line, count=1)
+    #             print(f"\t{utilities.bcolors.OKBLUE} {match}")
+    #             line = new_line
+    #             continue
+    #         generate_lines[line_index] = line
+    #         some_references_remain = False
+    #         #breakpoint()
+
     generated_code = generateCode(generate_lines)
+
+    print("remaining data in template")
+    pprint.pprint(template)
+    #breakpoint()
 
     return generated_code, code_func_name, scene_original_id
 
@@ -405,7 +468,7 @@ def createExampleProject():
     generator.connectScenesRandomlySymmetric(scene_data_list)
 
     for sdata in scene_data_list:
-        generator.addSceneData(project, sdata)
+        generator.addSceneData(project, generator.translateReferences(sdata, scene_data_list))
 
     # Add some music
     project.music.append(generator.makeMusic("template", "template.mod"))
@@ -461,6 +524,9 @@ def importFromGBS(filename):
 
     template_connections = []
 
+    conversion_table = referencesInProject(proj_data)
+    reference_table = []
+
     # Find scene ids in scripts and notate them.
     for scn_idx, scn_val in enumerate(proj_data["scenes"]):
         current_scene_id = scn_val["id"]
@@ -468,12 +534,22 @@ def importFromGBS(filename):
         replacement_func = lambda scn_id: "INSERT*STRING*HERE"
         def scene_id_replace(s_id):
             logging.info(f"{s_id}\t{current_scene_id}\t{str(s_id)} == {str(current_scene_id)}")
+            converted_ref = convertIdToRef(conversion_table, s_id)
             if str(s_id) == str(current_scene_id):
                 return "♔REFERENCE_SCENE_SELF♔"
             else:
-                return "♔REFERENCE_SCENE♔"
+                if converted_ref == None:
+                    return "♔REFERENCE_SCENE♔"
+                return f"♔{converted_ref}♔"
+            return s_id
+        def actor_id_replace(s_id):
+            logging.info(f"{s_id}\t{current_scene_id}\t{str(s_id)} == {str(current_scene_id)}")
+            converted_ref = convertIdToRef(conversion_table, s_id)
+            if converted_ref != None:
+                return f"♔{converted_ref}♔"
             return s_id
         proj_data["scenes"][scn_idx] = replaceInDataByKey(proj_data["scenes"][scn_idx], 'sceneId', scene_id_replace)
+        #proj_data["scenes"][scn_idx] = replaceInDataByKey(proj_data["scenes"][scn_idx], 'actorId', actor_id_replace)
 
     # Sprites
     spritesheet_code = []

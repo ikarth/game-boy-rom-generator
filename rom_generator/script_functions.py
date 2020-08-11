@@ -92,6 +92,8 @@ def scenePushState():
     """
     element = makeElement()
     element["command"] = "EVENT_SCENE_PUSH_STATE"
+    element["args"] = {
+    }
     return element
 
 
@@ -144,6 +146,8 @@ def loadData():
     """
     element = makeElement()
     element["command"] = "EVENT_LOAD_DATA"
+    element["args"] = {
+    }
     return element
 
 
@@ -183,10 +187,10 @@ def ifTrue(variable = "L0", __collapseElse = "False", children = {'true': [], 'f
         "variable": variable,
         "__collapseElse": __collapseElse,
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -205,10 +209,10 @@ def ifFalse(variable = "L0", __collapseElse = "False", children = {'true': [], '
         "variable": variable,
         "__collapseElse": __collapseElse,
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -231,10 +235,10 @@ def ifValue(variable = "L3", operator = ">", comparator = "2", __collapseElse = 
         "comparator": comparator,
         "__collapseElse": __collapseElse,
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -257,10 +261,10 @@ def ifValueCompare(vectorX = "6", operator = "==", vectorY = "3", __collapseElse
         "vectorY": vectorY,
         "__collapseElse": __collapseElse,
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -279,10 +283,10 @@ def ifInput(input = "['a', 'b']", __collapseElse = "False", children = {'true': 
         "input": input,
         "__collapseElse": __collapseElse,
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -303,10 +307,10 @@ def ifActorDirection(actorId = "player", direction = "up", __collapseElse = "Fal
         "direction": direction,
         "__collapseElse": __collapseElse,
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -323,10 +327,10 @@ def ifSavedData(__collapseElse = "False", children = {'true': [], 'false': []}):
     element["args"] = {
         "__collapseElse": __collapseElse,
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -349,10 +353,10 @@ def ifActorAtPosition(actorId = "player", x = "0", y = "0", __collapseElse = "Fa
         "y": y,
         "__collapseElse": __collapseElse,
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -427,10 +431,10 @@ def loop(children = {'true': []}):
     element["command"] = "EVENT_LOOP"
     element["args"] = {
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -445,10 +449,10 @@ def group(children = {'true': []}):
     element["command"] = "EVENT_GROUP"
     element["args"] = {
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -517,10 +521,10 @@ def setInputScript(input = "b", children = {'true': []}):
     element["args"] = {
         "input": input,
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -866,10 +870,10 @@ def ifFlagsCompare(variable = "L0", flag = "1", __collapseElse = "False", childr
         "flag": flag,
         "__collapseElse": __collapseElse,
     }
-    
+
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        cmd_list.append(end())
+        #cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -1465,4 +1469,3 @@ def callCustomEvent(customEventId = "4bf11658-2bb2-4e79-ad96-22577c9a8353", __na
         "__name": __name,
     }
     return element
-

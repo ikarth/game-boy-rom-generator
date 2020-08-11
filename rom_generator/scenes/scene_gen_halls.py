@@ -2,6 +2,75 @@
 
 from rom_generator import generator
 from rom_generator import script_functions as script
+from rom_generator import spriteSheetManager as manager
+import random
+
+index = 0
+
+def setUpGenHallScenes():
+    backgroundNames = []
+    backgroundNames.append(createGenHall_04Grammar())
+    backgroundNames.append(createGenHall_03Grammar())
+
+    return backgroundNames
+
+def createGenHall_03Grammar():
+    hall_bkg = generator.makeBackground("halls_03.png")
+
+    sceneName = "halls_03"
+    manager.addBackgroundSpriteSheet("halls_03", hall_bkg)
+
+
+    manager.addOutConnections(sceneName, [[11, 24],[20, 19],[14, 7]])
+    manager.addInConnections(sceneName, [[11, 23], [20, 20], [14, 8]])
+
+    connections = [{"out": (11, 24, 2, 1), "in": (11, 23)},
+                   {"out": (20, 19, 2, 1), "in": (20, 20)},
+                   {"out": (14,  7, 2, 1), "in": (14,  8)}]
+    return "halls_03"
+
+def createGenHall_04Grammar():
+    hall_bkg = generator.makeBackground("halls_04.png")
+    sceneName = "halls_04"
+    manager.addBackgroundSpriteSheet("halls_04", hall_bkg)
+
+
+    manager.addOutConnections(sceneName, [[18, 15],[2,1],[13,26],[4,11]])
+    manager.addInConnections(sceneName, [[18, 16], [13, 25], [4, 12]])
+    return "halls_04"
+
+def sceneGenHallGrammar():
+    index = random.randint(0, 1)
+    if(index == 0):
+        return sceneGenHall_03Grammar()
+    return sceneGenHall_04Grammar()
+
+def sceneGenHall_03Grammar():
+    actor_list = []
+
+    collision_string_03 = [ 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 252, 63, 0, 0, 255, 3, 0, 240, 63, 0, 0, 255, 127, 254, 255, 255, 231, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 ]
+    hall_bkg = manager.findBackgroundSpriteSheet("halls_03")
+    hall = generator.makeScene("_gen_hall_03", hall_bkg, collisions=collision_string_03, actors=actor_list)
+
+    # 3
+    connections = [{"out": (11, 24, 2, 1), "in": (11, 23)},
+                   {"out": (20, 19, 2, 1), "in": (20, 20)},
+                   {"out": (14,  7, 2, 1), "in": (14,  8)}]
+
+    return ["halls_03", hall]
+
+def sceneGenHall_04Grammar():
+    '''This is sceneGenHall_04 room converted to fit with the grammar generator of roomGen2'''
+    global index
+    actor_list = []
+    sceneName = "hall_04"
+    collision_string_04 = [ 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 252, 255, 255, 207, 255, 255, 255, 252, 255, 255, 207, 255, 255, 255, 252, 63, 255, 207, 255, 192, 255, 252, 15, 252, 207, 255, 192, 255, 252, 207, 255, 15, 0, 252, 255, 0, 192, 255, 15, 0, 252, 255, 0, 192, 255, 15, 0, 252, 255, 255, 249, 255, 255, 159, 255, 255, 255, 255, 255 ]
+    hall_bkg = manager.findBackgroundSpriteSheet("halls_04")
+
+    hall = generator.makeScene(sceneName, hall_bkg, collisions=collision_string_04, actors=actor_list)
+
+    return ["halls_04", hall]
+
 
 def sceneGenHall_04():
     actor_list = []

@@ -54,7 +54,7 @@ def generateKruskalMaze(size_x, size_y, num_lock, keySprite, lockSprite):
         maze_tile_array[x][y] = tile_num
         maze_collisions[x][y] = 1
         return maze_tile_array
-    print(maze_tile_list)
+    #print(maze_tile_list)
 
     maze_wall_tile = maze_tile_names.index("MazeBlock8.png")
 
@@ -62,13 +62,13 @@ def generateKruskalMaze(size_x, size_y, num_lock, keySprite, lockSprite):
 
     array = getList()
 
-    print("lengt " + str(len(array)))
+    #print("lengt " + str(len(array)))
 
     mazeArray = [[0 for a in range(size_y * 3)] for b in range(size_x * 3)]
     sizey = size_y * 2
     sizex = size_x * 3
     
-    print("SETTING THE TILES")
+    #print("SETTING THE TILES")
     counter = 0
     for i in range(len(array)):
         for j in range(len(array)):
@@ -84,22 +84,21 @@ def generateKruskalMaze(size_x, size_y, num_lock, keySprite, lockSprite):
                 addBackgroundTile(maze_wall_tile, 2 * i, 3 * j + 2)
             mazeArray[2*i+1][3*j+2] = -1
             addBackgroundTile(maze_wall_tile, 2 * i + 1, 3 * j + 2)
-            print(counter)
+            #print(counter)
             counter += 1
 
-    "DOING BFS NOW"
 
     dfs(0, 0, 1, mazeArray) #this is bfs now
 
-    print("Maze is")
-    print(mazeArray)
+    #print("Maze is")
+    #print(mazeArray)
 
     flat = numpy.array(mazeArray).flatten(order='C').tolist()
-    for y in range(numpy.array(mazeArray).shape[1]):
-        print()
-        for x in range(numpy.array(mazeArray).shape[0]):
-            print(flat[x + (y * numpy.array(mazeArray).shape[0])], end='')
-    print()
+    # for y in range(numpy.array(mazeArray).shape[1]):
+    #     print()
+    #     for x in range(numpy.array(mazeArray).shape[0]):
+    #         print(flat[x + (y * numpy.array(mazeArray).shape[0])], end='')
+    # print()
 
     global index
     maze_background_image_path = background.generateBackgroundImageFromTiles(maze_tile_array, maze_tile_list)
@@ -108,45 +107,37 @@ def generateKruskalMaze(size_x, size_y, num_lock, keySprite, lockSprite):
     manager.addBackgroundSpriteSheet(nameBackground, maze_background)
     manager.addInConnections(nameBackground, [[0, 0]])
     manager.addOutConnections(nameBackground, [[sizex - 2, sizey - 2]])
-    '''
-    make sure this works
-    '''
     index+=1
-    print()
-    print()
-    print(nameBackground)
-    print()
-    print()
     a_scene = makeScene(f"Scene" + str(index), maze_background)
 
     #flat_maze_collisions = numpy.rot90(numpy.array(maze_collisions), 2, axes=(0,1)).flatten(order='C').tolist()
     flat_maze_collisions = numpy.array(maze_collisions).flatten(order='C').tolist()
-    for y in range(numpy.array(maze_collisions).shape[1]):
-        print()
-        for x in range(numpy.array(maze_collisions).shape[0]):
-            print(flat_maze_collisions[x + (y * numpy.array(maze_collisions).shape[0])], end='')
-    print()
+    # for y in range(numpy.array(maze_collisions).shape[1]):
+    #     print()
+    #     for x in range(numpy.array(maze_collisions).shape[0]):
+    #         print(flat_maze_collisions[x + (y * numpy.array(maze_collisions).shape[0])], end='')
+    # print()
 
     makeCol(flat_maze_collisions, a_scene)
-    print(maze_background)
+    #print(maze_background)
 
-    print(a_scene)
+    #print(a_scene)
     sizex -= 1
     sizey -=1
     for i in range(num_lock):
         intx = random.randint(0, sizex)
         inty = random.randint(0, sizey)
-        while(mazeArray[inty][intx] == -1 or (intx + 1 > sizex or mazeArray[inty][intx+1] == -1)):
+        while(mazeArray[inty][intx] == -1 or (intx + 1 > sizex and mazeArray[inty][intx+1] == -1)):
             intx = random.randint(0, sizex)
             inty = random.randint(0, sizey)
 
         intx2 = random.randint(0, sizex)
         inty2 = random.randint(0, sizey)
-        while(mazeArray[inty2][intx2] == -1 or (intx2+1>sizex or mazeArray[inty2][intx2+1]==-1)):
+        while(mazeArray[inty2][intx2] == -1 or (intx2+1>sizex and mazeArray[inty2][intx2+1]==-1)):
             intx2 = random.randint(0, sizex)
             inty2 = random.randint(0, sizey)
 
-        if(mazeArray[intx][inty] > mazeArray[intx2][inty2]):
+        if(mazeArray[inty][intx] > mazeArray[inty2][intx2]):
             inttemp = intx
             intx = intx2
             intx2 = inttemp
@@ -154,18 +145,18 @@ def generateKruskalMaze(size_x, size_y, num_lock, keySprite, lockSprite):
             inty = inty2
             inty2 = inttemp
 
-        print("coords")
-        print(intx)
-        print(inty)
-        print(intx2)
-        print(inty2)
+        # print("coords")
+        # print(intx)
+        # print(inty)
+        # print(intx2)
+        # print(inty2)
+        # print("MAZE DEPTH COMP")
+        # print(mazeArray[inty][intx])
+        # print(mazeArray[inty2][intx2])
         a_scene["actors"].append(makeKey(keySprite, intx, inty))
         a_scene["actors"].append(makeLock(lockSprite, intx2, inty2))
 
         
-        '''
-        Check to see if this works
-        '''
 
         
     return [nameBackground, a_scene]
@@ -186,11 +177,11 @@ def generatemaze():
     maze_tile_array = [[0 for n in range(size_y)] for m in range(size_x) ]
     maze_collisions = [[0 for n in range(size_y)] for m in range(size_x)]
     def addBackgroundTile(tile_num, x, y):
-        print(x,y)
+        #print(x,y)
         maze_tile_array[x][y] = tile_num
         maze_collisions[x][y] = 1
         return maze_tile_array
-    print(maze_tile_list)
+    #print(maze_tile_list)
 
     maze_wall_tile = maze_tile_names.index("MazeBlock8.png")
     tile_placement_list = [(1, 2), (1, 9), (1, 16),(2, 2),(2, 9),(2, 10),(2, 11),(2, 12),(2, 13),(2, 14),(2, 16),(3, 6),(3, 9),(3, 16),(4, 6),(4, 16),(5, 1),(5, 2),(5, 3),(5, 4),(5, 5),(5, 6),(5, 16),(6, 2),(6, 6),(6, 10),(6, 11),(6, 12),(6, 13), (6, 14), (6, 15), (6, 16), (7, 2), (7, 6), (7, 16), (8, 2), (8, 12), (8, 13), (8, 14), (8, 16), (9, 8), (9, 10), (9, 16), (10, 4), (10, 5), (10, 6), (10, 7), (10, 8), (10, 10), (10, 16), (11, 4), (11, 8), (11, 10), (11, 13), (11, 14), (11, 15), (11, 16), (12, 4), (12, 7), (12, 8), (12, 16), (13, 4), (13, 12), (13, 16), (14, 4), (14, 12), (14, 16), (15, 1), (15, 2), (15, 3), (15, 4), (15, 12), (15, 16), (16, 12), (16, 13), (16, 14), (16, 15), (16, 16)]

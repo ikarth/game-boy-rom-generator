@@ -7,6 +7,7 @@ import rom_generator.combat as combat
 import rom_generator.scriptFunctions2 as script2
 import rom_generator.spriteSheetManager as manager
 import rom_generator.mazes.maze as maze
+import rom_generator.scenes.scene_gen_halls as sceneMethods
 
 maxNumberOfEnemies = 7
 maxSizeofASmallMaze = 4
@@ -105,7 +106,21 @@ def room():
 
 def autoGeneration():
     '''this will be taking in the rooms from isaccs room genereator'''
-    pass
+    listAr = sceneMethods.sceneGenHallGrammar()
+    #generates the maze
+    
+    connectionIn = manager.findInConnections(listAr[0])
+    index = random.randint(0, len(connectionIn) - 1)
+
+    finishConnection(listAr[1], connectionIn[index][0], connectionIn[index][1])
+    #generates the connections into it
+
+    connectionOut = manager.findOutConnection(listAr[0])
+    index = random.randint(0, len(connectionOut) - 1)
+    createConnection(listAr[1], connectionOut[index][0], connectionOut[index][1])
+    #generates the out connection
+
+    sceneList.append(listAr[1])
 
 def smallMaze():
     '''This creates a small maze'''
@@ -132,15 +147,14 @@ def makeRooms():
     '''Makes the rooms'''
     index = random.randint(0, 5)
     #probabilitie sto be changed
-    if(index == 1):
-        makeMaze()
+    if(index <= 1):
+        room()
         makeRooms()
+    elif(index <= 3):
+        autoGeneration()
         makeRooms()
-    elif(index == 0):
-        makeMaze()
-    elif(index > 2):
-        makeMaze()
-        pass
+    elif(index == 4):
+        smallMaze()
 
 def makeMaze():
     '''This makes a big maze'''
@@ -165,7 +179,8 @@ def makeMaze():
 
 
 def boss():
-    pass
+    '''TO BE UPDATED WITH A BOSS LEVEL'''
+    autoGeneration()
 
 def setUp(project):
     '''Sets up the games files'''
@@ -209,6 +224,8 @@ def setUp(project):
     manager.addInConnections(name, [[2, 5]])
     manager.addOutConnections(name, [[17, 15]])
     backgroundNameList.append(name)
+
+    sceneMethods.setUpGenHallScenes()
     
 
 
@@ -238,7 +255,7 @@ def makeGame():
     start()
     makeRooms()
     makeMaze()
-    #boss()
+    boss()
     #creates the project from the grammar
 
     wrapUp(project)

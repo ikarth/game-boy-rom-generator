@@ -12,7 +12,7 @@ def getOpenVariable():
     while(ar[counter]):
         counter = counter + 1
     ar[counter] = True
-    print("counter " + str(counter))
+    #print("counter " + str(counter))
     return counter
 
 def deprecatedVariable(index):

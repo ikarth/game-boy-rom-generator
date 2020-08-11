@@ -6,150 +6,154 @@ from rom_generator.script_functions import actorHide, end
 import rom_generator.combat as combat
 import rom_generator.roomGen as roomGen
 import rom_generator.roomGen2 as roomGen2
-def AnikaProject123():
-    """
-    This is my change
-    """
-    pass
 
-
-def SachitasGame():
-    pass
-
-
-def Harvin():
-    pass
-
-
-def createVijayaWorld():
-    # Set up a barebones project
-    project = makeBasicProject()
-
-    # Create sprite sheet for the player sprite
-    player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
-    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
-
-    # add a sprite we can use for the rocks
-    a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
-
-    # Add a background image
-    default_bkg = makeBackground("placeholder.png", "placeholder")
-    project.backgrounds.append(default_bkg)
-
-    # Get information about the background
-    bkg_x = default_bkg["imageWidth"]
-    bkg_y = default_bkg["imageHeight"]
-    bkg_width = default_bkg["width"]
-    bkg_height = default_bkg["height"]
-
-    a_scene = makeScene(f"Scene Zero", default_bkg)
-    # Add scene to project
-    project.scenes.append(a_scene)
-
-    # Add some music
-    project.music.append(makeMusic("template", "template.mod"))
-    project.settings["startSceneId"] = project.scenes[0]["id"]
-    return project
-
-def aaronTest():
-    project = makeBasicProject()
-
-    # Create sprite sheet for the player sprite
-    player_sprite_sheet = addSpriteSheet(
-        project, "actor_animated.png", "actor_animated", "actor_animated")
-    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
-
-    # add a sprite we can use for the rocks
-    a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
-
-    doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
-
-    # Add a background image
-    default_bkg = makeBackground("placeholder.png", "placeholder")
-    project.backgrounds.append(default_bkg)
-
-    # Get information about the background
-    bkg_x = default_bkg["imageWidth"]
-    bkg_y = default_bkg["imageHeight"]
-    bkg_width = default_bkg["width"]
-    bkg_height = default_bkg["height"]
-
-    a_scene = copy.deepcopy(
-            makeScene(f"Scene {1}", default_bkg))
-
-    key = makeActor(a_rock_sprite, 2, 2)
-    key2 = makeActor(a_rock_sprite, 3, 3)
-    key3 = makeActor(a_rock_sprite, 7, 7)
-
-    weapon = makeActor(doorway_sprite, 5, 5)
-
-    combat.setUpScene(a_scene, weapon, player_sprite_sheet["id"], [key, key2, key3])
-
-    a_scene["actors"].append(key)
-    a_scene["actors"].append(key2)
-    a_scene["actors"].append(key3)
-    a_scene["actors"].append(weapon)
-
-    project.scenes.append(copy.deepcopy(a_scene))
-
-    project.music.append(makeMusic("template", "template.mod"))
-
-    # Set the starting scene
-    project.settings["startSceneId"] = project.scenes[0]["id"]
-
-    return project
-
-def createAaronGame():
-    project = makeBasicProject()
-
-    # Create sprite sheet for the player sprite
-    player_sprite_sheet = addSpriteSheet(
-        project, "actor_animated.png", "actor_animated", "actor_animated")
-    project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
-
-    # add a sprite we can use for the rocks
-    a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
-
-    doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
-
-    # Add a background image
-    default_bkg = makeBackground("placeholder.png", "placeholder")
-    project.backgrounds.append(default_bkg)
-
-    # Get information about the background
-    bkg_x = default_bkg["imageWidth"]
-    bkg_y = default_bkg["imageHeight"]
-    bkg_width = default_bkg["width"]
-    bkg_height = default_bkg["height"]
-
-    a_scene = copy.deepcopy(
-            makeScene(f"Scene {1}", default_bkg))
-
-    key = makeKey(a_rock_sprite, 2, 2)
-    a_scene["actors"].append(key)
-    lock = makeLock(doorway_sprite, 4, 5)
-    a_scene["actors"].append(lock)
-
-    key2 = makeKey(a_rock_sprite, 6, 6)
-    a_scene["actors"].append(key2)
-
-    lock2= makeLock(doorway_sprite, 7, 7)
-    a_scene["actors"].append(lock2)
-
-
-    project.scenes.append(copy.deepcopy(a_scene))
-
-    project.music.append(makeMusic("template", "template.mod"))
-
-    # Set the starting scene
-    project.settings["startSceneId"] = project.scenes[0]["id"]
-
-    return project
+# import rom_generator.combat as combat
+# def AnikaProject123():
+#     """
+#     This is my change
+#     """
+#     pass
+#
+#
+# def SachitasGame():
+#     pass
+#
+#
+# def Harvin():
+#     pass
+#
+#
+# def createVijayaWorld():
+#     # Set up a barebones project
+#     project = makeBasicProject()
+#
+#     # Create sprite sheet for the player sprite
+#     player_sprite_sheet = addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+#     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+#
+#     # add a sprite we can use for the rocks
+#     a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
+#
+#     # Add a background image
+#     default_bkg = makeBackground("placeholder.png", "placeholder")
+#     project.backgrounds.append(default_bkg)
+#
+#     # Get information about the background
+#     bkg_x = default_bkg["imageWidth"]
+#     bkg_y = default_bkg["imageHeight"]
+#     bkg_width = default_bkg["width"]
+#     bkg_height = default_bkg["height"]
+#
+#     a_scene = makeScene(f"Scene Zero", default_bkg)
+#     # Add scene to project
+#     project.scenes.append(a_scene)
+#
+#     # Add some music
+#     project.music.append(makeMusic("template", "template.mod"))
+#     project.settings["startSceneId"] = project.scenes[0]["id"]
+#     return project
+#
+# def aaronTest():
+#     project = makeBasicProject()
+#
+#     # Create sprite sheet for the player sprite
+#     player_sprite_sheet = addSpriteSheet(
+#         project, "actor_animated.png", "actor_animated", "actor_animated")
+#     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+#
+#     # add a sprite we can use for the rocks
+#     a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
+#
+#     doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
+#
+#     # Add a background image
+#     default_bkg = makeBackground("placeholder.png", "placeholder")
+#     project.backgrounds.append(default_bkg)
+#
+#     # Get information about the background
+#     bkg_x = default_bkg["imageWidth"]
+#     bkg_y = default_bkg["imageHeight"]
+#     bkg_width = default_bkg["width"]
+#     bkg_height = default_bkg["height"]
+#
+#     a_scene = copy.deepcopy(
+#             makeScene(f"Scene {1}", default_bkg))
+#
+#     key = makeActor(a_rock_sprite, 2, 2)
+#
+#     weapon = makeActor(doorway_sprite, 5, 5)
+#
+#     print(a_scene)
+#     breakpoint()
+#     combat.setUpScene(a_scene, weapon, player_sprite_sheet["id"], [key])
+#
+#     a_scene["actors"].append(key)
+#     a_scene["actors"].append(weapon)
+#
+#     project.scenes.append(copy.deepcopy(a_scene))
+#
+#     project.music.append(makeMusic("template", "template.mod"))
+#
+#     # Set the starting scene
+#     project.settings["startSceneId"] = project.scenes[0]["id"]
+#
+#     return project
+#
+# def createAaronGame():
+#     project = makeBasicProject()
+#
+#     # Create sprite sheet for the player sprite
+#     player_sprite_sheet = addSpriteSheet(
+#         project, "actor_animated.png", "actor_animated", "actor_animated")
+#     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+#
+#     # add a sprite we can use for the rocks
+#     a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
+#
+#     doorway_sprite = addSpriteSheet(project, "tower.png", "tower", "static")
+#
+#     # Add a background image
+#     default_bkg = makeBackground("placeholder.png", "placeholder")
+#     project.backgrounds.append(default_bkg)
+#
+#     # Get information about the background
+#     bkg_x = default_bkg["imageWidth"]
+#     bkg_y = default_bkg["imageHeight"]
+#     bkg_width = default_bkg["width"]
+#     bkg_height = default_bkg["height"]
+#
+#     a_scene = copy.deepcopy(
+#             makeScene(f"Scene {1}", default_bkg))
+#
+#     key = makeKey(a_rock_sprite, 2, 2)
+#     a_scene["actors"].append(key)
+#     lock = makeLock(doorway_sprite, 4, 5)
+#     a_scene["actors"].append(lock)
+#
+#     key2 = makeKey(a_rock_sprite, 6, 6)
+#     a_scene["actors"].append(key2)
+#
+#     lock2= makeLock(doorway_sprite, 7, 7)
+#     a_scene["actors"].append(lock2)
+#
+#
+#     project.scenes.append(copy.deepcopy(a_scene))
+#
+#     project.music.append(makeMusic("template", "template.mod"))
+#
+#     # Set the starting scene
+#     project.settings["startSceneId"] = project.scenes[0]["id"]
+#
+#     return project
 
 
 def createRockWorld():
-        # Set up a barebones project
+    # Set up a barebones project
     project = makeBasicProject()
+
+    from inspect import currentframe, getframeinfo
+    frameinfo = getframeinfo(currentframe())
+    print(frameinfo.filename, frameinfo.lineno)
 
     # Create sprite sheet for the player sprite
     player_sprite_sheet = addSpriteSheet(
@@ -159,10 +163,17 @@ def createRockWorld():
     # add a sprite we can use for the rocks
     a_rock_sprite = addSpriteSheet(project, "rock.png", "rock", "static")
 
+    from inspect import currentframe, getframeinfo
+    frameinfo = getframeinfo(currentframe())
+    print(frameinfo.filename, frameinfo.lineno)
 
     # Add a background image
     default_bkg = makeBackground("placeholder.png", "placeholder")
     project.backgrounds.append(default_bkg)
+
+    from inspect import currentframe, getframeinfo
+    frameinfo = getframeinfo(currentframe())
+    print(frameinfo.filename, frameinfo.lineno)
 
     # Get information about the background
     bkg_x = default_bkg["imageWidth"]
@@ -220,7 +231,6 @@ def createRockWorld():
 
 def grammarTest():
     return roomGen2.makeGame()
-    
 
 
 # Utilities
@@ -237,18 +247,14 @@ class bcolors:
 
 # Run the generator
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description="Generate a Game Boy ROM via a GB Studio project file.")
-    parser.add_argument('--destination', '-d', type=str,
-                        help="destination folder name", default="../gbprojects/projects2/")
+    parser = argparse.ArgumentParser(description="Generate a Game Boy ROM via a GB Studio project file.")
+    parser.add_argument('--destination', '-d', type=str, help="destination folder name", default="../gbprojects/projects2/")
     args = parser.parse_args()
 
     initializeGenerator()
-    project = grammarTest()
+    project = createRockWorld()
     writeProjectToDisk(project, output_path=args.destination)
 
     if args.destination == "../gbprojects/projects/":
         print(f"{bcolors.WARNING}NOTE: Used default output directory, change with the -d flag{bcolors.ENDC}")
         print(f"{bcolors.OKBLUE}See generate.py --help for more options{bcolors.ENDC}")
-
-

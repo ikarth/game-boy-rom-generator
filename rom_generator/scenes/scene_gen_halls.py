@@ -1,5 +1,3 @@
-# Generate some basic example scenes
-
 from rom_generator import generator
 from rom_generator import script_functions as script
 from rom_generator import spriteSheetManager as manager
@@ -72,6 +70,9 @@ def sceneGenHall_04Grammar():
     return ["halls_04", hall]
 
 
+# Generate some basic example scenes
+
+
 def sceneGenHall_04():
     actor_list = []
 
@@ -117,7 +118,10 @@ def sceneGenHall_02():
                         script.setTrue(key_script_flag_variable),
                         script.text("You picked up the key."),
                         script.end()]
-    key_script_hide_on_init = [script.ifTrue(key_script_flag_variable, trueCommands=[script.actorHide(actorId="$self$"), script.end()], falseCommands=[script.end()]), script.end()]
+    key_script_hide_on_init = [
+        script.ifTrue(key_script_flag_variable, children={
+            'true':[script.actorHide(actorId="$self$"), script.end()],
+            'false':[script.end(), script.end()]})]
 
     key_actor["script"] = key_script_pickup
     key_actor["startScript"] = key_script_hide_on_init

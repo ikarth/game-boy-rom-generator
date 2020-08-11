@@ -15,7 +15,7 @@ script_commands = {
     },
     "EVENT_START_BATTLE": {},
     "EVENT_RETURN_TO_TITLE": {},
-    "EVENT_SCENE_PUSH_STATE": {},  # no arguments
+    "EVENT_SCENE_PUSH_STATE": {None:None},  # needs empty args????
     "EVENT_SCENE_POP_STATE": {
         "fadeSpeed": "2"
     },
@@ -24,7 +24,7 @@ script_commands = {
         "fadeSpeed": "2"
     },
     # Data
-    "EVENT_LOAD_DATA": {},  # no arguments
+    "EVENT_LOAD_DATA": {None:None},  # needs empty args????????
     "EVENT_SAVE_DATA": {},  # no arguments
     "EVENT_CLEAR_DATA": {},  # no arguments
     # Conditional

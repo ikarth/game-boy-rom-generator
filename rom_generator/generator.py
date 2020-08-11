@@ -699,24 +699,6 @@ def translateReferences(data, list_of_scenes):
             data[data_key] = translateReferences(data_val, list_of_scenes)
     return data
 
-def attachReferences(proj_as_json, proj_as_data):
-    """
-    Take a JSON-ified version of the project, look for reference strings that still need to be replaced, replace them.
-    Reference strings are in the format '♔REFERENCE_TO_SCENES_<>♔'.
-    Returns the JSON with the newly-remapped references.
-    """
-    some_references_remain = True
-    while some_references_remain:
-        if "♔" in proj_as_json:
-            search_pattern = r"♔REFERENCE_TO_SCENES_\<(.*?<ref>)\>"
-            match = re.search(search_pattern)
-            found_id = "XXXXXXXXXXXXXXXXXX"
-            new_json = re.sub(search_pattern, found_id, proj_as_json, count=1)
-            console.log(match)
-            proj_as_json = new_json
-        some_references_remain = False
-    return proj_as_json
-
 def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/"):
     """
      Write project to JSON

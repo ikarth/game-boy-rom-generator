@@ -28,11 +28,7 @@ connections = 0
 
 
 def initializeArrays():
-    global parent
-    global holding
-    global edges
-    global queue
-    global connection
+    global edges, parent, queue, holding, xdir, ydir, n, connections
 
     edges = []
 
@@ -80,10 +76,11 @@ def union(a, b):
 
 
 def run(num):
-    global edges, n, parent, connections
+    global n
     n = num
  
     initializeArrays()
+    global edges, connections, holding
     #print("length is " + str(len(edges)))
     #print("length is " + str(len(holding)))
     #print("n is " + str(n))

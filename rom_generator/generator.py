@@ -729,9 +729,15 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
     output_path = os.path.abspath(Path(os.path.dirname(__file__)).joinpath('..').joinpath(output_path))
     logging.info(f"writeProjectToDisk: {bcolors.OKGREEN}{os.path.abspath(output_path)}{bcolors.ENDC}")
     logging.info(f"Writing {filename} project file...")
+
     gb_project_without_ui_elements = copy.deepcopy(gb_project)
-    if "ui" in gb_project_without_ui_elements.__dict__.keys():
-        gb_project_without_ui_elements.ui = None
+
+    if None != gb_project_without_ui_elements:
+        if "ui" in gb_project_without_ui_elements.__dict__.keys():
+            gb_project_without_ui_elements.ui = None
+    else:
+        print(gb_project_without_ui_elements)
+        breakpoint()
 
     # TODO: duplicates need to be unified in ID values as well, so we don't end up with missing images...
     # gb_project_without_ui_elements.spriteSheets = uniques(gb_project_without_ui_elements.spriteSheets)

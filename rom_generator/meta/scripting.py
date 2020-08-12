@@ -324,9 +324,115 @@ script_commands = {
     "EVENT_CALL_CUSTOM_EVENT": {
         "customEventId": "4bf11658-2bb2-4e79-ad96-22577c9a8353",
         "__name": "Custom Event 1"
+        },
+    'EVENT_ACTOR_SET_ACTIVE': {
+        # unknown
+    },
+    'EVENT_ACTOR_SET_ANIM_SPEED': {
+        "actorId": "player",
+        "speed": 3
+    },
+    'EVENT_ACTOR_SET_FLIP': {
+        # unknown
+    },
+    'EVENT_ACTOR_SET_MOVE_SPEED': {
+        "actorId": "player",
+        "speed": 1
+    },
+    'EVENT_JUMP': {
+        #unknown
+    },
+    'EVENT_LOAD_VECTORS': {
+        #unknown
+    },
+	'EVENT_NEXT_FRAME': {
+        #unknown
+    },
+	'EVENT_NOOP': {}, # Unknown, probably no fields
+	'EVENT_OVERLAY_SET_POSITION': {}, # Unknown
+    'EVENT_SCENE_RESET_STATE': {}, # No fields
+	'EVENT_SCENE_STATE_RESET': {}, # ???
+	'EVENT_SET_TIMER_SCRIPT': {
+        "duration": 10.0,
+        "script": [],
+        "children": {}
+    },
+	'EVENT_SOUND_PLAY_CRASH': {}, # Unknown
+	'EVENT_SOUND_START_TONE': {}, # Unknown
+	'EVENT_SOUND_STOP_TONE': {}, # Unknown
+	'EVENT_STACK_POP': {}, # Unknown
+	'EVENT_STACK_PUSH': {}, # Unknown
+	'EVENT_TEXT_MULTI': {}, # Unknown
+	'EVENT_TEXT_SET_ANIM_SPEED': {
+        "speedIn": 1,
+        "speedOut": 1,
+        "cameraSpeed": 1
+    },
+	'EVENT_TEXT_WITH_AVATAR': {
+        "text": "",
+        "avatarId": ""
+    },
+	'EVENT_TIMER_DISABLE': {}, # No fields
+	'EVENT_TIMER_RESTART': {}, # No fields
+	'EVENT_VARIABLE_ADD_FLAGS': {
+    "variable": "LAST_VARIABLE",
+  	"flag1": False,
+  	"flag2": False,
+    "flag3": False,
+  	"flag4": False,
+  	"flag5": False,
+  	"flag6": False,
+  	"flag7": False,
+  	"flag8": False
+    },
+	'EVENT_VARIABLE_CLEAR_FLAGS': {
+        "variable": "LAST_VARIABLE",
+      	"flag1": False,
+      	"flag2": False,
+        "flag3": False,
+      	"flag4": False,
+      	"flag5": False,
+      	"flag6": False,
+      	"flag7": False,
+      	"flag8": False
+    },
+    "EVENT_SWITCH": {
+        "variable": "LAST_VARIABLE",
+        "choices": 2,
+        "value0": 1,
+        "value1": 2,
+        "value2": 3,
+        "value3": 4,
+        "value4": 5,
+        "value5": 6,
+        "value6": 7,
+        "value7": 8,
+        "value8": 9,
+        "value9": 10,
+        "value10": 11,
+        "value11": 12,
+        "value12": 13,
+        "value13": 14,
+        "value14": 15,
+        "value15": 16,
+        "children": {"true0": [], "true1": [], "true2": [], "true3": [], "true4": [], "true5": [], "true6": [], "true7": [], "true8": [], "true9": [], "true10": [], "true11": [], "true12": [], "true13": [], "true14": [], "true15": [], "true16": []}
+
     }
 }
+
+# List of script commands from GBS
+GBSscriptCommands = [
+  "END", "TEXT", "JUMP", "IF_TRUE", "NOOP", "SET_TRUE", "SET_FALSE", "ACTOR_SET_DIRECTION", "ACTOR_SET_ACTIVE", "CAMERA_MOVE_TO", "CAMERA_LOCK", "WAIT", "FADE_OUT", "FADE_IN", "SWITCH_SCENE", "ACTOR_SET_POSITION", "ACTOR_MOVE_TO", "SHOW_SPRITES", "HIDE_SPRITES", "PLAYER_SET_SPRITE", "ACTOR_SHOW", "ACTOR_HIDE", "ACTOR_EMOTE", "CAMERA_SHAKE", "RETURN_TO_TITLE", "OVERLAY_SHOW", "OVERLAY_HIDE", "OVERLAY_SET_POSITION", "OVERLAY_MOVE_TO", "AWAIT_INPUT", "MUSIC_PLAY", "MUSIC_STOP", "RESET_VARIABLES", "NEXT_FRAME", "INC_VALUE", "DEC_VALUE", "SET_VALUE", "IF_VALUE", "IF_INPUT", "CHOICE", "ACTOR_PUSH", "IF_ACTOR_AT_POSITION", "LOAD_DATA", "SAVE_DATA", "CLEAR_DATA", "IF_SAVED_DATA", "IF_ACTOR_DIRECTION", "SET_RANDOM_VALUE", "ACTOR_GET_POSITION", "ACTOR_SET_POSITION_TO_VALUE", "ACTOR_MOVE_TO_VALUE", "ACTOR_MOVE_RELATIVE", "ACTOR_SET_POSITION_RELATIVE", "MATH_ADD", "MATH_SUB", "MATH_MUL", "MATH_DIV", "MATH_MOD", "MATH_ADD_VALUE", "MATH_SUB_VALUE", "MATH_MUL_VALUE", "MATH_DIV_VALUE", "MATH_MOD_VALUE", "COPY_VALUE", "IF_VALUE_COMPARE", "LOAD_VECTORS", "ACTOR_SET_MOVE_SPEED", "ACTOR_SET_ANIM_SPEED", "TEXT_SET_ANIM_SPEED", "SCENE_PUSH_STATE", "SCENE_POP_STATE", "ACTOR_INVOKE", "STACK_PUSH", "STACK_POP", "SCENE_STATE_RESET", "SCENE_POP_ALL_STATE", "SET_INPUT_SCRIPT", "REMOVE_INPUT_SCRIPT", "ACTOR_SET_FRAME", "ACTOR_SET_FLIP", "TEXT_MULTI", "ACTOR_SET_FRAME_TO_VALUE", "VARIABLE_ADD_FLAGS", "VARIABLE_CLEAR_FLAGS", "SOUND_START_TONE", "SOUND_STOP_TONE", "SOUND_PLAY_BEEP", "SOUND_PLAY_CRASH", "SET_TIMER_SCRIPT", "TIMER_RESTART", "TIMER_DISABLE", "TEXT_WITH_AVATAR", "MENU"
+];
 
 
 def getScript():
     return script_commands
+
+if __name__ == '__main__':
+    import pprint
+    e_names = ["_".join(x.split("_")[1:]) for x in getScript().keys()]
+    #pprint.pprint(set(e_names))
+    print("Missing Commands:")
+    pprint.pprint(set(GBSscriptCommands) - set(e_names))
+    #pprint.pprint(set(getScript().keys()))

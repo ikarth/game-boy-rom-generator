@@ -89,10 +89,12 @@ def scenePushState():
     """
     Generated method for the GBS script action EVENT_SCENE_PUSH_STATE.
 
+
     """
     element = makeElement()
     element["command"] = "EVENT_SCENE_PUSH_STATE"
     element["args"] = {
+
     }
     return element
 
@@ -142,7 +144,6 @@ def scenePopAllState(fadeSpeed = "2"):
 def loadData():
     """
     Generated method for the GBS script action EVENT_LOAD_DATA.
-
     """
     element = makeElement()
     element["command"] = "EVENT_LOAD_DATA"
@@ -190,7 +191,7 @@ def ifTrue(variable = "L0", __collapseElse = "False", children = {'true': [], 'f
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -212,7 +213,7 @@ def ifFalse(variable = "L0", __collapseElse = "False", children = {'true': [], '
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -238,7 +239,7 @@ def ifValue(variable = "L3", operator = ">", comparator = "2", __collapseElse = 
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -264,7 +265,7 @@ def ifValueCompare(vectorX = "6", operator = "==", vectorY = "3", __collapseElse
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -286,7 +287,7 @@ def ifInput(input = "['a', 'b']", __collapseElse = "False", children = {'true': 
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -310,7 +311,7 @@ def ifActorDirection(actorId = "player", direction = "up", __collapseElse = "Fal
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -330,7 +331,7 @@ def ifSavedData(__collapseElse = "False", children = {'true': [], 'false': []}):
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -356,7 +357,7 @@ def ifActorAtPosition(actorId = "player", x = "0", y = "0", __collapseElse = "Fa
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -434,7 +435,7 @@ def loop(children = {'true': []}):
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -452,7 +453,7 @@ def group(children = {'true': []}):
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -524,7 +525,7 @@ def setInputScript(input = "b", children = {'true': []}):
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -873,7 +874,7 @@ def ifFlagsCompare(variable = "L0", flag = "1", __collapseElse = "False", childr
 
     element["children"] = {}
     for cmd_key, cmd_list in children.items():
-        #cmd_list.append(end())
+        # cmd_list.append(end())
         element["children"][cmd_key] = cmd_list
     return element
 
@@ -1468,4 +1469,384 @@ def callCustomEvent(customEventId = "4bf11658-2bb2-4e79-ad96-22577c9a8353", __na
         "customEventId": customEventId,
         "__name": __name,
     }
+    return element
+
+
+# EVENT_ACTOR_SET_ACTIVE
+def actorSetActive():
+    """
+    Generated method for the GBS script action EVENT_ACTOR_SET_ACTIVE.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_ACTOR_SET_ACTIVE"
+    return element
+
+
+# EVENT_ACTOR_SET_ANIM_SPEED
+def actorSetAnimSpeed(actorId = "player", speed = "3"):
+    """
+    Generated method for the GBS script action EVENT_ACTOR_SET_ANIM_SPEED.
+
+    actorId: str with a default value of "player"
+    speed: int with a default value of "3"
+    """
+    element = makeElement()
+    element["command"] = "EVENT_ACTOR_SET_ANIM_SPEED"
+    element["args"] = {
+        "actorId": actorId,
+        "speed": speed,
+    }
+    return element
+
+
+# EVENT_ACTOR_SET_FLIP
+def actorSetFlip():
+    """
+    Generated method for the GBS script action EVENT_ACTOR_SET_FLIP.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_ACTOR_SET_FLIP"
+    return element
+
+
+# EVENT_ACTOR_SET_MOVE_SPEED
+def actorSetMoveSpeed(actorId = "player", speed = "1"):
+    """
+    Generated method for the GBS script action EVENT_ACTOR_SET_MOVE_SPEED.
+
+    actorId: str with a default value of "player"
+    speed: int with a default value of "1"
+    """
+    element = makeElement()
+    element["command"] = "EVENT_ACTOR_SET_MOVE_SPEED"
+    element["args"] = {
+        "actorId": actorId,
+        "speed": speed,
+    }
+    return element
+
+
+# EVENT_JUMP
+def jump():
+    """
+    Generated method for the GBS script action EVENT_JUMP.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_JUMP"
+    return element
+
+
+# EVENT_LOAD_VECTORS
+def loadVectors():
+    """
+    Generated method for the GBS script action EVENT_LOAD_VECTORS.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_LOAD_VECTORS"
+    return element
+
+
+# EVENT_NEXT_FRAME
+def nextFrame():
+    """
+    Generated method for the GBS script action EVENT_NEXT_FRAME.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_NEXT_FRAME"
+    return element
+
+
+# EVENT_NOOP
+def noop():
+    """
+    Generated method for the GBS script action EVENT_NOOP.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_NOOP"
+    return element
+
+
+# EVENT_OVERLAY_SET_POSITION
+def overlaySetPosition():
+    """
+    Generated method for the GBS script action EVENT_OVERLAY_SET_POSITION.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_OVERLAY_SET_POSITION"
+    return element
+
+
+# EVENT_SCENE_STATE_RESET
+def sceneStateReset():
+    """
+    Generated method for the GBS script action EVENT_SCENE_STATE_RESET.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_SCENE_STATE_RESET"
+    return element
+
+
+# EVENT_SET_TIMER_SCRIPT
+def setTimerScript(duration = "10.0", script = [], children = {}):
+    """
+    Generated method for the GBS script action EVENT_SET_TIMER_SCRIPT.
+
+    duration: float with a default value of "10.0"
+    script: list with a default value of "[]"
+    """
+    element = makeElement()
+    element["command"] = "EVENT_SET_TIMER_SCRIPT"
+    element["args"] = {
+        "duration": duration,
+        "script": script,
+    }
+    element["children"] = children
+    return element
+
+
+# EVENT_SOUND_PLAY_CRASH
+def soundPlayCrash():
+    """
+    Generated method for the GBS script action EVENT_SOUND_PLAY_CRASH.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_SOUND_PLAY_CRASH"
+    return element
+
+
+# EVENT_SOUND_START_TONE
+def soundStartTone():
+    """
+    Generated method for the GBS script action EVENT_SOUND_START_TONE.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_SOUND_START_TONE"
+    return element
+
+
+# EVENT_SOUND_STOP_TONE
+def soundStopTone():
+    """
+    Generated method for the GBS script action EVENT_SOUND_STOP_TONE.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_SOUND_STOP_TONE"
+    return element
+
+
+# EVENT_STACK_POP
+def stackPop():
+    """
+    Generated method for the GBS script action EVENT_STACK_POP.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_STACK_POP"
+    return element
+
+
+# EVENT_STACK_PUSH
+def stackPush():
+    """
+    Generated method for the GBS script action EVENT_STACK_PUSH.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_STACK_PUSH"
+    return element
+
+
+# EVENT_TEXT_MULTI
+def textMulti():
+    """
+    Generated method for the GBS script action EVENT_TEXT_MULTI.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_TEXT_MULTI"
+    return element
+
+
+# EVENT_TEXT_SET_ANIM_SPEED
+def textSetAnimSpeed(speedIn = "1", speedOut = "1", cameraSpeed = "1"):
+    """
+    Generated method for the GBS script action EVENT_TEXT_SET_ANIM_SPEED.
+
+    speedIn: int with a default value of "1"
+    speedOut: int with a default value of "1"
+    cameraSpeed: int with a default value of "1"
+    """
+    element = makeElement()
+    element["command"] = "EVENT_TEXT_SET_ANIM_SPEED"
+    element["args"] = {
+        "speedIn": speedIn,
+        "speedOut": speedOut,
+        "cameraSpeed": cameraSpeed,
+    }
+    return element
+
+
+# EVENT_TEXT_WITH_AVATAR
+def textWithAvatar(text = "", avatarId = ""):
+    """
+    Generated method for the GBS script action EVENT_TEXT_WITH_AVATAR.
+
+    text: str with a default value of ""
+    avatarId: str with a default value of ""
+    """
+    element = makeElement()
+    element["command"] = "EVENT_TEXT_WITH_AVATAR"
+    element["args"] = {
+        "text": text,
+        "avatarId": avatarId,
+    }
+    return element
+
+
+# EVENT_TIMER_DISABLE
+def timerDisable():
+    """
+    Generated method for the GBS script action EVENT_TIMER_DISABLE.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_TIMER_DISABLE"
+    return element
+
+
+# EVENT_TIMER_RESTART
+def timerRestart():
+    """
+    Generated method for the GBS script action EVENT_TIMER_RESTART.
+
+    """
+    element = makeElement()
+    element["command"] = "EVENT_TIMER_RESTART"
+    return element
+
+
+# EVENT_VARIABLE_ADD_FLAGS
+def variableAddFlags(variable = "LAST_VARIABLE", flag1 = "False", flag2 = "False", flag3 = "False", flag4 = "False", flag5 = "False", flag6 = "False", flag7 = "False", flag8 = "False"):
+    """
+    Generated method for the GBS script action EVENT_VARIABLE_ADD_FLAGS.
+
+    variable: str with a default value of "LAST_VARIABLE"
+    flag1: bool with a default value of "False"
+    flag2: bool with a default value of "False"
+    flag3: bool with a default value of "False"
+    flag4: bool with a default value of "False"
+    flag5: bool with a default value of "False"
+    flag6: bool with a default value of "False"
+    flag7: bool with a default value of "False"
+    flag8: bool with a default value of "False"
+    """
+    element = makeElement()
+    element["command"] = "EVENT_VARIABLE_ADD_FLAGS"
+    element["args"] = {
+        "variable": variable,
+        "flag1": flag1,
+        "flag2": flag2,
+        "flag3": flag3,
+        "flag4": flag4,
+        "flag5": flag5,
+        "flag6": flag6,
+        "flag7": flag7,
+        "flag8": flag8,
+    }
+    return element
+
+
+# EVENT_VARIABLE_CLEAR_FLAGS
+def variableClearFlags(variable = "LAST_VARIABLE", flag1 = "False", flag2 = "False", flag3 = "False", flag4 = "False", flag5 = "False", flag6 = "False", flag7 = "False", flag8 = "False"):
+    """
+    Generated method for the GBS script action EVENT_VARIABLE_CLEAR_FLAGS.
+
+    variable: str with a default value of "LAST_VARIABLE"
+    flag1: bool with a default value of "False"
+    flag2: bool with a default value of "False"
+    flag3: bool with a default value of "False"
+    flag4: bool with a default value of "False"
+    flag5: bool with a default value of "False"
+    flag6: bool with a default value of "False"
+    flag7: bool with a default value of "False"
+    flag8: bool with a default value of "False"
+    """
+    element = makeElement()
+    element["command"] = "EVENT_VARIABLE_CLEAR_FLAGS"
+    element["args"] = {
+        "variable": variable,
+        "flag1": flag1,
+        "flag2": flag2,
+        "flag3": flag3,
+        "flag4": flag4,
+        "flag5": flag5,
+        "flag6": flag6,
+        "flag7": flag7,
+        "flag8": flag8,
+    }
+    return element
+
+
+# EVENT_SWITCH
+def switch(variable = "LAST_VARIABLE", choices = "2", value0 = "1", value1 = "2", value2 = "3", value3 = "4", value4 = "5", value5 = "6", value6 = "7", value7 = "8", value8 = "9", value9 = "10", value10 = "11", value11 = "12", value12 = "13", value13 = "14", value14 = "15", value15 = "16", children = {'true0': [], 'true1': [], 'true2': [], 'true3': [], 'true4': [], 'true5': [], 'true6': [], 'true7': [], 'true8': [], 'true9': [], 'true10': [], 'true11': [], 'true12': [], 'true13': [], 'true14': [], 'true15': [], 'true16': []}):
+    """
+    Generated method for the GBS script action EVENT_SWITCH.
+
+    variable: str with a default value of "LAST_VARIABLE"
+    choices: int with a default value of "2"
+    value0: int with a default value of "1"
+    value1: int with a default value of "2"
+    value2: int with a default value of "3"
+    value3: int with a default value of "4"
+    value4: int with a default value of "5"
+    value5: int with a default value of "6"
+    value6: int with a default value of "7"
+    value7: int with a default value of "8"
+    value8: int with a default value of "9"
+    value9: int with a default value of "10"
+    value10: int with a default value of "11"
+    value11: int with a default value of "12"
+    value12: int with a default value of "13"
+    value13: int with a default value of "14"
+    value14: int with a default value of "15"
+    value15: int with a default value of "16"
+    """
+    element = makeElement()
+    element["command"] = "EVENT_SWITCH"
+    element["args"] = {
+        "variable": variable,
+        "choices": choices,
+        "value0": value0,
+        "value1": value1,
+        "value2": value2,
+        "value3": value3,
+        "value4": value4,
+        "value5": value5,
+        "value6": value6,
+        "value7": value7,
+        "value8": value8,
+        "value9": value9,
+        "value10": value10,
+        "value11": value11,
+        "value12": value12,
+        "value13": value13,
+        "value14": value14,
+        "value15": value15,
+    }
+
+    element["children"] = {}
+    for cmd_key, cmd_list in children.items():
+        # cmd_list.append(end())
+        element["children"][cmd_key] = cmd_list
     return element

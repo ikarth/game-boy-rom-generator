@@ -30,7 +30,7 @@ def scene_generation():
         generator.makeSpriteSheet('static.png', name='static', type='static', frames=1),
         generator.makeSpriteSheet('torch.png', name='torch', type='static', frames=1),
         generator.makeSpriteSheet('tower.png', name='tower', type='static', frames=1)]
-    
+
     def findSpriteByName(sprite_name):
         '''
         Returns first sprite that matches the name given.
@@ -51,7 +51,7 @@ def scene_generation():
         if s_id == None:
             return '<♔' + scene_label + '♔>'
         return s_id
-    
+
     def scene_gen_Outside_00001(callback):
         actor_00 = generator.makeActor(None, 25, 14, 'static', moveSpeed=0, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'])
         actor_00['script'] = [
@@ -105,7 +105,7 @@ def scene_generation():
         script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_Outside", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Outside_00001")
+        gen_scene_scn = generator.makeScene("_gen_Outside", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Outside_00001)
         gen_scene_scn['script'] = scene_script
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -170,7 +170,7 @@ def scene_generation():
         script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_Cave", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Cave_00002")
+        gen_scene_scn = generator.makeScene("_gen_Cave", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Cave_00002)
         gen_scene_scn['script'] = scene_script
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -228,7 +228,7 @@ def scene_generation():
         script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_House", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_House_00003")
+        gen_scene_scn = generator.makeScene("_gen_House", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_House_00003)
         gen_scene_scn['script'] = scene_script
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -264,7 +264,7 @@ def scene_generation():
         script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_Stars", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Stars_00004")
+        gen_scene_scn = generator.makeScene("_gen_Stars", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Stars_00004)
         gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -280,7 +280,7 @@ def scene_generation():
         script.actorHide(actorId='player'), script.overlayShow(color='black', x=0, y=0), script.overlayMoveTo(x=0, y=18, speed='2'), script.wait(time=2), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Title Screen>♔', x=0, y=0, direction='', fadeSpeed='2'), script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_Logo", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Logo_00005")
+        gen_scene_scn = generator.makeScene("_gen_Logo", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Logo_00005)
         gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -292,23 +292,470 @@ def scene_generation():
         trigger_list = []
         collision_data_list = []
         gen_scene_bkg = generator.makeBackground("titlescreen.png")
-        scene_script = [
-        script.actorHide(actorId='player'), script.awaitInput(input=['a', 'b', 'start', 'select']), script.group(children = {
-                    'true': [script.setInputScript(input='start', children = {
-                    'true': [script.scenePushState(), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'), script.end()]
-                }), script.end()]
-                }), script.loop(children = {
-                    'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'), script.ifTrue(variable='10', children = {
-                    'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
-                    'false': [script.ifSavedData(children = {
-                    'true': [script.loadData(), script.end()],
-                    'false': [script.text(text='No Save Data\nFound...'), script.end()]
-                }), script.end()]
-                }), script.end()]
-                }), script.end()
-        ]
+        gen_scene_scn = generator.makeScene("_gen_Title_Screen", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Title_Screen_00006)
 
-        gen_scene_scn = generator.makeScene("_gen_Title_Screen", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Title_Screen_00006")
+        possible_scene_script = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+        possible_scene_script[0] = [
+                    script.actorHide(actorId='player'), script.awaitInput(input=['a', 'b', 'start', 'select']), script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'), script.end()]
+                        }), script.end()]
+                        }), script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'), script.ifTrue(variable='10', children = {
+                            'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                            'false': [script.ifSavedData(children = {
+                            'true': [script.loadData(), script.end()],
+                            'false': [script.text(text='No Save Data\nFound...'), script.end()]
+                        }), script.end()]
+                        }), script.end()]
+                        })
+                ]
+        possible_scene_script[1] = [
+                    script.actorHide(actorId='player'), script.awaitInput(input=['a', 'b', 'start', 'select']), script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(), script.switchScene(sceneId=gen_scene_scn['id'], x=0, y=0, direction='', fadeSpeed='2'), script.end()]
+                        }), script.end()]
+                        }), script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'), script.ifTrue(variable='10', children = {
+                            'true': [script.switchScene(sceneId=gen_scene_scn['id'], x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                            'false': [script.ifSavedData(children = {
+                            'true': [script.loadData(), script.end()],
+                            'false': [script.text(text='No Save Data\nFound...'), script.end()]
+                        }), script.end()]
+                        }), script.end()]
+                        }), script.end()
+                ]
+        possible_scene_script[2] = [
+                    script.actorHide(actorId='player'), script.awaitInput(input=['a', 'b', 'start', 'select']), script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2')]
+                        })]
+                        }), script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'), script.ifTrue(variable='10', children = {
+                            'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4')],
+                            'false': [script.ifSavedData(children = {
+                            'true': [script.loadData()],
+                            'false': [script.text(text='No Save Data\nFound...')]
+                        })]
+                        })]
+                        })
+                ]
+        possible_scene_script[3] = [
+                    script.actorHide(actorId='player'),
+                    script.awaitInput(input=['a', 'b', 'start', 'select']),
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start',
+                                children = {
+                                    'true': [script.scenePushState(), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2')]
+                                })]
+                            }),
+                    script.loop(children = {
+                        'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4')],
+                                'false': [script.ifSavedData(children = {
+                                    'true': [script.loadData()],
+                                    'false': [script.text(text='No Save Data\nFound...')]
+                                })]
+                            })]
+                    })
+                ]
+        possible_scene_script[4] = [
+                    script.actorHide(actorId='player'),
+                    script.awaitInput(input=['a', 'b', 'start', 'select']),
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start',
+                                children = {
+                                    'true': []
+                                })]
+                            }),
+                    script.loop(children = {
+                        'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4')],
+                                'false': [script.ifSavedData(children = {
+                                    'true': [script.loadData()],
+                                    'false': [script.text(text='No Save Data\nFound...')]
+                                })]
+                            })]
+                    })
+                ]
+        possible_scene_script[5] = [
+                    script.actorHide(actorId='player'),
+                    script.awaitInput(input=['a', 'b', 'start', 'select']),
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start',
+                                children = {
+                                    'true': []
+                                })]
+                            }),
+                    script.loop(children = {
+                        'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [],
+                                'false': [script.ifSavedData(children = {
+                                    'true': [script.loadData()],
+                                    'false': [script.text(text='No Save Data\nFound...')]
+                                })]
+                            })]
+                    })
+                ]
+        possible_scene_script[6] = [
+                            script.actorHide(actorId='player'),
+                            script.awaitInput(input=['a', 'b', 'start', 'select']),
+                            script.group(children = {
+                                    'true': [script.setInputScript(input='start',
+                                        children = {
+                                            'true': [script.scenePushState(), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2')]
+                                        })]
+                                    }),
+                            script.loop(children = {
+                                'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                                    script.ifTrue(variable='10', children = {
+                                        'true': [],
+                                        'false': [script.ifSavedData(children = {
+                                            'true': [script.loadData()],
+                                            'false': [script.text(text='No Save Data\nFound...')]
+                                        })]
+                                    })]
+                            })
+                        ]
+        possible_scene_script[7] = [
+                            script.actorHide(actorId='player'),
+                            script.awaitInput(input=['a', 'b', 'start', 'select']),
+                            script.group(children = {
+                                    'true': [script.setInputScript(input='start',
+                                        children = {
+                                            'true': []
+                                        })]
+                                    }),
+                            script.loop(children = {
+                                'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                                    script.ifTrue(variable='10', children = {
+                                        'true': [],
+                                        'false': [script.ifSavedData(children = {
+                                            'true': [script.loadData()],
+                                            'false': [script.text(text='No Save Data\nFound...')]
+                                        })]
+                                    })]
+                            })
+                        ]
+        possible_scene_script[8] = [
+                    script.actorHide(actorId='player'),
+                    script.awaitInput(input=['a', 'b', 'start', 'select']),
+                    script.loop(children = {
+                        'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [],
+                                'false': [script.ifSavedData(children = {
+                                    'true': [script.loadData()],
+                                    'false': [script.text(text='No Save Data\nFound...')]
+                                })]
+                            })]
+                    })
+                ]
+        possible_scene_script[9] = [
+                script.actorHide(actorId='player'),
+                script.awaitInput(input=['a', 'b', 'start', 'select'])
+            ]
+        possible_scene_script[10] = [
+            script.actorHide(actorId='player'),
+            script.awaitInput(input=['a', 'b', 'start', 'select']),
+            script.loop(children = {
+                'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                    script.ifTrue(variable='10', children = {
+                        'true': [],
+                        'false': [script.ifSavedData(children = {
+                            'true': [script.loadData()],
+                            'false': [script.text(text='No Save Data\nFound...')]
+                        })]
+                    })]
+                })
+            ]
+        possible_scene_script[11] = [
+            script.actorHide(actorId='player'),
+            script.awaitInput(input=['a', 'b', 'start', 'select']),
+            script.loop(children = {
+                'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                    script.ifTrue(variable='10', children = {
+                        'true': [],
+                        'false': [script.ifSavedData(children = {
+                            'true': [],
+                            'false': [script.text(text='No Save Data\nFound...')]
+                        })]
+                    })]
+                })
+            ]
+        possible_scene_script[12] = [
+            script.actorHide(actorId='player'),
+            script.awaitInput(input=['a', 'b', 'start', 'select']),
+            script.loop(children = {
+                'true': [
+                    script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                    script.ifTrue(variable='10', children = {
+                        'true': [],
+                        'false': []
+                    })]
+                })
+            ]
+        possible_scene_script[13] = [
+            script.actorHide(actorId='player'),
+            script.awaitInput(input=['a', 'b', 'start', 'select']),
+            script.loop(children = {
+                'true': []
+                })
+            ]
+        # doesn't work
+        possible_scene_script[14] = [
+                    script.actorHide(actorId='player'), script.awaitInput(input=['a', 'b', 'start', 'select']), script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'), script.end()]
+                        }), script.end()]
+                        }), script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'), script.ifTrue(variable='10', children = {
+                            'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                            'false': [script.ifSavedData(children = {
+                            'true': [],
+                            'false': [script.text(text='No Save Data\nFound...'), script.end()]
+                        }), script.end()]
+                        }), script.end()]
+                        })
+                ]
+        # works
+        possible_scene_script[15] = [
+                    script.actorHide(actorId='player'),
+                    script.awaitInput(input=['a', 'b', 'start', 'select']),
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'), script.ifTrue(variable='10', children = {
+                            'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                            'false': [script.ifSavedData(children = {
+                            'true': [],
+                            'false': [script.text(text='No Save Data\nFound...'), script.end()]
+                        }), script.end()]
+                        }), script.end()]
+                    })
+                ]
+        # works
+        possible_scene_script[16] = [
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'), script.ifTrue(variable='10', children = {
+                            'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                            'false': [script.ifSavedData(children = {
+                            'true': [],
+                            'false': [script.text(text='No Save Data\nFound...'), script.end()]
+                        }), script.end()]
+                        }), script.end()]
+                        })
+                ]
+        # Doesn't work
+        possible_scene_script[17] = [
+                    script.actorHide(actorId='player'),
+                    script.awaitInput(input=['a', 'b', 'start', 'select']),
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'), script.end()]
+                        }), script.end()]
+                    }), script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'), script.ifTrue(variable='10', children = {
+                            'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                            'false': []
+                        }), script.end()]
+                    })
+                ]
+        # doesn't work
+        possible_scene_script[18] = [
+                    script.actorHide(actorId='player'),
+                    script.awaitInput(input=['a', 'b', 'start', 'select']),
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(),
+                                script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'),
+                                script.end()]
+                            }),
+                            script.end()]
+                        }),
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                                    'false': [script.ifSavedData(children = {
+                                        'true': [script.end()],
+                                        'false': [script.text(text='No Save Data\nFound...'), script.end()]
+                                        }),
+                                    script.end()]
+                            }),
+                            script.end()]
+                        })
+                ]
+        # works
+        possible_scene_script[19] = [
+                    script.actorHide(actorId='player'),
+                    script.awaitInput(input=['a', 'b', 'start', 'select']),
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                                    'false': [script.ifSavedData(children = {
+                                        'true': [script.end()],
+                                        'false': [script.text(text='No Save Data\nFound...'), script.end()]
+                                        }),
+                                    script.end()]
+                            }),
+                            script.end()]
+                        })
+                ]
+        # works
+        possible_scene_script[20] = [
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                                    'false': [script.ifSavedData(children = {
+                                        'true': [script.end()],
+                                        'false': [script.text(text='No Save Data\nFound...'), script.end()]
+                                        }),
+                                    script.end()]
+                            }),
+                            script.end()]
+                        })
+                ]
+        # doesn't work
+        possible_scene_script[21] = [
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(),
+                                script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'),
+                                script.end()]
+                            }),
+                            script.end()]
+                        }),
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                                'false': []
+                            }),
+                            script.end()]
+                        })
+                ]
+        # works
+        possible_scene_script[22] = [
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [
+                                script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'),
+                                script.end()]
+                            }),
+                            script.end()]
+                        }),
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                                'false': []
+                            }),
+                            script.end()]
+                        })
+                ]
+        # doesn't work
+        possible_scene_script[23] = [
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(),
+                                ]
+                            }),
+                            script.end()]
+                        }),
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                                'false': []
+                            }),
+                            script.end()]
+                        })
+                ]
+        # works
+        possible_scene_script[24] = [
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': []
+                            }),
+                            script.end()]
+                        }),
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                                'false': []
+                            }),
+                            script.end()]
+                        })
+                ]
+        possible_scene_script[25] = [
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(),
+                                script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'),
+                                script.end()]
+                            }),
+                            script.end()]
+                        }),
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                                'false': []
+                            }),
+                            script.end()]
+                        })
+                ]
+        possible_scene_script[26] = [
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(),
+                                script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'),
+                                script.end()]
+                            }),
+                            script.end()]
+                        }),
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                                'false': []
+                            }),
+                            script.end()]
+                        })
+                ]
+        possible_scene_script[27] = [
+                    script.actorHide(actorId='player'),
+                    script.awaitInput(input=['a', 'b', 'start', 'select']),
+                    script.group(children = {
+                            'true': [script.setInputScript(input='start', children = {
+                            'true': [script.scenePushState(),
+                                script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'),
+                                script.end()]
+                            }),
+                            script.end()]
+                        }),
+                    script.loop(children = {
+                            'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'),
+                            script.ifTrue(variable='10', children = {
+                                'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                                    'false': [script.ifSavedData(children = {
+                                        'true': [script.loadData(),
+                                                script.end()],
+                                        'false': [script.text(text='No Save Data\nFound...'), script.end()]
+                                        }),
+                                    script.end()]
+                            }),
+                            script.end()]
+                        })
+                ]
+        scene_script = possible_scene_script[callback()]
+
+
         gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -364,7 +811,7 @@ def scene_generation():
                 }), script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_Underground", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Underground_00007")
+        gen_scene_scn = generator.makeScene("_gen_Underground", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Underground_00007)
         gen_scene_scn['script'] = scene_script
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -433,7 +880,7 @@ def scene_generation():
                 }), script.awaitInput(input=['a', 'b', 'start', 'select']), script.scenePopState(fadeSpeed='2'), script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_Menu", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Menu_00008")
+        gen_scene_scn = generator.makeScene("_gen_Menu", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Menu_00008)
         gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -468,7 +915,7 @@ def scene_generation():
         collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 207, 255, 255, 255, 240, 255, 255, 15, 255, 252, 3, 240, 207, 63, 0, 255, 252, 1, 240, 207, 31, 0, 255, 252, 3, 240, 207, 63, 0, 255, 252, 3, 240, 207, 255, 63, 255, 252, 255, 243, 207, 255, 63, 255, 252, 255, 243, 207, 255, 63, 255, 252, 63, 240, 207, 255, 3, 255, 252, 63, 0, 0, 252, 63, 0, 192, 255, 3, 0, 252, 255, 195, 255, 255, 63, 252, 255, 255, 231, 255]
         gen_scene_bkg = generator.makeBackground("halls_02.png")
 
-        gen_scene_scn = generator.makeScene("_gen_example_hall_02", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_example_hall_02_00009")
+        gen_scene_scn = generator.makeScene("_gen_example_hall_02", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_example_hall_02_00009)
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -511,7 +958,7 @@ def scene_generation():
         collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 252, 63, 0, 0, 255, 3, 0, 240, 63, 0, 0, 255, 127, 254, 255, 255, 231, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
         gen_scene_bkg = generator.makeBackground("halls_03.png")
 
-        gen_scene_scn = generator.makeScene("_gen_example_hall_03", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_example_hall_03_00010")
+        gen_scene_scn = generator.makeScene("_gen_example_hall_03", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_example_hall_03_00010)
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -557,7 +1004,7 @@ def scene_generation():
         collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 252, 255, 255, 207, 255, 255, 255, 252, 255, 255, 207, 255, 255, 255, 252, 63, 255, 207, 255, 192, 255, 252, 15, 252, 207, 255, 192, 255, 252, 207, 255, 15, 0, 252, 255, 0, 192, 255, 15, 0, 252, 255, 0, 192, 255, 15, 0, 252, 255, 255, 249, 255, 255, 159, 255, 255, 255, 255, 255]
         gen_scene_bkg = generator.makeBackground("halls_04.png")
 
-        gen_scene_scn = generator.makeScene("_gen_example_hall_04", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_example_hall_04_00011")
+        gen_scene_scn = generator.makeScene("_gen_example_hall_04", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_example_hall_04_00011)
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -598,7 +1045,7 @@ def scene_generation():
         collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 63, 0, 192, 3, 0, 60, 0, 192, 3, 0, 60, 0, 192, 3, 0, 60, 0, 192, 3, 0, 60, 0, 192, 3, 0, 60, 0, 192, 255, 249, 255, 159, 255]
         gen_scene_bkg = generator.makeBackground("cave.png")
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_12", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_12_00012")
+        gen_scene_scn = generator.makeScene("_gen_Scene_12", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_12_00012)
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -619,23 +1066,24 @@ def scene_generation():
         Returns a list of scene functions from this part of the library.
         """
         return [scene_gen_Outside_00001,
-            scene_gen_Cave_00002,
-            scene_gen_House_00003,
-            scene_gen_Stars_00004,
+            #scene_gen_Cave_00002,
+            #scene_gen_House_00003,
+            #scene_gen_Stars_00004,
             scene_gen_Logo_00005,
             scene_gen_Title_Screen_00006,
             scene_gen_Underground_00007,
             scene_gen_Menu_00008,
-            scene_gen_example_hall_02_00009,
-            scene_gen_example_hall_03_00010,
+            #scene_gen_example_hall_02_00009,
+            #scene_gen_example_hall_03_00010,
             scene_gen_example_hall_04_00011,
-            scene_gen_Scene_12_00012]
+            #scene_gen_Scene_12_00012
+            ]
 
     return catalog, sprite_sheet_data
 
 
 
-def createExampleProject():
+def createExampleProject(num):
     """
     Demonstration of how the scene generators in this file can be used.
     """
@@ -648,7 +1096,7 @@ def createExampleProject():
     scene_data_list = []
     catalog, sprites = scene_generation()
     for scn_func in catalog():
-        scene_data_list.append(scn_func(None))
+        scene_data_list.append(scn_func(lambda: num))
     for element_sprite in sprites:
         project.spriteSheets.append(element_sprite)
 
@@ -667,13 +1115,13 @@ def createExampleProject():
 
     return project
 
-def runTest(test_dir):
+def runTest(test_dir, num):
     generator.initializeGenerator()
-    project = createExampleProject()
+    project = createExampleProject(num)
     generator.writeProjectToDisk(project, output_path = test_dir)
 
 # test creating scenes...
 if __name__ == '__main__':
-    destination = "../gbprojects/generated_export_test/"
-    runTest(destination)
-
+    for n in range(25):
+        destination = f"../gbprojects/generated_export_test_{n}/"
+        runTest(destination, n)

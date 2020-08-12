@@ -11,12 +11,15 @@ import copy
 import logging
 import argparse
 import sys
+import re
+import collections
 from datetime import datetime
 from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
 from rom_generator import script_functions as scripts
 from rom_generator.utilities import makeElement
+import rom_generator.scriptFunctions2 as scripts2
 try:
     import importlib.resources as pkg_resources
 except ImportError:
@@ -58,6 +61,7 @@ scene_count = 0
 generator_seed = "game boy generator"
 
 def initializeGenerator(new_seed=None):
+    global scene_count
     scene_count = 0
     global generator_seed
     if not new_seed is None:
@@ -269,6 +273,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", 
     element["y"] = y
     element["animate"] = animate
     element["script"] = []
+    element["startScript"] = []
     return copy.deepcopy(element)
 
 def addActor(scene, sprite, x, y, movementType="static", animate=True):
@@ -545,8 +550,9 @@ def addSymmetricSceneConnections(project, scene, destination_scene, direction, d
 
 ### creates a key to a lock
 def makeKey(sprite, x, y):
+    global curKeyNumber
     key = makeActor(sprite, x, y, animate = False)
-    #key["startScript"].append()  Plan on disabling collisions here
+    key["startScript"].append(scripts2.disableCollisions("$self$"))
     key["script"].append(scripts.actorHide(actorId = "$self$"))
     key["script"].append(scripts.setTrue(variable = curKeyNumber))
     key["script"].append(scripts.end())
@@ -563,6 +569,12 @@ def makeLock(sprite, x, y):
     lock["script"].append(scripts.ifTrue(variable = curKeyNumber, trueCommands = trueCommands))
     curKeyNumber = curKeyNumber - 1
     return lock
+
+#this makes a connection sprite
+def makeConnectionSprite(sprite, x, y):
+    con = makeActor(sprite, x, y, animate = False)
+    con["startScript"] = [scripts2.disableCollisions("$self$"), scripts.end()]
+    return con
 
 
 ### Writing the project to disk ###
@@ -656,6 +668,57 @@ def uniques(list_of_elements):
             dedupe.append(element)
     return dedupe
 
+def getRefInScenes(ref_match_object, list_of_scenes):
+    ref_target_name = ref_match_object.groups()[0]
+    ref_target_name = re.sub(" ", "_", ref_target_name)
+    for s_num, s_data in enumerate(list_of_scenes):
+        if ref_target_name in s_data["scene"]["name"]:
+            return s_data["scene"]["id"]
+    return "NO_REF"
+
+def translateReferences(data, list_of_scenes):
+    """
+    Translate the unbound references in the scene by referring to the other scenes.
+
+    Call it after all of the scenes have been created.
+    """
+    if isinstance(data, str):
+        while ("♔" in data):
+            if data.startswith("♔REFERENCE_TO_SCENES_"):
+                ref_match = re.search(r'♔REFERENCE_TO_SCENES_\<(.*?)\>', data)
+                if None != ref_match:
+                    data = getRefInScenes(ref_match, list_of_scenes)
+            else:
+                data = "♔UNBOUND_REF♔"
+    if (isinstance(data, list)):
+        for data_key, data_val in enumerate(data):
+            data[data_key] = translateReferences(data_val, list_of_scenes)
+    if (isinstance(data, collections.abc.Mapping)):
+        for data_key, data_val in data.items():
+            data[data_key] = translateReferences(data_val, list_of_scenes)
+    if (isinstance(data, types.SimpleNamespace)):
+        for data_key, data_val in data.__dict__.items():
+            data[data_key] = translateReferences(data_val, list_of_scenes)
+    return data
+
+# def attachReferences(proj_as_json, proj_as_data):
+#     """
+#     Take a JSON-ified version of the project, look for reference strings that still need to be replaced, replace them.
+#     Reference strings are in the format '♔REFERENCE_TO_SCENES_<>♔'.
+#     Returns the JSON with the newly-remapped references.
+#     """
+#     some_references_remain = True
+#     while some_references_remain:
+#         if "♔" in proj_as_json:
+#             search_pattern = r"♔REFERENCE_TO_SCENES_\<(.*?<ref>)\>"
+#             match = re.search(search_pattern)
+#             found_id = "XXXXXXXXXXXXXXXXXX"
+#             new_json = re.sub(search_pattern, found_id, proj_as_json, count=1)
+#             console.log(match)
+#             proj_as_json = new_json
+#         some_references_remain = False
+#     return proj_as_json
+
 def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/"):
     """
      Write project to JSON
@@ -666,8 +729,15 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
     output_path = os.path.abspath(Path(os.path.dirname(__file__)).joinpath('..').joinpath(output_path))
     logging.info(f"writeProjectToDisk: {bcolors.OKGREEN}{os.path.abspath(output_path)}{bcolors.ENDC}")
     logging.info(f"Writing {filename} project file...")
+
     gb_project_without_ui_elements = copy.deepcopy(gb_project)
-    gb_project_without_ui_elements.ui = None
+
+    if None != gb_project_without_ui_elements:
+        if "ui" in gb_project_without_ui_elements.__dict__.keys():
+            gb_project_without_ui_elements.ui = None
+    else:
+        print(gb_project_without_ui_elements)
+        breakpoint()
 
     # TODO: duplicates need to be unified in ID values as well, so we don't end up with missing images...
     # gb_project_without_ui_elements.spriteSheets = uniques(gb_project_without_ui_elements.spriteSheets)
@@ -702,6 +772,9 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
         recursivePrintType(gb_project_without_ui_elements, type)
 
     generated_project = json.dumps(gb_project_without_ui_elements.__dict__, indent=4)
+
+    #generated_project = attachReferences(generated_project, gb_project_without_ui_elements)
+
     Path(output_path).mkdir(parents=True, exist_ok=True)
     with open(Path(output_path).joinpath(filename), "w") as wfile:
         wfile.write(generated_project)

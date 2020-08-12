@@ -354,7 +354,7 @@ script_commands = {
 	'EVENT_SCENE_STATE_RESET': {}, # ???
 	'EVENT_SET_TIMER_SCRIPT': {
         "duration": 10.0,
-        "script": []
+        "script": [],
         "children": {}
     },
 	'EVENT_SOUND_PLAY_CRASH': {}, # Unknown

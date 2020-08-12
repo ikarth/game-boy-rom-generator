@@ -401,7 +401,7 @@ def importScene(scene_data, proj_data):
 
     code_col = f"collision_data_list = {collision_data}"
     code_bkg = f"gen_scene_bkg = generator.makeBackground(\"{background_filename}\")"
-    code_scn = f"gen_scene_scn = generator.makeScene(\"{generated_scene_name}\", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label={code_func_name})"
+    code_scn = f"gen_scene_scn = generator.makeScene(\"{generated_scene_name}\", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=\"{code_func_name}\")"
 
     code_scn_data = 'scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}'
     code_for_templates = "\n".join([str(x) for x in [t["code"] for t in template_slots]])

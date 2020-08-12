@@ -52,7 +52,7 @@ def scene_generation():
         collision_data_list = [255, 249, 255, 159, 255, 255, 249, 255, 159, 255, 255, 249, 255, 31, 192, 255, 1, 252, 255, 207, 255, 255, 28, 254, 207, 225, 255, 124, 30, 192, 231, 1, 124, 128, 255, 7, 248, 255, 159, 255, 255, 249, 255, 159, 255]
         gen_scene_bkg = generator.makeBackground("room1.png")
 
-        gen_scene_scn = generator.makeScene("_gen_Room_1", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Room_1_00001)
+        gen_scene_scn = generator.makeScene("_gen_Room_1", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Room_1_00001")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -88,7 +88,7 @@ def scene_generation():
         collision_data_list = [255, 243, 255, 63, 255, 0, 3, 12, 48, 192, 63, 255, 252, 243, 207, 3, 15, 48, 240, 0, 243, 207, 63, 255, 252, 195, 3, 63, 60, 240, 207, 51, 252, 60, 195, 15, 240, 252, 0, 207, 207, 255, 252, 252, 207]
         gen_scene_bkg = generator.makeBackground("room2.png")
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_2", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_2_00002)
+        gen_scene_scn = generator.makeScene("_gen_Scene_2", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_2_00002")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -150,7 +150,7 @@ def scene_generation():
         collision_data_list = [255, 159, 255, 255, 249, 255, 31, 252, 0, 193, 15, 240, 12, 60, 207, 192, 243, 252, 63, 207, 255, 243, 252, 63, 207, 7, 16, 120, 0, 129, 231, 31, 120, 254, 129, 7, 0, 120, 0, 128, 255, 127, 254, 255, 231]
         gen_scene_bkg = generator.makeBackground("room3.png")
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_3", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_3_00003)
+        gen_scene_scn = generator.makeScene("_gen_Scene_3", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_3_00003")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -194,7 +194,7 @@ def scene_generation():
         collision_data_list = [255, 255, 9, 254, 159, 192, 255, 120, 248, 135, 143, 127, 252, 1, 224, 31, 0, 254, 63, 255, 255, 243, 255, 7, 248, 63, 128, 127, 224, 225, 7, 31, 62, 254, 231, 225, 127, 28, 255, 199, 249, 255, 156, 255, 207]
         gen_scene_bkg = generator.makeBackground("room4.png")
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_4", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_4_00004)
+        gen_scene_scn = generator.makeScene("_gen_Scene_4", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_4_00004")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -270,7 +270,7 @@ def scene_generation():
         collision_data_list = [255, 127, 254, 127, 128, 255, 7, 248, 127, 0, 255, 7, 240, 1, 128, 31, 0, 248, 121, 128, 159, 7, 8, 248, 249, 128, 159, 127, 254, 129, 231, 31, 24, 192, 231, 1, 124, 30, 0, 224, 1, 0, 254, 255, 231]
         gen_scene_bkg = generator.makeBackground("room5.png")
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_5", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_5_00005)
+        gen_scene_scn = generator.makeScene("_gen_Scene_5", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_5_00005")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -402,7 +402,7 @@ def scene_generation():
                 }), script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_6", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_6_00006)
+        gen_scene_scn = generator.makeScene("_gen_Scene_6", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_6_00006")
         gen_scene_scn['script'] = scene_script
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -532,7 +532,7 @@ def scene_generation():
                 }), script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_7", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_7_00007)
+        gen_scene_scn = generator.makeScene("_gen_Scene_7", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_7_00007")
         gen_scene_scn['script'] = scene_script
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -578,7 +578,7 @@ def scene_generation():
         collision_data_list = [243, 255, 63, 255, 255, 243, 63, 48, 255, 3, 51, 0, 63, 3, 240, 3, 0, 63, 0, 240, 255, 63, 255, 255, 243, 255, 0, 255, 15, 240, 192, 60, 12, 204, 195, 3, 60, 60, 192, 195, 255, 252, 252, 207, 207]
         gen_scene_bkg = generator.makeBackground("room8.png")
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_8", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_8_00008)
+        gen_scene_scn = generator.makeScene("_gen_Scene_8", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_8_00008")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -661,7 +661,7 @@ def scene_generation():
                 }), script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_9", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_9_00009)
+        gen_scene_scn = generator.makeScene("_gen_Scene_9", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_9_00009")
         gen_scene_scn['script'] = scene_script
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -704,7 +704,7 @@ def scene_generation():
         collision_data_list = [255, 255, 25, 248, 159, 129, 7, 25, 120, 144, 129, 7, 24, 120, 128, 129, 7, 31, 248, 252, 129, 207, 63, 255, 252, 243, 207, 63, 28, 128, 195, 1, 248, 28, 128, 1, 0, 24, 0, 128, 249, 1, 152, 255, 255]
         gen_scene_bkg = generator.makeBackground("room10.png")
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_10", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_10_00010)
+        gen_scene_scn = generator.makeScene("_gen_Scene_10", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_10_00010")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -738,7 +738,7 @@ def scene_generation():
         collision_data_list = [255, 255, 63, 240, 255, 3, 0, 62, 0, 224, 3, 63, 240, 28, 2, 207, 225, 255, 28, 224, 7, 1, 126, 144, 231, 7, 9, 124, 144, 192, 7, 8, 28, 128, 0, 1, 15, 144, 255, 192, 249, 255, 159, 255, 255]
         gen_scene_bkg = generator.makeBackground("room11.png")
 
-        gen_scene_scn = generator.makeScene("_gen_Scene_11", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_11_00011)
+        gen_scene_scn = generator.makeScene("_gen_Scene_11", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_11_00011")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -821,7 +821,7 @@ def scene_generation():
         script.hideSprites(), script.text(text=['Nothing survives.', 'Fortunately...'], avatarId=''), script.showSprites(), script.text(text=['You are nothing.'], avatarId=''), script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_nothing", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_nothing_00012)
+        gen_scene_scn = generator.makeScene("_gen_nothing", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_nothing_00012")
         gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -877,7 +877,7 @@ def scene_generation():
         script.end()
         ]
 
-        gen_scene_scn = generator.makeScene("_gen_nothing", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_nothing_00013)
+        gen_scene_scn = generator.makeScene("_gen_nothing", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_nothing_00013")
         gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}

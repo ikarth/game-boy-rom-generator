@@ -1,0 +1,149 @@
+{
+  "__language": "tracery",
+  "grammar": {
+    "place_thing": [
+      "Dungeon",
+      "Tower",
+      "Atelier",
+      "Mountain",
+      "Island",
+      "Ocean",
+      "Gateway",
+      "Garden",
+      "Cave",
+      "Realm",
+      "Road",
+      "Moon",
+      "World",
+      "Village",
+      "Forest",
+      "Tomb"
+      ],
+    "place_attribute": [
+      "Skull",
+      "Dark",
+      "Story",
+      "Legendary",
+      "Deep",
+      "Ultimate",
+      "Dragon",
+      "Secret",
+      "#attribute.capitalize#",
+      "Sorceror",
+      "#attribute.capitalize# Lord"
+      ],
+    "place": [
+      "#place_thing#",
+      "#place_thing# of the #place_attribute#",
+      "#place_attribute# #place_thing#",
+      "#place_thing.a# of #attribute.capitalize# et #attribute.capitalize#"
+    ],
+    "story": [
+      "Legend",
+      "Quest",
+      "Epic",
+      "Saga",
+      "Ballad",
+      "Whisper",
+      "Rumors",
+      "Chronicle",
+      "Record",
+      "Book",
+      "Story",
+      "Tale",
+      "Journal"
+    ],
+    "material": [
+      "Diamond",
+      "Onyx",
+      "Crimson",
+      "Oak",
+      "Ash",
+      "Gold",
+      "Fire",
+      "Marble"
+    ],
+    "attribute": [
+      "magic",
+      "dread",
+      "heroic",
+      "Crimson",
+      "Darkness",
+      "Golden",
+      "Black",
+      "Dragon",
+      "Fantasy",
+      "Secret",
+      "Miracle",
+      "Red",
+      "Vanished",
+      "Deadly",
+      "Inner",
+      "Air",
+      "Mystery",
+      "Danger",
+      "Unknown",
+      "Mystic"
+    ],
+    "property": [
+      "#material.capitalize#",
+      "#attribute.capitalize#",
+      "#attribute.capitalize# #material.capitalize#"
+    ],
+    "object": [
+      "Crystal",
+      "Sword",
+      "Book",
+      "Staff",
+      "Treasure",
+      "Trident",
+      "Love",
+      "Arts",
+      "Blade"
+    ],
+    "subject": [
+      "Warrior",
+      "Armageddon",
+      "Hunter",
+      "Princess",
+      "Slayer",
+      "Wizard",
+      "Sorceror",
+      "Bard"
+      ],
+    "event": [
+      "Birth",
+      "Death",
+      "Revelation",
+      "Revolution",
+      "Wrath",
+      "Quest"
+      ],
+    "macguffin": [
+      "#object.capitalize#",
+      "#property.capitalize# #object.capitalize#",
+      "#object.capitalize# of #place#",
+      "#property.capitalize# #subject.capitalize#",
+      "#subject.capitalize# of the #place#",
+      "#event# of the #subject#"
+    ],
+    "word": ["#object#", "#attribute#", "#material#", "#story#", "#place#", "#subject#"],
+    "iii": [
+      "","","","","","","",
+      " II", " II", " III", " IV", " II", " II", " III", " II"],
+    "title": ["#story# of the #macguffin#",
+      "#story# for the #macguffin#",
+      "#material.capitalize# #story.capitalize#",
+      "#macguffin# #story.s#",
+      "#material# #object#",
+      "#word.capitalize##iii#: #word.capitalize# #word.capitalize#",
+      "#property# #subject##iii#: #place#",
+      "#subject#'s #title#",
+      "#word.s# & #word.s#"],
+    "prefix": [
+      "","Super "],
+    "origin": [
+      "#title#","#title#","#title#","#title#", "#prefix##title#"
+    ]
+  }
+}

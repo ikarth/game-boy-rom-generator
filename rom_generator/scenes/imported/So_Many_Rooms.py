@@ -45,6 +45,7 @@ def scene_generation():
         return s_id
     
     def scene_gen_Room_1_00001(callback):
+        actor_name_table = {}
         actor_list = []
         trigger_00 = generator.makeTrigger('trigger_00', 9, 0, 2, 1)
         trigger_01 = generator.makeTrigger('trigger_01', 9, 17, 2, 1)
@@ -78,6 +79,7 @@ def scene_generation():
 
 
     def scene_gen_Scene_2_00002(callback):
+        actor_name_table = {}
         actor_list = []
         trigger_00 = generator.makeTrigger('trigger_00', 10, 0, 2, 1)
         trigger_01 = generator.makeTrigger('trigger_01', 19, 6, 1, 2)
@@ -141,7 +143,9 @@ def scene_generation():
 
 
     def scene_gen_Scene_3_00003(callback):
-        actor_00 = generator.makeActor(None, 14, 12, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('cat')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 14, 12, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('cat')['id'], name='actor_05a26f2b-a2be-45cc-a41e-ef90f9c7d1d6')
+        actor_name_table.update({'actor_05a26f2b-a2be-45cc-a41e-ef90f9c7d1d6': actor_00})
         actor_list = [actor_00]
         trigger_00 = generator.makeTrigger('trigger_00', 0, 5, 1, 2)
         trigger_01 = generator.makeTrigger('trigger_01', 13, 0, 2, 1)
@@ -185,6 +189,7 @@ def scene_generation():
 
 
     def scene_gen_Scene_4_00004(callback):
+        actor_name_table = {}
         actor_list = []
         trigger_00 = generator.makeTrigger('trigger_00', 0, 1, 1, 2)
         trigger_01 = generator.makeTrigger('trigger_01', 17, 0, 2, 1)
@@ -238,11 +243,17 @@ def scene_generation():
 
 
     def scene_gen_Scene_5_00005(callback):
-        actor_00 = generator.makeActor(None, 14, 5, 'randomWalk', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc001')['id'])
-        actor_01 = generator.makeActor(None, 11, 2, 'randomWalk', moveSpeed=2, animSpeed=3, direction='right', script=[], sprite_id=findSpriteByName('npc001')['id'])
-        actor_02 = generator.makeActor(None, 16, 3, 'randomWalk', moveSpeed=3, animSpeed=3, direction='right', script=[], sprite_id=findSpriteByName('npc001')['id'])
-        actor_03 = generator.makeActor(None, 12, 7, 'randomWalk', moveSpeed=4, animSpeed=3, direction='up', script=[], sprite_id=findSpriteByName('npc001')['id'])
-        actor_04 = generator.makeActor(None, 16, 7, 'randomWalk', moveSpeed=0, animSpeed=3, direction='left', script=[], sprite_id=findSpriteByName('npc001')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 14, 5, 'randomWalk', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc001')['id'], name='actor_952e2671-890b-4086-9be2-8330dbd5c54e')
+        actor_name_table.update({'actor_952e2671-890b-4086-9be2-8330dbd5c54e': actor_00})
+        actor_01 = generator.makeActor(None, 11, 2, 'randomWalk', moveSpeed=2, animSpeed=3, direction='right', script=[], sprite_id=findSpriteByName('npc001')['id'], name='actor_06d568c6-0402-426c-97f4-e5dcaa0af743')
+        actor_name_table.update({'actor_06d568c6-0402-426c-97f4-e5dcaa0af743': actor_01})
+        actor_02 = generator.makeActor(None, 16, 3, 'randomWalk', moveSpeed=3, animSpeed=3, direction='right', script=[], sprite_id=findSpriteByName('npc001')['id'], name='actor_6e727468-e92a-4278-832e-4a1656a4ad11')
+        actor_name_table.update({'actor_6e727468-e92a-4278-832e-4a1656a4ad11': actor_02})
+        actor_03 = generator.makeActor(None, 12, 7, 'randomWalk', moveSpeed=4, animSpeed=3, direction='up', script=[], sprite_id=findSpriteByName('npc001')['id'], name='actor_f3052938-84d7-4eb7-9e12-c5a02c05d0ba')
+        actor_name_table.update({'actor_f3052938-84d7-4eb7-9e12-c5a02c05d0ba': actor_03})
+        actor_04 = generator.makeActor(None, 16, 7, 'randomWalk', moveSpeed=0, animSpeed=3, direction='left', script=[], sprite_id=findSpriteByName('npc001')['id'], name='actor_347158f0-1b1a-492a-a5a8-714de301528d')
+        actor_name_table.update({'actor_347158f0-1b1a-492a-a5a8-714de301528d': actor_04})
         actor_list = [actor_00, actor_01, actor_02, actor_03, actor_04]
         trigger_00 = generator.makeTrigger('trigger_00', 15, 0, 2, 1)
         trigger_01 = generator.makeTrigger('trigger_01', 19, 3, 1, 2)
@@ -250,20 +261,20 @@ def scene_generation():
         trigger_03 = generator.makeTrigger('trigger_03', 15, 17, 2, 1)
         trigger_04 = generator.makeTrigger('trigger_04', 13, 8, 2, 2)
         trigger_04['script'] = [
-                script.actorSetDirection(actorId='952e2671-890b-4086-9be2-8330dbd5c54e', direction='down'),
-                script.actorSetDirection(actorId='06d568c6-0402-426c-97f4-e5dcaa0af743', direction='down'),
-                script.actorSetDirection(actorId='6e727468-e92a-4278-832e-4a1656a4ad11', direction='down'),
-                script.actorSetDirection(actorId='f3052938-84d7-4eb7-9e12-c5a02c05d0ba', direction='down'),
-                script.actorSetDirection(actorId='347158f0-1b1a-492a-a5a8-714de301528d', direction='down'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<952e2671-890b-4086-9be2-8330dbd5c54e>♔', direction='down'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<06d568c6-0402-426c-97f4-e5dcaa0af743>♔', direction='down'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<6e727468-e92a-4278-832e-4a1656a4ad11>♔', direction='down'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<f3052938-84d7-4eb7-9e12-c5a02c05d0ba>♔', direction='down'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<347158f0-1b1a-492a-a5a8-714de301528d>♔', direction='down'),
                 script.end()
             ]
         trigger_05 = generator.makeTrigger('trigger_05', 10, 5, 2, 2)
         trigger_05['script'] = [
-                script.actorSetDirection(actorId='952e2671-890b-4086-9be2-8330dbd5c54e', direction='left'),
-                script.actorSetDirection(actorId='06d568c6-0402-426c-97f4-e5dcaa0af743', direction='left'),
-                script.actorSetDirection(actorId='6e727468-e92a-4278-832e-4a1656a4ad11', direction='left'),
-                script.actorSetDirection(actorId='f3052938-84d7-4eb7-9e12-c5a02c05d0ba', direction='left'),
-                script.actorSetDirection(actorId='347158f0-1b1a-492a-a5a8-714de301528d', direction='left'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<952e2671-890b-4086-9be2-8330dbd5c54e>♔', direction='left'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<06d568c6-0402-426c-97f4-e5dcaa0af743>♔', direction='left'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<6e727468-e92a-4278-832e-4a1656a4ad11>♔', direction='left'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<f3052938-84d7-4eb7-9e12-c5a02c05d0ba>♔', direction='left'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<347158f0-1b1a-492a-a5a8-714de301528d>♔', direction='left'),
                 script.end()
             ]
         trigger_list = [trigger_04, trigger_05]
@@ -314,45 +325,54 @@ def scene_generation():
 
 
     def scene_gen_Scene_6_00006(callback):
-        actor_00 = generator.makeActor(None, 16, 1, 'static', animate=True, moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 16, 1, 'static', animate=True, moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'], name='actor_8462f086-7b40-4e93-a9a2-5e7e198b6774')
+        actor_name_table.update({'actor_8462f086-7b40-4e93-a9a2-5e7e198b6774': actor_00})
         actor_00['startScript'] = [
-                script.actorHide(actorId='$self$'),
+                script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'),
                 script.end()
             ]
-        actor_01 = generator.makeActor(None, 14, 1, 'static', animate=True, moveSpeed=1, animSpeed=2, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'])
+        actor_01 = generator.makeActor(None, 14, 1, 'static', animate=True, moveSpeed=1, animSpeed=2, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'], name='actor_81223844-bafc-4aae-bd14-9239801a81da')
+        actor_name_table.update({'actor_81223844-bafc-4aae-bd14-9239801a81da': actor_01})
         actor_01['startScript'] = [
-                script.actorHide(actorId='$self$'),
+                script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'),
                 script.end()
             ]
-        actor_02 = generator.makeActor(None, 12, 1, 'static', animate=True, moveSpeed=1, animSpeed=4, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'])
+        actor_02 = generator.makeActor(None, 12, 1, 'static', animate=True, moveSpeed=1, animSpeed=4, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'], name='actor_ca6236bf-719b-4eb6-92e1-bd8a17970037')
+        actor_name_table.update({'actor_ca6236bf-719b-4eb6-92e1-bd8a17970037': actor_02})
         actor_02['startScript'] = [
-                script.actorHide(actorId='ca6236bf-719b-4eb6-92e1-bd8a17970037'),
+                script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<ca6236bf-719b-4eb6-92e1-bd8a17970037>♔'),
                 script.end()
             ]
-        actor_03 = generator.makeActor(None, 10, 3, 'static', animate=True, moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'])
+        actor_03 = generator.makeActor(None, 10, 3, 'static', animate=True, moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'], name='actor_68ea3dab-54be-4dbd-b53a-2aa65c1e319a')
+        actor_name_table.update({'actor_68ea3dab-54be-4dbd-b53a-2aa65c1e319a': actor_03})
         actor_03['startScript'] = [
-                script.actorHide(actorId='$self$'),
+                script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'),
                 script.end()
             ]
-        actor_04 = generator.makeActor(None, 10, 7, 'static', animate=True, moveSpeed=1, animSpeed=2, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'])
+        actor_04 = generator.makeActor(None, 10, 7, 'static', animate=True, moveSpeed=1, animSpeed=2, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'], name='actor_564a5805-f1f6-4b04-96af-53a776e83a15')
+        actor_name_table.update({'actor_564a5805-f1f6-4b04-96af-53a776e83a15': actor_04})
         actor_04['startScript'] = [
-                script.actorHide(actorId='$self$'),
+                script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'),
                 script.end()
             ]
         actor_04['script'] = [
                 script.end()
             ]
-        actor_05 = generator.makeActor(None, 8, 3, 'static', animate=True, moveSpeed=1, animSpeed=4, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'])
+        actor_05 = generator.makeActor(None, 8, 3, 'static', animate=True, moveSpeed=1, animSpeed=4, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'], name='actor_0a5d6619-a223-418e-953d-2faac5c7f9ab')
+        actor_name_table.update({'actor_0a5d6619-a223-418e-953d-2faac5c7f9ab': actor_05})
         actor_05['startScript'] = [
-                script.actorHide(actorId='$self$'),
+                script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'),
                 script.end()
             ]
-        actor_06 = generator.makeActor(None, 8, 7, 'static', animate=True, moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'])
+        actor_06 = generator.makeActor(None, 8, 7, 'static', animate=True, moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'], name='actor_45ade20b-b5af-4263-a8e7-1bd4c7f65ff7')
+        actor_name_table.update({'actor_45ade20b-b5af-4263-a8e7-1bd4c7f65ff7': actor_06})
         actor_06['startScript'] = [
-                script.actorHide(actorId='$self$'),
+                script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'),
                 script.end()
             ]
-        actor_07 = generator.makeActor(None, 16, 3, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('torch')['id'])
+        actor_07 = generator.makeActor(None, 16, 3, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('torch')['id'], name='actor_f2f4ce65-c898-4810-b31c-a6a766b321f9')
+        actor_name_table.update({'actor_f2f4ce65-c898-4810-b31c-a6a766b321f9': actor_07})
         actor_07['startScript'] = [
                 script.setFalse(variable='13'),
                 script.setFalse(variable='L0'),
@@ -360,9 +380,9 @@ def scene_generation():
             ]
         actor_07['script'] = [
                 script.ifFalse(variable='13', children = {
-                    'true': [script.actorShow(actorId='8462f086-7b40-4e93-a9a2-5e7e198b6774'), script.setTrue(variable='13'), script.end()],
-                    'false': [script.actorHide(actorId='8462f086-7b40-4e93-a9a2-5e7e198b6774'), script.setFalse(variable='13'), script.ifFalse(variable='L0', children = {
-                    'true': [script.wait(time=2.3), script.actorEmote(actorId='player', emoteId='5'), script.setTrue(variable='L0'), script.end()],
+                    'true': [script.actorShow(actorId='♔REFERENCE_TO_ACTORS_<8462f086-7b40-4e93-a9a2-5e7e198b6774>♔'), script.setTrue(variable='13'), script.end()],
+                    'false': [script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<8462f086-7b40-4e93-a9a2-5e7e198b6774>♔'), script.setFalse(variable='13'), script.ifFalse(variable='L0', children = {
+                    'true': [script.wait(time=2.3), script.actorEmote(actorId='♔REFERENCE_TO_ACTORS_<player>♔', emoteId='5'), script.setTrue(variable='L0'), script.end()],
                     'false': [script.end()]
                 }), script.end()]
                 }),
@@ -379,13 +399,13 @@ def scene_generation():
         script.setValue(variable='14', value='0'), script.setTimerScript(duration=0.3, children = {
                     'script': [script.ifTrue(variable='13', children = {
                     'true': [script.incValue(variable='14'), script.switch(variable='14', choices=7, value0=1, value1=2, value2=3, value3=4, value4=5, value5=6, value6=7, value7=8, value8=9, value9=10, value10=11, value11=12, value12=13, value13=14, value14=15, value15=16, children = {
-                    'true0': [script.actorShow(actorId='8462f086-7b40-4e93-a9a2-5e7e198b6774'), script.wait(time=1), script.end()],
-                    'true1': [script.actorShow(actorId='81223844-bafc-4aae-bd14-9239801a81da'), script.actorEmote(actorId='player', emoteId='0'), script.end()],
-                    'true2': [script.actorShow(actorId='ca6236bf-719b-4eb6-92e1-bd8a17970037'), script.end()],
-                    'true3': [script.actorShow(actorId='68ea3dab-54be-4dbd-b53a-2aa65c1e319a'), script.end()],
-                    'true4': [script.actorShow(actorId='564a5805-f1f6-4b04-96af-53a776e83a15'), script.end()],
-                    'true5': [script.actorShow(actorId='0a5d6619-a223-418e-953d-2faac5c7f9ab'), script.end()],
-                    'true6': [script.actorShow(actorId='45ade20b-b5af-4263-a8e7-1bd4c7f65ff7'), script.end()],
+                    'true0': [script.actorShow(actorId='♔REFERENCE_TO_ACTORS_<8462f086-7b40-4e93-a9a2-5e7e198b6774>♔'), script.wait(time=1), script.end()],
+                    'true1': [script.actorShow(actorId='♔REFERENCE_TO_ACTORS_<81223844-bafc-4aae-bd14-9239801a81da>♔'), script.actorEmote(actorId='♔REFERENCE_TO_ACTORS_<player>♔', emoteId='0'), script.end()],
+                    'true2': [script.actorShow(actorId='♔REFERENCE_TO_ACTORS_<ca6236bf-719b-4eb6-92e1-bd8a17970037>♔'), script.end()],
+                    'true3': [script.actorShow(actorId='♔REFERENCE_TO_ACTORS_<68ea3dab-54be-4dbd-b53a-2aa65c1e319a>♔'), script.end()],
+                    'true4': [script.actorShow(actorId='♔REFERENCE_TO_ACTORS_<564a5805-f1f6-4b04-96af-53a776e83a15>♔'), script.end()],
+                    'true5': [script.actorShow(actorId='♔REFERENCE_TO_ACTORS_<0a5d6619-a223-418e-953d-2faac5c7f9ab>♔'), script.end()],
+                    'true6': [script.actorShow(actorId='♔REFERENCE_TO_ACTORS_<45ade20b-b5af-4263-a8e7-1bd4c7f65ff7>♔'), script.end()],
                     'true7': [script.end()],
                     'true8': [script.end()],
                     'true9': [script.end()],
@@ -437,14 +457,16 @@ def scene_generation():
 
 
     def scene_gen_Scene_7_00007(callback):
-        actor_00 = generator.makeActor(None, 8, 7, 'randomFace', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 8, 7, 'randomFace', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'], name='actor_3c589b65-9bae-4da9-8959-fdcc1d750659')
+        actor_name_table.update({'actor_3c589b65-9bae-4da9-8959-fdcc1d750659': actor_00})
         actor_00['startScript'] = [
                 script.setTimerScript(duration=0.25, children = {
-                    'script': [script.ifActorDirection(actorId='$self$', direction='up', children = {
-                    'true': [script.actorSetDirection(actorId='$self$', direction='right'), script.end()],
+                    'script': [script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='up', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='right'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='$self$', direction='left', children = {
-                    'true': [script.actorSetDirection(actorId='$self$', direction='down'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='left', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='down'), script.end()],
                     'false': [script.end()]
                 }), script.end()]
                 }),
@@ -453,14 +475,15 @@ def scene_generation():
         actor_00['script'] = [
                 script.end()
             ]
-        actor_01 = generator.makeActor(None, 8, 11, 'randomFace', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'])
+        actor_01 = generator.makeActor(None, 8, 11, 'randomFace', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'], name='actor_86174fcb-4e06-4c87-9ac6-49b0fb8da804')
+        actor_name_table.update({'actor_86174fcb-4e06-4c87-9ac6-49b0fb8da804': actor_01})
         actor_01['startScript'] = [
                 script.setTimerScript(duration=0.25, children = {
-                    'script': [script.ifActorDirection(actorId='$self$', direction='down', children = {
-                    'true': [script.actorSetDirection(actorId='$self$', direction='right'), script.end()],
+                    'script': [script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='down', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='right'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='$self$', direction='left', children = {
-                    'true': [script.actorSetDirection(actorId='$self$', direction='up'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='left', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='up'), script.end()],
                     'false': [script.end()]
                 }), script.end()]
                 }),
@@ -469,27 +492,29 @@ def scene_generation():
         actor_01['script'] = [
                 script.end()
             ]
-        actor_02 = generator.makeActor(None, 14, 11, 'randomFace', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'])
+        actor_02 = generator.makeActor(None, 14, 11, 'randomFace', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'], name='actor_06c83bf1-77c9-436b-9dbd-3293f0275864')
+        actor_name_table.update({'actor_06c83bf1-77c9-436b-9dbd-3293f0275864': actor_02})
         actor_02['startScript'] = [
                 script.setTimerScript(duration=0.25, children = {
-                    'script': [script.ifActorDirection(actorId='$self$', direction='down', children = {
-                    'true': [script.actorSetDirection(actorId='$self$', direction='left'), script.end()],
+                    'script': [script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='down', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='left'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='$self$', direction='right', children = {
-                    'true': [script.actorSetDirection(actorId='$self$', direction='up'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='right', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='up'), script.end()],
                     'false': [script.end()]
                 }), script.end()]
                 }),
                 script.end()
             ]
-        actor_03 = generator.makeActor(None, 14, 7, 'randomFace', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'])
+        actor_03 = generator.makeActor(None, 14, 7, 'randomFace', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'], name='actor_859b0137-ea19-42fb-a80c-bd85edb36a18')
+        actor_name_table.update({'actor_859b0137-ea19-42fb-a80c-bd85edb36a18': actor_03})
         actor_03['startScript'] = [
                 script.setTimerScript(duration=0.25, children = {
-                    'script': [script.ifActorDirection(actorId='$self$', direction='right', children = {
-                    'true': [script.actorSetDirection(actorId='$self$', direction='down'), script.end()],
+                    'script': [script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='right', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='down'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='$self$', direction='up', children = {
-                    'true': [script.actorSetDirection(actorId='$self$', direction='left'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='up', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', direction='left'), script.end()],
                     'false': [script.end()]
                 }), script.end()]
                 }),
@@ -504,29 +529,29 @@ def scene_generation():
         gen_scene_bkg = generator.makeBackground("room7.png")
         scene_script = [
         script.setTimerScript(duration=0.25, children = {
-                    'script': [script.ifActorDirection(actorId='3c589b65-9bae-4da9-8959-fdcc1d750659', direction='up', children = {
-                    'true': [script.actorSetDirection(actorId='3c589b65-9bae-4da9-8959-fdcc1d750659', direction='right'), script.end()],
+                    'script': [script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<3c589b65-9bae-4da9-8959-fdcc1d750659>♔', direction='up', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<3c589b65-9bae-4da9-8959-fdcc1d750659>♔', direction='right'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='3c589b65-9bae-4da9-8959-fdcc1d750659', direction='left', children = {
-                    'true': [script.actorSetDirection(actorId='3c589b65-9bae-4da9-8959-fdcc1d750659', direction='down'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<3c589b65-9bae-4da9-8959-fdcc1d750659>♔', direction='left', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<3c589b65-9bae-4da9-8959-fdcc1d750659>♔', direction='down'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='86174fcb-4e06-4c87-9ac6-49b0fb8da804', direction='down', children = {
-                    'true': [script.actorSetDirection(actorId='86174fcb-4e06-4c87-9ac6-49b0fb8da804', direction='right'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<86174fcb-4e06-4c87-9ac6-49b0fb8da804>♔', direction='down', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<86174fcb-4e06-4c87-9ac6-49b0fb8da804>♔', direction='right'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='86174fcb-4e06-4c87-9ac6-49b0fb8da804', direction='left', children = {
-                    'true': [script.actorSetDirection(actorId='86174fcb-4e06-4c87-9ac6-49b0fb8da804', direction='up'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<86174fcb-4e06-4c87-9ac6-49b0fb8da804>♔', direction='left', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<86174fcb-4e06-4c87-9ac6-49b0fb8da804>♔', direction='up'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='06c83bf1-77c9-436b-9dbd-3293f0275864', direction='down', children = {
-                    'true': [script.actorSetDirection(actorId='06c83bf1-77c9-436b-9dbd-3293f0275864', direction='left'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<06c83bf1-77c9-436b-9dbd-3293f0275864>♔', direction='down', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<06c83bf1-77c9-436b-9dbd-3293f0275864>♔', direction='left'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='06c83bf1-77c9-436b-9dbd-3293f0275864', direction='right', children = {
-                    'true': [script.actorSetDirection(actorId='06c83bf1-77c9-436b-9dbd-3293f0275864', direction='up'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<06c83bf1-77c9-436b-9dbd-3293f0275864>♔', direction='right', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<06c83bf1-77c9-436b-9dbd-3293f0275864>♔', direction='up'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='859b0137-ea19-42fb-a80c-bd85edb36a18', direction='up', children = {
-                    'true': [script.actorSetDirection(actorId='859b0137-ea19-42fb-a80c-bd85edb36a18', direction='left'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<859b0137-ea19-42fb-a80c-bd85edb36a18>♔', direction='up', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<859b0137-ea19-42fb-a80c-bd85edb36a18>♔', direction='left'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='859b0137-ea19-42fb-a80c-bd85edb36a18', direction='right', children = {
-                    'true': [script.actorSetDirection(actorId='859b0137-ea19-42fb-a80c-bd85edb36a18', direction='down'), script.end()],
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<859b0137-ea19-42fb-a80c-bd85edb36a18>♔', direction='right', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<859b0137-ea19-42fb-a80c-bd85edb36a18>♔', direction='down'), script.end()],
                     'false': [script.end()]
                 }), script.end()]
                 }), script.end()
@@ -567,7 +592,9 @@ def scene_generation():
 
 
     def scene_gen_Scene_8_00008(callback):
-        actor_00 = generator.makeActor(None, 6, 5, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('duck')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 6, 5, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('duck')['id'], name='actor_6559455e-b4ae-4f5f-8533-b340b1ce21af')
+        actor_name_table.update({'actor_6559455e-b4ae-4f5f-8533-b340b1ce21af': actor_00})
         actor_list = [actor_00]
         trigger_00 = generator.makeTrigger('trigger_00', 2, 0, 2, 1)
         trigger_01 = generator.makeTrigger('trigger_01', 19, 2, 1, 2)
@@ -631,8 +658,11 @@ def scene_generation():
 
 
     def scene_gen_Scene_9_00009(callback):
-        actor_00 = generator.makeActor(None, 7, 6, 'randomFace', moveSpeed=4, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc001')['id'])
-        actor_01 = generator.makeActor(None, 11, 6, 'randomFace', moveSpeed=4, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 7, 6, 'randomFace', moveSpeed=4, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc001')['id'], name='actor_9d993388-8e2f-451d-a5d3-5cedfab8f780')
+        actor_name_table.update({'actor_9d993388-8e2f-451d-a5d3-5cedfab8f780': actor_00})
+        actor_01 = generator.makeActor(None, 11, 6, 'randomFace', moveSpeed=4, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'], name='actor_fddcf3d0-5a33-4fd2-8d93-a62b5ff05410')
+        actor_name_table.update({'actor_fddcf3d0-5a33-4fd2-8d93-a62b5ff05410': actor_01})
         actor_list = [actor_00, actor_01]
         trigger_00 = generator.makeTrigger('trigger_00', 9, 0, 2, 1)
         trigger_01 = generator.makeTrigger('trigger_01', 6, 17, 2, 1)
@@ -642,18 +672,18 @@ def scene_generation():
         gen_scene_bkg = generator.makeBackground("room9.png")
         scene_script = [
         script.setTrue(variable='L0'), script.setTrue(variable='L1'), script.setTimerScript(duration=0.25, children = {
-                    'script': [script.ifActorDirection(actorId='9d993388-8e2f-451d-a5d3-5cedfab8f780', direction='right', children = {
+                    'script': [script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<9d993388-8e2f-451d-a5d3-5cedfab8f780>♔', direction='right', children = {
                     'true': [script.ifTrue(variable='L0', children = {
-                    'true': [script.actorEmote(actorId='9d993388-8e2f-451d-a5d3-5cedfab8f780', emoteId=0), script.setFalse(variable='L0'), script.end()],
+                    'true': [script.actorEmote(actorId='♔REFERENCE_TO_ACTORS_<9d993388-8e2f-451d-a5d3-5cedfab8f780>♔', emoteId=0), script.setFalse(variable='L0'), script.end()],
                     'false': [script.end()]
-                }), script.ifActorDirection(actorId='fddcf3d0-5a33-4fd2-8d93-a62b5ff05410', direction='left', children = {
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<fddcf3d0-5a33-4fd2-8d93-a62b5ff05410>♔', direction='left', children = {
                     'true': [script.text(text=['The two rivals\nlock eyes with\neach other...', "And after just a\nmoment's\nhesitation...", 'They begin an\napocalpytic duel.'], avatarId=''), script.cameraShake(time=5), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<nothing>♔', x=9, y=8, direction='down', fadeSpeed='1'), script.end()],
                     'false': [script.end()]
                 }), script.end()],
                     'false': [script.setTrue(variable='L0'), script.end()]
-                }), script.ifActorDirection(actorId='fddcf3d0-5a33-4fd2-8d93-a62b5ff05410', direction='left', children = {
+                }), script.ifActorDirection(actorId='♔REFERENCE_TO_ACTORS_<fddcf3d0-5a33-4fd2-8d93-a62b5ff05410>♔', direction='left', children = {
                     'true': [script.ifTrue(variable='L1', children = {
-                    'true': [script.actorEmote(actorId='fddcf3d0-5a33-4fd2-8d93-a62b5ff05410', emoteId=0), script.setFalse(variable='L1'), script.end()],
+                    'true': [script.actorEmote(actorId='♔REFERENCE_TO_ACTORS_<fddcf3d0-5a33-4fd2-8d93-a62b5ff05410>♔', emoteId=0), script.setFalse(variable='L1'), script.end()],
                     'false': [script.end()]
                 }), script.end()],
                     'false': [script.setTrue(variable='L1'), script.end()]
@@ -696,7 +726,9 @@ def scene_generation():
 
 
     def scene_gen_Scene_10_00010(callback):
-        actor_00 = generator.makeActor(None, 9, 10, 'static', animate=True, moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 9, 10, 'static', animate=True, moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'], name='actor_447f46ce-f3e4-4215-8ac1-3bf2518c2b96')
+        actor_name_table.update({'actor_447f46ce-f3e4-4215-8ac1-3bf2518c2b96': actor_00})
         actor_list = [actor_00]
         trigger_00 = generator.makeTrigger('trigger_00', 17, 0, 2, 1)
         trigger_01 = generator.makeTrigger('trigger_01', 1, 17, 2, 1)
@@ -730,6 +762,7 @@ def scene_generation():
 
 
     def scene_gen_Scene_11_00011(callback):
+        actor_name_table = {}
         actor_list = []
         trigger_00 = generator.makeTrigger('trigger_00', 1, 17, 2, 1)
         trigger_01 = generator.makeTrigger('trigger_01', 19, 4, 1, 2)
@@ -773,44 +806,45 @@ def scene_generation():
 
 
     def scene_gen_nothing_00012(callback):
+        actor_name_table = {}
         actor_list = []
         trigger_00 = generator.makeTrigger('trigger_00', 1, 0, 18, 1)
         trigger_00['script'] = [
-                script.actorGetPosition(actorId='player', vectorX='L0', vectorY='L1'),
+                script.actorGetPosition(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L1'),
                 script.setValue(variable='L2', value=16),
                 script.fadeOut(speed='1'),
-                script.actorSetPositionToValue(actorId='player', vectorX='L0', vectorY='L2'),
-                script.actorSetDirection(actorId='player', direction='up'),
+                script.actorSetPositionToValue(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L2'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<player>♔', direction='up'),
                 script.fadeIn(speed='1'),
                 script.end()
             ]
         trigger_01 = generator.makeTrigger('trigger_01', 1, 17, 18, 1)
         trigger_01['script'] = [
-                script.actorGetPosition(actorId='player', vectorX='L0', vectorY='L1'),
+                script.actorGetPosition(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L1'),
                 script.setValue(variable='L2', value=1),
                 script.fadeOut(speed='1'),
-                script.actorSetPositionToValue(actorId='player', vectorX='L0', vectorY='L2'),
-                script.actorSetDirection(actorId='player', direction='down'),
+                script.actorSetPositionToValue(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L2'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<player>♔', direction='down'),
                 script.fadeIn(speed='1'),
                 script.end()
             ]
         trigger_02 = generator.makeTrigger('trigger_02', 0, 1, 1, 16)
         trigger_02['script'] = [
-                script.actorGetPosition(actorId='player', vectorX='L0', vectorY='L1'),
+                script.actorGetPosition(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L1'),
                 script.setValue(variable='L2', value=18),
                 script.fadeOut(speed='1'),
-                script.actorSetPositionToValue(actorId='player', vectorX='L2', vectorY='L1'),
-                script.actorSetDirection(actorId='player', direction='left'),
+                script.actorSetPositionToValue(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L2', vectorY='L1'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<player>♔', direction='left'),
                 script.fadeIn(speed='1'),
                 script.end()
             ]
         trigger_03 = generator.makeTrigger('trigger_03', 19, 1, 1, 16)
         trigger_03['script'] = [
-                script.actorGetPosition(actorId='player', vectorX='L0', vectorY='L1'),
+                script.actorGetPosition(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L1'),
                 script.setValue(variable='L2', value=1),
                 script.fadeOut(speed='1'),
-                script.actorSetPositionToValue(actorId='player', vectorX='L2', vectorY='L1'),
-                script.actorSetDirection(actorId='player', direction='right'),
+                script.actorSetPositionToValue(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L2', vectorY='L1'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<player>♔', direction='right'),
                 script.fadeIn(speed='1'),
                 script.end()
             ]
@@ -829,44 +863,45 @@ def scene_generation():
 
 
     def scene_gen_nothing_00013(callback):
+        actor_name_table = {}
         actor_list = []
         trigger_00 = generator.makeTrigger('trigger_00', 1, 0, 18, 1)
         trigger_00['script'] = [
-                script.actorGetPosition(actorId='player', vectorX='L0', vectorY='L1'),
+                script.actorGetPosition(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L1'),
                 script.setValue(variable='L2', value=16),
                 script.fadeOut(speed='1'),
-                script.actorSetPositionToValue(actorId='player', vectorX='L0', vectorY='L2'),
-                script.actorSetDirection(actorId='player', direction='up'),
+                script.actorSetPositionToValue(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L2'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<player>♔', direction='up'),
                 script.fadeIn(speed='1'),
                 script.end()
             ]
         trigger_01 = generator.makeTrigger('trigger_01', 1, 17, 18, 1)
         trigger_01['script'] = [
-                script.actorGetPosition(actorId='player', vectorX='L0', vectorY='L1'),
+                script.actorGetPosition(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L1'),
                 script.setValue(variable='L2', value=1),
                 script.fadeOut(speed='1'),
-                script.actorSetPositionToValue(actorId='player', vectorX='L0', vectorY='L2'),
-                script.actorSetDirection(actorId='player', direction='down'),
+                script.actorSetPositionToValue(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L2'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<player>♔', direction='down'),
                 script.fadeIn(speed='1'),
                 script.end()
             ]
         trigger_02 = generator.makeTrigger('trigger_02', 0, 1, 1, 16)
         trigger_02['script'] = [
-                script.actorGetPosition(actorId='player', vectorX='L0', vectorY='L1'),
+                script.actorGetPosition(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L1'),
                 script.setValue(variable='L2', value=18),
                 script.fadeOut(speed='1'),
-                script.actorSetPositionToValue(actorId='player', vectorX='L2', vectorY='L1'),
-                script.actorSetDirection(actorId='player', direction='left'),
+                script.actorSetPositionToValue(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L2', vectorY='L1'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<player>♔', direction='left'),
                 script.fadeIn(speed='1'),
                 script.end()
             ]
         trigger_03 = generator.makeTrigger('trigger_03', 19, 1, 1, 16)
         trigger_03['script'] = [
-                script.actorGetPosition(actorId='player', vectorX='L0', vectorY='L1'),
+                script.actorGetPosition(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L0', vectorY='L1'),
                 script.setValue(variable='L2', value=1),
                 script.fadeOut(speed='1'),
-                script.actorSetPositionToValue(actorId='player', vectorX='L2', vectorY='L1'),
-                script.actorSetDirection(actorId='player', direction='right'),
+                script.actorSetPositionToValue(actorId='♔REFERENCE_TO_ACTORS_<player>♔', vectorX='L2', vectorY='L1'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<player>♔', direction='right'),
                 script.fadeIn(speed='1'),
                 script.end()
             ]

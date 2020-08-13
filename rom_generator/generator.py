@@ -257,7 +257,7 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     return copy.deepcopy(recordBackground(element))
 
 ### An actor is an object on the screen that the player can interact with.
-def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", animSpeed="3", script=[], sprite_id=None, direction=None):
+def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", animSpeed="3", script=[], sprite_id=None, direction=None, name=None):
     element = makeElement()
     if sprite == None:
         element["spriteSheetId"] = sprite_id
@@ -274,6 +274,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", 
     element["animate"] = animate
     element["script"] = []
     element["startScript"] = []
+    element["_name"] = name
     return copy.deepcopy(element)
 
 def addActor(scene, sprite, x, y, movementType="static", animate=True):
@@ -440,6 +441,13 @@ def connectScenesRandomlySymmetric(scene_data_list):
             filtered_other_connections = connections_to_make
         try:
             other_connection = random.choice(filtered_other_connections)
+            connection_tries = 15
+            for n in range(connection_tries):
+                if not (other_connection[2]["args"]["exit_direction"] == reverse_direction[current_connection[2]["args"]["exit_direction"]]):
+                    other_connection = random.choice(filtered_other_connections)
+                else:
+                    break
+
             if other_connection in connections_to_make:
                 connections_to_make.remove(other_connection)
             con_data = {"in": other_connection, "out": current_connection}
@@ -668,6 +676,27 @@ def uniques(list_of_elements):
             dedupe.append(element)
     return dedupe
 
+def getRefInActors(ref_match_object, list_of_scenes):
+    ref_target_name = ref_match_object.groups()[0]
+    ref_target_name = re.sub(" ", "_", ref_target_name)
+    if ref_target_name == "$self$":
+        return "$self$"
+    if ref_target_name == "player":
+        return "player"
+    #print(f"{bcolors.OKBLUE}{ref_target_name}{bcolors.ENDC}")
+    for s_num, s_data in enumerate(list_of_scenes):
+        if "actors" in s_data["scene"].keys():
+            for a_num, a_data in enumerate(s_data["scene"]["actors"]):
+                #print (f"{a_data['_name'][6:]}")
+                if None == a_data["_name"]:
+                    print(f"{bcolors.OKBLUE}{ref_target_name}{bcolors.ENDC}")
+                    print(f"{bcolors.WARNING}{s_data['scene']['name']} => {a_data}{bcolors.ENDC}")
+                    # return "$self$"
+                else:
+                    if ref_target_name in a_data["_name"]:
+                        return a_data["id"]
+    return "NO_REF"
+
 def getRefInScenes(ref_match_object, list_of_scenes):
     ref_target_name = ref_match_object.groups()[0]
     ref_target_name = re.sub(" ", "_", ref_target_name)
@@ -688,8 +717,15 @@ def translateReferences(data, list_of_scenes):
                 ref_match = re.search(r'♔REFERENCE_TO_SCENES_\<(.*?)\>', data)
                 if None != ref_match:
                     data = getRefInScenes(ref_match, list_of_scenes)
-            else:
-                data = "♔UNBOUND_REF♔"
+                    continue
+            if data.startswith("♔REFERENCE_TO_ACTORS_"):
+                ref_match = re.search(r'♔REFERENCE_TO_ACTORS_\<(.*?)\>', data)
+                if None != ref_match:
+                    data = getRefInActors(ref_match, list_of_scenes)
+                    continue
+            print(data)
+            breakpoint()
+            data = "♔UNBOUND_REF♔"
     if (isinstance(data, list)):
         for data_key, data_val in enumerate(data):
             data[data_key] = translateReferences(data_val, list_of_scenes)

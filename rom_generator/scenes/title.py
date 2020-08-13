@@ -4,6 +4,7 @@ import uuid
 import os
 import random
 import datetime
+import itertools
 from pathlib import Path
 from tracery.modifiers import base_english
 from rom_generator import generator
@@ -437,6 +438,21 @@ def generateTitle():
     grammar.add_modifiers(base_english)
     gen_title = grammar.flatten("#origin#")
     print(gen_title)
+
+    # Reduce the number of repetitions of "of the" clauses
+    def filterRepeatClauses(g_title, clause_phrase=" of the "):
+        if g_title.count(clause_phrase) > 1:
+            of_title = g_title.split(clause_phrase)
+            print(of_title)
+            possible_titles = [g_title]
+            for first, second in zip(of_title, of_title[1:]):
+                pos_title = first + clause_phrase + second
+                print(pos_title)
+                possible_titles.append(pos_title)
+            return random.choice(possible_titles)
+        return g_title
+    gen_title = filterRepeatClauses(gen_title, " of the ")
+    gen_title = filterRepeatClauses(gen_title, " & ")
     return gen_title
 
 if __name__ == '__main__':
@@ -445,6 +461,6 @@ if __name__ == '__main__':
         proj_title = generateTitle()
         title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")
         destination = f"../gbprojects/generated/{title_munged}"
-        generator.initializeGenerator()
-        project = createExampleProject(proj_title)
+        #generator.initializeGenerator()
+        #project = createExampleProject(proj_title)
         #generator.writeProjectToDisk(project, output_path = destination)

@@ -212,13 +212,19 @@
       " II", " II", " III", " IV", " II", " II", " III", " II","",""," II"," II"," V","",""," II"," II"," VI"],
     "title": ["#story# of the #macguffin#",
       "#story# for the #macguffin#",
+      "#story# of #macguffin#",
       "#material.capitalize# #story.capitalize#",
       "#macguffin# #story.s#",
       "#material# #object#",
       "#word.capitalize##iii#: #word.capitalize# #word.capitalize#",
       "#property# #subject##iii#: #place#",
       "#subject#'s #title#",
-      "#word.s# & #word.s#"],
+      "#mat_or_attr# #word#",
+      "#word# #word# #word#",
+      "#macguffin#",
+      "#word.s# & #word.s#",
+      "#word# of #word.s#"
+    ],
     "prefix": [
       "","Super "],
     "origin": [

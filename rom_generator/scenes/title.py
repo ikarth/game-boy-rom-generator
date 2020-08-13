@@ -51,7 +51,7 @@ def removeBlankRows(image, gap_spacing = 3):
     return new_image
 
 
-def generateTitleBackground(proj_title="Generated Game", no_split=False):
+def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=False):
     """
     Generates an image for the title screen. Returns the filename of the new image.
     """
@@ -67,10 +67,11 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
     "Super ": "Super\n",
     " of ": "\n of "
     }
-    print(type(proj_title))
+
     print(proj_title)
     if None==proj_title:
         logging.error("Invalid title")
+
     for sign, rep in translation_table.items():
         proj_title = proj_title.replace(sign, rep)
     title_list = proj_title.split("\n")
@@ -98,10 +99,35 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
             'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
             'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
             'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
+            'assets/fonts/goudy_bookletter_1911-webfont.ttf',
+            'assets/fonts/goudy_bookletter_1911-webfont.ttf',
+            'assets/fonts/goudy_bookletter_1911-webfont.ttf',
+            'assets\\fonts\\LeagueSpartan-Semibold.ttf',
+            'assets\\fonts\\kjv-1611\\dist\\KJV1611.otf',
+            'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
+            'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
+            'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
             'assets\\fonts\\germania-one\\GermaniaOne-Regular.ttf',
             'assets\\fonts\\chomsky\\dist\\chomsky.otf',
             'assets\\fonts\\blankenburg-2-font\\Blankenburg-eJGx.ttf',
-            'assets\\fonts\\avdira-textfonts\\Avdira_hint.ttf'
+            'assets\\fonts\\avdira-textfonts\\Avdira_hint.ttf',
+            'assets\\fonts\\qt_uncial\\QTUSA-Uncial.otf',
+            'assets\\fonts\\parker_chronicle\\ParkerChronicle.otf',
+            'assets\\fonts\\joscelyn\\Joscelyn.otf',
+            'assets\\fonts\\sinistre\\Sinistre-S†Caroline.otf',
+            'assets\\fonts\\amphora\\font\\otf\\Amphora-Regular.otf',
+            'assets\\fonts\\juniusx\\fonts\\JuniusX-SemiCondensedSemibold.ttf',
+            'assets\\fonts\\juniusx\\fonts\\JuniusX-CondensedBold.ttf',
+            'assets\\fonts\\grenze_gotisch\\fonts\\otf\\GrenzeGotisch-ExtraBold.otf',
+            'assets\\fonts\\grenze_gotisch\\fonts\\otf\\GrenzeGotisch-Black.otf',
+            'assets\\fonts\\grenze_gotisch\\fonts\\otf\\GrenzeGotisch-SemiBold.otf',
+            'assets\\fonts\\grenze_gotisch\\fonts\\otf\\GrenzeGotisch-Medium.otf',
+            'assets\\fonts\\cissanthemos\\Cissanthemos.otf',
+            'assets\\fonts\\celtica\\Celtica-Bold.ttf',
+            'assets\\fonts\\constantia\\CAT_Constantia.ttf',
+            'assets\\fonts\\silverblade\\Silverblade.ttf',
+            'assets\\fonts\\silverblade\\Silverblade Decorative.ttf',
+            'assets\\fonts\\wiking\\font\\FDIWiking-Regular.otf'
         ]
         return random.choice(font_list)
 
@@ -123,6 +149,8 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
             cur_font_path = font_path
 
         font_size = 48
+        if squash:
+            font_size = 24
         t_h = 9999
         bottom_edge = top_edge
         side_margins = 20
@@ -218,12 +246,6 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
 
     d.multiline_text(((img_width - t_w) / 2, vert_pos), "press start", spacing=1, font=fnt, fill="white", align="center")
 
-    if edge > img_height:
-        print("title text exceeded image height")
-        raise OSError("title text exceeded image height")
-
-
-
     filename = f"assets/backgrounds/_title_{uuid.uuid4()}.png"
     Path(os.path.dirname(os.path.abspath(filename))).mkdir(parents=True, exist_ok=True)
 
@@ -231,6 +253,10 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
     img = img.convert('P', palette=Image.ADAPTIVE, colors=3)
     img = img.convert('RGB')
     img.save(filename)
+
+    if edge > img_height:
+        print(f"title text exceeded image height: {edge} > {img_height}")
+        raise OSError("title text exceeded image height")
 
     return filename
 
@@ -293,7 +319,18 @@ def title_scene_generation(proj_title):
             title_filename = generateTitleBackground(proj_title)
         except OSError as err:
             print(err)
-            title_filename = generateTitleBackground(proj_title, no_split=True)
+            try:
+                title_filename = generateTitleBackground(proj_title, no_split=True)
+            except OSError as err:
+                logging.error(proj_title)
+                logging.error(err)
+                try:
+                    title_filename = generateTitleBackground(proj_title, no_split=True, squash=True)
+                except OSError as err:
+                    logging.error(proj_title)
+                    logging.error(err)
+                    breakpoint()
+
 
         gen_scene_bkg = generator.makeBackground(title_filename)
 
@@ -403,7 +440,7 @@ def generateTitle():
     return gen_title
 
 if __name__ == '__main__':
-    for n in range(40):
+    for n in range(4000):
         random.seed(None)
         proj_title = generateTitle()
         title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")

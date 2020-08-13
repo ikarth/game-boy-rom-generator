@@ -28,7 +28,15 @@
       "Wilderness",
       "Canyon",
       "Crevice",
-      "Castle"
+      "Castle",
+      "Star",
+      "Maze",
+      "Labyrinth",
+      "Fortress",
+      "Alliance",
+      "Kingdom",
+      "Country",
+      "Empire"
       ],
     "place_attribute": [
       "Skull",
@@ -87,7 +95,8 @@
       "Clay",
       "Metal",
       "Earth",
-      "Cinnabar"
+      "Cinnabar",
+      "Red"
     ],
     "attribute": [
       "Magic",
@@ -101,7 +110,6 @@
       "Fantasy",
       "Secret",
       "Miracle",
-      "Red",
       "Vanished",
       "Deadly",
       "Inner",
@@ -111,7 +119,12 @@
       "Unknown",
       "Mystic",
       "Final",
-      "Legendary"
+      "Legendary",
+      "Esoteric",
+      "Vaunted",
+      "Forgotten",
+      "Hidden",
+      "Undiscovered"
     ],
     "property": [
       "#material.capitalize#",
@@ -168,7 +181,11 @@
       "Sphinx",
       "Pheonix",
       "Swan",
-      "Smith"
+      "Smith",
+      "Golem",
+      "Gryphon",
+      "Hierophant",
+      "Overlord"
       ],
     "event": [
       "Birth",
@@ -178,7 +195,8 @@
       "Wrath",
       "Quest",
       "War",
-      "Voyage"
+      "Voyage",
+      "Conquest"
       ],
     "macguffin": [
       "#object.capitalize#",

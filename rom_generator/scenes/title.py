@@ -8,10 +8,11 @@ from pathlib import Path
 from tracery.modifiers import base_english
 from rom_generator import generator
 from rom_generator import script_functions as script
+import logging
 import PIL
 from PIL import Image, ImageFont, ImageDraw
 
-def generateTitleBackground(title, no_split=False):
+def generateTitleBackground(proj_title="Generated Game", no_split=False):
     """
     Generates an image for the title screen. Returns the filename of the new image.
     """
@@ -27,17 +28,21 @@ def generateTitleBackground(title, no_split=False):
     "Super ": "Super\n",
     " of ": "\n of "
     }
+    print(type(proj_title))
+    print(proj_title)
+    if None==proj_title:
+        logging.error("Invalid title")
     for sign, rep in translation_table.items():
-        title = title.replace(sign, rep)
-    title_list = title.split("\n")
-    split_title = title.split("\n:\n")
-    title.replace("\n:\n", "\n")
+        proj_title = proj_title.replace(sign, rep)
+    title_list = proj_title.split("\n")
+    split_title = proj_title.split("\n:\n")
+    proj_title.replace("\n:\n", "\n")
     if len(title_list) == 1:
-        title = title.replace(" ", "\n")
-        title_list = title.split("\n")
+        proj_title = proj_title.replace(" ", "\n")
+        title_list = proj_title.split("\n")
     if not no_split:
         if len(split_title) == 1:
-            split_title = title.split("\n")
+            split_title = proj_title.split("\n")
 
     img_width = 160
     img_height = 144
@@ -67,7 +72,7 @@ def generateTitleBackground(title, no_split=False):
     print(font_path)
     print(second_font)
 
-    if ("III" in title) or ("'s" in title):
+    if ("III" in proj_title) or ("'s" in proj_title):
         if font_path == 'assets\\fonts\\blankenburg-2-font\\Blankenburg-eJGx.ttf':
             font_path = pickFont() # switch fonts to one that looks better for that string
         if second_font == 'assets\\fonts\\blankenburg-2-font\\Blankenburg-eJGx.ttf':
@@ -160,7 +165,7 @@ def generateTitleBackground(title, no_split=False):
                     cur_font_path = second_font
                 edge += addTitleText(n, edge, room, cur_font_path=cur_font_path) + 2
     else:
-        addTitleText(title, cur_font_path=cur_font_path)
+        addTitleText(proj_title, cur_font_path=cur_font_path)
 
     fnt = ImageFont.truetype(font_path, 10)
     t_w, t_h = d.multiline_textsize("press start", font=fnt, spacing=1)
@@ -185,7 +190,7 @@ def generateTitleBackground(title, no_split=False):
 
     return filename
 
-def title_scene_generation(title):
+def title_scene_generation(proj_title):
     sprite_sheet_data = [
         generator.makeSpriteSheet('actor.png', name='actor', type='actor', frames=3),
         generator.makeSpriteSheet('actor_animated.png', name='actor_animated', type='actor_animated', frames=6),
@@ -224,7 +229,7 @@ def title_scene_generation(title):
         actor_list = []
         trigger_list = []
         collision_data_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        gen_scene_bkg = generator.makeBackground("logo.png")
+        gen_scene_bkg = generator.makeBackground("autogen_logo.png")
         scene_script = [
         script.actorHide(actorId='player'), script.overlayShow(color='black', x=0, y=0), script.overlayMoveTo(x=0, y=18, speed='2'), script.wait(time=2), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Title Screen>♔', x=0, y=0, direction='', fadeSpeed='2'), script.end()
         ]
@@ -241,10 +246,10 @@ def title_scene_generation(title):
         collision_data_list = []
 
         try:
-            title_filename = generateTitleBackground(title)
+            title_filename = generateTitleBackground(proj_title)
         except OSError as err:
             print(err)
-            title_filename = generateTitleBackground(title, no_split=True)
+            title_filename = generateTitleBackground(proj_title, no_split=True)
 
         gen_scene_bkg = generator.makeBackground(title_filename)
 
@@ -269,65 +274,6 @@ def title_scene_generation(title):
 
 
         gen_scene_scn = generator.makeScene("_gen_Title_Screen", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Title_Screen")
-        gen_scene_scn['script'] = scene_script
-        gen_scene_connections = []
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
-        return scene_data
-
-    def scene_gen_Menu(callback):
-        actor_00 = generator.makeActor(None, 2, 4, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
-        actor_00['script'] = [
-                script.end()
-            ]
-        actor_01 = generator.makeActor(None, 2, 6, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
-        actor_01['script'] = [
-                script.end()
-            ]
-        actor_02 = generator.makeActor(None, 2, 8, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
-        actor_02['script'] = [
-                script.end()
-            ]
-        actor_03 = generator.makeActor(None, 2, 11, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
-        actor_03['script'] = [
-                script.end()
-            ]
-        actor_04 = generator.makeActor(None, 2, 13, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
-        actor_04['script'] = [
-                script.end()
-            ]
-        actor_05 = generator.makeActor(None, 2, 15, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
-        actor_05['script'] = [
-                script.end()
-            ]
-        actor_list = [actor_00, actor_01, actor_02, actor_03, actor_04, actor_05]
-        trigger_list = []
-        collision_data_list = []
-        gen_scene_bkg = generator.makeBackground("menu.png")
-        scene_script = [
-        script.actorHide(actorId='player'), script.group(children = {
-                    'true': [script.ifTrue(variable='4', children = {
-                    'true': [script.actorSetDirection(actorId='d983c34a-9eba-4cb3-83cf-4e6ddb6d39ad', direction='up'), script.end()],
-                    'false': [script.end()]
-                }), script.ifTrue(variable='5', children = {
-                    'true': [script.actorSetDirection(actorId='044598b7-a634-427d-9c88-e998fabe8d9a', direction='up'), script.end()],
-                    'false': [script.end()]
-                }), script.ifTrue(variable='6', children = {
-                    'true': [script.actorSetDirection(actorId='6d80f0f6-047d-4494-811d-5f526e58959e', direction='up'), script.end()],
-                    'false': [script.end()]
-                }), script.ifTrue(variable='7', children = {
-                    'true': [script.actorSetDirection(actorId='51558c54-c7e2-46d1-9015-f7b83a6a4ff4', direction='up'), script.end()],
-                    'false': [script.end()]
-                }), script.ifTrue(variable='8', children = {
-                    'true': [script.actorSetDirection(actorId='62ecd9f0-005a-402f-8ad0-8ec8c3b514f3', direction='up'), script.end()],
-                    'false': [script.end()]
-                }), script.ifTrue(variable='9', children = {
-                    'true': [script.actorSetDirection(actorId='4c9409a4-0872-486e-a1a1-5b74caaa6960', direction='up'), script.end()],
-                    'false': [script.end()]
-                }), script.end()]
-                }), script.awaitInput(input=['a', 'b', 'start', 'select']), script.scenePopState(fadeSpeed='2'), script.end()
-        ]
-
-        gen_scene_scn = generator.makeScene("_gen_Menu", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Menu")
         gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -362,18 +308,17 @@ def title_scene_generation(title):
         return [
             scene_gen_Logo,
             scene_gen_Title_Screen,
-            scene_gen_Menu,
             scene_gen_BeginningCave
             ]
 
     return catalog, sprite_sheet_data
 
-def createExampleProject(title="generated"):
+def createExampleProject(proj_title="generated"):
     """
     Demonstration of how the scene generators in this file can be used.
     """
     project = generator.makeBasicProject()
-    project.name = title
+    project.name = proj_title
 
 
     # Create sprite sheet for the player sprite
@@ -381,7 +326,7 @@ def createExampleProject(title="generated"):
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
     scene_data_list = []
-    catalog, sprites = title_scene_generation(title)
+    catalog, sprites = title_scene_generation(proj_title)
     for scn_func in catalog():
         scene_data_list.append(scn_func(None))
     for element_sprite in sprites:
@@ -416,9 +361,9 @@ def generateTitle():
 if __name__ == '__main__':
     for n in range(4):
         random.seed(None)
-        title = generateTitle()
-        title_munged = title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")
+        proj_title = generateTitle()
+        title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")
         destination = f"../gbprojects/generated/{title_munged}"
         generator.initializeGenerator()
-        project = createExampleProject(title)
+        project = createExampleProject(proj_title)
         generator.writeProjectToDisk(project, output_path = destination)

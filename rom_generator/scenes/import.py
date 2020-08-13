@@ -112,7 +112,11 @@ def referencesInProject(proj_data):
     ref_id_conversion = {}
     for r in ref_types:
         data_list = [(s['id'], s['name']) for s in proj_data[r]]
-        for s in data_list:
+        for s_index, s in enumerate(data_list):
+            if r == "scenes":
+                actors = proj_data[r][s_index]["actors"]
+                for a in actors:
+                    ref_id_conversion.update({a['id'] : f"REFERENCE_TO_{'actors'.upper()}_<actor_{a['id']}>"})
             ref_id_conversion.update({s[0] : f"REFERENCE_TO_{r.upper()}_<{s[1]}>"})
     return ref_id_conversion
 
@@ -150,6 +154,9 @@ def convertScripts(scripts, reference_translation_func=None, proj_data=None):
                     if k_str == "sceneId":
                         v_arg = v_arg #f"<♔sceneId|{v_arg}♔>"
                         # TODO: have way to point sceneId at new target
+                    if k_str == "actorId":
+                        v_arg = f"\'♔REFERENCE_TO_ACTORS_<{v_arg[1:-1]}>♔\'"
+                        # TODO: have way to point actorId at new target
                     arg_text.append(f"{k_str}={v_arg}")
             if "children" in scr:
                 child_scripts = {}
@@ -312,6 +319,8 @@ def convertActors(actor_list, proj_data):
     code_elements = []
     actor_name_list = []
     actor_data_list = []
+    code_elements.append("actor_name_table = {}")
+    actor_name_table = {}
     for actor_count, element in enumerate(actor_list):
 
         sprites = proj_data["spriteSheets"]
@@ -330,7 +339,11 @@ def convertActors(actor_list, proj_data):
             anim_element += "direction='" + str(element['direction']) + "', "
 
 
-        code_elements.append(f"actor_{actor_count:02d} = generator.makeActor(None, {element['x']}, {element['y']}, '{element['movementType']}', {anim_element}script=[], sprite_id=findSpriteByName('{a_sprite['name']}')['id'])")
+        actor_name = f"actor_{element['id']}"
+        code_elements.append(f"actor_{actor_count:02d} = generator.makeActor(None, {element['x']}, {element['y']}, '{element['movementType']}', {anim_element}script=[], sprite_id=findSpriteByName('{a_sprite['name']}')['id'], name=\'{actor_name}\')")
+        code_elements.append(f"actor_name_table.update({{\'{actor_name}\': actor_{actor_count:02d}}})")
+        actor_name_table.update({actor_name: f"REFERENCE_TO_actors_{actor_count:02d}"})
+
         script_start = []
         if "startScript" in element.keys():
             script = element["startScript"]
@@ -353,7 +366,13 @@ def convertActors(actor_list, proj_data):
             })
 
     code_elements.append("actor_list = [" + ", ".join(actor_name_list) + "]")
-    return code_elements, actor_data_list
+
+    # for line_index, line in enumerate(code_elements):
+    #     if "♔actor_" in line:
+    #         for sign, signifier in actor_name_table.items():
+    #             code_elements[line_index] = line.replace(sign, signifier)
+
+    return code_elements, actor_data_list, actor_name_table
 
 def importSprite(sprite_sheet_data):
     code_spritesheet = f"generator.makeSpriteSheet('{sprite_sheet_data['filename']}', name='{sprite_sheet_data['name']}', type='{sprite_sheet_data['type']}', frames={sprite_sheet_data['numFrames']})"
@@ -379,7 +398,7 @@ def importScene(scene_data, proj_data):
     template_slots = []
     actors = template.pop("actors")
     triggers = template.pop("triggers")
-    code_actors, actor_data_list = convertActors(actors, proj_data)
+    code_actors, actor_data_list, actor_name_table = convertActors(actors, proj_data)
     code_triggers, template_slots = convertTriggers(triggers, proj_data)
 
     code_scene_script = ""

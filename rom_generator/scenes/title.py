@@ -11,6 +11,45 @@ from rom_generator import script_functions as script
 import logging
 import PIL
 from PIL import Image, ImageFont, ImageDraw
+from rom_generator.utilities import bcolors
+
+# Inspired by https://stackoverflow.com/questions/12770218/using-pil-or-a-numpy-array-how-can-i-remove-entire-rows-from-an-image
+def FindImageRowByColor(pixel_array, width, height, color):
+    rows_found = []
+    for y in range(height):
+        for x in range(width):
+            #print('\t\t', pixel_array[x, y], '\t', color)
+            if pixel_array[x, y] != color:
+                break
+        else:
+            rows_found.append(y)
+    logging.info(f"rows found: {bcolors.OKGREEN}{rows_found}{bcolors.ENDC}")
+    return rows_found
+
+def removeBlankRows(image, gap_spacing = 3):
+    pixels = image.load()
+    img_width, img_height = image.size[0], image.size[1]
+    blank_rows = FindImageRowByColor(pixels, img_width, img_height, (0,0,0))
+    scratch_image = Image.new("RGB", (img_width, img_height), (0,0,0))
+    new_pixels = scratch_image.load()
+    rows_removed = 0
+    blank_gap = 0
+    for y in range(img_height):
+        blank_gap += 1
+        if (y in blank_rows) and (blank_gap >= gap_spacing):
+            rows_removed += 1
+        else:
+            if (y not in blank_rows):
+                blank_gap = 0
+            for x in range(img_width):
+                new_pixels[x, y - rows_removed] = pixels[x, y]
+
+    vert_offset = int(rows_removed // 2)
+    logging.info(f"{rows_removed} scanlines removed from title.")
+    new_image = Image.new("RGB", (img_width, img_height), (0,0,0))
+    new_image.paste(scratch_image, (0, vert_offset))
+    return new_image
+
 
 def generateTitleBackground(proj_title="Generated Game", no_split=False):
     """
@@ -167,12 +206,16 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
     else:
         addTitleText(proj_title, cur_font_path=cur_font_path)
 
+    img = removeBlankRows(img, gap_spacing=2)
+    d = ImageDraw.Draw(img)
+
     fnt = ImageFont.truetype(font_path, 10)
     t_w, t_h = d.multiline_textsize("press start", font=fnt, spacing=1)
     t_h += 3
     vert_pos = (img_height - t_h)
     if edge > vert_pos:
         vert_pos = 1
+
     d.multiline_text(((img_width - t_w) / 2, vert_pos), "press start", spacing=1, font=fnt, fill="white", align="center")
 
     if edge > img_height:
@@ -183,6 +226,7 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
 
     filename = f"assets/backgrounds/_title_{uuid.uuid4()}.png"
     Path(os.path.dirname(os.path.abspath(filename))).mkdir(parents=True, exist_ok=True)
+
 
     img = img.convert('P', palette=Image.ADAPTIVE, colors=3)
     img = img.convert('RGB')
@@ -359,11 +403,11 @@ def generateTitle():
     return gen_title
 
 if __name__ == '__main__':
-    for n in range(4):
+    for n in range(40):
         random.seed(None)
         proj_title = generateTitle()
         title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")
         destination = f"../gbprojects/generated/{title_munged}"
         generator.initializeGenerator()
         project = createExampleProject(proj_title)
-        generator.writeProjectToDisk(project, output_path = destination)
+        #generator.writeProjectToDisk(project, output_path = destination)

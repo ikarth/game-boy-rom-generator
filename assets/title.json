@@ -17,7 +17,18 @@
       "World",
       "Village",
       "Forest",
-      "Tomb"
+      "Tomb",
+      "River",
+      "Lake",
+      "Cavern",
+      "Grove",
+      "Moon",
+      "Palace",
+      "Desert",
+      "Wilderness",
+      "Canyon",
+      "Crevice",
+      "Castle"
       ],
     "place_attribute": [
       "Skull",
@@ -36,7 +47,9 @@
       "#place_thing#",
       "#place_thing# of the #place_attribute#",
       "#place_attribute# #place_thing#",
-      "#place_thing.a# of #attribute.capitalize# et #attribute.capitalize#"
+      "#place_thing.a# of #attribute.capitalize# et #attribute.capitalize#",
+      "#place_thing# of the #subject#",
+      "#place_thing# of the #mat_or_attr# #subject#"
     ],
     "story": [
       "Legend",
@@ -45,7 +58,7 @@
       "Saga",
       "Ballad",
       "Whisper",
-      "Rumors",
+      "Rumor",
       "Chronicle",
       "Record",
       "Book",
@@ -53,6 +66,9 @@
       "Tale",
       "Journal"
     ],
+    "mat_or_attr": [
+      "#material#", "#attribute#"
+      ],
     "material": [
       "Diamond",
       "Onyx",
@@ -61,12 +77,22 @@
       "Ash",
       "Gold",
       "Fire",
-      "Marble"
+      "Marble",
+      "Beryl",
+      "Adamantine",
+      "Chrysoprase",
+      "Iron",
+      "Steel",
+      "Brass",
+      "Clay",
+      "Metal",
+      "Earth",
+      "Cinnabar"
     ],
     "attribute": [
-      "magic",
-      "dread",
-      "heroic",
+      "Magic",
+      "Dread",
+      "Heroic",
       "Crimson",
       "Darkness",
       "Golden",
@@ -83,7 +109,9 @@
       "Mystery",
       "Danger",
       "Unknown",
-      "Mystic"
+      "Mystic",
+      "Final",
+      "Legendary"
     ],
     "property": [
       "#material.capitalize#",
@@ -99,7 +127,21 @@
       "Trident",
       "Love",
       "Arts",
-      "Blade"
+      "Blade",
+      "Goblet",
+      "Cauldron",
+      "Torc",
+      "Sammas",
+      "Harp",
+      "Candle",
+      "Torch",
+      "Bell",
+      "Chest",
+      "Anvil",
+      "Forge",
+      "Kiln",
+      "Feather",
+      "Hurdy-Gurdy"
     ],
     "subject": [
       "Warrior",
@@ -109,7 +151,24 @@
       "Slayer",
       "Wizard",
       "Sorceror",
-      "Bard"
+      "Bard",
+      "Hero",
+      "Queen",
+      "Archmage",
+      "Empress",
+      "Priestess",
+      "Magician",
+      "Fool",
+      "Sage",
+      "Pythia",
+      "Prophet",
+      "Prophetess",
+      "Trickster",
+      "Scion",
+      "Sphinx",
+      "Pheonix",
+      "Swan",
+      "Smith"
       ],
     "event": [
       "Birth",
@@ -117,7 +176,9 @@
       "Revelation",
       "Revolution",
       "Wrath",
-      "Quest"
+      "Quest",
+      "War",
+      "Voyage"
       ],
     "macguffin": [
       "#object.capitalize#",
@@ -130,7 +191,7 @@
     "word": ["#object#", "#attribute#", "#material#", "#story#", "#place#", "#subject#"],
     "iii": [
       "","","","","","","",
-      " II", " II", " III", " IV", " II", " II", " III", " II"],
+      " II", " II", " III", " IV", " II", " II", " III", " II","",""," II"," II"," V","",""," II"," II"," VI"],
     "title": ["#story# of the #macguffin#",
       "#story# for the #macguffin#",
       "#material.capitalize# #story.capitalize#",

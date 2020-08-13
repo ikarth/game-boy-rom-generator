@@ -1,12 +1,22 @@
 ##### Scene Library #####
 
 from rom_generator import generator
-import scene_gen_halls
+from rom_generator.scenes.imported import BasicScenes as BasicScenes
+from rom_generator.scenes.imported import So_Many_Rooms as So_Many_Rooms
 
 
 def getLibrary():
   scene_library = []
-  scene_library + scene_gen_halls.catalog()
+  sprite_library = []
+
+  #scene_library + scene_gen_halls.catalog()
+  modules = [BasicScenes, So_Many_Rooms]
+  for m in modules:
+      catalog, sprites = m.scene_generation()
+      scene_library = scene_library + catalog()
+      sprite_library = sprite_library + sprites
+
+  return scene_library, sprite_library
 
 def createExampleProject():
     """

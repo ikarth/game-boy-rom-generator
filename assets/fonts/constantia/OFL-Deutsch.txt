@@ -1,0 +1,38 @@
+﻿SIL-Openfont-Lizenz
+Deutsche Übersetzung (rechtlich bindend ist nur die Originalversion)
+ 
+
+Version 1.1 - 26. Februar 2007
+VORBEMERKUNG
+
+Das Ziel der Open Font License (OFL) besteht darin, die weltweite Entwicklung von kollaborativen Schriftprojekten anzuregen, die Maßnahmen zur Erstellung von Schriften im akademischen und linguistischen Umfeld zu unterstützen und eine freie und offene Rahmenstruktur zu bieten, in der Schriftarten ausgetauscht und in Zusammenarbeit mit anderen verbessert werden können.
+
+Die OFL erlaubt die uneingeschränkte Nutzung, Analyse, Änderung und Weiterverbreitung der lizenzierten Schriftarten, sofern sie nicht verkauft werden. Die Schriften einschließlich etwaiger Bearbeitungen können mit jeder beliebigen Software gebündelt, weiterverbreitet und/oder verkauft und darin eingebettet werden, vorausgesetzt, dass für die Bearbeitungen keine reservierten Namen verwendet werden. Die Schriften und Bearbeitungen dürfen jedoch nicht im Rahmen einer anderen Art von Lizenz veröffentlicht werden. Die Verpflichtung, Schriftarten innerhalb dieser Lizenz zu belassen, gilt nicht für Dokumente, die unter Verwendung der Schriften oder der zugehörigen Bearbeitungen erstellt wurden.
+DEFINITIONEN
+
+„Schriftsoftware“ bezeichnet die Gruppe von Dateien, die von den Urheberrechtsinhabern gemäß dieser Lizenz herausgegeben und deutlich als solche gekennzeichnet wurden. Das kann Quelldateien, Build-Skripte und Dokumentation umfassen.
+
+„Reservierter Schriftname“ bezeichnet alle Namen, die nach den Urheberrechtshinweisen als solche angegeben sind.
+
+„Originalversion“ bezeichnet die Sammlung der von den Urheberrechtsinhabern verbreiteten Komponenten der Schriftsoftware.
+
+„Geänderte Version“ bezeichnet Bearbeitungen, die dadurch entstehen, dass Komponenten der Originalversion im Ganzen oder in Teilen hinzugefügt, gelöscht oder ersetzt oder Formate geändert werden oder die Schriftsoftware in eine neue Umgebung übertragen wird.
+
+„Urheber“ bezeichnet Designer, Techniker, technische Autoren oder andere Personen, die einen Beitrag zur Schriftsoftware geleistet haben.
+GENEHMIGUNG & BEDINGUNGEN
+
+Hiermit wird jeder Person, die eine Kopie der Schriftsoftware erwirbt, die unentgeltliche Genehmigung erteilt, zu folgenden Bedingungen veränderte und nicht veränderte Kopien der Software zu nutzen, zu analysieren, zu kopieren, zusammenzuführen, einzubetten, zu ändern, weiter zu verbreiten und zu verkaufen:
+
+1) Die Schriftsoftware und ihre einzelnen Komponenten dürfen weder in Originalversion noch in abgeänderter Version verkauft werden.
+
+2) Die Originalversion und die geänderte Version der Schriftsoftware darf mit jeder Software gebündelt, weiter verbreitet und/oder verkauft werden, vorausgesetzt, dass jede Kopie den vorstehenden Urheberrechtshinweis und diese Lizenz enthält. Diese können entweder als separate Textdateien, vom Menschen lesbare Kopfzeilen oder in entsprechenden maschinenlesbaren Metadaten-Feldern in Textdateien oder binären Dateien eingefügt werden, solange der Benutzer diese Felder problemlos einsehen kann.
+
+3) Für geänderte Versionen der Software dürfen die reservierten Schriftnamen nur dann verwendet werden, wenn der jeweilige Urheberrechtsinhaber hierfür eine ausdrückliche schriftliche Genehmigung erteilt. Diese Einschränkung gilt nur für den primären Schriftnamen gemäß Darstellung für die Benutzer.
+
+4) Die Namen der Urheberrechtsinhaber oder der Urheber dürfen nicht benutzt werden, um eine geänderte Version zu fördern, zu unterstützen oder zu bewerben, ausgenommen zur Anerkennung der Beiträge der Urheberrechtsinhaber und Urheber oder mit deren ausdrücklicher schriftlicher Genehmigung.
+
+5) Die Schriftsoftware – ganz gleich, ob verändert oder nicht verändert, teilweise oder ganz – darf nur im Rahmen dieser Lizenz verbreitet werden, jedoch nicht im Rahmen einer anderen Lizenz. Die Verpflichtung, Schriften nur im Rahmen dieser Lizenz zu verbreiten, gilt nicht für Dokumente, die unter Verwendung der Schriftsoftware erstellt wurden.
+BEENDIGUNG
+
+Diese Lizenz wird ungültig, falls eine der vorstehenden Bedingungen nicht erfüllt ist.
+HAFTUNGSAUS

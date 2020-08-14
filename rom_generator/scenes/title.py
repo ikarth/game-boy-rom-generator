@@ -4,6 +4,7 @@ import uuid
 import os
 import random
 import datetime
+import itertools
 from pathlib import Path
 from tracery.modifiers import base_english
 from rom_generator import generator
@@ -11,8 +12,54 @@ from rom_generator import script_functions as script
 import logging
 import PIL
 from PIL import Image, ImageFont, ImageDraw
+from rom_generator.utilities import bcolors
 
-def generateTitleBackground(proj_title="Generated Game", no_split=False):
+# Inspired by https://stackoverflow.com/questions/12770218/using-pil-or-a-numpy-array-how-can-i-remove-entire-rows-from-an-image
+def FindImageRowByColor(pixel_array, width, height, color):
+    rows_found = []
+    for y in range(height):
+        for x in range(width):
+            #print('\t\t', pixel_array[x, y], '\t', color)
+            if pixel_array[x, y] != color:
+                break
+        else:
+            rows_found.append(y)
+    logging.info(f"rows found: {bcolors.OKGREEN}{rows_found}{bcolors.ENDC}")
+    return rows_found
+
+def removeBlankRows(image, gap_spacing = 3):
+    pixels = image.load()
+    img_width, img_height = image.size[0], image.size[1]
+    blank_rows = FindImageRowByColor(pixels, img_width, img_height, (0,0,0))
+    scratch_image = Image.new("RGB", (img_width, img_height), (0,0,0))
+    new_pixels = scratch_image.load()
+    rows_removed = 0
+    blank_gap = 0
+    for y in range(img_height):
+        blank_gap += 1
+        if (y in blank_rows) and (blank_gap >= gap_spacing):
+            rows_removed += 1
+        else:
+            if (y not in blank_rows):
+                blank_gap = 0
+            for x in range(img_width):
+                new_pixels[x, y - rows_removed] = pixels[x, y]
+
+    vert_offset = int(rows_removed // 2)
+    logging.info(f"{rows_removed} scanlines removed from title.")
+    new_image = Image.new("RGB", (img_width, img_height), (0,0,0))
+    new_image.paste(scratch_image, (0, vert_offset))
+    return new_image
+
+def splitInTheMiddle(string_to_split):
+    if (isinstance(string_to_split, list)):
+        string_to_split = " ".join(string_to_split)
+    print(f"\t\t\t[ {string_to_split} ]")
+    parts = string_to_split.split(" ")
+    midpoint = len(parts) // 2
+    return [parts[:midpoint], parts[midpoint:]]
+
+def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=0):
     """
     Generates an image for the title screen. Returns the filename of the new image.
     """
@@ -28,10 +75,11 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
     "Super ": "Super\n",
     " of ": "\n of "
     }
-    print(type(proj_title))
+
     print(proj_title)
     if None==proj_title:
         logging.error("Invalid title")
+
     for sign, rep in translation_table.items():
         proj_title = proj_title.replace(sign, rep)
     title_list = proj_title.split("\n")
@@ -43,6 +91,15 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
     if not no_split:
         if len(split_title) == 1:
             split_title = proj_title.split("\n")
+
+    if squash > 1:
+        if len(split_title) > 1:
+            split_title_cdr = split_title[1:]
+            split_title_car = split_title[0]
+            split_title = [split_title_car]
+            split_title = split_title + splitInTheMiddle(split_title_cdr)
+        else:
+            split_title = splitInTheMiddle(proj_title)
 
     img_width = 160
     img_height = 144
@@ -59,10 +116,35 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
             'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
             'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
             'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
+            'assets/fonts/goudy_bookletter_1911-webfont.ttf',
+            'assets/fonts/goudy_bookletter_1911-webfont.ttf',
+            'assets/fonts/goudy_bookletter_1911-webfont.ttf',
+            'assets\\fonts\\LeagueSpartan-Semibold.ttf',
+            'assets\\fonts\\kjv-1611\\dist\\KJV1611.otf',
+            'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
+            'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
+            'assets\\fonts\\gfs-theokritos\\GFS_THEOKRITOS_OT\\GFSTheokritos.otf',
             'assets\\fonts\\germania-one\\GermaniaOne-Regular.ttf',
             'assets\\fonts\\chomsky\\dist\\chomsky.otf',
             'assets\\fonts\\blankenburg-2-font\\Blankenburg-eJGx.ttf',
-            'assets\\fonts\\avdira-textfonts\\Avdira_hint.ttf'
+            'assets\\fonts\\avdira-textfonts\\Avdira_hint.ttf',
+            'assets\\fonts\\qt_uncial\\QTUSA-Uncial.otf',
+            'assets\\fonts\\parker_chronicle\\ParkerChronicle.otf',
+            'assets\\fonts\\joscelyn\\Joscelyn.otf',
+            'assets\\fonts\\sinistre\\Sinistre-S†Caroline.otf',
+            'assets\\fonts\\amphora\\font\\otf\\Amphora-Regular.otf',
+            'assets\\fonts\\juniusx\\fonts\\JuniusX-SemiCondensedSemibold.ttf',
+            'assets\\fonts\\juniusx\\fonts\\JuniusX-CondensedBold.ttf',
+            'assets\\fonts\\grenze_gotisch\\fonts\\otf\\GrenzeGotisch-ExtraBold.otf',
+            'assets\\fonts\\grenze_gotisch\\fonts\\otf\\GrenzeGotisch-Black.otf',
+            'assets\\fonts\\grenze_gotisch\\fonts\\otf\\GrenzeGotisch-SemiBold.otf',
+            'assets\\fonts\\grenze_gotisch\\fonts\\otf\\GrenzeGotisch-Medium.otf',
+            'assets\\fonts\\cissanthemos\\Cissanthemos.otf',
+            'assets\\fonts\\celtica\\Celtica-Bold.ttf',
+            'assets\\fonts\\constantia\\CAT_Constantia.ttf',
+            'assets\\fonts\\silverblade\\Silverblade.ttf',
+            'assets\\fonts\\silverblade\\Silverblade Decorative.ttf',
+            'assets\\fonts\\wiking\\font\\FDIWiking-Regular.otf'
         ]
         return random.choice(font_list)
 
@@ -80,10 +162,21 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
 
     def addTitleText(title_text_line, top_edge=0, leave_room=0, cur_font_path=None):
         #print(f"[{top_edge}]", end=" ")
+        #print(type(title_text_line))
+        if (isinstance(title_text_line, list)):
+            title_text_line = " ".join(title_text_line)
+        #print(title_text_line)
+
         if None == cur_font_path:
             cur_font_path = font_path
 
         font_size = 48
+        if squash > 0:
+            font_size = 24
+            if squash > 1:
+                font_size = 12
+                if squash > 2:
+                    font_size = 10
         t_h = 9999
         bottom_edge = top_edge
         side_margins = 20
@@ -98,6 +191,9 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
         if True: #random.random() < 0.5:
             # calculate down
             font_size = 64
+            for n in range(squash):
+                font_size *= 0.6
+            font_size = int(font_size)
             calculate_font = True
             while calculate_font:
                 fnt = ImageFont.truetype(cur_font_path, int(font_size * font_multiplier))
@@ -141,7 +237,11 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
         room_count = 0
         for n in split_title:
             if(len(n) == 1):
-                sn = n.split("\n")
+                sn = []
+                if (isinstance(n, list)):
+                    sn = n
+                else:
+                    sn = n.split("\n")
                 for ssn in sn:
                     room_count += 1
             else:
@@ -154,8 +254,13 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
                     cur_font_path = second_font
             room_count -= 1
             room = room_count * room_margin
+            # print(f"\t\t\t< {n} >")
             if(len(n) == 1):
-                sn = n.split("\n")
+                sn = []
+                if (isinstance(n, list)):
+                    sn = n
+                else:
+                    sn = n.split("\n")
                 for ssn in sn:
                     if (("for " in ssn) or ("of " in ssn)):
                         cur_font_path = second_font
@@ -167,26 +272,34 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False):
     else:
         addTitleText(proj_title, cur_font_path=cur_font_path)
 
+    if squash > 0:
+        img = removeBlankRows(img, gap_spacing=0)
+    else:
+        img = removeBlankRows(img, gap_spacing=2)
+    d = ImageDraw.Draw(img)
+
     fnt = ImageFont.truetype(font_path, 10)
     t_w, t_h = d.multiline_textsize("press start", font=fnt, spacing=1)
     t_h += 3
     vert_pos = (img_height - t_h)
     if edge > vert_pos:
         vert_pos = 1
+
     d.multiline_text(((img_width - t_w) / 2, vert_pos), "press start", spacing=1, font=fnt, fill="white", align="center")
-
-    if edge > img_height:
-        print("title text exceeded image height")
-        raise OSError("title text exceeded image height")
-
-
 
     filename = f"assets/backgrounds/_title_{uuid.uuid4()}.png"
     Path(os.path.dirname(os.path.abspath(filename))).mkdir(parents=True, exist_ok=True)
 
-    img = img.convert('P', palette=Image.ADAPTIVE, colors=3)
-    img = img.convert('RGB')
+    if edge > img_height:
+        d.rectangle((0, 0, img_width, 2), (255, 64, 0))
+    else:
+        img = img.convert('P', palette=Image.ADAPTIVE, colors=3)
+        img = img.convert('RGB')
     img.save(filename)
+
+    if edge > img_height:
+        print(f"title text exceeded image height: {edge} > {img_height}")
+        raise OSError("title text exceeded image height")
 
     return filename
 
@@ -249,7 +362,25 @@ def title_scene_generation(proj_title):
             title_filename = generateTitleBackground(proj_title)
         except OSError as err:
             print(err)
-            title_filename = generateTitleBackground(proj_title, no_split=True)
+            try:
+                title_filename = generateTitleBackground(proj_title, no_split=True)
+            except OSError as err:
+                logging.error(proj_title)
+                logging.error(err)
+                try:
+                    title_filename = generateTitleBackground(proj_title, no_split=True, squash=1)
+                except OSError as err:
+                    try:
+                        title_filename = generateTitleBackground(proj_title, no_split=True, squash=2)
+                    except OSError as err:
+                        try:
+                            title_filename = generateTitleBackground(proj_title, no_split=True, squash=3)
+                        except OSError as err:
+                            logging.error(proj_title)
+                            logging.error(err)
+                            breakpoint()
+
+
 
         gen_scene_bkg = generator.makeBackground(title_filename)
 
@@ -356,14 +487,32 @@ def generateTitle():
     grammar.add_modifiers(base_english)
     gen_title = grammar.flatten("#origin#")
     print(gen_title)
+
+    # remove the/a confusion
+    gen_title = gen_title.replace(" the a ", " the ")
+
+    # Reduce the number of repetitions of "of the" clauses
+    def filterRepeatClauses(g_title, clause_phrase=" of the "):
+        if g_title.count(clause_phrase) > 1:
+            of_title = g_title.split(clause_phrase)
+            print(of_title)
+            possible_titles = [g_title]
+            for first, second in zip(of_title, of_title[1:]):
+                pos_title = first + clause_phrase + second
+                print(pos_title)
+                possible_titles.append(pos_title)
+            return random.choice(possible_titles)
+        return g_title
+    gen_title = filterRepeatClauses(gen_title, " of the ")
+    gen_title = filterRepeatClauses(gen_title, " & ")
     return gen_title
 
 if __name__ == '__main__':
-    for n in range(4):
+    for n in range(4000):
         random.seed(None)
         proj_title = generateTitle()
         title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")
         destination = f"../gbprojects/generated/{title_munged}"
         generator.initializeGenerator()
         project = createExampleProject(proj_title)
-        generator.writeProjectToDisk(project, output_path = destination)
+        #generator.writeProjectToDisk(project, output_path = destination)

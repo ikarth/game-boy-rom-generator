@@ -5,6 +5,8 @@ import os
 import random
 import datetime
 import itertools
+import colorsys
+import math
 from pathlib import Path
 from tracery.modifiers import base_english
 from rom_generator import generator
@@ -161,6 +163,8 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
             second_font = pickFont() # switch fonts to one that looks better for that string
 
     def addTitleText(title_text_line, top_edge=0, leave_room=0, cur_font_path=None):
+        title_text_generation_command = {}
+        is_primary_line = True
         #print(f"[{top_edge}]", end=" ")
         #print(type(title_text_line))
         if (isinstance(title_text_line, list)):
@@ -185,6 +189,7 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
         if (("for " in title_text_line) or ("of " in title_text_line)):
             if not no_split:
                 font_multiplier = 0.3
+            is_primary_line = False
                 #top_edge -= 7
         if top_edge < 0:
             top_edge = 0
@@ -222,16 +227,19 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
                        bottom_edge
                        ), outline=(128,128,0))
         if ("\n" in title_text_line):
+            title_text_generation_command = {"type": "multiline_text", "placement": ((img_width - t_w) / 2, 4 + top_edge + (top_centering - 0)), "text": title_text_line, "line_spacing": line_spacing, "fill": "white", "align": "center", "font_path": cur_font_path, "font_size": int(font_size * font_multiplier), "is_primary": is_primary_line}
             d.multiline_text(((img_width - t_w) / 2, 4 + top_edge + (top_centering - 0)), title_text_line, spacing=line_spacing, font=fnt, fill="white", align="center") #, features="liga"
         else:
+            title_text_generation_command = {"type": "text", "placement": ((img_width - t_w) / 2, 4 + top_edge + (top_centering - 0)), "text": title_text_line, "line_spacing": line_spacing, "fill": "white", "align": "center", "font_path": cur_font_path, "font_size": int(font_size * font_multiplier), "is_primary": is_primary_line}
             d.text(((img_width - t_w) / 2, 4 + top_edge + (top_centering - 0)), title_text_line, spacing=line_spacing, font=fnt, fill="white", align="center") #, features="liga"
         #print(f"<{bottom_edge}>")
-        return bottom_edge
+        return bottom_edge, title_text_generation_command
 
     edge = 10
     room_margin = 25
     room_count = len(split_title)
     cur_font_path = font_path
+    text_draw_commands = []
 
     if len(split_title) > 1:
         room_count = 0
@@ -264,13 +272,18 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
                 for ssn in sn:
                     if (("for " in ssn) or ("of " in ssn)):
                         cur_font_path = second_font
-                    edge += addTitleText(ssn, edge, room, cur_font_path=cur_font_path) + 2
+                    edge_plus, text_draw_command = addTitleText(ssn, edge, room, cur_font_path=cur_font_path)
+                    edge += edge_plus + 2
+                    text_draw_commands.append(text_draw_command)
             else:
                 if (("for " in n) or ("of " in n)):
                     cur_font_path = second_font
-                edge += addTitleText(n, edge, room, cur_font_path=cur_font_path) + 2
+                edge_plus, text_draw_command = addTitleText(n, edge, room, cur_font_path=cur_font_path)
+                text_draw_commands.append(text_draw_command)
+                edge += edge_plus + 2
     else:
-        addTitleText(proj_title, cur_font_path=cur_font_path)
+        edge_plus, text_draw_command = addTitleText(proj_title, cur_font_path=cur_font_path)
+        text_draw_commands.append(text_draw_command)
 
     if squash > 0:
         img = removeBlankRows(img, gap_spacing=0)
@@ -300,6 +313,36 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
     if edge > img_height:
         print(f"title text exceeded image height: {edge} > {img_height}")
         raise OSError("title text exceeded image height")
+
+    # Draw big image
+    primary_color_hsv = (random.random(), 0.3 + (random.random() * 0.6), 0.8 + (random.random() * 0.1))
+    secondary_color_hsv = (math.sin(primary_color_hsv[0] + 0.5), 0.7 + (random.random() * 0.1), 0.6 + (random.random() * 0.2))
+    big_multiplier = 8
+    img_width = 160 * big_multiplier
+    img_height = 144 * big_multiplier
+    big_img = PIL.Image.new("RGB", (img_width, img_height), "black")
+    big_d = ImageDraw.Draw(big_img)
+    for cmd in text_draw_commands:
+        #print(cmd)
+        draw_cmd = big_d.text
+        if cmd["type"] == "multiline_text":
+            draw_cmd = big_d.multiline_text
+        fnt = ImageFont.truetype(cmd["font_path"], cmd["font_size"] * 8)
+        x1, y1 = cmd["placement"]
+        selected_color = colorsys.hsv_to_rgb(primary_color_hsv[0], primary_color_hsv[1], primary_color_hsv[2])
+        if not cmd["is_primary"]:
+            selected_color = colorsys.hsv_to_rgb(secondary_color_hsv[0], secondary_color_hsv[1], secondary_color_hsv[2])
+        selected_color = tuple([int(255 * x) for x in selected_color])
+        draw_cmd((x1 * big_multiplier, y1 * big_multiplier), cmd["text"], spacing=cmd["line_spacing"] * big_multiplier, font=fnt, fill=selected_color, align=cmd["align"])
+        #print([(x1, y1), cmd["text"], cmd["line_spacing"] * big_multiplier, (255,255,255), cmd["align"]])
+
+    if squash > 0:
+        big_img = removeBlankRows(big_img, gap_spacing=0)
+    else:
+        big_img = removeBlankRows(big_img, gap_spacing=int(2 * (big_multiplier / 4)))
+    big_d = ImageDraw.Draw(big_img)
+    big_img.save(filename[:-4] + "_big.png")
+
 
     return filename
 
@@ -508,7 +551,7 @@ def generateTitle():
     return gen_title
 
 if __name__ == '__main__':
-    for n in range(4000):
+    for n in range(40):
         random.seed(None)
         proj_title = generateTitle()
         title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")

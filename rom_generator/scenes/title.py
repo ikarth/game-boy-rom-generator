@@ -461,6 +461,6 @@ if __name__ == '__main__':
         proj_title = generateTitle()
         title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")
         destination = f"../gbprojects/generated/{title_munged}"
-        #generator.initializeGenerator()
-        #project = createExampleProject(proj_title)
+        generator.initializeGenerator()
+        project = createExampleProject(proj_title)
         #generator.writeProjectToDisk(project, output_path = destination)

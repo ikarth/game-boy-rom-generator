@@ -1,0 +1,3 @@
+[submodule "wfc"]
+	path = wfc
+	url = https://github.com/ikarth/wfc_2019f

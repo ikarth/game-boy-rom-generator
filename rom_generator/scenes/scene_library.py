@@ -3,6 +3,7 @@
 from rom_generator import generator
 from rom_generator.scenes.imported import BasicScenes as BasicScenes
 from rom_generator.scenes.imported import So_Many_Rooms as So_Many_Rooms
+from rom_generator.scenes.imported import LiminalRooms
 
 
 def getLibrary():
@@ -10,7 +11,7 @@ def getLibrary():
   sprite_library = []
 
   #scene_library + scene_gen_halls.catalog()
-  modules = [BasicScenes, So_Many_Rooms]
+  modules = [BasicScenes, So_Many_Rooms, LiminalRooms]
   for m in modules:
       catalog, sprites = m.scene_generation()
       scene_library = scene_library + catalog()

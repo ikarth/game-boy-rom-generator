@@ -3,6 +3,10 @@ import copy
 import random
 from rom_generator.generator import makeBasicProject, addSpriteSheet, makeBackground, makeScene, makeActor, addSymmetricSceneConnections, makeMusic, reverse_direction, initializeGenerator, writeProjectToDisk, makeKey, makeLock
 from rom_generator.script_functions import actorHide, end
+import rom_generator.combat as combat
+import rom_generator.roomGen as roomGen
+import rom_generator.roomGen2 as roomGen2
+
 # import rom_generator.combat as combat
 # def AnikaProject123():
 #     """
@@ -224,6 +228,9 @@ def createRockWorld():
     # Set the starting scene
     project.settings["startSceneId"] = project.scenes[0]["id"]
     return project
+
+def grammarTest():
+    return roomGen2.makeGame()
 
 
 # Utilities

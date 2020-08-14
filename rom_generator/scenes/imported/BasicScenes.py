@@ -53,18 +53,23 @@ def scene_generation():
         return s_id
     
     def scene_gen_Outside_00001(callback):
-        actor_00 = generator.makeActor(None, 25, 14, 'static', moveSpeed=0, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 25, 14, 'static', moveSpeed=0, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'], name='actor_abf9e863-28c0-4c03-bd4f-201ed2a055c2')
+        actor_name_table.update({'actor_abf9e863-28c0-4c03-bd4f-201ed2a055c2': actor_00})
         actor_00['script'] = [
                 script.actorPush(do_continue=False),
                 script.end()
             ]
-        actor_01 = generator.makeActor(None, 27, 23, 'static', direction='down', script=[], sprite_id=findSpriteByName('signpost')['id'])
+        actor_01 = generator.makeActor(None, 27, 23, 'static', direction='down', script=[], sprite_id=findSpriteByName('signpost')['id'], name='actor_e63a0fb5-2d9e-4a85-9ba0-e711e6de6cdc')
+        actor_name_table.update({'actor_e63a0fb5-2d9e-4a85-9ba0-e711e6de6cdc': actor_01})
         actor_01['script'] = [
                 script.text(text='Welcome to\nGBStudio!'),
                 script.end()
             ]
-        actor_02 = generator.makeActor(None, 21, 18, 'static', animate=True, animSpeed=1, direction='down', script=[], sprite_id=findSpriteByName('duck')['id'])
-        actor_03 = generator.makeActor(None, 3, 24, 'randomWalk', direction='down', script=[], sprite_id=findSpriteByName('npc003')['id'])
+        actor_02 = generator.makeActor(None, 21, 18, 'static', animate=True, animSpeed=1, direction='down', script=[], sprite_id=findSpriteByName('duck')['id'], name='actor_d12d5092-2716-441d-bab0-0e15fe715f5e')
+        actor_name_table.update({'actor_d12d5092-2716-441d-bab0-0e15fe715f5e': actor_02})
+        actor_03 = generator.makeActor(None, 3, 24, 'randomWalk', direction='down', script=[], sprite_id=findSpriteByName('npc003')['id'], name='actor_c73c195d-5cc8-4417-bdb0-b0c55c4b6188')
+        actor_name_table.update({'actor_c73c195d-5cc8-4417-bdb0-b0c55c4b6188': actor_03})
         actor_03['script'] = [
                 script.text(text='Have you seen my\ncat anywhere?'),
                 script.ifTrue(variable='0', children = {
@@ -73,25 +78,28 @@ def scene_generation():
                 }),
                 script.end()
             ]
-        actor_04 = generator.makeActor(None, 4, 6, 'static', direction='down', script=[], sprite_id=findSpriteByName('cat')['id'])
+        actor_04 = generator.makeActor(None, 4, 6, 'static', direction='down', script=[], sprite_id=findSpriteByName('cat')['id'], name='actor_076a0612-024a-426a-85fc-3e1054b9f74e')
+        actor_name_table.update({'actor_076a0612-024a-426a-85fc-3e1054b9f74e': actor_04})
         actor_04['script'] = [
                 script.text(text='Meow!'),
                 script.setTrue(variable='0'),
                 script.end()
             ]
-        actor_05 = generator.makeActor(None, 21, 24, 'faceInteraction', direction='up', script=[], sprite_id=findSpriteByName('npc001')['id'])
+        actor_05 = generator.makeActor(None, 21, 24, 'faceInteraction', direction='up', script=[], sprite_id=findSpriteByName('npc001')['id'], name='actor_a85c4ba5-9bc0-4daa-94bc-4ef68a690659')
+        actor_name_table.update({'actor_a85c4ba5-9bc0-4daa-94bc-4ef68a690659': actor_05})
         actor_05['script'] = [
                 script.ifTrue(variable='1', children = {
                     'true': [script.text(text='I guess it was a\nmisunderstanding.'), script.setTrue(variable='8'), script.end()],
-                    'false': [script.text(text='What is that guy\nlooking at?'), script.actorSetDirection(actorId='a85c4ba5-9bc0-4daa-94bc-4ef68a690659', direction='up'), script.end()]
+                    'false': [script.text(text='What is that guy\nlooking at?'), script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<a85c4ba5-9bc0-4daa-94bc-4ef68a690659>♔', direction='up'), script.end()]
                 }),
                 script.end()
             ]
-        actor_06 = generator.makeActor(None, 21, 16, 'faceInteraction', direction='down', script=[], sprite_id=findSpriteByName('npc001')['id'])
+        actor_06 = generator.makeActor(None, 21, 16, 'faceInteraction', direction='down', script=[], sprite_id=findSpriteByName('npc001')['id'], name='actor_5cf6eb6c-be62-4efc-9cbb-14a8efac21a8')
+        actor_name_table.update({'actor_5cf6eb6c-be62-4efc-9cbb-14a8efac21a8': actor_06})
         actor_06['script'] = [
                 script.text(text='Check out this\nsweet duck!'),
                 script.setTrue(variable='1'),
-                script.actorSetDirection(actorId='5cf6eb6c-be62-4efc-9cbb-14a8efac21a8', direction='down'),
+                script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<5cf6eb6c-be62-4efc-9cbb-14a8efac21a8>♔', direction='down'),
                 script.end()
             ]
         actor_list = [actor_00, actor_01, actor_02, actor_03, actor_04, actor_05, actor_06]
@@ -101,16 +109,52 @@ def scene_generation():
         trigger_list = []
         collision_data_list = [255, 255, 7, 0, 255, 255, 7, 0, 255, 255, 7, 0, 153, 153, 5, 0, 3, 63, 4, 0, 3, 63, 4, 0, 3, 63, 28, 0, 1, 63, 144, 7, 3, 51, 240, 252, 3, 0, 0, 192, 3, 0, 0, 192, 1, 0, 0, 128, 99, 0, 0, 192, 243, 0, 0, 192, 243, 0, 0, 192, 97, 0, 0, 128, 3, 0, 0, 192, 3, 128, 255, 207, 3, 248, 0, 216, 1, 14, 0, 144, 3, 2, 0, 208, 3, 30, 0, 208, 3, 112, 0, 220, 1, 192, 255, 135, 3, 0, 0, 192, 2, 0, 0, 192, 2, 0, 0, 192, 1, 0, 0, 128, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         gen_scene_bkg = generator.makeBackground("outside.png")
-        gen_scene_scn = generator.makeScene("_gen_Outside", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Outside_00001)
-        gen_scene_connections = []
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        scene_script = [
+        script.end()
+        ]
+
+        gen_scene_scn = generator.makeScene("_gen_Outside", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Outside_00001")
+        gen_scene_scn['script'] = scene_script
+        def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_00['script'] = [
+                script.switchScene(sceneId=destination_scene_id, x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_00
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (25, 15), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (25, 13), 'entrance_size': (2, 2)  } }
+
+        def addConnection_01(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_01 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_01['script'] = [
+                script.switchScene(sceneId=destination_scene_id, x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_01
+        connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (24, 9), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (24, 8), 'entrance_size': (2, 1)  } }
+
+        def addConnection_02(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_02 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_02['script'] = [
+                script.switchScene(x=destination_location[0], y=destination_location[1], direction=destination_direction, sceneId=destination_scene_id, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_02
+        connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (10, 9), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (10, 8), 'entrance_size': (2, 1)  } }
+
+        gen_scene_connections = [connection_00, connection_01, connection_02]
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_Cave_00002(callback):
-        actor_00 = generator.makeActor(None, 4, 6, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('torch')['id'])
-        actor_01 = generator.makeActor(None, 4, 4, 'static', animate=True, moveSpeed=1, animSpeed=4, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'])
-        actor_02 = generator.makeActor(None, 9, 7, 'static', direction='down', script=[], sprite_id=findSpriteByName('sage')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 4, 6, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('torch')['id'], name='actor_5aa3ca8b-31c6-444a-9c94-9f25cdf41938')
+        actor_name_table.update({'actor_5aa3ca8b-31c6-444a-9c94-9f25cdf41938': actor_00})
+        actor_01 = generator.makeActor(None, 4, 4, 'static', animate=True, moveSpeed=1, animSpeed=4, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'], name='actor_025c7320-2eb1-4209-bf74-c1eef183ecc8')
+        actor_name_table.update({'actor_025c7320-2eb1-4209-bf74-c1eef183ecc8': actor_01})
+        actor_02 = generator.makeActor(None, 9, 7, 'static', direction='down', script=[], sprite_id=findSpriteByName('sage')['id'], name='actor_15d7cf30-df3a-427b-883a-996b605edb40')
+        actor_name_table.update({'actor_15d7cf30-df3a-427b-883a-996b605edb40': actor_02})
         actor_02['script'] = [
                 script.text(text='It\'s dangerous to\ngo without docs.'),
                 script.text(text='Check out\ngbstudio.dev/docs'),
@@ -118,9 +162,12 @@ def scene_generation():
                 script.setTrue(variable='7'),
                 script.end()
             ]
-        actor_03 = generator.makeActor(None, 14, 6, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('torch')['id'])
-        actor_04 = generator.makeActor(None, 14, 4, 'static', animate=True, moveSpeed=1, animSpeed=4, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'])
-        actor_05 = generator.makeActor(None, 14, 11, 'static', animate=True, moveSpeed=1, animSpeed=2, direction='down', script=[], sprite_id=findSpriteByName('savepoint')['id'])
+        actor_03 = generator.makeActor(None, 14, 6, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('torch')['id'], name='actor_e807b22f-7477-471b-b3b3-53b699df82ab')
+        actor_name_table.update({'actor_e807b22f-7477-471b-b3b3-53b699df82ab': actor_03})
+        actor_04 = generator.makeActor(None, 14, 4, 'static', animate=True, moveSpeed=1, animSpeed=4, direction='down', script=[], sprite_id=findSpriteByName('fire')['id'], name='actor_ee80f72c-ec7c-46d1-9653-23b16fcce2d9')
+        actor_name_table.update({'actor_ee80f72c-ec7c-46d1-9653-23b16fcce2d9': actor_04})
+        actor_05 = generator.makeActor(None, 14, 11, 'static', animate=True, moveSpeed=1, animSpeed=2, direction='down', script=[], sprite_id=findSpriteByName('savepoint')['id'], name='actor_b5594786-5675-48cf-b382-18b6341b855c')
+        actor_name_table.update({'actor_b5594786-5675-48cf-b382-18b6341b855c': actor_05})
         actor_05['script'] = [
                 script.choice(variable='11', trueText='Save Game', falseText='Cancel'),
                 script.ifTrue(variable='11', children = {
@@ -134,22 +181,39 @@ def scene_generation():
         trigger_list = []
         collision_data_list = [0, 0, 0, 0, 0, 0, 0, 224, 255, 127, 2, 0, 36, 0, 64, 2, 0, 36, 0, 64, 2, 0, 36, 0, 64, 2, 0, 36, 0, 64, 2, 0, 36, 0, 64, 2, 0, 36, 0, 64, 254, 249, 7, 144, 0]
         gen_scene_bkg = generator.makeBackground("cave.png")
-        gen_scene_scn = generator.makeScene("_gen_Cave", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Cave_00002)
-        gen_scene_connections = []
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        scene_script = [
+        script.end()
+        ]
+
+        gen_scene_scn = generator.makeScene("_gen_Cave", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Cave_00002")
+        gen_scene_scn['script'] = scene_script
+        def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_00['script'] = [
+                script.switchScene(x=destination_location[0], y=destination_location[1], direction=destination_direction, sceneId=destination_scene_id, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_00
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 15), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 17), 'entrance_size': (2, 1)  } }
+
+        gen_scene_connections = [connection_00]
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_House_00003(callback):
-        actor_00 = generator.makeActor(None, 12, 5, 'faceInteraction', direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 12, 5, 'faceInteraction', direction='down', script=[], sprite_id=findSpriteByName('npc002')['id'], name='actor_566c8812-a204-45b5-b93a-c113c10c20de')
+        actor_name_table.update({'actor_566c8812-a204-45b5-b93a-c113c10c20de': actor_00})
         actor_00['script'] = [
                 script.ifFalse(variable='2', children = {
                     'true': [script.text(text='Have you tried\nusing this radio?'), script.end()],
-                    'false': [script.text(text='Yeah it doesn\'t\nfit does it?'), script.actorEmote(actorId='566c8812-a204-45b5-b93a-c113c10c20de', emoteId='3'), script.text(text='But it\'s all I\nhave right now...'), script.setTrue(variable='6'), script.end()]
+                    'false': [script.text(text='Yeah it doesn\'t\nfit does it?'), script.actorEmote(actorId='♔REFERENCE_TO_ACTORS_<566c8812-a204-45b5-b93a-c113c10c20de>♔', emoteId='3'), script.text(text='But it\'s all I\nhave right now...'), script.setTrue(variable='6'), script.end()]
                 }),
                 script.end()
             ]
-        actor_01 = generator.makeActor(None, 15, 5, 'static', direction='down', script=[], sprite_id=findSpriteByName('radio')['id'])
+        actor_01 = generator.makeActor(None, 15, 5, 'static', direction='down', script=[], sprite_id=findSpriteByName('radio')['id'], name='actor_9603b702-aa07-4ad7-8906-16112f308854')
+        actor_name_table.update({'actor_9603b702-aa07-4ad7-8906-16112f308854': actor_01})
         actor_01['script'] = [
                 script.ifFalse(variable='2', children = {
                     'true': [script.musicPlay(musicId='f50428ab-a084-4591-9bba-2ba10fe7b1c6', loop=True), script.setTrue(variable='2'), script.end()],
@@ -157,17 +221,20 @@ def scene_generation():
                 }),
                 script.end()
             ]
-        actor_02 = generator.makeActor(None, 15, 11, 'static', direction='down', script=[], sprite_id=findSpriteByName('signpost')['id'])
+        actor_02 = generator.makeActor(None, 15, 11, 'static', direction='down', script=[], sprite_id=findSpriteByName('signpost')['id'], name='actor_26bced35-c28a-4394-907e-d657789afdb5')
+        actor_name_table.update({'actor_26bced35-c28a-4394-907e-d657789afdb5': actor_02})
         actor_02['script'] = [
                 script.text(text='Add sprites to\nassets/sprites'),
                 script.end()
             ]
-        actor_03 = generator.makeActor(None, 3, 11, 'static', direction='down', script=[], sprite_id=findSpriteByName('signpost')['id'])
+        actor_03 = generator.makeActor(None, 3, 11, 'static', direction='down', script=[], sprite_id=findSpriteByName('signpost')['id'], name='actor_4e43d51b-f316-480c-818d-1ad4016f27ef')
+        actor_name_table.update({'actor_4e43d51b-f316-480c-818d-1ad4016f27ef': actor_03})
         actor_03['script'] = [
                 script.text(text='Add backgrounds to\nassets/backgrounds'),
                 script.end()
             ]
-        actor_04 = generator.makeActor(None, 3, 5, 'static', direction='down', script=[], sprite_id=findSpriteByName('signpost')['id'])
+        actor_04 = generator.makeActor(None, 3, 5, 'static', direction='down', script=[], sprite_id=findSpriteByName('signpost')['id'], name='actor_dc9e5886-f39c-4480-a543-c0436b79bb67')
+        actor_name_table.update({'actor_dc9e5886-f39c-4480-a543-c0436b79bb67': actor_04})
         actor_04['script'] = [
                 script.text(text='This room is\npretty empty.'),
                 script.text(text='Try to edit\nhouse.png'),
@@ -178,14 +245,30 @@ def scene_generation():
         trigger_list = []
         collision_data_list = [0, 0, 0, 0, 0, 0, 0, 224, 255, 127, 2, 0, 36, 0, 64, 2, 0, 36, 0, 64, 2, 0, 36, 0, 64, 2, 0, 36, 0, 64, 2, 0, 36, 0, 64, 2, 0, 228, 159, 127, 0, 9, 0, 240, 0]
         gen_scene_bkg = generator.makeBackground("house.png")
-        gen_scene_scn = generator.makeScene("_gen_House", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_House_00003)
-        gen_scene_connections = []
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        scene_script = [
+        script.end()
+        ]
+
+        gen_scene_scn = generator.makeScene("_gen_House", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_House_00003")
+        gen_scene_scn['script'] = scene_script
+        def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_00['script'] = [
+                script.switchScene(sceneId=destination_scene_id, x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_00
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 14), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 16), 'entrance_size': (2, 1)  } }
+
+        gen_scene_connections = [connection_00]
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_Stars_00004(callback):
-        actor_00 = generator.makeActor(None, 15, 12, 'static', direction='down', script=[], sprite_id=findSpriteByName('dog')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 15, 12, 'static', direction='down', script=[], sprite_id=findSpriteByName('dog')['id'], name='actor_4548028c-0fd3-4d59-90e3-002433e44af4')
+        actor_name_table.update({'actor_4548028c-0fd3-4d59-90e3-002433e44af4': actor_00})
         actor_00['script'] = [
                 script.text(text='How did you\nget here!?!?'),
                 script.incValue(variable='3'),
@@ -200,47 +283,79 @@ def scene_generation():
         trigger_list = []
         collision_data_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         gen_scene_bkg = generator.makeBackground("stars.png")
-        gen_scene_scn = generator.makeScene("_gen_Stars", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Stars_00004)
+        scene_script = [
+        script.end()
+        ]
+
+        gen_scene_scn = generator.makeScene("_gen_Stars", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Stars_00004")
+        gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_Logo_00005(callback):
+        actor_name_table = {}
         actor_list = []
         trigger_list = []
         collision_data_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         gen_scene_bkg = generator.makeBackground("logo.png")
-        gen_scene_scn = generator.makeScene("_gen_Logo", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Logo_00005)
+        scene_script = [
+        script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<player>♔'), script.overlayShow(color='black', x=0, y=0), script.overlayMoveTo(x=0, y=18, speed='2'), script.wait(time=2), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Title Screen>♔', x=0, y=0, direction='', fadeSpeed='2'), script.end()
+        ]
+
+        gen_scene_scn = generator.makeScene("_gen_Logo", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Logo_00005")
+        gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_Title_Screen_00006(callback):
+        actor_name_table = {}
         actor_list = []
         trigger_list = []
         collision_data_list = []
         gen_scene_bkg = generator.makeBackground("titlescreen.png")
-        gen_scene_scn = generator.makeScene("_gen_Title_Screen", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Title_Screen_00006)
+        scene_script = [
+        script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<player>♔'), script.awaitInput(input=['a', 'b', 'start', 'select']), script.group(children = {
+                    'true': [script.setInputScript(input='start', children = {
+                    'true': [script.scenePushState(), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Menu>♔', x=0, y=0, direction='', fadeSpeed='2'), script.end()]
+                }), script.end()]
+                }), script.loop(children = {
+                    'true': [script.choice(variable='10', trueText='New Game', falseText='Continue'), script.ifTrue(variable='10', children = {
+                    'true': [script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Outside>♔', x=27, y=26, direction='left', fadeSpeed='4'), script.end()],
+                    'false': [script.ifSavedData(children = {
+                    'true': [script.loadData(), script.end()],
+                    'false': [script.text(text='No Save Data\nFound...'), script.end()]
+                }), script.end()]
+                }), script.end()]
+                }), script.end()
+        ]
+
+        gen_scene_scn = generator.makeScene("_gen_Title_Screen", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Title_Screen_00006")
+        gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_Underground_00007(callback):
-        actor_00 = generator.makeActor(None, 7, 25, 'static', direction='down', script=[], sprite_id=findSpriteByName('signpost')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 7, 25, 'static', direction='down', script=[], sprite_id=findSpriteByName('signpost')['id'], name='actor_822a9491-3999-4d38-baa2-11cd379dcbb7')
+        actor_name_table.update({'actor_822a9491-3999-4d38-baa2-11cd379dcbb7': actor_00})
         actor_00['script'] = [
                 script.text(text='Try to get the ice\nblock to the mark.'),
                 script.text(text='If you get stuck,\nI\'ll reset it!'),
-                script.actorSetPosition(actorId='27de6d44-f7c0-48df-a952-2c87471bbfd4', x=24, y=18),
+                script.actorSetPosition(actorId='♔REFERENCE_TO_ACTORS_<27de6d44-f7c0-48df-a952-2c87471bbfd4>♔', x=24, y=18),
                 script.end()
             ]
-        actor_01 = generator.makeActor(None, 24, 18, 'static', moveSpeed=2, direction='down', script=[], sprite_id=findSpriteByName('ice')['id'])
+        actor_01 = generator.makeActor(None, 24, 18, 'static', moveSpeed=2, direction='down', script=[], sprite_id=findSpriteByName('ice')['id'], name='actor_27de6d44-f7c0-48df-a952-2c87471bbfd4')
+        actor_name_table.update({'actor_27de6d44-f7c0-48df-a952-2c87471bbfd4': actor_01})
         actor_01['script'] = [
-                script.ifActorAtPosition(actorId='27de6d44-f7c0-48df-a952-2c87471bbfd4', x=15, y=10, children = {
+                script.ifActorAtPosition(actorId='♔REFERENCE_TO_ACTORS_<27de6d44-f7c0-48df-a952-2c87471bbfd4>♔', x=15, y=10, children = {
                     'true': [script.end()],
-                    'false': [script.actorPush(do_continue=True), script.ifActorAtPosition(actorId='27de6d44-f7c0-48df-a952-2c87471bbfd4', x=15, y=10, children = {
+                    'false': [script.actorPush(do_continue=True), script.ifActorAtPosition(actorId='♔REFERENCE_TO_ACTORS_<27de6d44-f7c0-48df-a952-2c87471bbfd4>♔', x=15, y=10, children = {
                     'true': [script.text(text='Success!'), script.setTrue(variable='5'), script.end()],
                     'false': [script.end()]
                 }), script.end()]
@@ -248,17 +363,20 @@ def scene_generation():
                 script.setTrue(variable='12'),
                 script.end()
             ]
-        actor_02 = generator.makeActor(None, 23, 27, 'static', moveSpeed=0, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'])
+        actor_02 = generator.makeActor(None, 23, 27, 'static', moveSpeed=0, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'], name='actor_7c2b0a86-4cc1-46f4-9b4a-6ea987300848')
+        actor_name_table.update({'actor_7c2b0a86-4cc1-46f4-9b4a-6ea987300848': actor_02})
         actor_02['script'] = [
                 script.actorPush(do_continue=False),
                 script.end()
             ]
-        actor_03 = generator.makeActor(None, 21, 27, 'static', moveSpeed=0, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'])
+        actor_03 = generator.makeActor(None, 21, 27, 'static', moveSpeed=0, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'], name='actor_f7bb6ed5-39b2-4f30-a66b-c2a62619d29c')
+        actor_name_table.update({'actor_f7bb6ed5-39b2-4f30-a66b-c2a62619d29c': actor_03})
         actor_03['script'] = [
                 script.actorPush(do_continue=False),
                 script.end()
             ]
-        actor_04 = generator.makeActor(None, 19, 27, 'static', moveSpeed=0, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'])
+        actor_04 = generator.makeActor(None, 19, 27, 'static', moveSpeed=0, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'], name='actor_417dfd42-2e13-4850-92e8-c52efe866116')
+        actor_name_table.update({'actor_417dfd42-2e13-4850-92e8-c52efe866116': actor_04})
         actor_04['script'] = [
                 script.actorPush(do_continue=False),
                 script.end()
@@ -268,34 +386,60 @@ def scene_generation():
         trigger_list = []
         collision_data_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 248, 255, 255, 31, 248, 255, 255, 31, 8, 128, 1, 19, 200, 128, 1, 19, 200, 0, 0, 16, 200, 0, 0, 16, 8, 0, 0, 16, 8, 0, 0, 16, 8, 0, 6, 16, 8, 0, 6, 16, 8, 3, 6, 16, 8, 3, 0, 16, 248, 255, 255, 28, 254, 255, 255, 124, 254, 255, 255, 124, 2, 0, 0, 64, 2, 0, 158, 71, 2, 128, 159, 71, 2, 128, 159, 71, 2, 128, 7, 118, 2, 128, 7, 118, 2, 128, 7, 118, 2, 0, 6, 118, 2, 0, 6, 118, 254, 255, 159, 127, 0, 0, 144, 0]
         gen_scene_bkg = generator.makeBackground("underground.png")
-        gen_scene_scn = generator.makeScene("_gen_Underground", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Underground_00007)
-        gen_scene_connections = []
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        scene_script = [
+        script.group(children = {
+                    'true': [script.ifTrue(variable='12', children = {
+                    'true': [script.actorSetPosition(actorId='♔REFERENCE_TO_ACTORS_<27de6d44-f7c0-48df-a952-2c87471bbfd4>♔', x=24, y=15), script.end()],
+                    'false': [script.end()]
+                }), script.end()]
+                }), script.end()
+        ]
+
+        gen_scene_scn = generator.makeScene("_gen_Underground", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Underground_00007")
+        gen_scene_scn['script'] = scene_script
+        def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_00['script'] = [
+                script.switchScene(sceneId=destination_scene_id, x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_00
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (21, 29), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (21, 30), 'entrance_size': (2, 2)  } }
+
+        gen_scene_connections = [connection_00]
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_Menu_00008(callback):
-        actor_00 = generator.makeActor(None, 2, 4, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 2, 4, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'], name='actor_d983c34a-9eba-4cb3-83cf-4e6ddb6d39ad')
+        actor_name_table.update({'actor_d983c34a-9eba-4cb3-83cf-4e6ddb6d39ad': actor_00})
         actor_00['script'] = [
                 script.end()
             ]
-        actor_01 = generator.makeActor(None, 2, 6, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
+        actor_01 = generator.makeActor(None, 2, 6, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'], name='actor_044598b7-a634-427d-9c88-e998fabe8d9a')
+        actor_name_table.update({'actor_044598b7-a634-427d-9c88-e998fabe8d9a': actor_01})
         actor_01['script'] = [
                 script.end()
             ]
-        actor_02 = generator.makeActor(None, 2, 8, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
+        actor_02 = generator.makeActor(None, 2, 8, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'], name='actor_6d80f0f6-047d-4494-811d-5f526e58959e')
+        actor_name_table.update({'actor_6d80f0f6-047d-4494-811d-5f526e58959e': actor_02})
         actor_02['script'] = [
                 script.end()
             ]
-        actor_03 = generator.makeActor(None, 2, 11, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
+        actor_03 = generator.makeActor(None, 2, 11, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'], name='actor_51558c54-c7e2-46d1-9015-f7b83a6a4ff4')
+        actor_name_table.update({'actor_51558c54-c7e2-46d1-9015-f7b83a6a4ff4': actor_03})
         actor_03['script'] = [
                 script.end()
             ]
-        actor_04 = generator.makeActor(None, 2, 13, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
+        actor_04 = generator.makeActor(None, 2, 13, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'], name='actor_62ecd9f0-005a-402f-8ad0-8ec8c3b514f3')
+        actor_name_table.update({'actor_62ecd9f0-005a-402f-8ad0-8ec8c3b514f3': actor_04})
         actor_04['script'] = [
                 script.end()
             ]
-        actor_05 = generator.makeActor(None, 2, 15, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'])
+        actor_05 = generator.makeActor(None, 2, 15, 'faceInteraction', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('checkbox')['id'], name='actor_4c9409a4-0872-486e-a1a1-5b74caaa6960')
+        actor_name_table.update({'actor_4c9409a4-0872-486e-a1a1-5b74caaa6960': actor_05})
         actor_05['script'] = [
                 script.end()
             ]
@@ -303,28 +447,56 @@ def scene_generation():
         trigger_list = []
         collision_data_list = []
         gen_scene_bkg = generator.makeBackground("menu.png")
-        gen_scene_scn = generator.makeScene("_gen_Menu", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Menu_00008)
+        scene_script = [
+        script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<player>♔'), script.group(children = {
+                    'true': [script.ifTrue(variable='4', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<d983c34a-9eba-4cb3-83cf-4e6ddb6d39ad>♔', direction='up'), script.end()],
+                    'false': [script.end()]
+                }), script.ifTrue(variable='5', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<044598b7-a634-427d-9c88-e998fabe8d9a>♔', direction='up'), script.end()],
+                    'false': [script.end()]
+                }), script.ifTrue(variable='6', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<6d80f0f6-047d-4494-811d-5f526e58959e>♔', direction='up'), script.end()],
+                    'false': [script.end()]
+                }), script.ifTrue(variable='7', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<51558c54-c7e2-46d1-9015-f7b83a6a4ff4>♔', direction='up'), script.end()],
+                    'false': [script.end()]
+                }), script.ifTrue(variable='8', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<62ecd9f0-005a-402f-8ad0-8ec8c3b514f3>♔', direction='up'), script.end()],
+                    'false': [script.end()]
+                }), script.ifTrue(variable='9', children = {
+                    'true': [script.actorSetDirection(actorId='♔REFERENCE_TO_ACTORS_<4c9409a4-0872-486e-a1a1-5b74caaa6960>♔', direction='up'), script.end()],
+                    'false': [script.end()]
+                }), script.end()]
+                }), script.awaitInput(input=['a', 'b', 'start', 'select']), script.scenePopState(fadeSpeed='2'), script.end()
+        ]
+
+        gen_scene_scn = generator.makeScene("_gen_Menu", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Menu_00008")
+        gen_scene_scn['script'] = scene_script
         gen_scene_connections = []
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_example_hall_02_00009(callback):
-        actor_00 = generator.makeActor(None, 20, 13, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'])
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 20, 13, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('rock')['id'], name='actor_5414e847-6116-446a-88a2-fc9a397557f1')
+        actor_name_table.update({'actor_5414e847-6116-446a-88a2-fc9a397557f1': actor_00})
         actor_00['script'] = [
                 script.text(text=["You push the rock\nbut it doesn't\nbudge."], avatarId=''),
                 script.end()
             ]
-        actor_01 = generator.makeActor(None, 6, 11, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('savepoint')['id'])
+        actor_01 = generator.makeActor(None, 6, 11, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('key_00')['id'], name='actor_0459120b-0917-4fb7-8bd0-c68bd43c6b5d')
+        actor_name_table.update({'actor_0459120b-0917-4fb7-8bd0-c68bd43c6b5d': actor_01})
         actor_01['startScript'] = [
                 script.ifTrue(variable='25', children = {
-                    'true': [script.actorHide(actorId='0459120b-0917-4fb7-8bd0-c68bd43c6b5d'), script.end()],
+                    'true': [script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'), script.end()],
                     'false': [script.end()]
                 }),
                 script.end()
             ]
         actor_01['script'] = [
-                script.actorHide(actorId='0459120b-0917-4fb7-8bd0-c68bd43c6b5d'),
+                script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'),
                 script.setTrue(variable='25'),
                 script.text(text=['You got the key!'], avatarId=''),
                 script.end()
@@ -336,7 +508,9 @@ def scene_generation():
         trigger_list = []
         collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 207, 255, 255, 255, 240, 255, 255, 15, 255, 252, 3, 240, 207, 63, 0, 255, 252, 1, 240, 207, 31, 0, 255, 252, 3, 240, 207, 63, 0, 255, 252, 3, 240, 207, 255, 63, 255, 252, 255, 243, 207, 255, 63, 255, 252, 255, 243, 207, 255, 63, 255, 252, 63, 240, 207, 255, 3, 255, 252, 63, 0, 0, 252, 63, 0, 192, 255, 3, 0, 252, 255, 195, 255, 255, 63, 252, 255, 255, 231, 255]
         gen_scene_bkg = generator.makeBackground("halls_02.png")
-        gen_scene_scn = generator.makeScene("_gen_example_hall_02", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_example_hall_02_00009)
+
+        gen_scene_scn = generator.makeScene("_gen_example_hall_02", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_example_hall_02_00009")
+
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
             trigger_00['script'] = [
@@ -365,11 +539,12 @@ def scene_generation():
         connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (2, 11), 'exit_direction': 'right', 'entrance': gen_scene_scn['id'], 'entrance_location': (1, 10), 'entrance_size': (1, 2)  } }
 
         gen_scene_connections = [connection_00, connection_01, connection_02]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_example_hall_03_00010(callback):
+        actor_name_table = {}
         actor_list = []
         trigger_00 = generator.makeTrigger('trigger_00', 11, 24, 2, 1)
         trigger_01 = generator.makeTrigger('trigger_01', 20, 19, 2, 1)
@@ -377,7 +552,9 @@ def scene_generation():
         trigger_list = []
         collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 255, 255, 255, 243, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 255, 255, 63, 252, 255, 255, 195, 252, 63, 0, 0, 255, 3, 0, 240, 63, 0, 0, 255, 127, 254, 255, 255, 231, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
         gen_scene_bkg = generator.makeBackground("halls_03.png")
-        gen_scene_scn = generator.makeScene("_gen_example_hall_03", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_example_hall_03_00010)
+
+        gen_scene_scn = generator.makeScene("_gen_example_hall_03", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_example_hall_03_00010")
+
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
             trigger_00['script'] = [
@@ -396,12 +573,25 @@ def scene_generation():
             return trigger_01
         connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (20, 20), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (20, 19), 'entrance_size': (2, 1)  } }
 
-        gen_scene_connections = [connection_00, connection_01]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        def addConnection_02(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_02 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_02['script'] = [
+                script.ifTrue(variable='25', children = {
+                            'true': [script.switchScene(sceneId=destination_scene_id, x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'), script.end()],
+                            'false': [script.text(text=['The door is\nlocked.'], avatarId=''), script.end()]
+                        }),
+                script.end()
+            ]
+            return trigger_02
+        connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (14, 8), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (14, 7), 'entrance_size': (2, 1)  } }
+
+        gen_scene_connections = [connection_00, connection_01, connection_02]
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_example_hall_04_00011(callback):
+        actor_name_table = {}
         actor_list = []
         trigger_00 = generator.makeTrigger('trigger_00', 18, 15, 2, 1)
         trigger_01 = generator.makeTrigger('trigger_01', 13, 26, 2, 1)
@@ -409,7 +599,9 @@ def scene_generation():
         trigger_list = []
         collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 252, 255, 255, 207, 255, 255, 255, 252, 255, 255, 207, 255, 255, 255, 252, 63, 255, 207, 255, 192, 255, 252, 15, 252, 207, 255, 192, 255, 252, 207, 255, 15, 0, 252, 255, 0, 192, 255, 15, 0, 252, 255, 0, 192, 255, 15, 0, 252, 255, 255, 249, 255, 255, 159, 255, 255, 255, 255, 255]
         gen_scene_bkg = generator.makeBackground("halls_04.png")
-        gen_scene_scn = generator.makeScene("_gen_example_hall_04", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_example_hall_04_00011)
+
+        gen_scene_scn = generator.makeScene("_gen_example_hall_04", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_example_hall_04_00011")
+
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
             trigger_00['script'] = [
@@ -438,24 +630,31 @@ def scene_generation():
         connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (4, 12), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (4, 11), 'entrance_size': (2, 1)  } }
 
         gen_scene_connections = [connection_00, connection_01, connection_02]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
     def scene_gen_Scene_12_00012(callback):
+        actor_name_table = {}
         actor_list = []
-        trigger_00 = generator.makeTrigger('trigger_00', 2, 5, 16, 11)
-        trigger_00['script'] = [
-                script.text(text=['You win!'], avatarId=''),
-                script.end()
-            ]
-        trigger_01 = generator.makeTrigger('trigger_01', 9, 17, 2, 1)
-        trigger_list = [trigger_00]
+        trigger_00 = generator.makeTrigger('trigger_00', 9, 17, 2, 1)
+        trigger_list = []
         collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 63, 0, 192, 3, 0, 60, 0, 192, 3, 0, 60, 0, 192, 3, 0, 60, 0, 192, 3, 0, 60, 0, 192, 3, 0, 60, 0, 192, 255, 249, 255, 159, 255]
         gen_scene_bkg = generator.makeBackground("cave.png")
-        gen_scene_scn = generator.makeScene("_gen_Scene_12", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label=scene_gen_Scene_12_00012)
-        gen_scene_connections = []
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "tags": []}
+
+        gen_scene_scn = generator.makeScene("_gen_Scene_12", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_12_00012")
+
+        def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_00['script'] = [
+                script.switchScene(sceneId=destination_scene_id, x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_00
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 17), 'entrance_size': (2, 1)  } }
+
+        gen_scene_connections = [connection_00]
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
 
@@ -500,7 +699,7 @@ def createExampleProject():
     generator.connectScenesRandomlySymmetric(scene_data_list)
 
     for sdata in scene_data_list:
-        generator.addSceneData(project, sdata)
+        generator.addSceneData(project, generator.translateReferences(sdata, scene_data_list))
 
     # Add some music
     project.music.append(generator.makeMusic("template", "template.mod"))

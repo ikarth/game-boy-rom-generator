@@ -1,3 +1,4 @@
+import assets
 import json
 import types
 import uuid
@@ -10,11 +11,15 @@ import copy
 import logging
 import argparse
 import sys
+import re
+import collections
+from datetime import datetime
 from contextlib import contextmanager
 from pathlib import Path
 from PIL import Image
 from rom_generator import script_functions as scripts
 from rom_generator.utilities import makeElement
+import rom_generator.scriptFunctions2 as scripts2
 try:
     import importlib.resources as pkg_resources
 except ImportError:
@@ -56,6 +61,7 @@ scene_count = 0
 generator_seed = "game boy generator"
 
 def initializeGenerator(new_seed=None):
+    global scene_count
     scene_count = 0
     global generator_seed
     if not new_seed is None:
@@ -179,10 +185,6 @@ def makeSpriteSheet(filename, name=None, type="static", frames=None):
     A sprite sheet can be one 16x16 static image...
     ...or can be animated by connecting multiple 16x16 frames horizontally in a single image.
     """
-    from inspect import currentframe, getframeinfo
-    frameinfo = getframeinfo(currentframe())
-    print(frameinfo.filename, frameinfo.lineno)
-
     if name is None:
         name = filename
     element = makeElement()
@@ -255,7 +257,7 @@ def makeBackground(filename, name=None, imageWidth=None, imageHeight=None, width
     return copy.deepcopy(recordBackground(element))
 
 ### An actor is an object on the screen that the player can interact with.
-def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", animSpeed="3", script=[], sprite_id=None, direction=None):
+def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", animSpeed="3", script=[], sprite_id=None, direction=None, name=None):
     element = makeElement()
     if sprite == None:
         element["spriteSheetId"] = sprite_id
@@ -271,6 +273,8 @@ def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", 
     element["y"] = y
     element["animate"] = animate
     element["script"] = []
+    element["startScript"] = []
+    element["_name"] = name
     return copy.deepcopy(element)
 
 def addActor(scene, sprite, x, y, movementType="static", animate=True):
@@ -380,48 +384,40 @@ def addSceneData(project, scene_data):
     for sprite_sheet in scene_data["sprites"]:
         project.spriteSheets.append(sprite_sheet)
 
-def connectScenesRandomly(scene_data_list):
-    """
-    Connect scenes in the scene data list at random, using the connection slots.
-    """
-    connections_to_make_in = []
-    connections_to_make_out = []
-    for scene_num, scene in enumerate(scene_data_list):
-        #other_scene_list = [s for s in scene_data_list if s["id"] != scene["id"]]
-        #other_scene = random.choice(other_scene_list)
-        for con_num, con in enumerate(scene["connections"]):
-            connections_to_make_in.append([scene["scene"]["id"], con_num, con])
-            connections_to_make_out.append([scene["scene"]["id"], con_num, con])
-
-    print(len(connections_to_make_in))
-    connections_made = []
-    while len(connections_to_make_out) > 0:
-        print('--')
-        current_connection = connections_to_make_out.pop()
-        print(current_connection)
-        filtered_other_connections = [c for c in connections_to_make_in if c[0] != current_connection[0]]
-        print(len(filtered_other_connections), len(connections_to_make_out))
-        try:
-            other_connection = random.choice(filtered_other_connections)
-            print(other_connection)
-            if other_connection in connections_to_make_in:
-                connections_to_make_in.remove(other_connection)
-            con_data = {"in": other_connection, "out": current_connection}
-            connections_made.append(con_data)
-        except IndexError as e:
-            pass
-
-    print(connections_made)
-    for c in connections_made:
-        breakpoint()
-
-        source_scene = [s for s in scene_data_list if s["scene"]["id"] == c["out"][0]][0]
-        out_position = (c["out"][2]["out"][0], c["out"][2]["out"][1])
-        trigger_size = (c["out"][2]["out"][2], c["out"][2]["out"][3])
-        destination_scene = [s for s in scene_data_list if s["scene"]["id"] == c["in"][0]][0]
-        destination_position = (c["in"][2]["in"][0], c["in"][2]["in"][1])
-        print("out:", source_scene['scene']['id'], source_scene['scene']['name'], out_position, trigger_size, "\tin:", destination_scene['scene']['id'], destination_scene['scene']['name'], destination_position)
-        makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position)
+# def connectScenesRandomly(scene_data_list):
+#     """
+#     Connect scenes in the scene data list at random, using the connection slots.
+#     """
+#     connections_to_make_in = []
+#     connections_to_make_out = []
+#     for scene_num, scene in enumerate(scene_data_list):
+#         #other_scene_list = [s for s in scene_data_list if s["id"] != scene["id"]]
+#         #other_scene = random.choice(other_scene_list)
+#         for con_num, con in enumerate(scene["connections"]):
+#             connections_to_make_in.append([scene["scene"]["id"], con_num, con])
+#             connections_to_make_out.append([scene["scene"]["id"], con_num, con])
+#
+#     connections_made = []
+#     while len(connections_to_make_out) > 0:
+#         current_connection = connections_to_make_out.pop()
+#         filtered_other_connections = [c for c in connections_to_make_in if c[0] != current_connection[0]]
+#         try:
+#             other_connection = random.choice(filtered_other_connections)
+#             if other_connection in connections_to_make_in:
+#                 connections_to_make_in.remove(other_connection)
+#             con_data = {"in": other_connection, "out": current_connection}
+#             connections_made.append(con_data)
+#         except IndexError as e:
+#             pass
+#
+#     for c in connections_made:
+#         source_scene = [s for s in scene_data_list if s["scene"]["id"] == c["out"][0]][0]
+#         out_position = (c["out"][2]["out"][0], c["out"][2]["out"][1])
+#         trigger_size = (c["out"][2]["out"][2], c["out"][2]["out"][3])
+#         destination_scene = [s for s in scene_data_list if s["scene"]["id"] == c["in"][0]][0]
+#         destination_position = (c["in"][2]["in"][0], c["in"][2]["in"][1])
+#         # print("out:", source_scene['scene']['id'], source_scene['scene']['name'], out_position, trigger_size, "\tin:", destination_scene['scene']['id'], destination_scene['scene']['name'], destination_position)
+#         makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position)
 
 import pprint
 def connectScenesRandomlySymmetric(scene_data_list):
@@ -429,7 +425,6 @@ def connectScenesRandomlySymmetric(scene_data_list):
     Connect scenes in the scene data list at random, using the connection slots.
     Connections should be symmetric
     """
-    pprint.pprint(scene_data_list)
 
     # Get connections
     connections_to_make = []
@@ -446,6 +441,13 @@ def connectScenesRandomlySymmetric(scene_data_list):
             filtered_other_connections = connections_to_make
         try:
             other_connection = random.choice(filtered_other_connections)
+            connection_tries = 15
+            for n in range(connection_tries):
+                if not (other_connection[2]["args"]["exit_direction"] == reverse_direction[current_connection[2]["args"]["exit_direction"]]):
+                    other_connection = random.choice(filtered_other_connections)
+                else:
+                    break
+
             if other_connection in connections_to_make:
                 connections_to_make.remove(other_connection)
             con_data = {"in": other_connection, "out": current_connection}
@@ -460,61 +462,13 @@ def connectScenesRandomlySymmetric(scene_data_list):
     for connection in connections_made:
         source_scene = [s for s in scene_data_list if s["scene"]["id"] == connection["in"][0]][0]
         creator_func = connection["in"][2]["creator"]
-        pprint.pprint(connection)
         trigger = creator_func(source_location=connection["in"][2]["args"]["entrance_location"],
                                 source_size=connection["in"][2]["args"]["entrance_size"],
                                 destination_scene_id=connection["out"][0],
                                 destination_location=connection["out"][2]["args"]["exit_location"],
                                 destination_direction=connection["out"][2]["args"]["exit_direction"])
         source_scene["scene"]["triggers"].append(trigger)
-        # try:
-        #     out_position = connection["in"][2]["args"]["entrance_location"]
-        #     trigger_size = connection["in"][2]["args"]["entrance_size"]
-        #     destination_scene = connection["out"][2]["args"]["entrance"]
-        #     destination_position = connection["out"][2]["args"]["exit_location"]
-        #     destination_direction = connection["out"][2]["args"]["exit_direction"]
-        #     makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position, destination_direction)
-        # except:
-        #     breakpoint()
 
-# def connectScenesRandomlySymmetric_old(scene_data_list):
-#     """
-#     Connect scenes in the scene data list at random, using the connection slots.
-#     Connections should be symmetric
-#     """
-#     connections_to_make = []
-#     for scene_num, scene in enumerate(scene_data_list):
-#         #other_scene_list = [s for s in scene_data_list if s["id"] != scene["id"]]
-#         #other_scene = random.choice(other_scene_list)
-#         for con_num, con in enumerate(scene["connections"]):
-#             connections_to_make.append([scene["scene"]["id"], con_num, con])
-#
-#     connections_made = []
-#     while len(connections_to_make) > 0:
-#         current_connection = connections_to_make.pop()
-#         filtered_other_connections = [c for c in connections_to_make if c[0] != current_connection[0]]
-#         if len(filtered_other_connections) == 0:
-#             filtered_other_connections = connections_to_make # if nothing else is left, it is allowed to relink to the same scene...
-#         try:
-#             other_connection = random.choice(filtered_other_connections)
-#             if other_connection in connections_to_make:
-#                 connections_to_make.remove(other_connection)
-#             con_data = {"in": other_connection, "out": current_connection}
-#             con_data_two = {"in": current_connection, "out": other_connection}
-#             connections_made.append(con_data)
-#             connections_made.append(con_data_two)
-#         except IndexError as e:
-#             break
-#
-#     print(connections_made)
-#     for c in connections_made:
-#         source_scene = [s for s in scene_data_list if s["scene"]["id"] == c["out"][0]][0]
-#         out_position = (c["out"][2]["out"][0], c["out"][2]["out"][1])
-#         trigger_size = (c["out"][2]["out"][2], c["out"][2]["out"][3])
-#         destination_scene = [s for s in scene_data_list if s["scene"]["id"] == c["in"][0]][0]
-#         destination_position = (c["in"][2]["in"][0], c["in"][2]["in"][1])
-#         print("out:", source_scene['scene']['id'], source_scene['scene']['name'], out_position, trigger_size, "\tin:", destination_scene['scene']['id'], destination_scene['scene']['name'], destination_position)
-#         makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position)
 
 
 ### Adds trigger for scene connection.
@@ -561,7 +515,14 @@ def makeScriptConnectionToScene(target_scene, direction="right", location=None):
 reverse_direction = {"left": "right", "right": "left", "up": "down", "down": "up"}
 
 
-### Adds trigger for scene connection.
+
+def makeTriggerAndSwitchScene(scene1, scene2, x, y, x1, y2):
+    scene1["triggers"].append(makeTrigger(scene1, x, y, 2, 1, [scripts.switchScene(sceneId = scene2["id"], x = x1, y = y2)]))
+
+
+
+
+# Adds trigger for scene connection.
 def addTriggerConnectionToScene(project, scene, destination_scene, direction, doorway_sprite=None):
     source_location = {
         "right": (scene["width"] - 1, (scene["height"] // 2) - 1),
@@ -597,8 +558,9 @@ def addSymmetricSceneConnections(project, scene, destination_scene, direction, d
 
 ### creates a key to a lock
 def makeKey(sprite, x, y):
+    global curKeyNumber
     key = makeActor(sprite, x, y, animate = False)
-    #key["startScript"].append()  Plan on disabling collisions here
+    key["startScript"].append(scripts2.disableCollisions("$self$"))
     key["script"].append(scripts.actorHide(actorId = "$self$"))
     key["script"].append(scripts.setTrue(variable = curKeyNumber))
     key["script"].append(scripts.end())
@@ -615,6 +577,12 @@ def makeLock(sprite, x, y):
     lock["script"].append(scripts.ifTrue(variable = curKeyNumber, trueCommands = trueCommands))
     curKeyNumber = curKeyNumber - 1
     return lock
+
+#this makes a connection sprite
+def makeConnectionSprite(sprite, x, y):
+    con = makeActor(sprite, x, y, animate = False)
+    con["startScript"] = [scripts2.disableCollisions("$self$"), scripts.end()]
+    return con
 
 
 ### Writing the project to disk ###
@@ -708,6 +676,85 @@ def uniques(list_of_elements):
             dedupe.append(element)
     return dedupe
 
+def getRefInActors(ref_match_object, list_of_scenes):
+    ref_target_name = ref_match_object.groups()[0]
+    ref_target_name = re.sub(" ", "_", ref_target_name)
+    if ref_target_name == "$self$":
+        return "$self$"
+    if ref_target_name == "player":
+        return "player"
+    #print(f"{bcolors.OKBLUE}{ref_target_name}{bcolors.ENDC}")
+    for s_num, s_data in enumerate(list_of_scenes):
+        if "actors" in s_data["scene"].keys():
+            for a_num, a_data in enumerate(s_data["scene"]["actors"]):
+                #print (f"{a_data['_name'][6:]}")
+                if None == a_data["_name"]:
+                    print(f"{bcolors.OKBLUE}{ref_target_name}{bcolors.ENDC}")
+                    print(f"{bcolors.WARNING}{s_data['scene']['name']} => {a_data}{bcolors.ENDC}")
+                    # return "$self$"
+                else:
+                    if ref_target_name in a_data["_name"]:
+                        return a_data["id"]
+    return "NO_REF"
+
+def getRefInScenes(ref_match_object, list_of_scenes):
+    ref_target_name = ref_match_object.groups()[0]
+    ref_target_name = re.sub(" ", "_", ref_target_name)
+    for s_num, s_data in enumerate(list_of_scenes):
+        if ref_target_name in s_data["scene"]["name"]:
+            return s_data["scene"]["id"]
+    return "NO_REF"
+
+def translateReferences(data, list_of_scenes):
+    """
+    Translate the unbound references in the scene by referring to the other scenes.
+
+    Call it after all of the scenes have been created.
+    """
+    if isinstance(data, str):
+        while ("♔" in data):
+            if data.startswith("♔REFERENCE_TO_SCENES_"):
+                ref_match = re.search(r'♔REFERENCE_TO_SCENES_\<(.*?)\>', data)
+                if None != ref_match:
+                    data = getRefInScenes(ref_match, list_of_scenes)
+                    continue
+            if data.startswith("♔REFERENCE_TO_ACTORS_"):
+                ref_match = re.search(r'♔REFERENCE_TO_ACTORS_\<(.*?)\>', data)
+                if None != ref_match:
+                    data = getRefInActors(ref_match, list_of_scenes)
+                    continue
+            print(data)
+            breakpoint()
+            data = "♔UNBOUND_REF♔"
+    if (isinstance(data, list)):
+        for data_key, data_val in enumerate(data):
+            data[data_key] = translateReferences(data_val, list_of_scenes)
+    if (isinstance(data, collections.abc.Mapping)):
+        for data_key, data_val in data.items():
+            data[data_key] = translateReferences(data_val, list_of_scenes)
+    if (isinstance(data, types.SimpleNamespace)):
+        for data_key, data_val in data.__dict__.items():
+            data[data_key] = translateReferences(data_val, list_of_scenes)
+    return data
+
+# def attachReferences(proj_as_json, proj_as_data):
+#     """
+#     Take a JSON-ified version of the project, look for reference strings that still need to be replaced, replace them.
+#     Reference strings are in the format '♔REFERENCE_TO_SCENES_<>♔'.
+#     Returns the JSON with the newly-remapped references.
+#     """
+#     some_references_remain = True
+#     while some_references_remain:
+#         if "♔" in proj_as_json:
+#             search_pattern = r"♔REFERENCE_TO_SCENES_\<(.*?<ref>)\>"
+#             match = re.search(search_pattern)
+#             found_id = "XXXXXXXXXXXXXXXXXX"
+#             new_json = re.sub(search_pattern, found_id, proj_as_json, count=1)
+#             console.log(match)
+#             proj_as_json = new_json
+#         some_references_remain = False
+#     return proj_as_json
+
 def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/"):
     """
      Write project to JSON
@@ -718,8 +765,15 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
     output_path = os.path.abspath(Path(os.path.dirname(__file__)).joinpath('..').joinpath(output_path))
     logging.info(f"writeProjectToDisk: {bcolors.OKGREEN}{os.path.abspath(output_path)}{bcolors.ENDC}")
     logging.info(f"Writing {filename} project file...")
+
     gb_project_without_ui_elements = copy.deepcopy(gb_project)
-    gb_project_without_ui_elements.ui = None
+
+    if None != gb_project_without_ui_elements:
+        if "ui" in gb_project_without_ui_elements.__dict__.keys():
+            gb_project_without_ui_elements.ui = None
+    else:
+        print(gb_project_without_ui_elements)
+        breakpoint()
 
     # TODO: duplicates need to be unified in ID values as well, so we don't end up with missing images...
     # gb_project_without_ui_elements.spriteSheets = uniques(gb_project_without_ui_elements.spriteSheets)
@@ -754,6 +808,9 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
         recursivePrintType(gb_project_without_ui_elements, type)
 
     generated_project = json.dumps(gb_project_without_ui_elements.__dict__, indent=4)
+
+    #generated_project = attachReferences(generated_project, gb_project_without_ui_elements)
+
     Path(output_path).mkdir(parents=True, exist_ok=True)
     with open(Path(output_path).joinpath(filename), "w") as wfile:
         wfile.write(generated_project)
@@ -787,7 +844,7 @@ def makeBasicProject():
     record_of_scenes = []
     return copy.deepcopy(project)
 
-#makes a border of collisions around a scene
+# makes a border of collisions around a scene
 def makeColBorder(scenex):
     """
     Makes a border of collisions around a scene.
@@ -886,6 +943,56 @@ def makeCol(array01, scene01):
     if max <= total_collision_spaces:
         cc.insert(0, 0)
     scene01["collisions"] = cc[::-1]
+
+def genQuestions(txtfile, scriptt):
+    #counting number of lines in txt file
+    count = 0
+    with open(txtfile, 'r') as f:
+        for line in f:
+            count += 1
+    #generating random line number
+    random.seed(datetime.now())
+    numz = random.randint(0, (count / 3) - 1) * 3
+    #reading file
+    f = open(txtfile, 'r')
+    file_contents = f.readlines()
+    #elements
+    element = makeElement()
+    element["command"] = "EVENT_TEXT"
+    element["args"] = {
+        "text": [file_contents[numz]],
+        "avatarId": ""
+    }
+    scriptt.append(element)
+    element = makeElement()
+    element["command"] = "EVENT_CHOICE"
+    element["args"] = {
+        "variable": "L0",
+        "trueText": [file_contents[numz + 1].strip()],
+        "falseText": [file_contents[numz + 2].strip()]
+    }
+    scriptt.append(element)
+
+# def createWithCallback(callback_func):
+#     # Set up a barebones project
+#     project = makeBasicProject()
+#
+#     # Add some music
+#     project.music.append(makeMusic("template", "template.mod"))
+#
+#     # Create sprite sheets
+#     player_sprite_sheet = makeSpriteSheet("actor_animated", "actor_animated", "actor_animated.png")
+#
+#     # Set the starting scene and player sprite
+#     project.settings["startSceneId"] = project.scenes[0]["id"]
+#     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
+#
+#     instructions = callback_func(project)
+#
+#     write_project_to_disk(project, output_path=main_project_output_path)
+#
+#
+
 
 def createExampleProject():
     # Set up a barebones project

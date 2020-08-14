@@ -52,7 +52,7 @@ I DON'T UNDERSTAND CALL CUSTOM EVENTS SO YOURE GOING TO HAVE TO
 child_clause = '''
 element["children"] = {}
 for cmd_key, cmd_list in children.items():
-    cmd_list.append(end())
+    # cmd_list.append(end())
     element["children"][cmd_key] = cmd_list
 '''
 

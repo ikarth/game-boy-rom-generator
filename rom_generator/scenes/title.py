@@ -51,8 +51,15 @@ def removeBlankRows(image, gap_spacing = 3):
     new_image.paste(scratch_image, (0, vert_offset))
     return new_image
 
+def splitInTheMiddle(string_to_split):
+    if (isinstance(string_to_split, list)):
+        string_to_split = " ".join(string_to_split)
+    print(f"\t\t\t[ {string_to_split} ]")
+    parts = string_to_split.split(" ")
+    midpoint = len(parts) // 2
+    return [parts[:midpoint], parts[midpoint:]]
 
-def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=False):
+def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=0):
     """
     Generates an image for the title screen. Returns the filename of the new image.
     """
@@ -84,6 +91,15 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
     if not no_split:
         if len(split_title) == 1:
             split_title = proj_title.split("\n")
+
+    if squash > 1:
+        if len(split_title) > 1:
+            split_title_cdr = split_title[1:]
+            split_title_car = split_title[0]
+            split_title = [split_title_car]
+            split_title = split_title + splitInTheMiddle(split_title_cdr)
+        else:
+            split_title = splitInTheMiddle(proj_title)
 
     img_width = 160
     img_height = 144
@@ -146,12 +162,21 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
 
     def addTitleText(title_text_line, top_edge=0, leave_room=0, cur_font_path=None):
         #print(f"[{top_edge}]", end=" ")
+        #print(type(title_text_line))
+        if (isinstance(title_text_line, list)):
+            title_text_line = " ".join(title_text_line)
+        #print(title_text_line)
+
         if None == cur_font_path:
             cur_font_path = font_path
 
         font_size = 48
-        if squash:
+        if squash > 0:
             font_size = 24
+            if squash > 1:
+                font_size = 12
+                if squash > 2:
+                    font_size = 10
         t_h = 9999
         bottom_edge = top_edge
         side_margins = 20
@@ -166,6 +191,9 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
         if True: #random.random() < 0.5:
             # calculate down
             font_size = 64
+            for n in range(squash):
+                font_size *= 0.6
+            font_size = int(font_size)
             calculate_font = True
             while calculate_font:
                 fnt = ImageFont.truetype(cur_font_path, int(font_size * font_multiplier))
@@ -209,7 +237,11 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
         room_count = 0
         for n in split_title:
             if(len(n) == 1):
-                sn = n.split("\n")
+                sn = []
+                if (isinstance(n, list)):
+                    sn = n
+                else:
+                    sn = n.split("\n")
                 for ssn in sn:
                     room_count += 1
             else:
@@ -222,8 +254,13 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
                     cur_font_path = second_font
             room_count -= 1
             room = room_count * room_margin
+            # print(f"\t\t\t< {n} >")
             if(len(n) == 1):
-                sn = n.split("\n")
+                sn = []
+                if (isinstance(n, list)):
+                    sn = n
+                else:
+                    sn = n.split("\n")
                 for ssn in sn:
                     if (("for " in ssn) or ("of " in ssn)):
                         cur_font_path = second_font
@@ -235,7 +272,10 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
     else:
         addTitleText(proj_title, cur_font_path=cur_font_path)
 
-    img = removeBlankRows(img, gap_spacing=2)
+    if squash > 0:
+        img = removeBlankRows(img, gap_spacing=0)
+    else:
+        img = removeBlankRows(img, gap_spacing=2)
     d = ImageDraw.Draw(img)
 
     fnt = ImageFont.truetype(font_path, 10)
@@ -250,9 +290,11 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
     filename = f"assets/backgrounds/_title_{uuid.uuid4()}.png"
     Path(os.path.dirname(os.path.abspath(filename))).mkdir(parents=True, exist_ok=True)
 
-
-    img = img.convert('P', palette=Image.ADAPTIVE, colors=3)
-    img = img.convert('RGB')
+    if edge > img_height:
+        d.rectangle((0, 0, img_width, 2), (255, 64, 0))
+    else:
+        img = img.convert('P', palette=Image.ADAPTIVE, colors=3)
+        img = img.convert('RGB')
     img.save(filename)
 
     if edge > img_height:
@@ -326,11 +368,18 @@ def title_scene_generation(proj_title):
                 logging.error(proj_title)
                 logging.error(err)
                 try:
-                    title_filename = generateTitleBackground(proj_title, no_split=True, squash=True)
+                    title_filename = generateTitleBackground(proj_title, no_split=True, squash=1)
                 except OSError as err:
-                    logging.error(proj_title)
-                    logging.error(err)
-                    breakpoint()
+                    try:
+                        title_filename = generateTitleBackground(proj_title, no_split=True, squash=2)
+                    except OSError as err:
+                        try:
+                            title_filename = generateTitleBackground(proj_title, no_split=True, squash=3)
+                        except OSError as err:
+                            logging.error(proj_title)
+                            logging.error(err)
+                            breakpoint()
+
 
 
         gen_scene_bkg = generator.makeBackground(title_filename)
@@ -438,6 +487,9 @@ def generateTitle():
     grammar.add_modifiers(base_english)
     gen_title = grammar.flatten("#origin#")
     print(gen_title)
+
+    # remove the/a confusion
+    gen_title = gen_title.replace(" the a ", " the ")
 
     # Reduce the number of repetitions of "of the" clauses
     def filterRepeatClauses(g_title, clause_phrase=" of the "):

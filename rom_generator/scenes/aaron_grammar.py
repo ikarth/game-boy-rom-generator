@@ -9,7 +9,7 @@ def scene_generation():
         generator.makeSpriteSheet('actor.png', name='actor', type='actor', frames=3),
         generator.makeSpriteSheet('actor_animated.png', name='actor_animated', type='actor_animated', frames=6),
         generator.makeSpriteSheet('static.png', name='static', type='static', frames=1)]
-    
+
     def findSpriteByName(sprite_name):
         '''
         Returns first sprite that matches the name given.
@@ -30,7 +30,7 @@ def scene_generation():
         if s_id == None:
             return '<♔' + scene_label + '♔>'
         return s_id
-    
+
     def scene_gen_halls_07_00001(callback):
         actor_name_table = {}
         actor_list = []
@@ -194,11 +194,10 @@ def createExampleProject():
 
 def runTest(test_dir):
     generator.initializeGenerator()
-    project = createExampleProject()
+    project = makeGame()
     generator.writeProjectToDisk(project, output_path = test_dir)
 
 # test creating scenes...
 if __name__ == '__main__':
     destination = "../gbprojects/generated_export_test/"
     runTest(destination)
-

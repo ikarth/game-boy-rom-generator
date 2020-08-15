@@ -16,6 +16,76 @@ import PIL
 from PIL import Image, ImageFont, ImageDraw
 from rom_generator.utilities import bcolors
 
+
+from vendor.seam_carver import seam_carver
+from vendor.seam_carver.utils import pad_img, highlight_seam
+from vendor.seam_carver.energy_functions import simple_energy, dual_gradient_energy
+import numpy as np
+from tqdm import trange
+
+def SeamCarverResize(full_image, cropped_by, energy_fn, pad=True, savepoints=None, save_name=None, rotated=False, highlight=False):
+    if savepoints == None:
+        savepoints = []
+    img = full_image.copy()
+    if savepoints:
+        #Path("carving/" + os.path.basename(os.path.abspath(save_name)).split('.')[0]).mkdir(parents=True, exist_ok=True)
+        Path("carving/").mkdir(parents=True, exist_ok=True)
+        #print(Path("carving/" + os.path.basename(os.path.abspath(save_name)).split('.')[0]))
+    original_color_sum = img.sum()
+    for i in trange(cropped_by, desc=f"cropping image by {cropped_by} pixels"):
+        #print(img.sum())
+        if original_color_sum > img.sum():
+            break
+        e_map = seam_carver.energy_map(img, energy_fn)
+        e_paths, e_totals = seam_carver.cumulative_energy(e_map)
+        seam = seam_carver.find_seam(e_paths, seam_carver.seam_end(e_totals))
+        if i in savepoints:
+            try:
+                seam_carver.save_image_with_options(img, highlight, pad, seam, rotated, "carving\\"+os.path.basename(os.path.abspath(save_name)), full_image.shape[0], full_image.shape[1], i, savepoints)
+            except Exception as err:
+                print(err)
+        #print(e_map.sum(), e_paths.sum(), e_totals.sum())
+        img = seam_carver.remove_seam(img, seam)
+    return img
+
+def CarveSeams(pillow_image, save_name):
+    """
+    Use seam carving to remove black lines in the middle of the image and
+    hopefully improve the vertical spacing between words.
+    """
+    img_array = np.array(pillow_image)
+    carving_axis = 'y'
+    if 'y' == carving_axis:
+        img_array = np.transpose(img_array, axes=(1, 0, 2))
+
+    crop_by = 200
+    show_seam = True
+    pad_border = False
+    savepoints = list(range(crop_by))
+    save_points = None
+
+    cropped_img_array = SeamCarverResize(img_array,
+                                        crop_by,
+                                        dual_gradient_energy,
+                                        save_name=save_name,
+                                        savepoints=savepoints,
+                                        rotated=carving_axis=='y',
+                                        pad=pad_border,
+                                        highlight=show_seam
+                                        )
+
+    if 'y' == carving_axis:
+        cropped_img_array = np.transpose(cropped_img_array, axes=(1, 0, 2))
+
+    if pad_border:
+        h,w = img_array.shape[:2]
+        if carving_axis == 'y':
+            h,w = w,h
+        cropped_img_array = pad_img(cropped_img_array, h, w)
+
+    #return Image.fromarray(cropped_img_array)
+    return cropped_img_array
+
 # Inspired by https://stackoverflow.com/questions/12770218/using-pil-or-a-numpy-array-how-can-i-remove-entire-rows-from-an-image
 def FindImageRowByColor(pixel_array, width, height, color):
     rows_found = []
@@ -29,7 +99,7 @@ def FindImageRowByColor(pixel_array, width, height, color):
     logging.info(f"rows found: {bcolors.OKGREEN}{rows_found}{bcolors.ENDC}")
     return rows_found
 
-def removeBlankRows(image, gap_spacing = 3):
+def removeBlankRows(image, gap_spacing = 3, carving=False, padding=True):
     pixels = image.load()
     img_width, img_height = image.size[0], image.size[1]
     blank_rows = FindImageRowByColor(pixels, img_width, img_height, (0,0,0))
@@ -49,8 +119,17 @@ def removeBlankRows(image, gap_spacing = 3):
 
     vert_offset = int(rows_removed // 2)
     logging.info(f"{rows_removed} scanlines removed from title.")
-    new_image = Image.new("RGB", (img_width, img_height), (0,0,0))
-    new_image.paste(scratch_image, (0, vert_offset))
+
+    new_image = scratch_image
+    if carving:
+        unique_id = str(uuid.uuid4()) + ".png"
+        pretrim_image = removeBlankRows(new_image, gap_spacing=0, carving=False, padding=False)
+        left, top, right, bottom = 0, 0, img_width, img_height - rows_removed
+        pretrim_image = pretrim_image.crop((left, top, right, bottom))
+        new_img = CarveSeams(pretrim_image, unique_id)
+    if padding:
+        new_image = Image.new("RGB", (img_width, img_height), (0,0,0))
+        new_image.paste(new_image, (0, vert_offset))
     return new_image
 
 def splitInTheMiddle(string_to_split):
@@ -336,11 +415,15 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
         draw_cmd((x1 * big_multiplier, y1 * big_multiplier), cmd["text"], spacing=cmd["line_spacing"] * big_multiplier, font=fnt, fill=selected_color, align=cmd["align"])
         #print([(x1, y1), cmd["text"], cmd["line_spacing"] * big_multiplier, (255,255,255), cmd["align"]])
 
+    use_seam_carving = True
     if squash > 0:
-        big_img = removeBlankRows(big_img, gap_spacing=0)
+        big_img = removeBlankRows(big_img, gap_spacing=0, carving=use_seam_carving, padding=True)
     else:
-        big_img = removeBlankRows(big_img, gap_spacing=int(2 * (big_multiplier / 4)))
+        big_img = removeBlankRows(big_img, gap_spacing=int(2 * (big_multiplier / 4)), carving=use_seam_carving, padding=True)
     big_d = ImageDraw.Draw(big_img)
+
+
+
     big_img.save(filename[:-4] + "_big.png")
 
 
@@ -551,7 +634,7 @@ def generateTitle():
     return gen_title
 
 if __name__ == '__main__':
-    for n in range(40):
+    for n in range(4):
         random.seed(None)
         proj_title = generateTitle()
         title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")

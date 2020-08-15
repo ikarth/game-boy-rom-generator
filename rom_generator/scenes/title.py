@@ -83,8 +83,8 @@ def CarveSeams(pillow_image, save_name):
             h,w = w,h
         cropped_img_array = pad_img(cropped_img_array, h, w)
 
-    #return Image.fromarray(cropped_img_array)
-    return cropped_img_array
+    return Image.fromarray(cropped_img_array)
+    # return cropped_img_array
 
 # Inspired by https://stackoverflow.com/questions/12770218/using-pil-or-a-numpy-array-how-can-i-remove-entire-rows-from-an-image
 def FindImageRowByColor(pixel_array, width, height, color):
@@ -126,10 +126,12 @@ def removeBlankRows(image, gap_spacing = 3, carving=False, padding=True):
         pretrim_image = removeBlankRows(new_image, gap_spacing=0, carving=False, padding=False)
         left, top, right, bottom = 0, 0, img_width, img_height - rows_removed
         pretrim_image = pretrim_image.crop((left, top, right, bottom))
-        new_img = CarveSeams(pretrim_image, unique_id)
+        new_image = CarveSeams(pretrim_image, unique_id)
+
     if padding:
-        new_image = Image.new("RGB", (img_width, img_height), (0,0,0))
-        new_image.paste(new_image, (0, vert_offset))
+        padded_image = Image.new("RGB", (img_width, img_height), (0,0,0))
+        padded_image.paste(new_image, (0, (img_height - new_image.size[1]) // 2))
+        new_image = padded_image
     return new_image
 
 def splitInTheMiddle(string_to_split):

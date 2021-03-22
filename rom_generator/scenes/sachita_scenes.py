@@ -143,6 +143,7 @@ def scene_generation():
 
         actor_list = []
         trigger_list = []
+        collision_data_list = []
         gen_scene_scn = generator.makeScene("_gen_Room_1", default_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Room_1_00001")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):

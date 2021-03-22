@@ -1,0 +1,434 @@
+{
+    "settings": {
+        "showCollisions": true,
+        "showConnections": true,
+        "worldScrollX": 810,
+        "worldScrollY": 539,
+        "zoom": 200,
+        "customColorsWhite": "E8F8E0",
+        "customColorsLight": "B0F088",
+        "customColorsDark": "509878",
+        "customColorsBlack": "202850",
+        "startX": 9,
+        "startY": 9,
+        "startDirection": "down",
+        "startSceneId": "",
+        "playerSpriteSheetId": "581d34d0-9591-4e6e-a609-1d94f203b0cd"
+    },
+    "scenes": [
+        {
+            "name": "halls_07",
+            "backgroundId": "60ef65fc-08ce-4428-aacb-f4cbf5acd9f2",
+            "width": 20,
+            "height": 18,
+            "collisions": [
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                249,
+                255,
+                7,
+                254,
+                96,
+                224,
+                15,
+                6,
+                254,
+                103,
+                224,
+                127,
+                6,
+                254,
+                103,
+                224,
+                127,
+                0,
+                0,
+                7,
+                0,
+                112,
+                0,
+                254,
+                7,
+                224,
+                255,
+                159,
+                255,
+                255,
+                249,
+                255,
+                159,
+                255
+            ],
+            "id": "5494db8b-e587-40ed-a05f-1c0a7c5937fa",
+            "x": 442,
+            "y": 294,
+            "actors": [],
+            "triggers": [
+                {
+                    "trigger": "walk",
+                    "id": "20daf766-eabd-4b76-be88-b964519091dc",
+                    "x": 9,
+                    "y": 4,
+                    "width": 2,
+                    "height": 1,
+                    "script": [
+                        {
+                            "id": "c0098c36-9c9c-479a-8af4-9a0b6161c92f",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "5494db8b-e587-40ed-a05f-1c0a7c5937fa",
+                                "x": 9,
+                                "y": 5,
+                                "direction": "down",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "daab92ee-c5cd-4739-b754-f67e4396e990",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                },
+                {
+                    "trigger": "walk",
+                    "id": "3cd9be63-fc21-483f-949f-d4d85ab917e1",
+                    "x": 0,
+                    "y": 6,
+                    "width": 1,
+                    "height": 2,
+                    "script": [
+                        {
+                            "id": "2fee81dc-0dbd-43ac-aab8-d4e988f68ae2",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "5494db8b-e587-40ed-a05f-1c0a7c5937fa",
+                                "x": 1,
+                                "y": 7,
+                                "direction": "right",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "d5a563e1-0f04-4319-a162-842d41963924",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                },
+                {
+                    "trigger": "walk",
+                    "id": "1bbfdad8-d01b-4285-993e-10ba428cf547",
+                    "x": 9,
+                    "y": 17,
+                    "width": 2,
+                    "height": 1,
+                    "script": [
+                        {
+                            "id": "4a5fb2da-a623-4a0a-9b30-4b999d722d12",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "5494db8b-e587-40ed-a05f-1c0a7c5937fa",
+                                "x": 9,
+                                "y": 16,
+                                "direction": "up",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "f0441f1b-9f1b-44e9-a343-dd6a7c2667d0",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                },
+                {
+                    "trigger": "walk",
+                    "id": "b79e56fa-19c8-4ab0-bbd0-d75d5bcf4c6e",
+                    "x": 19,
+                    "y": 11,
+                    "width": 1,
+                    "height": 2,
+                    "script": [
+                        {
+                            "id": "bb902b3d-4887-4aae-846c-ff8d64dd07ad",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "5494db8b-e587-40ed-a05f-1c0a7c5937fa",
+                                "x": 17,
+                                "y": 12,
+                                "direction": "left",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "22c09171-bfda-46e2-8ed3-ffa07ae1669d",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "halls_06",
+            "backgroundId": "95575f08-c3fc-4f31-833d-fee871a0f6ef",
+            "width": 20,
+            "height": 18,
+            "collisions": [
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                207,
+                255,
+                255,
+                240,
+                255,
+                15,
+                255,
+                63,
+                240,
+                63,
+                3,
+                255,
+                51,
+                240,
+                63,
+                3,
+                240,
+                49,
+                0,
+                31,
+                0,
+                192,
+                1,
+                0,
+                156,
+                207,
+                7,
+                255,
+                124,
+                240,
+                207,
+                255
+            ],
+            "id": "b2ebd61d-430d-4aa6-82bc-4f916bbb7a0b",
+            "x": 677,
+            "y": 318,
+            "actors": [],
+            "triggers": [
+                {
+                    "trigger": "walk",
+                    "id": "b34e5d40-343d-4b56-96d3-427296cb77f4",
+                    "x": 2,
+                    "y": 9,
+                    "width": 2,
+                    "height": 1,
+                    "script": [
+                        {
+                            "id": "9ca3d18b-a4c8-4941-aeed-69923924c333",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "b2ebd61d-430d-4aa6-82bc-4f916bbb7a0b",
+                                "x": 2,
+                                "y": 10,
+                                "direction": "down",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "6ed00d57-db57-45ec-85dd-3c27d50da34c",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                },
+                {
+                    "trigger": "walk",
+                    "id": "307a7e08-db1c-40c7-861a-de3815fc7d11",
+                    "x": 1,
+                    "y": 15,
+                    "width": 2,
+                    "height": 1,
+                    "script": [
+                        {
+                            "id": "ab21aa96-2d52-46cb-b4da-c7d1025c685d",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "b2ebd61d-430d-4aa6-82bc-4f916bbb7a0b",
+                                "x": 1,
+                                "y": 14,
+                                "direction": "up",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "4aed7800-0b31-4373-9eda-1d6b52e7a1c1",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                },
+                {
+                    "trigger": "walk",
+                    "id": "97c72e21-e348-4f0b-83ba-b4b0e30a9297",
+                    "x": 8,
+                    "y": 5,
+                    "width": 2,
+                    "height": 1,
+                    "script": [
+                        {
+                            "id": "fcf88f60-c0f1-4279-b7b7-e4a063a6dca4",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "b2ebd61d-430d-4aa6-82bc-4f916bbb7a0b",
+                                "x": 8,
+                                "y": 6,
+                                "direction": "down",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "0e680efe-d06a-4eb1-a444-798e6fe05a5d",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                },
+                {
+                    "trigger": "walk",
+                    "id": "2004c1c1-e529-4909-ad1c-3f9b0d14c1cf",
+                    "x": 8,
+                    "y": 17,
+                    "width": 2,
+                    "height": 1,
+                    "script": [
+                        {
+                            "id": "6f8c8bd2-4302-4766-b080-5e527dc5a41e",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "b2ebd61d-430d-4aa6-82bc-4f916bbb7a0b",
+                                "x": 8,
+                                "y": 16,
+                                "direction": "up",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "15b82270-87ef-47ad-8849-0b79df4c77e5",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                },
+                {
+                    "trigger": "walk",
+                    "id": "8fc9028f-bed3-41b4-9acc-4ecf52936a11",
+                    "x": 19,
+                    "y": 15,
+                    "width": 1,
+                    "height": 2,
+                    "script": [
+                        {
+                            "id": "53180d00-20bf-4ea0-8119-df6758b1564a",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "b2ebd61d-430d-4aa6-82bc-4f916bbb7a0b",
+                                "x": 17,
+                                "y": 16,
+                                "direction": "left",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "5a7bf839-3883-449c-a2f3-c17a23dba928",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "_version": "1.2.0",
+    "author": "User",
+    "name": "LiminalRooms",
+    "variables": [],
+    "backgrounds": [
+        {
+            "id": "95575f08-c3fc-4f31-833d-fee871a0f6ef",
+            "name": "halls_06",
+            "width": 20,
+            "height": 18,
+            "imageWidth": 160,
+            "imageHeight": 144,
+            "filename": "halls_06.png",
+            "_v": 1597425526173
+        },
+        {
+            "id": "60ef65fc-08ce-4428-aacb-f4cbf5acd9f2",
+            "name": "halls_07",
+            "width": 20,
+            "height": 18,
+            "imageWidth": 160,
+            "imageHeight": 144,
+            "filename": "halls_07.png",
+            "_v": 1597425403291
+        },
+        {
+            "id": "1e5f9d6a-bdbc-43e6-8c34-22f5bb5dea05",
+            "name": "placeholder",
+            "width": 20,
+            "height": 18,
+            "imageWidth": 160,
+            "imageHeight": 144,
+            "filename": "placeholder.png",
+            "_v": 1597424256685
+        }
+    ],
+    "spriteSheets": [
+        {
+            "id": "11b5452b-187c-43a3-afb1-a1f4f74ffda2",
+            "name": "actor",
+            "numFrames": 3,
+            "type": "actor",
+            "filename": "actor.png",
+            "_v": 1597424256686
+        },
+        {
+            "id": "581d34d0-9591-4e6e-a609-1d94f203b0cd",
+            "name": "actor_animated",
+            "numFrames": 6,
+            "type": "actor_animated",
+            "filename": "actor_animated.png",
+            "_v": 1597424256685
+        },
+        {
+            "id": "daf95270-e30d-423b-9ee7-990ae29f57f6",
+            "name": "static",
+            "numFrames": 1,
+            "type": "static",
+            "filename": "static.png",
+            "_v": 1597424256686
+        }
+    ],
+    "music": [
+        {
+            "id": "f50428ab-a084-4591-9bba-2ba10fe7b1c6",
+            "name": "template",
+            "filename": "template.mod",
+            "_v": 1597424256657
+        }
+    ],
+    "customEvents": []
+}

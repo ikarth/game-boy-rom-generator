@@ -194,7 +194,7 @@ def createExampleProject():
 
 def runTest(test_dir):
     generator.initializeGenerator()
-    project = makeGame()
+    project = createExampleProject()
     generator.writeProjectToDisk(project, output_path = test_dir)
 
 # test creating scenes...

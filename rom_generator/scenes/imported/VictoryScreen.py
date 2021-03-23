@@ -11,6 +11,19 @@ def scene_generation(project_title="Quest for the MacGuffin", macguffin_name="Ma
 
     macguffin_sprite = 'macguffin.png'
 
+    if macguffin_name.lower().find("crystal"):
+        macguffin_sprite = 'macguffin_crystal.png'
+    if macguffin_name.lower().find("egg"):
+        macguffin_sprite = 'macguffin_egg.png'
+    if macguffin_name.lower().find("sword"):
+        macguffin_sprite = 'macguffin_sword.png'
+    if macguffin_name.lower().find("blade"):
+        macguffin_sprite = 'macguffin_sword.png'
+    if macguffin_name.lower().find("bell"):
+        macguffin_sprite = 'macguffin_bell.png'
+    if macguffin_name.lower().find("arts"):
+        macguffin_sprite = 'macguffin_bell.png'
+
     sprite_sheet_data = [
         generator.makeSpriteSheet('actor.png', name='actor', type='actor', frames=3),
         generator.makeSpriteSheet('actor_animated.png', name='actor_animated', type='actor_animated', frames=6),
@@ -76,7 +89,7 @@ def scene_generation(project_title="Quest for the MacGuffin", macguffin_name="Ma
         gen_scene_bkg = generator.makeBackground("youwin.png")
         scene_script = [
         script.setFalse(variable='26'),
-        script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<player>♔'), script.fadeIn(speed='3'), script.text(text=[f'You found the\n{macguffin_name} and\nsaved the world!'], avatarId='0f94da55-8256-470a-9f22-0f54bbf75082'), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Title Screen>♔', x=0, y=0, direction='', fadeSpeed='2'), script.end()
+        script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<player>♔'), script.fadeIn(speed='3'), script.text(text=[f'You found the\n{macguffin_name}!'], avatarId='0f94da55-8256-470a-9f22-0f54bbf75082'), script.text(text=[f'The world is saved!'], avatarId='0f94da55-8256-470a-9f22-0f54bbf75082'), script.switchScene(sceneId='♔REFERENCE_TO_SCENES_<Title Screen>♔', x=0, y=0, direction='', fadeSpeed='2'), script.end()
         ]
 
         gen_scene_scn = generator.makeScene("_gen_YouWin", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_YouWin")

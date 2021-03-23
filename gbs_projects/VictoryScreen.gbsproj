@@ -1,0 +1,314 @@
+{
+    "settings": {
+        "showCollisions": true,
+        "showConnections": true,
+        "worldScrollX": 298,
+        "worldScrollY": 295,
+        "zoom": 200,
+        "customColorsWhite": "E8F8E0",
+        "customColorsLight": "B0F088",
+        "customColorsDark": "509878",
+        "customColorsBlack": "202850",
+        "startX": 9,
+        "startY": 19,
+        "startDirection": "down",
+        "startSceneId": "0b7c84f1-9de2-4548-9944-35990c24319b",
+        "playerSpriteSheetId": "581d34d0-9591-4e6e-a609-1d94f203b0cd"
+    },
+    "scenes": [
+        {
+            "name": "MacGuiffinTemple",
+            "backgroundId": "af46f3a6-a858-4bd6-8b70-ee2ca1252dc6",
+            "width": 20,
+            "height": 32,
+            "collisions": [
+                254,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                255,
+                191,
+                97,
+                216,
+                27,
+                134,
+                189,
+                1,
+                216,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                12,
+                0,
+                195,
+                0,
+                48,
+                12,
+                0,
+                195,
+                0,
+                48,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "id": "0b7c84f1-9de2-4548-9944-35990c24319b",
+            "x": 531,
+            "y": 283,
+            "actors": [
+                {
+                    "spriteSheetId": "0f94da55-8256-470a-9f22-0f54bbf75082",
+                    "movementType": "static",
+                    "direction": "down",
+                    "moveSpeed": "1",
+                    "animSpeed": "3",
+                    "id": "92c78695-9b3e-45cf-8410-f991f2dc2fd6",
+                    "x": 9,
+                    "y": 8
+                }
+            ],
+            "triggers": [
+                {
+                    "trigger": "walk",
+                    "id": "7327489d-7adf-46c8-93fe-395af62d3ce0",
+                    "x": 0,
+                    "y": 30,
+                    "width": 20,
+                    "height": 2,
+                    "script": [
+                        {
+                            "id": "035c3c62-9a07-48ea-8be1-2d812edb3eeb",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "0b7c84f1-9de2-4548-9944-35990c24319b",
+                                "x": 9,
+                                "y": 28,
+                                "direction": "up",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "050a5002-8ffa-47b7-948a-b451293bbef7",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                },
+                {
+                    "trigger": "walk",
+                    "id": "4c9f1a92-a75b-4c4d-a127-eb01d64933fd",
+                    "x": 7,
+                    "y": 9,
+                    "width": 6,
+                    "height": 4,
+                    "script": [
+                        {
+                            "id": "9bd42d78-bfba-4de9-8048-354cf94c72d9",
+                            "command": "EVENT_FADE_OUT",
+                            "args": {
+                                "speed": "3"
+                            }
+                        },
+                        {
+                            "id": "2cac4cf7-9623-40a5-b6fa-fd139d601d1c",
+                            "command": "EVENT_SWITCH_SCENE",
+                            "args": {
+                                "sceneId": "1397ca5a-4588-4759-9ba4-2d746bc97044",
+                                "x": 9,
+                                "y": 11,
+                                "direction": "",
+                                "fadeSpeed": "2"
+                            }
+                        },
+                        {
+                            "id": "62c4051f-231e-46fd-a10d-e30ae32a5b4b",
+                            "command": "EVENT_END"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "YouWin",
+            "backgroundId": "f13cf258-d7d5-4615-b15b-ac1449082ed8",
+            "width": 20,
+            "height": 17,
+            "collisions": [],
+            "id": "1397ca5a-4588-4759-9ba4-2d746bc97044",
+            "x": 310,
+            "y": 292.25,
+            "actors": [],
+            "triggers": [],
+            "script": [
+                {
+                    "id": "59aa62e4-7fdf-4957-ad41-5b93baf99e0f",
+                    "command": "EVENT_ACTOR_HIDE",
+                    "args": {
+                        "actorId": "player"
+                    }
+                },
+                {
+                    "id": "69b06b66-de81-4457-bdfa-d0f0682c8027",
+                    "command": "EVENT_FADE_IN",
+                    "args": {
+                        "speed": "3"
+                    }
+                },
+                {
+                    "id": "3da34e99-10cf-47b4-9597-7544f9d87536",
+                    "command": "EVENT_TEXT",
+                    "args": {
+                        "text": [
+                            "You found the\nMacGuffin and\nsaved the world!"
+                        ],
+                        "avatarId": "0f94da55-8256-470a-9f22-0f54bbf75082"
+                    }
+                },
+                {
+                    "id": "ee2fbd1b-722b-4a77-bbdd-7e0dca475b61",
+                    "command": "EVENT_SWITCH_SCENE",
+                    "args": {
+                        "sceneId": "0b7c84f1-9de2-4548-9944-35990c24319b",
+                        "x": 9,
+                        "y": 23,
+                        "direction": "",
+                        "fadeSpeed": "2"
+                    }
+                },
+                {
+                    "id": "71764f5a-b5c3-4351-8c5b-df004d26d691",
+                    "command": "EVENT_END"
+                }
+            ]
+        }
+    ],
+    "_version": "1.2.0",
+    "author": "User",
+    "name": "VictoryScreen",
+    "variables": [],
+    "backgrounds": [
+        {
+            "id": "1e5f9d6a-bdbc-43e6-8c34-22f5bb5dea05",
+            "name": "placeholder",
+            "width": 20,
+            "height": 18,
+            "imageWidth": 160,
+            "imageHeight": 144,
+            "filename": "placeholder.png",
+            "_v": 1616442367881
+        },
+        {
+            "id": "af46f3a6-a858-4bd6-8b70-ee2ca1252dc6",
+            "name": "victory",
+            "width": 20,
+            "height": 32,
+            "imageWidth": 160,
+            "imageHeight": 256,
+            "filename": "victory.png",
+            "_v": 1616444874359
+        },
+        {
+            "id": "f13cf258-d7d5-4615-b15b-ac1449082ed8",
+            "name": "youwin",
+            "width": 20,
+            "height": 20,
+            "imageWidth": 160,
+            "imageHeight": 160,
+            "filename": "youwin.png",
+            "_v": 1616444301148
+        }
+    ],
+    "spriteSheets": [
+        {
+            "id": "11b5452b-187c-43a3-afb1-a1f4f74ffda2",
+            "name": "actor",
+            "numFrames": 3,
+            "type": "actor",
+            "filename": "actor.png",
+            "_v": 1616442367881
+        },
+        {
+            "id": "581d34d0-9591-4e6e-a609-1d94f203b0cd",
+            "name": "actor_animated",
+            "numFrames": 6,
+            "type": "actor_animated",
+            "filename": "actor_animated.png",
+            "_v": 1616442367881
+        },
+        {
+            "id": "0f94da55-8256-470a-9f22-0f54bbf75082",
+            "name": "macguffin",
+            "numFrames": 1,
+            "type": "static",
+            "filename": "macguffin.png",
+            "_v": 1616443348556
+        },
+        {
+            "id": "daf95270-e30d-423b-9ee7-990ae29f57f6",
+            "name": "static",
+            "numFrames": 1,
+            "type": "static",
+            "filename": "static.png",
+            "_v": 1616442367881
+        }
+    ],
+    "music": [
+        {
+            "id": "f50428ab-a084-4591-9bba-2ba10fe7b1c6",
+            "name": "template",
+            "filename": "template.mod",
+            "_v": 1616442367849
+        }
+    ],
+    "customEvents": []
+}

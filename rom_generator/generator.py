@@ -419,13 +419,61 @@ def addSceneData(project, scene_data):
 #         # print("out:", source_scene['scene']['id'], source_scene['scene']['name'], out_position, trigger_size, "\tin:", destination_scene['scene']['id'], destination_scene['scene']['name'], destination_position)
 #         makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position)
 
+
 import pprint
-def connectScenesRandomlySymmetric(scene_data_list, use_tags=False):
+def testConnections(scene_data_list, end_name='_gen_MacGuiffinTemple', start_name='_gen_BeginningCave'):
+    pp = pprint.PrettyPrinter(indent=3)
+    scene_tree = {}
+    start_id = "X"
+    end_id = "Y"
+    for scene_num, scene in enumerate(scene_data_list):
+        #pp.pprint(scene)
+        scene_tree[scene["scene"]["id"]] = set()
+        #print(scene["scene"]["name"])
+        if scene["scene"]["name"] == end_name:
+            end_id = scene["scene"]["id"]
+        if scene["scene"]["name"] == start_name:
+            start_id = scene["scene"]["id"]
+        try:
+            for con_num, con in enumerate(scene["scene"]["triggers"]):
+                #pp.pprint(con)
+                scene_tree[scene["scene"]["id"]].add(con["script"][0]["args"]["sceneId"])
+
+        except KeyError:
+            pass
+    #pp.pprint(scene_tree)
+
+    # Very naive depth-first search...
+    previously_visited = []
+    def searchTreeNode(start_node, end_node, steps=0, limit = 99):
+        print(start_node, steps)
+        if "♔" in start_node:
+            return -1
+        if steps > limit:
+            return -1
+        if start_node == end_node:
+            return steps
+        if start_node in previously_visited:
+            return -1
+        previously_visited.append(start_node)
+        node = scene_tree[start_node]
+        for n in node:
+            n_result = searchTreeNode(n, end_node, steps+1)
+            if n_result == -1:
+                continue
+            return n_result
+        return -1
+
+    steps_to_destination = searchTreeNode(start_id, end_id)
+    return steps_to_destination
+
+
+def connectScenesRandomlySymmetric(scene_data_list, use_tags=True):
     """
     Connect scenes in the scene data list at random, using the connection slots.
     Connections should be symmetric.
 
-    If use_tags == True, connections can only match other connections with the same tags. No tags == matches all tags.
+    If use_tags == True, connections can only match other connections with the same tags. No tags == matches other no tags.
     """
 
     # Get connections
@@ -445,13 +493,31 @@ def connectScenesRandomlySymmetric(scene_data_list, use_tags=False):
                 filtered_other_connections[idx][2]['match'] = False
                 if len(set(c[2]['tags']) & set(current_connection[2]['tags'])) > 0:
                     filtered_other_connections[idx][2]['match'] = True
-            except:
-                filtered_other_connections[idx][2]['match'] = True
-        filtered_other_connections = [c for c in filtered_other_connections if c[2]['match']]
+            except KeyError:
+                filtered_other_connections[idx][2]['match'] = False
+                # try:
+                #     if len(current_connection[2]['tags']) > 0:
+                #         filtered_other_connections[idx][2]['match'] = False
+                # except KeyError:
+                #     filtered_other_connections[idx][2]['match'] = True
+                # try:
+                #     if len(c[2]['tags']) > 0:
+                #         filtered_other_connections[idx][2]['match'] = False
+                # except KeyError:
+                #     filtered_other_connections[idx][2]['match'] = True
+
+        filtered_other_connections_match = [c for c in filtered_other_connections if c[2]['match']]
+        if(len(filtered_other_connections_match) > 0):
+            filtered_other_connections = filtered_other_connections_match
+        else:
+            print("WARNING: can't find a connection with matching tags")
+            print(c[2])
+            continue
 
         if len(filtered_other_connections) == 0:
             print("WARNING: Ran out of free connections.")
             filtered_other_connections = connections_to_make
+            continue
         #[print(c) for c in filtered_other_connections]
 
 

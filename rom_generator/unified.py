@@ -4,9 +4,11 @@ from rom_generator import generator
 from rom_generator import script_functions as script
 from rom_generator.scenes import title
 from rom_generator.scenes import scene_library
+from rom_generator.scenes.imported import VictoryScreen
+from rom_generator.scenes.imported import SaveTheWorld
 
 
-def createExampleProject(proj_title="generated"):
+def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
     """
     Demonstration of how the scene generators in this file can be used.
     """
@@ -24,6 +26,19 @@ def createExampleProject(proj_title="generated"):
     for scn_func in catalog():
         scene_data_list.append(scn_func(None))
     for element_sprite in sprites:
+        project.spriteSheets.append(element_sprite)
+
+    # Add victory screen
+    win_catalog, win_sprites = VictoryScreen.scene_generation(proj_title, macguffin_title)
+    for scn_func in win_catalog():
+        scene_data_list.append(scn_func(None))
+    for element_sprite in win_sprites:
+        project.spriteSheets.append(element_sprite)
+
+    world_catalog, world_sprites = SaveTheWorld.scene_generation(proj_title, macguffin_title)
+    for scn_func in world_catalog():
+        scene_data_list.append(scn_func(None))
+    for element_sprite in world_sprites:
         project.spriteSheets.append(element_sprite)
 
     scn_library, spr_library = scene_library.getLibrary()
@@ -53,9 +68,14 @@ def createExampleProject(proj_title="generated"):
 if __name__ == '__main__':
     for n in range(4):
         random.seed(None)
-        proj_title = title.generateTitle()
-        title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")
+        proj_title, macguffin_title = title.generateTitle()
+        print(proj_title)
+        print(macguffin_title)
+        if macguffin_title == "":
+            macguffin_title = "MacGuffin"
+
+        title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and").replace("]|[","3").replace("]","I").replace("|","I").replace("[","I")
         destination = f"../gbprojects/generated/{title_munged}"
         generator.initializeGenerator()
-        project = createExampleProject(proj_title)
+        project = createExampleProject(proj_title, macguffin_title)
         generator.writeProjectToDisk(project, filename=f"{title_munged[:28]}.gbsproj", output_path = destination)

@@ -506,7 +506,7 @@ def runTest(test_dir):
 
 # test creating scenes...
 if __name__ == '__main__':
-    destination = "../gbprojects/generated_export_test/"
+    destination = test_generation_destination_path
     runTest(destination)
 
 '''
@@ -625,6 +625,7 @@ def importFromGBS(filename):
 
     output_filename = os.path.basename(filename).split(".")[0] + ".py"
     generated_code = f"""# Generated Scene Functions\n# {output_filename}\n\nfrom rom_generator import generator\nfrom rom_generator import script_functions as script\n\n"""
+    generated_code += f"test_generation_destination_path = \"../gbprojects/generated_export_test_{output_filename[:-3]}/\"\n\n"
     generated_code += "def scene_generation():\n"
     generated_code += indent_string + code_load_sprites + "\n"
     generated_code += indent_string + code_find_sprite + "\n"

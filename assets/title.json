@@ -288,9 +288,12 @@
       "Oath"
       ],
     "macguffin": [
-      "#object.capitalize#",
-      "#property.capitalize# #object.capitalize#",
-      "#object.capitalize# of #place#",
+      "§#object.capitalize#§",
+      "§#object.capitalize#§",
+      "§#property.capitalize# #object.capitalize#§",
+      "§#object.capitalize# of #place#§",
+      "§#object.capitalize# of the #subject.capitalize#§",
+      "§#object.capitalize# of the #property.capitalize# #subject.capitalize#§",
       "#property.capitalize# #subject.capitalize#",
       "#subject.capitalize# of the #place#",
       "#event# of the #subject#",

@@ -420,10 +420,12 @@ def addSceneData(project, scene_data):
 #         makeTriggerConnectionToScene(source_scene, out_position, trigger_size, destination_scene, destination_position)
 
 import pprint
-def connectScenesRandomlySymmetric(scene_data_list):
+def connectScenesRandomlySymmetric(scene_data_list, use_tags=False):
     """
     Connect scenes in the scene data list at random, using the connection slots.
-    Connections should be symmetric
+    Connections should be symmetric.
+
+    If use_tags == True, connections can only match other connections with the same tags. No tags == matches all tags.
     """
 
     # Get connections
@@ -437,8 +439,22 @@ def connectScenesRandomlySymmetric(scene_data_list):
     while len(connections_to_make) > 0:
         current_connection = connections_to_make.pop()
         filtered_other_connections = [c for c in connections_to_make if c[0] != current_connection[0]]
+
+        for idx, c in enumerate(filtered_other_connections):
+            try:
+                filtered_other_connections[idx][2]['match'] = False
+                if len(set(c[2]['tags']) & set(current_connection[2]['tags'])) > 0:
+                    filtered_other_connections[idx][2]['match'] = True
+            except:
+                filtered_other_connections[idx][2]['match'] = True
+        filtered_other_connections = [c for c in filtered_other_connections if c[2]['match']]
+
         if len(filtered_other_connections) == 0:
+            print("WARNING: Ran out of free connections.")
             filtered_other_connections = connections_to_make
+        #[print(c) for c in filtered_other_connections]
+
+
         try:
             other_connection = random.choice(filtered_other_connections)
             connection_tries = 15

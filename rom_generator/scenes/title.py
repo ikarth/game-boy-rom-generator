@@ -15,7 +15,7 @@ import logging
 import PIL
 from PIL import Image, ImageFont, ImageDraw
 from rom_generator.utilities import bcolors
-
+import re
 
 from vendor.seam_carver import seam_carver
 from vendor.seam_carver.utils import pad_img, highlight_seam
@@ -513,6 +513,7 @@ def title_scene_generation(proj_title):
         gen_scene_bkg = generator.makeBackground(title_filename)
 
         scene_script = [
+                script.setFalse(variable='26'),
                 script.actorHide(actorId='player'),
                 script.awaitInput(input=['a', 'b', 'start', 'select']),
                 # script.group(children = {
@@ -554,7 +555,7 @@ def title_scene_generation(proj_title):
                 script.end()
             ]
             return trigger_00
-        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 17), 'entrance_size': (2, 1)  } }
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 17), 'entrance_size': (2, 1)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_00]
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -633,7 +634,19 @@ def generateTitle():
         return g_title
     gen_title = filterRepeatClauses(gen_title, " of the ")
     gen_title = filterRepeatClauses(gen_title, " & ")
-    return gen_title
+
+    def filterMacGuffinFromTitle(g_title):
+        mgs = re.search("(§.*?§)", g_title)
+        found = ""
+        if mgs:
+            found = mgs.group(1)
+            print("##################")
+            print(found)
+        return g_title.replace('§','').replace('Â',''), found.replace('§','').replace('Â','')
+
+    gen_title, macguffin_title = filterMacGuffinFromTitle(gen_title)
+
+    return gen_title, macguffin_title
 
 if __name__ == '__main__':
     for n in range(4):

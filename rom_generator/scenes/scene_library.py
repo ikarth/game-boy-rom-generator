@@ -12,7 +12,10 @@ def getLibrary():
   sprite_library = []
 
   #scene_library + scene_gen_halls.catalog()
-  modules = [BasicScenes, So_Many_Rooms, LiminalRooms, TempleCorridor]
+  modules = [#BasicScenes,
+  #So_Many_Rooms,
+  LiminalRooms,
+  TempleCorridor]
   for m in modules:
       catalog, sprites = m.scene_generation()
       scene_library = scene_library + catalog()

@@ -9,7 +9,7 @@ def scene_generation():
         generator.makeSpriteSheet('actor.png', name='actor', type='actor', frames=3),
         generator.makeSpriteSheet('actor_animated.png', name='actor_animated', type='actor_animated', frames=6),
         generator.makeSpriteSheet('static.png', name='static', type='static', frames=1)]
-    
+
     def findSpriteByName(sprite_name):
         '''
         Returns first sprite that matches the name given.
@@ -30,7 +30,7 @@ def scene_generation():
         if s_id == None:
             return '<♔' + scene_label + '♔>'
         return s_id
-    
+
     def scene_gen_halls_07_00001(callback):
         actor_name_table = {}
         actor_list = []
@@ -60,7 +60,7 @@ def scene_generation():
                 script.end()
             ]
             return trigger_01
-        connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (1, 7), 'exit_direction': 'right', 'entrance': gen_scene_scn['id'], 'entrance_location': (0, 6), 'entrance_size': (1, 2)  } }
+        connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (1, 7), 'exit_direction': 'right', 'entrance': gen_scene_scn['id'], 'entrance_location': (0, 6), 'entrance_size': (1, 2)  }, 'tags': ['A'] }
 
         def addConnection_02(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_02 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -69,7 +69,7 @@ def scene_generation():
                 script.end()
             ]
             return trigger_02
-        connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (9, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 17), 'entrance_size': (2, 1)  } }
+        connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (9, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 17), 'entrance_size': (2, 1)  }, 'tags': ['A']  }
 
         def addConnection_03(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_03 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -78,7 +78,7 @@ def scene_generation():
                 script.end()
             ]
             return trigger_03
-        connection_03 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_03, 'args': { 'exit_location': (17, 12), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 11), 'entrance_size': (1, 2)  } }
+        connection_03 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_03, 'args': { 'exit_location': (17, 12), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 11), 'entrance_size': (1, 2)  }, 'tags': ['A']  }
 
         gen_scene_connections = [connection_00, connection_01, connection_02, connection_03]
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -106,7 +106,7 @@ def scene_generation():
                 script.end()
             ]
             return trigger_00
-        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (2, 10), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (2, 9), 'entrance_size': (2, 1)  } }
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (2, 10), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (2, 9), 'entrance_size': (2, 1)  }, 'tags': ['A']  }
 
         def addConnection_01(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_01 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -115,7 +115,7 @@ def scene_generation():
                 script.end()
             ]
             return trigger_01
-        connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (1, 14), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (1, 15), 'entrance_size': (2, 1)  } }
+        connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (1, 14), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (1, 15), 'entrance_size': (2, 1)  }, 'tags': ['A']  }
 
         def addConnection_02(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_02 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -124,7 +124,7 @@ def scene_generation():
                 script.end()
             ]
             return trigger_02
-        connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (8, 6), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (8, 5), 'entrance_size': (2, 1)  } }
+        connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (8, 6), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (8, 5), 'entrance_size': (2, 1)  }, 'tags': ['A']  }
 
         def addConnection_03(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_03 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -133,7 +133,7 @@ def scene_generation():
                 script.end()
             ]
             return trigger_03
-        connection_03 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_03, 'args': { 'exit_location': (8, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (8, 17), 'entrance_size': (2, 1)  } }
+        connection_03 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_03, 'args': { 'exit_location': (8, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (8, 17), 'entrance_size': (2, 1)  }, 'tags': ['A']  }
 
         def addConnection_04(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_04 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -142,7 +142,7 @@ def scene_generation():
                 script.end()
             ]
             return trigger_04
-        connection_04 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_04, 'args': { 'exit_location': (17, 16), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 15), 'entrance_size': (1, 2)  } }
+        connection_04 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_04, 'args': { 'exit_location': (17, 16), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 15), 'entrance_size': (1, 2)  }, 'tags': ['A']  }
 
         gen_scene_connections = [connection_00, connection_01, connection_02, connection_03, connection_04]
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -201,4 +201,3 @@ def runTest(test_dir):
 if __name__ == '__main__':
     destination = "../gbprojects/generated_export_test/"
     runTest(destination)
-

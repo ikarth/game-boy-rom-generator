@@ -2,6 +2,9 @@
 @echo off
 echo compiling %1
 
+rem This is a really hacky way to do it, but I'm not going to bother
+rem with anything fancier for version 1.0 of the generator.
+
 set SendKeys=CScript //nologo //E:JScript "%~F0"
 
 

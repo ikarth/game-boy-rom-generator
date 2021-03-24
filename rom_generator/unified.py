@@ -1,4 +1,5 @@
 import random
+import copy
 
 from rom_generator import generator
 from rom_generator import script_functions as script
@@ -47,8 +48,25 @@ def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
     for element_sprite in spr_library:
         project.spriteSheets.append(element_sprite)
 
-
-    generator.connectScenesRandomlySymmetric(scene_data_list)
+    # Hack to try to make sure the game is able to be completed...
+    current_scene_data_list = copy.deepcopy(scene_data_list)
+    for n in range(15):
+        print(n)
+        generator.connectScenesRandomlySymmetric(scene_data_list)
+        steps_to_solve = generator.testConnections(scene_data_list)
+        print(steps_to_solve)
+        steps_to_key = generator.testConnections(scene_data_list, "_gen_SceneWithKey_real")
+        print(steps_to_key)
+        if (steps_to_solve < 0) or (steps_to_key < 0):
+            print("Solve failed. Trying again...")
+            scene_data_list = copy.deepcopy(current_scene_data_list)
+            continue
+        else:
+            print("Scenes connected.")
+            current_scene_data_list = copy.deepcopy(scene_data_list)
+            break
+    scene_data_list = copy.deepcopy(current_scene_data_list)
+    print("### ### ###")
 
     # actually add the scenes to the project
     for sdata in scene_data_list:
@@ -66,7 +84,13 @@ def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
 
 
 if __name__ == '__main__':
-    for n in range(4):
+    import subprocess
+    import pathlib
+    import os
+    root_path = pathlib.Path(__file__).parent.absolute()
+    print(root_path)
+    number_of_roms_to_generate = 1
+    for n in range(number_of_roms_to_generate):
         random.seed(None)
         proj_title, macguffin_title = title.generateTitle()
         print(proj_title)
@@ -79,3 +103,5 @@ if __name__ == '__main__':
         generator.initializeGenerator()
         project = createExampleProject(proj_title, macguffin_title)
         generator.writeProjectToDisk(project, filename=f"{title_munged[:28]}.gbsproj", output_path = destination)
+        print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj"))
+        subprocess.call([os.path.abspath(r'.\compile_rom.bat'), os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj")])

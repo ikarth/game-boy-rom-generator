@@ -136,6 +136,101 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
 
+    def scene_gen_SceneWithKey_00003_real(callback):
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 16, 11, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('key_00')['id'], name='actor_121f7aa5-6dc4-47d2-939c-b5bd8204e506')
+        actor_name_table.update({'actor_121f7aa5-6dc4-47d2-939c-b5bd8204e506': actor_00})
+        actor_00['script'] = [
+                script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'),
+                script.text(text=['You have the key!'], avatarId=''),
+                script.setTrue(variable='26'),
+                script.end()
+            ]
+        actor_00['startScript'] = [
+                script.ifTrue(variable='26', children = {
+                    'true': [script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'), script.end()],
+                    'false': [script.end()]
+                    }),
+                script.end()
+            ]
+        actor_list = [actor_00]
+        trigger_00 = generator.makeTrigger('trigger_00', 19, 6, 1, 13)
+        trigger_01 = generator.makeTrigger('trigger_01', 0, 6, 1, 13)
+        trigger_list = []
+        collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 128, 31, 0, 248, 1, 128, 31, 0, 248, 1, 128, 31, 0, 248, 1, 128, 31, 0, 248, 1, 128, 31, 0, 248, 1, 128, 31, 0, 248, 1, 128, 31, 240, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
+        gen_scene_bkg = generator.makeBackground("corridors_06.png")
+
+        gen_scene_scn = generator.makeScene("_gen_SceneWithKey_real", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_SceneWithKey_00003")
+
+        def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_00['script'] = [
+                script.switchScene(sceneId=destination_scene_id, x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_00
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (17, 17), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 6), 'entrance_size': (1, 13)  }, 'tags': ['A'] }
+
+        def addConnection_01(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_01 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_01['script'] = [
+                script.switchScene(sceneId=destination_scene_id, x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_01
+        connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (1, 17), 'exit_direction': 'right', 'entrance': gen_scene_scn['id'], 'entrance_location': (0, 6), 'entrance_size': (1, 13)  }, 'tags': ['A'] }
+
+        gen_scene_connections = [connection_00]
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        return scene_data
+
+    def scene_gen_SceneWithKey_00003_fake(callback):
+        actor_name_table = {}
+        actor_00 = generator.makeActor(None, 16, 11, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('key_00')['id'], name='actor_121f7aa5-6dc4-47d2-939c-b5bd8204e506')
+        actor_name_table.update({'actor_121f7aa5-6dc4-47d2-939c-b5bd8204e506': actor_00})
+        actor_00['script'] = [
+                script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'),
+                script.text(text=['You have the key!'], avatarId=''),
+                script.setTrue(variable='26'),
+                script.end()
+            ]
+        actor_00['startScript'] = [
+                script.ifTrue(variable='26', children = {
+                    'true': [script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'), script.end()],
+                    'false': [script.end()]
+                    }),
+                script.end()
+            ]
+        actor_list = [actor_00]
+        trigger_00 = generator.makeTrigger('trigger_00', 19, 6, 1, 13)
+        trigger_01 = generator.makeTrigger('trigger_01', 0, 6, 1, 13)
+        trigger_list = []
+        collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 128, 31, 0, 248, 1, 128, 31, 0, 248, 1, 128, 31, 0, 248, 1, 128, 31, 0, 248, 1, 128, 31, 0, 248, 1, 128, 31, 0, 248, 1, 128, 31, 240, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
+        gen_scene_bkg = generator.makeBackground("corridors_06.png")
+
+        gen_scene_scn = generator.makeScene("_gen_SceneWithKey", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_SceneWithKey_00003")
+
+        def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_00['script'] = [
+                script.switchScene(sceneId=destination_scene_id, x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_00
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (17, 17), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 6), 'entrance_size': (1, 13)  }, 'tags': ['A'] }
+
+        def addConnection_01(source_location, source_size, destination_scene_id, destination_location, destination_direction):
+            trigger_01 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
+            trigger_01['script'] = [
+                script.switchScene(sceneId=destination_scene_id, x=destination_location[0], y=destination_location[1], direction=destination_direction, fadeSpeed='2'),
+                script.end()
+            ]
+            return trigger_01
+        connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (1, 17), 'exit_direction': 'right', 'entrance': gen_scene_scn['id'], 'entrance_location': (0, 6), 'entrance_size': (1, 13)  }, 'tags': ['A'] }
+
+        gen_scene_connections = [connection_01]
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        return scene_data
 
     def scene_gen_SceneWithKey_00003(callback):
         actor_name_table = {}
@@ -192,7 +287,8 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         """
         return [scene_gen_TheMentor_00001,
             scene_gen_SceneWithLock_00002,
-            scene_gen_SceneWithKey_00003]
+            scene_gen_SceneWithKey_00003_real,
+            scene_gen_SceneWithKey_00003_fake]
 
     return catalog, sprite_sheet_data
 

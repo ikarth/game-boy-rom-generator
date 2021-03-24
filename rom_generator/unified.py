@@ -82,14 +82,86 @@ def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
 
     return project
 
+def generateWebpageCatalog(catalog_of_roms, destination):
+    css_style = '''
+        body {
+           background-color: #040904;
+           font-family: sans-serif;
+           color: #f3f3f3;
+           text-align: center;
+        }
+        .container {
+          padding: 2em;
+          display: grid;
+          grid-template: none;
+          margin: auto;
+          text-align: center;
+          gap: 1em;
+          align-items: center;
+          grid-template-columns: repeat(auto-fit, minmax(21.2em, 1fr));
+        }
+        .item {
+          margin: auto;
+          margin-top: 0;
+          text-align: center;
+          display: inline-block;
+          align-self: start;
+        }
+        a {
+          padding: 1em;
+          background-color: #545458;
+          color: #f3f3f3;
+          width: 20em;
+          height: 21em;
+          display: inline-block;
+          font-family: sans-serif;
+          text-decoration: none;
+
+          font-weight: bold;
+          border-radius: 1em;
+        }
+        a:hover {
+          background-color: #DDD;
+          color: #131313;
+        }
+        img {
+          width: 20em;
+        }
+    '''
+    catalog_html = f'<html>\n  <head>\n    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">\n    <title>Generated Game Boy ROMs</title>\n    <style>{css_style}</style>\n  </head>\n  <body>\n    <h1>Generated Game Boy ROMs</h1><p>Controls:<br><b>A button:</b> Z, J, or Alt<br><b>B button:</b> X, K, or Ctrl<br><b>Start:</b> Enter<br><b>Select:</b> Shift</p>\n    <div class="container">\n'
+    for rom_path, full_path in catalog_of_roms:
+        webpage = rom_path + "/build/web/index.html"
+        with open(full_path + "/metadata.json") as rfile:
+            metadata = json.load(rfile)
+        print(metadata)
+        entry = f'''
+        <div class="item">
+          <a href="{webpage}">
+            <img src="./{rom_path}/box_cover.png" alt="{metadata["title"]}">
+            <p>{metadata["title"]}</p>
+          </a>
+        </div>
+        '''
+        catalog_html += entry
+    catalog_html += "\n    </div>  </body></html>"
+    print(catalog_html)
+
+    catalog_filename = str(uuid.uuid4()) + ".html"
+    with open(pathlib.Path(destination).joinpath(catalog_filename), "w") as wfile:
+        wfile.write(catalog_html)
+
 
 if __name__ == '__main__':
     import subprocess
     import pathlib
     import os
+    import json
+    import uuid
     root_path = pathlib.Path(__file__).parent.absolute()
     print(root_path)
-    number_of_roms_to_generate = 1
+
+    generated_roms = []
+    number_of_roms_to_generate = 12
     path_to_last_generated_rom = ""
     for n in range(number_of_roms_to_generate):
         random.seed(None)
@@ -107,5 +179,7 @@ if __name__ == '__main__':
         print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj"))
         subprocess.call([os.path.abspath(r'.\compile_rom.bat'), os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj")])
         path_to_last_generated_rom = os.path.abspath(destination + "/build/web/rom/game.gb")
+        generated_roms.append([title_munged, destination])
 
+    generateWebpageCatalog(generated_roms, "../gbprojects/generated/")
     subprocess.call(["pyboy", path_to_last_generated_rom])

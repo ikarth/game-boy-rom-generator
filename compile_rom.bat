@@ -1,0 +1,39 @@
+@if (@CodeSection == @Batch) @then
+@echo off
+echo compiling %1
+
+set SendKeys=CScript //nologo //E:JScript "%~F0"
+
+
+start "GBStudioCompiling" J:\Isaac\Dev\genboy\gbstudio\gb-studio.exe %1
+
+echo Waiting for GB Studio to start...
+ping -n 5 -w 1 127.0.0.1 > NUL
+
+rem %SendKeys% "^S"
+
+rem ping -n 5 -w 1 127.0.0.1 > NUL
+
+%SendKeys% "+^N"
+echo Compiling...
+
+ping -n 20 -w 1 127.0.0.1 > NUL
+
+echo Shutting down after 20 seconds...
+
+rem powershell (get-process)
+powershell (ps gb-studio).CloseMainWindow()
+
+echo Finished compiling %1
+
+goto :EOF
+
+@end
+
+// JScript section
+
+var WshShell = WScript.CreateObject("WScript.Shell");
+WshShell.AppActivate("GB Studio"); 
+WScript.Sleep(100);
+WshShell.SendKeys(WScript.Arguments(0));
+

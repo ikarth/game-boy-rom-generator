@@ -150,3 +150,9 @@ rom_generator/assets/
 
 # Don't include the recursive assets
 gbs_projects/assets
+
+# Don't include the generated titles or backgrounds...
+assets/backgrounds/_title*
+assets/backgrounds/_generated*
+
+node_modules

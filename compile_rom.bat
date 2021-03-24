@@ -13,9 +13,9 @@ start "GBStudioCompiling" J:\Isaac\Dev\genboy\gbstudio\gb-studio.exe %1
 echo Waiting for GB Studio to start...
 ping -n 5 -w 1 127.0.0.1 > NUL
 
-rem %SendKeys% "^S"
+%SendKeys% "^7"
 
-rem ping -n 5 -w 1 127.0.0.1 > NUL
+ping -n 5 -w 1 127.0.0.1 > NUL
 
 %SendKeys% "+^N"
 echo Compiling...

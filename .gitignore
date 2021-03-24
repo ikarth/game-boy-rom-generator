@@ -156,3 +156,4 @@ assets/backgrounds/_title*
 assets/backgrounds/_generated*
 
 node_modules
+trash/*

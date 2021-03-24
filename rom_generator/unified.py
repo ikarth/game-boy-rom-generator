@@ -90,6 +90,7 @@ if __name__ == '__main__':
     root_path = pathlib.Path(__file__).parent.absolute()
     print(root_path)
     number_of_roms_to_generate = 1
+    path_to_last_generated_rom = ""
     for n in range(number_of_roms_to_generate):
         random.seed(None)
         proj_title, macguffin_title = title.generateTitle()
@@ -105,3 +106,6 @@ if __name__ == '__main__':
         generator.writeProjectToDisk(project, filename=f"{title_munged[:28]}.gbsproj", output_path = destination)
         print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj"))
         subprocess.call([os.path.abspath(r'.\compile_rom.bat'), os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj")])
+        path_to_last_generated_rom = os.path.abspath(destination + "/build/web/rom/game.gb")
+
+    subprocess.call(["pyboy", path_to_last_generated_rom])

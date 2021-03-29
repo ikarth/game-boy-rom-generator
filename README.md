@@ -22,4 +22,8 @@ The automatic compilation is a hack that only works on Windows, so you'll have t
 ```
 conda env create -f environment.yml
 conda activate genboy_1
+conda install -y matplotlib
+conda install -y ipython
+pip install pyglet==1.5.11
+pip install gym-retro
 ```

@@ -142,7 +142,7 @@ def splitInTheMiddle(string_to_split):
     midpoint = len(parts) // 2
     return [parts[:midpoint], parts[midpoint:]]
 
-def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=0):
+def generateTitleBackground(proj_title, no_split=False, squash=0):
     """
     Generates an image for the title screen. Returns the filename of the new image.
     """
@@ -425,11 +425,11 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
     big_d = ImageDraw.Draw(big_img)
 
 
+    big_filename = filename[:-4] + "_big.png"
+    big_img.save(big_filename)
 
-    big_img.save(filename[:-4] + "_big.png")
 
-
-    return filename
+    return filename, big_filename
 
 def title_scene_generation(proj_title):
     sprite_sheet_data = [
@@ -487,22 +487,22 @@ def title_scene_generation(proj_title):
         collision_data_list = []
 
         try:
-            title_filename = generateTitleBackground(proj_title)
+            title_filename, big_filename = generateTitleBackground(proj_title)
         except OSError as err:
             print(err)
             try:
-                title_filename = generateTitleBackground(proj_title, no_split=True)
+                title_filename, big_filename = generateTitleBackground(proj_title, no_split=True)
             except OSError as err:
                 logging.error(proj_title)
                 logging.error(err)
                 try:
-                    title_filename = generateTitleBackground(proj_title, no_split=True, squash=1)
+                    title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=1)
                 except OSError as err:
                     try:
-                        title_filename = generateTitleBackground(proj_title, no_split=True, squash=2)
+                        title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=2)
                     except OSError as err:
                         try:
-                            title_filename = generateTitleBackground(proj_title, no_split=True, squash=3)
+                            title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=3)
                         except OSError as err:
                             logging.error(proj_title)
                             logging.error(err)
@@ -535,6 +535,7 @@ def title_scene_generation(proj_title):
 
         gen_scene_scn = generator.makeScene("_gen_Title_Screen", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Title_Screen")
         gen_scene_scn['script'] = scene_script
+        gen_scene_scn['box_cover'] = big_filename
         gen_scene_connections = []
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
@@ -634,6 +635,11 @@ def generateTitle():
         return g_title
     gen_title = filterRepeatClauses(gen_title, " of the ")
     gen_title = filterRepeatClauses(gen_title, " & ")
+
+    # if there are still too many "of"s make it a subtitle
+    if gen_title.count(" of ") > 1:
+        gen_title = gen_title.replace(" of ", ": ", 1)
+
 
     def filterMacGuffinFromTitle(g_title):
         mgs = re.search("(§.*?§)", g_title)

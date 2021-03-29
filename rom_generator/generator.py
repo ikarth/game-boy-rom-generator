@@ -905,7 +905,30 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
     ui_asset_array = writeUIAssets(gb_project.ui, "ui")
     writeAssets(ui_asset_array,          output_path, "ui")
 
-    print(f"Wrote project to {os.path.abspath(output_path)}")
+    # copy box cover...
+    # print(output_path)
+    # import pprint
+    # pprint.pprint(gb_project)
+    # import pdb; pdb.set_trace()
+
+    box_cover_path = ""
+
+    try:
+        box_cover_image = [a['box_cover'] for a in gb_project.scenes if "box_cover" in a.keys()][0]
+        box_cover_path = Path(output_path).joinpath("box_cover.png")
+        shutil.copy2(Path(box_cover_image), box_cover_path)
+    except IndexError:
+        print("Could not copy box cover to directory.")
+
+    metadata = {
+    "title": gb_project.name,
+    "box_cover": str(box_cover_path)
+    }
+    meta_json = json.dumps(metadata, sort_keys=True)
+    with open(Path(output_path).joinpath("metadata.json"), "w") as wfile:
+        wfile.write(meta_json)
+
+    print(f"Wrote project to {output_path}")
 
 def makeBasicProject():
     """

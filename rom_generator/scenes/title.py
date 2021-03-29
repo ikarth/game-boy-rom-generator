@@ -5,6 +5,8 @@ import os
 import random
 import datetime
 import itertools
+import colorsys
+import math
 from pathlib import Path
 from tracery.modifiers import base_english
 from rom_generator import generator
@@ -13,6 +15,76 @@ import logging
 import PIL
 from PIL import Image, ImageFont, ImageDraw
 from rom_generator.utilities import bcolors
+import re
+
+from vendor.seam_carver import seam_carver
+from vendor.seam_carver.utils import pad_img, highlight_seam
+from vendor.seam_carver.energy_functions import simple_energy, dual_gradient_energy
+import numpy as np
+from tqdm import trange
+
+def SeamCarverResize(full_image, cropped_by, energy_fn, pad=True, savepoints=None, save_name=None, rotated=False, highlight=False):
+    if savepoints == None:
+        savepoints = []
+    img = full_image.copy()
+    if savepoints:
+        #Path("carving/" + os.path.basename(os.path.abspath(save_name)).split('.')[0]).mkdir(parents=True, exist_ok=True)
+        Path("carving/").mkdir(parents=True, exist_ok=True)
+        #print(Path("carving/" + os.path.basename(os.path.abspath(save_name)).split('.')[0]))
+    original_color_sum = img.sum()
+    for i in trange(cropped_by, desc=f"cropping image by {cropped_by} pixels"):
+        #print(img.sum())
+        if original_color_sum > img.sum():
+            break
+        e_map = seam_carver.energy_map(img, energy_fn)
+        e_paths, e_totals = seam_carver.cumulative_energy(e_map)
+        seam = seam_carver.find_seam(e_paths, seam_carver.seam_end(e_totals))
+        if i in savepoints:
+            try:
+                seam_carver.save_image_with_options(img, highlight, pad, seam, rotated, "carving\\"+os.path.basename(os.path.abspath(save_name)), full_image.shape[0], full_image.shape[1], i, savepoints)
+            except Exception as err:
+                print(err)
+        #print(e_map.sum(), e_paths.sum(), e_totals.sum())
+        img = seam_carver.remove_seam(img, seam)
+    return img
+
+def CarveSeams(pillow_image, save_name):
+    """
+    Use seam carving to remove black lines in the middle of the image and
+    hopefully improve the vertical spacing between words.
+    """
+    img_array = np.array(pillow_image)
+    carving_axis = 'y'
+    if 'y' == carving_axis:
+        img_array = np.transpose(img_array, axes=(1, 0, 2))
+
+    crop_by = 200
+    show_seam = True
+    pad_border = False
+    savepoints = list(range(crop_by))
+    save_points = None
+
+    cropped_img_array = SeamCarverResize(img_array,
+                                        crop_by,
+                                        dual_gradient_energy,
+                                        save_name=save_name,
+                                        savepoints=savepoints,
+                                        rotated=carving_axis=='y',
+                                        pad=pad_border,
+                                        highlight=show_seam
+                                        )
+
+    if 'y' == carving_axis:
+        cropped_img_array = np.transpose(cropped_img_array, axes=(1, 0, 2))
+
+    if pad_border:
+        h,w = img_array.shape[:2]
+        if carving_axis == 'y':
+            h,w = w,h
+        cropped_img_array = pad_img(cropped_img_array, h, w)
+
+    return Image.fromarray(cropped_img_array)
+    # return cropped_img_array
 
 # Inspired by https://stackoverflow.com/questions/12770218/using-pil-or-a-numpy-array-how-can-i-remove-entire-rows-from-an-image
 def FindImageRowByColor(pixel_array, width, height, color):
@@ -27,7 +99,7 @@ def FindImageRowByColor(pixel_array, width, height, color):
     logging.info(f"rows found: {bcolors.OKGREEN}{rows_found}{bcolors.ENDC}")
     return rows_found
 
-def removeBlankRows(image, gap_spacing = 3):
+def removeBlankRows(image, gap_spacing = 3, carving=False, padding=True):
     pixels = image.load()
     img_width, img_height = image.size[0], image.size[1]
     blank_rows = FindImageRowByColor(pixels, img_width, img_height, (0,0,0))
@@ -47,8 +119,19 @@ def removeBlankRows(image, gap_spacing = 3):
 
     vert_offset = int(rows_removed // 2)
     logging.info(f"{rows_removed} scanlines removed from title.")
-    new_image = Image.new("RGB", (img_width, img_height), (0,0,0))
-    new_image.paste(scratch_image, (0, vert_offset))
+
+    new_image = scratch_image
+    if carving:
+        unique_id = str(uuid.uuid4()) + ".png"
+        pretrim_image = removeBlankRows(new_image, gap_spacing=0, carving=False, padding=False)
+        left, top, right, bottom = 0, 0, img_width, img_height - rows_removed
+        pretrim_image = pretrim_image.crop((left, top, right, bottom))
+        new_image = CarveSeams(pretrim_image, unique_id)
+
+    if padding:
+        padded_image = Image.new("RGB", (img_width, img_height), (0,0,0))
+        padded_image.paste(new_image, (0, (img_height - new_image.size[1]) // 2))
+        new_image = padded_image
     return new_image
 
 def splitInTheMiddle(string_to_split):
@@ -59,7 +142,7 @@ def splitInTheMiddle(string_to_split):
     midpoint = len(parts) // 2
     return [parts[:midpoint], parts[midpoint:]]
 
-def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=0):
+def generateTitleBackground(proj_title, no_split=False, squash=0):
     """
     Generates an image for the title screen. Returns the filename of the new image.
     """
@@ -161,6 +244,8 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
             second_font = pickFont() # switch fonts to one that looks better for that string
 
     def addTitleText(title_text_line, top_edge=0, leave_room=0, cur_font_path=None):
+        title_text_generation_command = {}
+        is_primary_line = True
         #print(f"[{top_edge}]", end=" ")
         #print(type(title_text_line))
         if (isinstance(title_text_line, list)):
@@ -185,6 +270,7 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
         if (("for " in title_text_line) or ("of " in title_text_line)):
             if not no_split:
                 font_multiplier = 0.3
+            is_primary_line = False
                 #top_edge -= 7
         if top_edge < 0:
             top_edge = 0
@@ -222,16 +308,19 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
                        bottom_edge
                        ), outline=(128,128,0))
         if ("\n" in title_text_line):
+            title_text_generation_command = {"type": "multiline_text", "placement": ((img_width - t_w) / 2, 4 + top_edge + (top_centering - 0)), "text": title_text_line, "line_spacing": line_spacing, "fill": "white", "align": "center", "font_path": cur_font_path, "font_size": int(font_size * font_multiplier), "is_primary": is_primary_line}
             d.multiline_text(((img_width - t_w) / 2, 4 + top_edge + (top_centering - 0)), title_text_line, spacing=line_spacing, font=fnt, fill="white", align="center") #, features="liga"
         else:
+            title_text_generation_command = {"type": "text", "placement": ((img_width - t_w) / 2, 4 + top_edge + (top_centering - 0)), "text": title_text_line, "line_spacing": line_spacing, "fill": "white", "align": "center", "font_path": cur_font_path, "font_size": int(font_size * font_multiplier), "is_primary": is_primary_line}
             d.text(((img_width - t_w) / 2, 4 + top_edge + (top_centering - 0)), title_text_line, spacing=line_spacing, font=fnt, fill="white", align="center") #, features="liga"
         #print(f"<{bottom_edge}>")
-        return bottom_edge
+        return bottom_edge, title_text_generation_command
 
     edge = 10
     room_margin = 25
     room_count = len(split_title)
     cur_font_path = font_path
+    text_draw_commands = []
 
     if len(split_title) > 1:
         room_count = 0
@@ -264,13 +353,18 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
                 for ssn in sn:
                     if (("for " in ssn) or ("of " in ssn)):
                         cur_font_path = second_font
-                    edge += addTitleText(ssn, edge, room, cur_font_path=cur_font_path) + 2
+                    edge_plus, text_draw_command = addTitleText(ssn, edge, room, cur_font_path=cur_font_path)
+                    edge += edge_plus + 2
+                    text_draw_commands.append(text_draw_command)
             else:
                 if (("for " in n) or ("of " in n)):
                     cur_font_path = second_font
-                edge += addTitleText(n, edge, room, cur_font_path=cur_font_path) + 2
+                edge_plus, text_draw_command = addTitleText(n, edge, room, cur_font_path=cur_font_path)
+                text_draw_commands.append(text_draw_command)
+                edge += edge_plus + 2
     else:
-        addTitleText(proj_title, cur_font_path=cur_font_path)
+        edge_plus, text_draw_command = addTitleText(proj_title, cur_font_path=cur_font_path)
+        text_draw_commands.append(text_draw_command)
 
     if squash > 0:
         img = removeBlankRows(img, gap_spacing=0)
@@ -301,7 +395,41 @@ def generateTitleBackground(proj_title="Generated Game", no_split=False, squash=
         print(f"title text exceeded image height: {edge} > {img_height}")
         raise OSError("title text exceeded image height")
 
-    return filename
+    # Draw big image
+    primary_color_hsv = (random.random(), 0.3 + (random.random() * 0.6), 0.8 + (random.random() * 0.1))
+    secondary_color_hsv = (math.sin(primary_color_hsv[0] + 0.5), 0.7 + (random.random() * 0.1), 0.6 + (random.random() * 0.2))
+    big_multiplier = 8
+    img_width = 160 * big_multiplier
+    img_height = 144 * big_multiplier
+    big_img = PIL.Image.new("RGB", (img_width, img_height), "black")
+    big_d = ImageDraw.Draw(big_img)
+    for cmd in text_draw_commands:
+        #print(cmd)
+        draw_cmd = big_d.text
+        if cmd["type"] == "multiline_text":
+            draw_cmd = big_d.multiline_text
+        fnt = ImageFont.truetype(cmd["font_path"], cmd["font_size"] * 8)
+        x1, y1 = cmd["placement"]
+        selected_color = colorsys.hsv_to_rgb(primary_color_hsv[0], primary_color_hsv[1], primary_color_hsv[2])
+        if not cmd["is_primary"]:
+            selected_color = colorsys.hsv_to_rgb(secondary_color_hsv[0], secondary_color_hsv[1], secondary_color_hsv[2])
+        selected_color = tuple([int(255 * x) for x in selected_color])
+        draw_cmd((x1 * big_multiplier, y1 * big_multiplier), cmd["text"], spacing=cmd["line_spacing"] * big_multiplier, font=fnt, fill=selected_color, align=cmd["align"])
+        #print([(x1, y1), cmd["text"], cmd["line_spacing"] * big_multiplier, (255,255,255), cmd["align"]])
+
+    use_seam_carving = True
+    if squash > 0:
+        big_img = removeBlankRows(big_img, gap_spacing=0, carving=use_seam_carving, padding=True)
+    else:
+        big_img = removeBlankRows(big_img, gap_spacing=int(2 * (big_multiplier / 4)), carving=use_seam_carving, padding=True)
+    big_d = ImageDraw.Draw(big_img)
+
+
+    big_filename = filename[:-4] + "_big.png"
+    big_img.save(big_filename)
+
+
+    return filename, big_filename
 
 def title_scene_generation(proj_title):
     sprite_sheet_data = [
@@ -359,22 +487,22 @@ def title_scene_generation(proj_title):
         collision_data_list = []
 
         try:
-            title_filename = generateTitleBackground(proj_title)
+            title_filename, big_filename = generateTitleBackground(proj_title)
         except OSError as err:
             print(err)
             try:
-                title_filename = generateTitleBackground(proj_title, no_split=True)
+                title_filename, big_filename = generateTitleBackground(proj_title, no_split=True)
             except OSError as err:
                 logging.error(proj_title)
                 logging.error(err)
                 try:
-                    title_filename = generateTitleBackground(proj_title, no_split=True, squash=1)
+                    title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=1)
                 except OSError as err:
                     try:
-                        title_filename = generateTitleBackground(proj_title, no_split=True, squash=2)
+                        title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=2)
                     except OSError as err:
                         try:
-                            title_filename = generateTitleBackground(proj_title, no_split=True, squash=3)
+                            title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=3)
                         except OSError as err:
                             logging.error(proj_title)
                             logging.error(err)
@@ -385,6 +513,7 @@ def title_scene_generation(proj_title):
         gen_scene_bkg = generator.makeBackground(title_filename)
 
         scene_script = [
+                script.setFalse(variable='26'),
                 script.actorHide(actorId='player'),
                 script.awaitInput(input=['a', 'b', 'start', 'select']),
                 # script.group(children = {
@@ -406,6 +535,7 @@ def title_scene_generation(proj_title):
 
         gen_scene_scn = generator.makeScene("_gen_Title_Screen", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Title_Screen")
         gen_scene_scn['script'] = scene_script
+        gen_scene_scn['box_cover'] = big_filename
         gen_scene_connections = []
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
         return scene_data
@@ -426,7 +556,7 @@ def title_scene_generation(proj_title):
                 script.end()
             ]
             return trigger_00
-        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 17), 'entrance_size': (2, 1)  } }
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 17), 'entrance_size': (2, 1)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_00]
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -505,10 +635,27 @@ def generateTitle():
         return g_title
     gen_title = filterRepeatClauses(gen_title, " of the ")
     gen_title = filterRepeatClauses(gen_title, " & ")
-    return gen_title
+
+    # if there are still too many "of"s make it a subtitle
+    if gen_title.count(" of ") > 1:
+        gen_title = gen_title.replace(" of ", ": ", 1)
+
+
+    def filterMacGuffinFromTitle(g_title):
+        mgs = re.search("(§.*?§)", g_title)
+        found = ""
+        if mgs:
+            found = mgs.group(1)
+            print("##################")
+            print(found)
+        return g_title.replace('§','').replace('Â',''), found.replace('§','').replace('Â','')
+
+    gen_title, macguffin_title = filterMacGuffinFromTitle(gen_title)
+
+    return gen_title, macguffin_title
 
 if __name__ == '__main__':
-    for n in range(4000):
+    for n in range(4):
         random.seed(None)
         proj_title = generateTitle()
         title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and")

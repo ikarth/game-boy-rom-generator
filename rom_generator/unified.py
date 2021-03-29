@@ -8,6 +8,8 @@ from rom_generator.scenes import scene_library
 from rom_generator.scenes.imported import VictoryScreen
 from rom_generator.scenes.imported import SaveTheWorld
 
+from rom_generator.goexplore import runExploration
+
 
 def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
     """
@@ -160,6 +162,8 @@ if __name__ == '__main__':
     root_path = pathlib.Path(__file__).parent.absolute()
     print(root_path)
 
+    RUN_AUTOEXPLORE = False
+
     generated_roms = []
     number_of_roms_to_generate = 12
     path_to_last_generated_rom = ""
@@ -180,6 +184,8 @@ if __name__ == '__main__':
         subprocess.call([os.path.abspath(r'.\compile_rom.bat'), os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj")])
         path_to_last_generated_rom = os.path.abspath(destination + "/build/web/rom/game.gb")
         generated_roms.append([title_munged, destination])
+        runExploration(path_to_last_generated_rom, destination)
 
     generateWebpageCatalog(generated_roms, "../gbprojects/generated/")
-    subprocess.call(["pyboy", path_to_last_generated_rom])
+    if RUN_AUTOEXPLORE:
+        subprocess.call(["pyboy", path_to_last_generated_rom])

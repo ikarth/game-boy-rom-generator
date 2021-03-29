@@ -911,6 +911,8 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
     # pprint.pprint(gb_project)
     # import pdb; pdb.set_trace()
 
+    box_cover_path = ""
+
     try:
         box_cover_image = [a['box_cover'] for a in gb_project.scenes if "box_cover" in a.keys()][0]
         box_cover_path = Path(output_path).joinpath("box_cover.png")

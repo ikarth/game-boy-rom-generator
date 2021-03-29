@@ -916,7 +916,9 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
     try:
         box_cover_image = [a['box_cover'] for a in gb_project.scenes if "box_cover" in a.keys()][0]
         box_cover_path = Path(output_path).joinpath("box_cover.png")
+        box_cover_path2 = Path(output_path).joinpath("build/web").("box_cover.png")
         shutil.copy2(Path(box_cover_image), box_cover_path)
+        shutil.copy2(Path(box_cover_image), box_cover_path2)
     except IndexError:
         print("Could not copy box cover to directory.")
 

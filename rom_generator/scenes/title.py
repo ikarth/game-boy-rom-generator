@@ -637,7 +637,7 @@ def generateTitle():
     gen_title = filterRepeatClauses(gen_title, " & ")
 
     # if there are still too many "of"s make it a subtitle
-    if g_title.count(" of ") > 1:
+    if gen_title.count(" of ") > 1:
         gen_title = gen_title.replace(" of ", ": ", 1)
 
 

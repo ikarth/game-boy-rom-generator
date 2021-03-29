@@ -165,7 +165,7 @@ if __name__ == '__main__':
     RUN_AUTOEXPLORE = False
 
     generated_roms = []
-    number_of_roms_to_generate = 12
+    number_of_roms_to_generate = 1
     path_to_last_generated_rom = ""
     for n in range(number_of_roms_to_generate):
         random.seed(None)
@@ -184,8 +184,8 @@ if __name__ == '__main__':
         subprocess.call([os.path.abspath(r'.\compile_rom.bat'), os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj")])
         path_to_last_generated_rom = os.path.abspath(destination + "/build/web/rom/game.gb")
         generated_roms.append([title_munged, destination])
-        runExploration(path_to_last_generated_rom, destination)
+        if RUN_AUTOEXPLORE:
+            runExploration(path_to_last_generated_rom, destination)
 
     generateWebpageCatalog(generated_roms, "../gbprojects/generated/")
-    if RUN_AUTOEXPLORE:
-        subprocess.call(["pyboy", path_to_last_generated_rom])
+    subprocess.call(["pyboy", path_to_last_generated_rom])

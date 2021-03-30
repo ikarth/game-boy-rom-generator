@@ -9,7 +9,7 @@ from rom_generator.scenes.imported import VictoryScreen
 from rom_generator.scenes.imported import SaveTheWorld
 
 from rom_generator.goexplore import runExploration
-
+import random
 
 def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
     """
@@ -19,7 +19,8 @@ def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
     project.name = proj_title
 
     # Create sprite sheet for the player sprite
-    player_sprite_sheet = generator.addSpriteSheet(project, "actor_animated.png", "actor_animated", "actor_animated")
+    player_sprite_sheet_image = random.choice(["actor_animated.png", "player.png", "npc003.png", "npc002.png", "npc001.png"])
+    player_sprite_sheet = generator.addSpriteSheet(project, player_sprite_sheet_image, "actor_animated", "actor_animated")
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
     scene_data_list = []
@@ -38,7 +39,7 @@ def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
     for element_sprite in win_sprites:
         project.spriteSheets.append(element_sprite)
 
-    world_catalog, world_sprites = SaveTheWorld.scene_generation(proj_title, macguffin_title)
+    world_catalog, world_sprites, key_room_name = SaveTheWorld.scene_generation(proj_title, macguffin_title)
     for scn_func in world_catalog():
         scene_data_list.append(scn_func(None))
     for element_sprite in world_sprites:
@@ -53,16 +54,15 @@ def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
     # Hack to try to make sure the game is able to be completed...
     current_scene_data_list = copy.deepcopy(scene_data_list)
     for n in range(15):
-        print(n)
+        print(f"connecting attempt {n}")
         generator.connectScenesRandomlySymmetric(scene_data_list)
         steps_to_solve = generator.testConnections(scene_data_list)
         print(steps_to_solve)
-        steps_to_key = generator.testConnections(scene_data_list, "_gen_SceneWithKey_real")
+        steps_to_key = generator.testConnections(scene_data_list, key_room_name)
         print(steps_to_key)
         if (steps_to_solve < 0) or (steps_to_key < 0):
             print("Solve failed. Trying again...")
             scene_data_list = copy.deepcopy(current_scene_data_list)
-            continue
         else:
             print("Scenes connected.")
             current_scene_data_list = copy.deepcopy(scene_data_list)
@@ -163,9 +163,10 @@ if __name__ == '__main__':
     print(root_path)
 
     RUN_AUTOEXPLORE = False
+    RUN_GB_STUDIO = True
 
     generated_roms = []
-    number_of_roms_to_generate = 1
+    number_of_roms_to_generate = 4
     path_to_last_generated_rom = ""
     for n in range(number_of_roms_to_generate):
         random.seed(None)
@@ -181,11 +182,13 @@ if __name__ == '__main__':
         project = createExampleProject(proj_title, macguffin_title)
         generator.writeProjectToDisk(project, filename=f"{title_munged[:28]}.gbsproj", output_path = destination)
         print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj"))
-        subprocess.call([os.path.abspath(r'.\compile_rom.bat'), os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj")])
-        path_to_last_generated_rom = os.path.abspath(destination + "/build/web/rom/game.gb")
-        generated_roms.append([title_munged, destination])
-        if RUN_AUTOEXPLORE:
-            runExploration(path_to_last_generated_rom, destination)
+        if RUN_GB_STUDIO:
+            subprocess.call([os.path.abspath(r'.\compile_rom.bat'), os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj")])
+            path_to_last_generated_rom = os.path.abspath(destination + "/build/web/rom/game.gb")
+            generated_roms.append([title_munged, destination])
 
-    generateWebpageCatalog(generated_roms, "../gbprojects/generated/")
-    subprocess.call(["pyboy", path_to_last_generated_rom])
+    if RUN_AUTOEXPLORE:
+        runExploration(path_to_last_generated_rom, destination)
+    if RUN_GB_STUDIO:
+        generateWebpageCatalog(generated_roms, "../gbprojects/generated/")
+        subprocess.call(["pyboy", path_to_last_generated_rom])

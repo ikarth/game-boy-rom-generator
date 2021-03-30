@@ -19,6 +19,7 @@ def getLibrary():
   SewerArea,
   TempleCorridor]
   for m in modules:
+      print(m)
       catalog, sprites = m.scene_generation()
       scene_library = scene_library + catalog()
       sprite_library = sprite_library + sprites

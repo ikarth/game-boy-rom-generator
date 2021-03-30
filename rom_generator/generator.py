@@ -452,6 +452,7 @@ def testConnections(scene_data_list, end_name='_gen_MacGuiffinTemple', start_nam
         if steps > limit:
             return -1
         if start_node == end_node:
+            print(f"found end: {end_node}")
             return steps
         if start_node in previously_visited:
             return -1

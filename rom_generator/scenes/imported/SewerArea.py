@@ -3,6 +3,7 @@
 
 from rom_generator import generator
 from rom_generator import script_functions as script
+import random
 
 test_generation_destination_path = "../gbprojects/generated_export_test_SewerArea/"
 
@@ -608,11 +609,11 @@ def scene_generation():
         return scene_data
 
 
-    def catalog():
+    def catalog(sample=True):
         """
         Returns a list of scene functions from this part of the library.
         """
-        return [scene_gen_Sewer01_00001_upper,
+        cat = [scene_gen_Sewer01_00001_upper,
             scene_gen_Sewer01_00001_lower,
             scene_gen_Sewer02_00002_upper,
             scene_gen_Sewer02_00002_lower,
@@ -622,6 +623,11 @@ def scene_generation():
             scene_gen_Sewer03_00005,
             scene_gen_Sewer06_00006,
             scene_gen_Sewer04a_00007]
+
+        if sample:
+            catalog_sample = random.sample(cat, 6)
+            return catalog_sample
+        return cat
 
     return catalog, sprite_sheet_data
 

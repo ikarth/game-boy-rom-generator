@@ -51,7 +51,7 @@ def scene_generation():
                 script.end()
             ]
             return trigger_00
-        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 5), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 4), 'entrance_size': (2, 1)  } }
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 5), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 4), 'entrance_size': (2, 1)  }, 'tags': ['A'] }
 
         def addConnection_01(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_01 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])

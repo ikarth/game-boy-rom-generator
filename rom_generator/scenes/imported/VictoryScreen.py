@@ -6,11 +6,28 @@ from rom_generator import script_functions as script
 
 test_generation_destination_path = "../gbprojects/generated_export_test_VictoryScreen/"
 
+macguffin_graphics_list = {
+"venom": 'macguffin_crystal.png',
+"crystal": 'macguffin_crystal.png',
+"egg": 'macguffin_egg.png',
+"sword": 'macguffin_sword.png',
+"blade": 'macguffin_sword.png',
+"bell": 'macguffin_bell.png',
+"arts": 'macguffin_bell.png'
+}
+
 
 def scene_generation(project_title="Quest for the MacGuffin", macguffin_name="MacGuffin"):
 
     macguffin_sprite = 'macguffin.png'
+    for n_k, n_v in macguffin_graphics_list.items():
+        print(f"{n_k} = {macguffin_name.lower().find(n_k)}")
+        if macguffin_name.lower().find(n_k):
+            macguffin_sprite = n_v
 
+
+    if macguffin_name.lower().find("venom"):
+        macguffin_sprite = 'macguffin_crystal.png'
     if macguffin_name.lower().find("crystal"):
         macguffin_sprite = 'macguffin_crystal.png'
     if macguffin_name.lower().find("egg"):

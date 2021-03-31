@@ -288,7 +288,8 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         actor_name_table.update({'actor_ba218b25-1f93-4421-a90f-8947df40d558': actor_00})
         actor_00['script'] = [
                 script.ifTrue(variable='26', children = {
-                    'true': [script.text(text=['You open the door.'], avatarId=''), script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'), #script.actorMoveTo(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', x=0, y=0), script.end()],
+                    'true': [script.text(text=['You open the door.'], avatarId=''), script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'), #script.actorMoveTo(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔', x=0, y=0), script.end()
+                    ],
                     'false': [script.text(text=['The door is locked. You need a key.'], avatarId=''), script.end()]
                 }),
                 script.end()
@@ -353,7 +354,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         trigger_02 = generator.makeTrigger('trigger_02', 8, 8, 1, 3)
         trigger_02['script'] = [
                 script.ifTrue(variable='23', children = {
-                    'true': [script.actorMoveTo(actorId='♔REFERENCE_TO_ACTORS_<player>♔', x=12, y=9), script.end()],
+                    'true': [script.text(text=["You use the ladder to cross."]), script.actorSetPosition(actorId='♔REFERENCE_TO_ACTORS_<player>♔', x=12, y=9), script.end()],
                     'false': [script.text(text=["You can't cross\nwithout a ladder."], avatarId=''), script.end()]
                 }),
                 script.end()
@@ -361,7 +362,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         trigger_03 = generator.makeTrigger('trigger_03', 11, 8, 1, 3)
         trigger_03['script'] = [
                 script.ifTrue(variable='23', children = {
-                    'true': [script.actorMoveTo(actorId='♔REFERENCE_TO_ACTORS_<player>♔', x=6, y=9), script.end()],
+                    'true': [script.text(text=["You use the ladder to cross."]), script.actorSetPosition(actorId='♔REFERENCE_TO_ACTORS_<player>♔', x=6, y=9), script.end()],
                     'false': [script.text(text=["You can't cross\nwithout a ladder."], avatarId=''), script.end()]
                 }),
                 script.end()
@@ -464,7 +465,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         collision_data_list = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 240, 255, 15, 255, 255, 112, 0, 0, 7, 0, 240, 0, 15, 15, 240, 240, 195, 15, 63, 252, 0, 195, 0, 48, 12, 0, 0, 0, 0, 0, 0, 0, 240, 255, 255]
         gen_scene_bkg = generator.makeBackground("save_the_world_04.png")
 
-        gen_scene_scn = generator.makeScene("_gen_SceneWithKey_real", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_Scene_8_00008")
+        gen_scene_scn = generator.makeScene("_gen_SceneWithKey_real", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="_gen_SceneWithKey_real")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])

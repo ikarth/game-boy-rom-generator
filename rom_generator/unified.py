@@ -11,6 +11,19 @@ from rom_generator.scenes.imported import SaveTheWorld
 from rom_generator.goexplore import runExploration
 import random
 
+class IncompatibleRooms(Exception):
+    pass
+
+import datetime
+import time
+def RecordRooms(proj_name, scene_data_list, success):
+    timestamp = str(time.time())
+    with open("log_room_choice.txt", "a") as f:
+        for s in scene_data_list:
+            nnm = s["scene"]["name"]
+            conn = [c["tags"] for c in s["connections"]]
+            f.write(f"{timestamp}, {proj_name}, {success}, {nnm}, \"{conn}\"\n")
+
 def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
     """
     Demonstration of how the scene generators in this file can be used.
@@ -53,18 +66,26 @@ def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
 
     # Hack to try to make sure the game is able to be completed...
     current_scene_data_list = copy.deepcopy(scene_data_list)
-    for n in range(15):
+    attempts_to_make = 15
+    for n in range(attempts_to_make):
         print(f"connecting attempt {n}")
         generator.connectScenesRandomlySymmetric(scene_data_list)
         steps_to_solve = generator.testConnections(scene_data_list)
         print(steps_to_solve)
         steps_to_key = generator.testConnections(scene_data_list, key_room_name)
         print(steps_to_key)
+        #steps_to_key = 1 # hack to ignore this check for now...
         if (steps_to_solve < 0) or (steps_to_key < 0):
+            if n == (attempts_to_make - 1):
+                print("Can't make map with these rooms.")
+                # import pdb; pdb.set_trace()
+                RecordRooms(proj_title, scene_data_list, False)
+                raise IncompatibleRooms
             print("Solve failed. Trying again...")
             scene_data_list = copy.deepcopy(current_scene_data_list)
         else:
             print("Scenes connected.")
+            RecordRooms(proj_title, scene_data_list, True)
             current_scene_data_list = copy.deepcopy(scene_data_list)
             break
     scene_data_list = copy.deepcopy(current_scene_data_list)
@@ -163,7 +184,7 @@ if __name__ == '__main__':
     print(root_path)
 
     RUN_AUTOEXPLORE = False
-    RUN_GB_STUDIO = True
+    RUN_GB_STUDIO = False
 
     generated_roms = []
     number_of_roms_to_generate = 4
@@ -179,10 +200,18 @@ if __name__ == '__main__':
         title_munged = proj_title.replace(" ", "").replace(":", "_").replace("'", "_").replace("&", "and").replace("]|[","3").replace("]","I").replace("|","I").replace("[","I")
         destination = f"../gbprojects/generated/{title_munged}"
         generator.initializeGenerator()
-        project = createExampleProject(proj_title, macguffin_title)
+        project_generated = 0
+        while project_generated >= 0:
+            try:
+                project = createExampleProject(proj_title, macguffin_title)
+                project_generated = -1
+            except IncompatibleRooms as e:
+                project_generated += 1
+                print(f"Generation Attempt {project_generated} failed.")
+
         generator.writeProjectToDisk(project, filename=f"{title_munged[:28]}.gbsproj", output_path = destination)
-        print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj"))
         if RUN_GB_STUDIO:
+            print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj"))
             subprocess.call([os.path.abspath(r'.\compile_rom.bat'), os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj")])
             path_to_last_generated_rom = os.path.abspath(destination + "/build/web/rom/game.gb")
             generated_roms.append([title_munged, destination])

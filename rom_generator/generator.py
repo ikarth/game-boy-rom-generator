@@ -423,6 +423,16 @@ def addSceneData(project, scene_data):
 import pprint
 def testConnections(scene_data_list, end_name='_gen_MacGuiffinTemple', start_name='_gen_BeginningCave'):
     pp = pprint.PrettyPrinter(indent=3)
+    scene_names = {}
+    scene_connections = {}
+    for s in scene_data_list:
+        scene_names[s["scene"]["id"]] = s["scene"]["name"]
+        try:
+            scene_connections[s["scene"]["id"]] = [c["tags"] for c in s["connections"]]
+        except KeyError as e:
+            print(e)
+            scene_connections[s["scene"]["id"]] = None
+
     scene_tree = {}
     start_id = "X"
     end_id = "Y"
@@ -446,11 +456,17 @@ def testConnections(scene_data_list, end_name='_gen_MacGuiffinTemple', start_nam
     # Very naive depth-first search...
     previously_visited = []
     def searchTreeNode(start_node, end_node, steps=0, limit = 99):
-        print(start_node, steps)
         if "♔" in start_node:
             return -1
         if steps > limit:
             return -1
+
+        try:
+            print(start_node, steps, "\t", scene_names[start_node], "\t\t", scene_connections[start_node])
+        except KeyError as e:
+            print(e)
+
+
         if start_node == end_node:
             print(f"found end: {end_node}")
             return steps

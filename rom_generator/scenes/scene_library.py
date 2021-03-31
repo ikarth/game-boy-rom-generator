@@ -8,6 +8,7 @@ from rom_generator.scenes.imported import TempleCorridor
 from rom_generator.scenes.imported import SewerArea
 from rom_generator.scenes.imported import Junctions
 from rom_generator.scenes.imported import Junction2
+from rom_generator.scenes.imported import Forest
 
 def getLibrary():
   scene_library = []
@@ -18,6 +19,7 @@ def getLibrary():
   So_Many_Rooms,
   #LiminalRooms,
   Junction2,
+  Forest,
   Junctions,
   SewerArea,
   TempleCorridor]

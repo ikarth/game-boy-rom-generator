@@ -7,13 +7,29 @@ from rom_generator import script_functions as script
 test_generation_destination_path = "../gbprojects/generated_export_test_VictoryScreen/"
 
 macguffin_graphics_list = {
+"record": 'macguffin_book.png',
+"story": 'macguffin_book.png',
+"heart": 'macguffin_heart.png',
+"love": 'macguffin_heart.png',
+"candle": 'macguffin_candle.png',
+"flame": 'macguffin_candle.png',
+"fire": 'macguffin_candle.png',
+"wax": 'macguffin_candle.png',
+"book": 'macguffin_book.png',
+"codex": 'macguffin_book.png',
+"chronicle": 'macguffin_book.png',
+"record": 'macguffin_book.png',
+"poem": 'macguffin_book.png',
+"feather": 'macguffin_crystal.png',
 "venom": 'macguffin_crystal.png',
 "crystal": 'macguffin_crystal.png',
 "egg": 'macguffin_egg.png',
 "sword": 'macguffin_sword.png',
 "blade": 'macguffin_sword.png',
 "bell": 'macguffin_bell.png',
-"arts": 'macguffin_bell.png'
+"arts": 'macguffin_bell.png',
+"harp": 'macguffin_harp.png',
+"goblet": 'macguffin.png'
 }
 
 
@@ -21,25 +37,25 @@ def scene_generation(project_title="Quest for the MacGuffin", macguffin_name="Ma
 
     macguffin_sprite = 'macguffin.png'
     for n_k, n_v in macguffin_graphics_list.items():
-        print(f"{n_k} = {macguffin_name.lower().find(n_k)}")
-        if macguffin_name.lower().find(n_k):
+        if macguffin_name.lower().find(n_k) >= 0:
+            print(f"{n_k} = {macguffin_name.lower().find(n_k)}")
             macguffin_sprite = n_v
 
 
-    if macguffin_name.lower().find("venom"):
-        macguffin_sprite = 'macguffin_crystal.png'
-    if macguffin_name.lower().find("crystal"):
-        macguffin_sprite = 'macguffin_crystal.png'
-    if macguffin_name.lower().find("egg"):
-        macguffin_sprite = 'macguffin_egg.png'
-    if macguffin_name.lower().find("sword"):
-        macguffin_sprite = 'macguffin_sword.png'
-    if macguffin_name.lower().find("blade"):
-        macguffin_sprite = 'macguffin_sword.png'
-    if macguffin_name.lower().find("bell"):
-        macguffin_sprite = 'macguffin_bell.png'
-    if macguffin_name.lower().find("arts"):
-        macguffin_sprite = 'macguffin_bell.png'
+    # if macguffin_name.lower().find("venom"):
+    #     macguffin_sprite = 'macguffin_crystal.png'
+    # if macguffin_name.lower().find("crystal"):
+    #     macguffin_sprite = 'macguffin_crystal.png'
+    # if macguffin_name.lower().find("egg"):
+    #     macguffin_sprite = 'macguffin_egg.png'
+    # if macguffin_name.lower().find("sword"):
+    #     macguffin_sprite = 'macguffin_sword.png'
+    # if macguffin_name.lower().find("blade"):
+    #     macguffin_sprite = 'macguffin_sword.png'
+    # if macguffin_name.lower().find("bell"):
+    #     macguffin_sprite = 'macguffin_bell.png'
+    # if macguffin_name.lower().find("arts"):
+    #     macguffin_sprite = 'macguffin_bell.png'
 
     sprite_sheet_data = [
         generator.makeSpriteSheet('actor.png', name='actor', type='actor', frames=3),

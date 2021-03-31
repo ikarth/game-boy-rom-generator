@@ -351,7 +351,7 @@ def scene_generation():
         collision_data_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31, 0, 248, 15, 224, 255, 0, 15, 0, 248, 0, 192, 135, 15, 126, 248, 224, 240, 15, 15, 255, 112, 248, 15, 135, 255, 240, 240, 15, 15, 255]
         gen_scene_bkg = generator.makeBackground("Forest_01c.png")
 
-        gen_scene_scn = generator.makeScene("_gen_ForestC", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_ForestC_00008")
+        gen_scene_scn = generator.makeScene("_gen_ForestC_08", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_ForestC_00008")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -385,7 +385,7 @@ def scene_generation():
         collision_data_list = [255, 252, 255, 207, 128, 255, 9, 248, 159, 129, 255, 48, 248, 15, 131, 127, 56, 248, 131, 192, 15, 15, 252, 16, 192, 128, 1, 8, 8, 128, 255, 1, 8, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         gen_scene_bkg = generator.makeBackground("Forest_01d.png")
 
-        gen_scene_scn = generator.makeScene("_gen_ForestC", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_ForestC_00009")
+        gen_scene_scn = generator.makeScene("_gen_ForestC_09", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_ForestC_00009")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -419,7 +419,7 @@ def scene_generation():
         collision_data_list = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 248, 63, 0, 255, 31, 176, 217, 131, 155, 125, 24, 128, 135, 1, 120, 14, 0, 247, 0, 112, 31, 0, 246, 1, 96, 63, 0, 247, 3, 112, 127, 128, 247, 7, 120]
         gen_scene_bkg = generator.makeBackground("Forest_01e.png")
 
-        gen_scene_scn = generator.makeScene("_gen_ForestC", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_ForestC_00010")
+        gen_scene_scn = generator.makeScene("_gen_ForestC_10", gen_scene_bkg, collisions=collision_data_list, actors=actor_list, triggers=trigger_list, scene_label="scene_gen_ForestC_00010")
 
         def addConnection_00(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_00 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])

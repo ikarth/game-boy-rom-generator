@@ -74,7 +74,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
                 script.end()
             ]
             return trigger_00
-        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 15), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 16), 'entrance_size': (2, 2)  }, 'tags': ['A'] }
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 15), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 16), 'entrance_size': (2, 2)  }, 'tags': ['A', 'D'] }
 
         gen_scene_connections = [connection_00]
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -459,7 +459,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
             script.setTrue(variable='23'),
             script.end()
             ]
-        actor_00['startScript'] = [
+        actor_01['startScript'] = [
             script.ifTrue(variable='23', children = {
                 'true': [script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'), script.end()],
                 'false': [script.end()]

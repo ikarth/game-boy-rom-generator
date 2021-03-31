@@ -625,7 +625,7 @@ def scene_generation():
             scene_gen_Sewer04a_00007]
 
         if sample:
-            catalog_sample = random.sample(cat, 6)
+            catalog_sample = random.sample(cat, 4)
             return catalog_sample
         return cat
 

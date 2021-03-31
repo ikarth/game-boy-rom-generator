@@ -936,7 +936,7 @@ def scene_generation():
             scene_gen_Scene_10_00010,
             scene_gen_Scene_11_00011]
         if sample:
-            catalog_sample = random.sample(cat, 2)
+            catalog_sample = random.sample(cat, 1)
         else:
             catalog_sample = cat
         catalog_sample += [scene_gen_nothing_00012,

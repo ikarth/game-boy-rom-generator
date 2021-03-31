@@ -8,7 +8,6 @@ from rom_generator.scenes.imported import TempleCorridor
 from rom_generator.scenes.imported import SewerArea
 from rom_generator.scenes.imported import Junctions
 from rom_generator.scenes.imported import Junction2
-import random
 
 def getLibrary():
   scene_library = []
@@ -18,11 +17,10 @@ def getLibrary():
   modules = [#BasicScenes,
   So_Many_Rooms,
   #LiminalRooms,
+  Junction2,
   Junctions,
   SewerArea,
   TempleCorridor]
-  if random.random() < 0.35:
-      modules.append(Junction2)
 
 
   for m in modules:

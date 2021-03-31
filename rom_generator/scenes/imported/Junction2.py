@@ -3,6 +3,7 @@
 
 from rom_generator import generator
 from rom_generator import script_functions as script
+import random
 
 test_generation_destination_path = "../gbprojects/generated_export_test_Junction2/"
 
@@ -491,18 +492,21 @@ def scene_generation():
         """
         Returns a list of scene functions from this part of the library.
         """
-        return [scene_gen_Junction5A_00001,
+        cat = random.sample([scene_gen_Junction5A_00001,
             scene_gen_Junction5B_00002,
             scene_gen_Junction5C_00003,
             scene_gen_Junction5D_00004,
-            scene_gen_Junction5E_00005,
-            scene_gen_ForestA_00006,
+            scene_gen_Junction5E_00005], 2)
+
+        if random.random() < 0.3:
+            cat += [scene_gen_ForestA_00006,
             scene_gen_ForestB_00007,
             scene_gen_ForestC_00008,
             scene_gen_ForestC_00009,
             scene_gen_ForestC_00010,
             scene_gen_ForestJunction_00011,
             scene_gen_ForestJunction_00011]
+        return cat
 
     return catalog, sprite_sheet_data
 

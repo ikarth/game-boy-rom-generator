@@ -189,10 +189,10 @@ if __name__ == '__main__':
     print(root_path)
 
     RUN_AUTOEXPLORE = False
-    RUN_GB_STUDIO = False
+    RUN_GB_STUDIO = True
 
     generated_roms = []
-    number_of_roms_to_generate = 24
+    number_of_roms_to_generate = 12
     path_to_last_generated_rom = ""
     for n in range(number_of_roms_to_generate):
         random.seed(None)

@@ -32,8 +32,8 @@ def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
     project.name = proj_title
 
     # Create sprite sheet for the player sprite
-    player_sprite_sheet_image = random.choice(["actor_animated.png", "player.png", "npc003.png", "npc002.png", "npc001.png"])
-    player_sprite_sheet = generator.addSpriteSheet(project, player_sprite_sheet_image, "actor_animated", "actor_animated")
+    player_sprite_sheet_image = random.choice(["actor_animated.png", "player.png", "npc003_walk.png", "npc002.png"])
+    player_sprite_sheet = generator.addSpriteSheet(project, player_sprite_sheet_image, "actor_animated_"+player_sprite_sheet_image, "actor_animated")
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
     scene_data_list = []
@@ -66,18 +66,23 @@ def createExampleProject(proj_title="generated", macguffin_title="MacGuffin"):
 
     # Hack to try to make sure the game is able to be completed...
     current_scene_data_list = copy.deepcopy(scene_data_list)
-    attempts_to_make = 15
+    attempts_to_make = 5
     for n in range(attempts_to_make):
         print(f"connecting attempt {n}")
         generator.connectScenesRandomlySymmetric(scene_data_list)
         steps_to_solve = generator.testConnections(scene_data_list)
         print(steps_to_solve)
         steps_to_key = generator.testConnections(scene_data_list, key_room_name)
+        print("key_room_name")
         print(steps_to_key)
-        #steps_to_key = 1 # hack to ignore this check for now...
+        steps_to_key = 1 # hack to ignore this check for now...
         if (steps_to_solve < 0) or (steps_to_key < 0):
             if n == (attempts_to_make - 1):
                 print("Can't make map with these rooms.")
+                for s in scene_data_list:
+                    nnm = s["scene"]["name"]
+                    conn = [c["tags"] for c in s["connections"]]
+                    print(nnm + "\t\t" + str(conn))
                 # import pdb; pdb.set_trace()
                 RecordRooms(proj_title, scene_data_list, False)
                 raise IncompatibleRooms
@@ -187,7 +192,7 @@ if __name__ == '__main__':
     RUN_GB_STUDIO = False
 
     generated_roms = []
-    number_of_roms_to_generate = 4
+    number_of_roms_to_generate = 24
     path_to_last_generated_rom = ""
     for n in range(number_of_roms_to_generate):
         random.seed(None)

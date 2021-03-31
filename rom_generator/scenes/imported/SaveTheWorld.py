@@ -83,8 +83,8 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
 
     def scene_gen_SceneWithLock_00002(callback):
 
-        texts_no_key = [f"You need to\ngive me\n{key_name}.", f"Can't let you past\nif you don't have\n{key_name}.", f"Halt! Only those with\n{key_name}\nmay pass."]
-        text_guard_no_key = "You're going to\nneed to give me\nthe key."
+        texts_no_key = [f"You need to give me {key_name}.", f"Can't let you past if you don't have {key_name}.", f"Halt! Only those with {key_name} may pass."]
+        text_guard_no_key = f"You're going to need to give me {key_name}."
         text_guard_no_key = random.choice(texts_no_key)
 
         actor_name_table = {}
@@ -349,8 +349,8 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
     def scene_gen_stw_02_00006(callback):
         actor_name_table = {}
         actor_list = []
-        trigger_00 = generator.makeTrigger('trigger_00', 0, 8, 1, 3)
-        trigger_01 = generator.makeTrigger('trigger_01', 19, 8, 1, 3)
+        #trigger_00 = generator.makeTrigger('trigger_00', 0, 8, 1, 3)
+        #trigger_01 = generator.makeTrigger('trigger_01', 19, 8, 1, 3)
         trigger_02 = generator.makeTrigger('trigger_02', 8, 8, 1, 3)
         trigger_02['script'] = [
                 script.ifTrue(variable='23', children = {
@@ -380,7 +380,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
                 script.end()
             ]
             return trigger_00
-        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (1, 9), 'exit_direction': 'right', 'entrance': gen_scene_scn['id'], 'entrance_location': (0, 8), 'entrance_size': (1, 3)  }, 'tags': ['A']  }
+        connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (1, 9), 'exit_direction': 'right', 'entrance': gen_scene_scn['id'], 'entrance_location': (0, 8), 'entrance_size': (1, 3)  }, 'tags': ['B']  }
 
         def addConnection_01(source_location, source_size, destination_scene_id, destination_location, destination_direction):
             trigger_01 = generator.makeTrigger('trigger_connection', source_location[0], source_location[1], source_size[0], source_size[1])
@@ -389,7 +389,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
                 script.end()
             ]
             return trigger_01
-        connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (17, 9), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 8), 'entrance_size': (1, 3)  }, 'tags': ['B']  }
+        connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (17, 9), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 8), 'entrance_size': (1, 3)  }, 'tags': ['A']  }
 
         gen_scene_connections = [connection_00, connection_01]
         scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
@@ -454,9 +454,17 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         actor_01 = generator.makeActor(None, 0, 4, 'static', moveSpeed=1, animSpeed=3, direction='down', script=[], sprite_id=findSpriteByName('ladder')['id'], name='actor_74ec84d0-260b-4c64-9921-8167b98d31bc')
         actor_name_table.update({'actor_74ec84d0-260b-4c64-9921-8167b98d31bc': actor_01})
         actor_01['script'] = [
-                script.text(text=['You have the\nladder!'], avatarId=''),
-                script.setTrue(variable='23'),
-                script.end()
+            script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'),
+            script.text(text=['You have the\nladder!'], avatarId=''),
+            script.setTrue(variable='23'),
+            script.end()
+            ]
+        actor_00['startScript'] = [
+            script.ifTrue(variable='23', children = {
+                'true': [script.actorHide(actorId='♔REFERENCE_TO_ACTORS_<$self$>♔'), script.end()],
+                'false': [script.end()]
+                }),
+            script.end()
             ]
         actor_list = [actor_00, actor_01]
         trigger_00 = generator.makeTrigger('trigger_00', 19, 12, 1, 5)
@@ -592,14 +600,19 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
                     scene_gen_SceneWithKey_00003_real,
                     scene_gen_SceneWithKey_00003_fake]
         lock_and_key_four = [
-        scene_gen_stw_03_lower_00009,
+        #scene_gen_stw_03_lower_00009,
         scene_gen_stw_03_upper_00007,
-        scene_gen_Scene_8_00008_nokey,
+        #scene_gen_Scene_8_00008_nokey,
         scene_gen_SceneWithKey_00003_real,
         scene_gen_SceneWithKey_00003_fake]
         lock_and_key_five = [scene_gen_stw_02_00006, scene_gen_Scene_8_00008]
 
-        lock_and_key_choice = random.choice([lock_and_key_one, lock_and_key_two, lock_and_key_five, lock_and_key_four])
+        lock_and_key_choice = random.choice([
+        lock_and_key_one,
+        lock_and_key_two,
+        lock_and_key_five#,
+        #lock_and_key_four
+        ])
 
         return scene_list + lock_and_key_choice
 

@@ -64,6 +64,7 @@ def CarveSeams(pillow_image, save_name):
     savepoints = list(range(crop_by))
     save_points = None
 
+    #cropped_img_array = img_array
     cropped_img_array = SeamCarverResize(img_array,
                                         crop_by,
                                         dual_gradient_energy,
@@ -73,6 +74,8 @@ def CarveSeams(pillow_image, save_name):
                                         pad=pad_border,
                                         highlight=show_seam
                                         )
+
+
 
     if 'y' == carving_axis:
         cropped_img_array = np.transpose(cropped_img_array, axes=(1, 0, 2))

@@ -45,6 +45,7 @@ def cd(newdir):
 
 
 
+
 # Template Slots
 
 # def makeConnection(source_location, source_size, destination_scene, destination_location, destination_direction):
@@ -447,41 +448,50 @@ def testConnections(scene_data_list, end_name='_gen_MacGuiffinTemple', start_nam
         try:
             for con_num, con in enumerate(scene["scene"]["triggers"]):
                 #pp.pprint(con)
-                scene_tree[scene["scene"]["id"]].add(con["script"][0]["args"]["sceneId"])
-
-        except KeyError:
+                try:
+                    scene_tree[scene["scene"]["id"]].add(con["script"][0]["args"]["sceneId"])
+                except KeyError as e:
+                    #print(e)
+                    pass
+        except KeyError as e:
+            #print(e)
             pass
     #pp.pprint(scene_tree)
 
     # Very naive depth-first search...
     previously_visited = []
-    def searchTreeNode(start_node, end_node, steps=0, limit = 99):
+    g_not_visited = scene_names.keys()
+    def searchTreeNode(start_node, end_node, steps=0, limit = 99, not_visited=[]):
         if "♔" in start_node:
-            return -1
+            return -1, not_visited
         if steps > limit:
-            return -1
-
-        try:
-            print(start_node, steps, "\t", scene_names[start_node], "\t\t", scene_connections[start_node])
-        except KeyError as e:
-            print(e)
-
-
+            return -1, not_visited
         if start_node == end_node:
             print(f"found end: {end_node}")
-            return steps
+            not_visited = [x for x in not_visited if x != start_node] # remove all instances from not visited so we can keep track of ...
+            return steps, not_visited
+
         if start_node in previously_visited:
-            return -1
+            return -1, not_visited
+        try:
+            print(start_node, steps, "\t", scene_names[start_node], "\t\t", scene_connections[start_node])
+
+        except KeyError as e:
+            print(e)
         previously_visited.append(start_node)
+        not_visited = [x for x in not_visited if x != start_node] # remove all instances from not visited so we can keep track of ...
         node = scene_tree[start_node]
         for n in node:
-            n_result = searchTreeNode(n, end_node, steps+1)
+            n_result, not_visited = searchTreeNode(n, end_node, steps+1, not_visited=not_visited)
             if n_result == -1:
                 continue
-            return n_result
-        return -1
+            return n_result, not_visited
+        return -1, not_visited
 
-    steps_to_destination = searchTreeNode(start_id, end_id)
+    steps_to_destination, not_visited = searchTreeNode(start_id, end_id, not_visited=g_not_visited)
+    if len(not_visited) > 0:
+        print("not visited:")
+        [print(x, -1, "\t", scene_names[x], "\t\t", scene_connections[x]) for x in not_visited]
     return steps_to_destination
 
 
@@ -540,7 +550,7 @@ def connectScenesRandomlySymmetric(scene_data_list, use_tags=True):
 
         try:
             other_connection = random.choice(filtered_other_connections)
-            connection_tries = 15
+            connection_tries = 5
             for n in range(connection_tries):
                 if not (other_connection[2]["args"]["exit_direction"] == reverse_direction[current_connection[2]["args"]["exit_direction"]]):
                     other_connection = random.choice(filtered_other_connections)

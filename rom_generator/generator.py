@@ -304,8 +304,8 @@ def generateDialog(macguffin_name="the macguffin", sage_name="a mentor"):
     grammar = tracery.Grammar(rules["grammar"])
     grammar.add_modifiers(base_english)
     gen_title = grammar.flatten("#origin#")
-    gen_title = gen_title.replace("macguffin", macguffin_name)
-    gen_title = gen_title.replace("a_mentor", sage_name)
+    gen_title = gen_title.replace("macguffin", f"the {macguffin_name}")
+    gen_title = gen_title.replace("a_mentor", f"a {sage_name}")
     print(gen_title)
     return gen_title
 
@@ -389,8 +389,8 @@ def makeNPCSprite():
     return makeSpriteSheet(mentor_sage_image, name=mentor_sage_name, type='static', frames=1)
 
 def mixinNPC(scene, sprite, mac_name, sage_name):
-    # 45% chance of having an NPC in this scene...
-    if random.random() > 0.45:
+    # 35% chance of having an NPC in this scene...
+    if random.random() > 0.35:
         return scene
 
     # figure out where to place the NPC...

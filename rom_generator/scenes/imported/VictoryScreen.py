@@ -111,7 +111,7 @@ def scene_generation(project_title="Quest for the MacGuffin", macguffin_name="Ma
         for txt in [f"This game was generated with revision {git_revision_label}, version {VERSION_NUMBER} of the Game Boy ROM Generator on {generator_time}.", "The Gane Boy ROM Generator was created by",      "Isaac Karth and Tamara Duplantis", "With additional design by Max Kreminski", "and includes programming by", "Sachita Kashyap", "Vijaya Kukutla", "Aaron Lo", "Anika Mittal", "and Harvin Park", "with the assistance of", "Adam Smith and Michael Mateas"]:
             npc_script.append(script.text(text=txt, avatarId=''))
 
-        actor_credits = generator.makeActor(sprite, x, y, script=npc_script)
+        actor_credits = generator.makeActor(sprite, 1, 15, script=npc_script)
 
 
         actor_list = [actor_00, actor_credits]

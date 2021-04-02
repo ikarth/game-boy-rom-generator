@@ -282,7 +282,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", 
     element["x"] = x
     element["y"] = y
     element["animate"] = animate
-    element["script"] = []
+    element["script"] = script
     element["startScript"] = []
     element["_name"] = name
     return copy.deepcopy(element)
@@ -961,6 +961,7 @@ def translateReferences(data, list_of_scenes):
 
     Call it after all of the scenes have been created.
     """
+    import pdb; pdb.set_trace()
     if isinstance(data, str):
         while ("♔" in data):
             if data.startswith("♔REFERENCE_TO_SCENES_"):
@@ -975,6 +976,7 @@ def translateReferences(data, list_of_scenes):
                     continue
             print(data)
             breakpoint()
+            import pdb; pdb.set_trace()
             data = "♔UNBOUND_REF♔"
     if (isinstance(data, list)):
         for data_key, data_val in enumerate(data):

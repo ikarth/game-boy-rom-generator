@@ -203,8 +203,8 @@ if __name__ == '__main__':
     print(root_path)
 
     RUN_AUTOEXPLORE = False
-    RUN_GB_STUDIO = True
-    use_seam_carving = True
+    RUN_GB_STUDIO = False
+    use_seam_carving = False
     CONNECTION_HEURISTIC = "random"
 
     generated_roms = []

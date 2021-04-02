@@ -208,7 +208,7 @@ if __name__ == '__main__':
     CONNECTION_HEURISTIC = "random"
 
     generated_roms = []
-    number_of_roms_to_generate = 12
+    number_of_roms_to_generate = 1
     path_to_last_generated_rom = ""
     for n in range(number_of_roms_to_generate):
         random.seed(None)

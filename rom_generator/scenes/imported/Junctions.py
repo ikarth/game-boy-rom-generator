@@ -64,7 +64,7 @@ def scene_generation():
         connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (17, 10), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 8), 'entrance_size': (1, 4)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_00, connection_01]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
 
@@ -108,7 +108,7 @@ def scene_generation():
         connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (10, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (8, 17), 'entrance_size': (6, 1)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_00, connection_01, connection_02]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
 
@@ -152,7 +152,7 @@ def scene_generation():
         connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (5, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (4, 17), 'entrance_size': (4, 1)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_00, connection_01, connection_02]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
 
@@ -196,7 +196,7 @@ def scene_generation():
         connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (17, 10), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 8), 'entrance_size': (1, 4)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_00, connection_01, connection_02]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
 
@@ -240,19 +240,22 @@ def scene_generation():
         connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (9, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (8, 17), 'entrance_size': (4, 1)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_00, connection_01, connection_02]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
 
-    def catalog():
+    def catalog(sample=True):
         """
         Returns a list of scene functions from this part of the library.
         """
-        return random.sample([scene_gen_corner_00001,
+        cat = [scene_gen_corner_00001,
             scene_gen_junctionDown_00002,
             scene_gen_JunctionLeft_00003,
             scene_gen_JunctionUp_00004,
-            scene_gen_JunctionRight_00005],2)
+            scene_gen_JunctionRight_00005]
+        if sample:
+            return random.sample(cat,2)
+        return cat
 
     return catalog, sprite_sheet_data
 

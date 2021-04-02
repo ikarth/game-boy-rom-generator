@@ -8,8 +8,7 @@ import random
 
 test_generation_destination_path = "../gbprojects/generated_export_test_SaveTheWorld/"
 
-def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="MacGuffin"):
-    key_name = "the key"
+def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="MacGuffin", key_name = "the key"):
     mentor_sage_images = ['sage.png', 'cat.png', 'dog.png', 'signpost.png', 'radio.png']
     mentor_sage_image = random.choice(mentor_sage_images)
     mentor_sage_name = mentor_sage_image[:-4]
@@ -77,7 +76,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_00 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_00, 'args': { 'exit_location': (9, 15), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 16), 'entrance_size': (2, 2)  }, 'tags': ['A', 'D'] }
 
         gen_scene_connections = [connection_00]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Mentor"]}
         return scene_data
 
 
@@ -135,7 +134,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (27, 11), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (29, 8), 'entrance_size': (1, 8)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_00, connection_01, connection_02]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer->Temple"]}
         return scene_data
 
     def scene_gen_SceneWithKey_00003_real(callback):
@@ -183,7 +182,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (1, 17), 'exit_direction': 'right', 'entrance': gen_scene_scn['id'], 'entrance_location': (0, 6), 'entrance_size': (1, 13)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_00]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
     def scene_gen_SceneWithKey_00003_fake(callback):
@@ -231,7 +230,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (1, 17), 'exit_direction': 'right', 'entrance': gen_scene_scn['id'], 'entrance_location': (0, 6), 'entrance_size': (1, 13)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_01]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
     def scene_gen_SceneWithKey_00003(callback):
@@ -279,7 +278,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (1, 17), 'exit_direction': 'right', 'entrance': gen_scene_scn['id'], 'entrance_location': (0, 6), 'entrance_size': (1, 13)  }, 'tags': ['A'] }
 
         gen_scene_connections = [connection_00, connection_01]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
     def scene_gen_stw_01_00005(callback):
@@ -342,7 +341,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_03 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_03, 'args': { 'exit_location': (9, 16), 'exit_direction': 'up', 'entrance': gen_scene_scn['id'], 'entrance_location': (9, 17), 'entrance_size': (2, 1)  }, 'tags': ['A']  }
 
         gen_scene_connections = [connection_00, connection_01, connection_02, connection_03]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer->Temple"]}
         return scene_data
 
 
@@ -392,7 +391,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (17, 9), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 8), 'entrance_size': (1, 3)  }, 'tags': ['A']  }
 
         gen_scene_connections = [connection_00, connection_01]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer->Temple"]}
         return scene_data
 
 
@@ -439,7 +438,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (9, 4), 'exit_direction': 'down', 'entrance': gen_scene_scn['id'], 'entrance_location': (8, 0), 'entrance_size': (4, 4)  }, 'tags': ['B']  }
 
         gen_scene_connections = [connection_00, connection_01, connection_02]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
 
@@ -494,7 +493,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (17, 7), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 6), 'entrance_size': (1, 2)  }, 'tags': ['A']  }
 
         gen_scene_connections = [connection_00, connection_01]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
     def scene_gen_Scene_8_00008_nokey(callback):
@@ -540,7 +539,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_01 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_01, 'args': { 'exit_location': (17, 7), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 6), 'entrance_size': (1, 2)  }, 'tags': ['A']  }
 
         gen_scene_connections = [connection_00, connection_01]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
 
@@ -584,7 +583,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
         connection_02 = {'type': 'SLOT_CONNECTION', 'creator': addConnection_02, 'args': { 'exit_location': (17, 9), 'exit_direction': 'left', 'entrance': gen_scene_scn['id'], 'entrance_location': (19, 8), 'entrance_size': (1, 3)  }, 'tags': ['A']  }
 
         gen_scene_connections = [connection_00, connection_01, connection_02]
-        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": []}
+        scene_data = {"scene": gen_scene_scn, "background": gen_scene_bkg, "sprites": [], "connections": gen_scene_connections, "references": [], "tags": ["Sewer"]}
         return scene_data
 
     def catalog():
@@ -616,7 +615,7 @@ def scene_generation(project_name="Quest for the MacGuffin", macguffin_name="Mac
 
         return scene_list + lock_and_key_choice
 
-    return catalog, sprite_sheet_data, "_gen_SceneWithKey_real"
+    return catalog, sprite_sheet_data, "_gen_SceneWithKey_real", mentor_sage_name
 
 
 

@@ -48,7 +48,7 @@ def SeamCarverResize(full_image, cropped_by, energy_fn, pad=True, savepoints=Non
         img = seam_carver.remove_seam(img, seam)
     return img
 
-def CarveSeams(pillow_image, save_name):
+def CarveSeams(pillow_image, save_name, skip_carving=False):
     """
     Use seam carving to remove black lines in the middle of the image and
     hopefully improve the vertical spacing between words.
@@ -64,8 +64,10 @@ def CarveSeams(pillow_image, save_name):
     savepoints = list(range(crop_by))
     save_points = None
 
-    #cropped_img_array = img_array
-    cropped_img_array = SeamCarverResize(img_array,
+    if skip_carving:
+        cropped_img_array = img_array
+    else:
+        cropped_img_array = SeamCarverResize(img_array,
                                         crop_by,
                                         dual_gradient_energy,
                                         save_name=save_name,
@@ -145,7 +147,7 @@ def splitInTheMiddle(string_to_split):
     midpoint = len(parts) // 2
     return [parts[:midpoint], parts[midpoint:]]
 
-def generateTitleBackground(proj_title, no_split=False, squash=0):
+def generateTitleBackground(proj_title, no_split=False, squash=0, use_seam_carving=True):
     """
     Generates an image for the title screen. Returns the filename of the new image.
     """
@@ -246,7 +248,7 @@ def generateTitleBackground(proj_title, no_split=False, squash=0):
         if second_font == 'assets\\fonts\\blankenburg-2-font\\Blankenburg-eJGx.ttf':
             second_font = pickFont() # switch fonts to one that looks better for that string
 
-    def addTitleText(title_text_line, top_edge=0, leave_room=0, cur_font_path=None):
+    def addTitleText(title_text_line, top_edge=0, leave_room=0, cur_font_path=None, use_seam_carving=True):
         title_text_generation_command = {}
         is_primary_line = True
         #print(f"[{top_edge}]", end=" ")
@@ -356,17 +358,17 @@ def generateTitleBackground(proj_title, no_split=False, squash=0):
                 for ssn in sn:
                     if (("for " in ssn) or ("of " in ssn)):
                         cur_font_path = second_font
-                    edge_plus, text_draw_command = addTitleText(ssn, edge, room, cur_font_path=cur_font_path)
+                    edge_plus, text_draw_command = addTitleText(ssn, edge, room, cur_font_path=cur_font_path, use_seam_carving=use_seam_carving)
                     edge += edge_plus + 2
                     text_draw_commands.append(text_draw_command)
             else:
                 if (("for " in n) or ("of " in n)):
                     cur_font_path = second_font
-                edge_plus, text_draw_command = addTitleText(n, edge, room, cur_font_path=cur_font_path)
+                edge_plus, text_draw_command = addTitleText(n, edge, room, cur_font_path=cur_font_path, use_seam_carving=use_seam_carving)
                 text_draw_commands.append(text_draw_command)
                 edge += edge_plus + 2
     else:
-        edge_plus, text_draw_command = addTitleText(proj_title, cur_font_path=cur_font_path)
+        edge_plus, text_draw_command = addTitleText(proj_title, cur_font_path=cur_font_path, use_seam_carving=use_seam_carving)
         text_draw_commands.append(text_draw_command)
 
     if squash > 0:
@@ -420,7 +422,7 @@ def generateTitleBackground(proj_title, no_split=False, squash=0):
         draw_cmd((x1 * big_multiplier, y1 * big_multiplier), cmd["text"], spacing=cmd["line_spacing"] * big_multiplier, font=fnt, fill=selected_color, align=cmd["align"])
         #print([(x1, y1), cmd["text"], cmd["line_spacing"] * big_multiplier, (255,255,255), cmd["align"]])
 
-    use_seam_carving = True
+    #use_seam_carving = True
     if squash > 0:
         big_img = removeBlankRows(big_img, gap_spacing=0, carving=use_seam_carving, padding=True)
     else:
@@ -434,7 +436,7 @@ def generateTitleBackground(proj_title, no_split=False, squash=0):
 
     return filename, big_filename
 
-def title_scene_generation(proj_title):
+def title_scene_generation(proj_title, use_seam_carving=True):
     sprite_sheet_data = [
         generator.makeSpriteSheet('actor.png', name='actor', type='actor', frames=3),
         generator.makeSpriteSheet('actor_animated.png', name='actor_animated', type='actor_animated', frames=6),
@@ -490,22 +492,22 @@ def title_scene_generation(proj_title):
         collision_data_list = []
 
         try:
-            title_filename, big_filename = generateTitleBackground(proj_title)
+            title_filename, big_filename = generateTitleBackground(proj_title, use_seam_carving=use_seam_carving)
         except OSError as err:
             print(err)
             try:
-                title_filename, big_filename = generateTitleBackground(proj_title, no_split=True)
+                title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, use_seam_carving=use_seam_carving)
             except OSError as err:
                 logging.error(proj_title)
                 logging.error(err)
                 try:
-                    title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=1)
+                    title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=1, use_seam_carving=use_seam_carving)
                 except OSError as err:
                     try:
-                        title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=2)
+                        title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=2, use_seam_carving=use_seam_carving)
                     except OSError as err:
                         try:
-                            title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=3)
+                            title_filename, big_filename = generateTitleBackground(proj_title, no_split=True, squash=3, use_seam_carving=use_seam_carving)
                         except OSError as err:
                             logging.error(proj_title)
                             logging.error(err)
@@ -577,7 +579,7 @@ def title_scene_generation(proj_title):
 
     return catalog, sprite_sheet_data
 
-def createExampleProject(proj_title="generated"):
+def createExampleProject(proj_title="generated", use_seam_carving=True):
     """
     Demonstration of how the scene generators in this file can be used.
     """
@@ -590,7 +592,7 @@ def createExampleProject(proj_title="generated"):
     project.settings["playerSpriteSheetId"] = player_sprite_sheet["id"]
 
     scene_data_list = []
-    catalog, sprites = title_scene_generation(proj_title)
+    catalog, sprites = title_scene_generation(proj_title, use_seam_carving=use_seam_carving)
     for scn_func in catalog():
         scene_data_list.append(scn_func(None))
     for element_sprite in sprites:

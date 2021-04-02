@@ -12,8 +12,12 @@ import datetime
 
 # Try to grab git revision
 import subprocess
-git_revision_label = subprocess.check_output(["git", "describe", "--tags"]).strip()
+git_revision_label = subprocess.check_output(["git", "describe", "--always"]).strip()
 generator_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+
+VERSION_NUMBER = "1.0"
+with open("../assets/version_number.txt") as f:
+    VERSION_NUMBER = f.read()
 
 macguffin_graphics_list = {
 "record": 'macguffin_book.png',
@@ -104,7 +108,7 @@ def scene_generation(project_title="Quest for the MacGuffin", macguffin_name="Ma
         return makeSpriteSheet(mentor_sage_image, name=mentor_sage_name, type='static', frames=1)
         npc_script= []
 
-        for txt in [f"This game was generated with revision {git_revision_label} of the Game Boy ROM Generator on {generator_time}.", "The Gane Boy ROM Generator was created by",      "Isaac Karth and Tamara Duplantis", "With additional design by Max Kreminski", "and includes programming by", "Sachita Kashyap", "Vijaya Kukutla", "Aaron Lo", "Anika Mittal", "and Harvin Park", "with the assistance of", "Adam Smith and Michael Mateas"]:
+        for txt in [f"This game was generated with revision {git_revision_label}, version {VERSION_NUMBER} of the Game Boy ROM Generator on {generator_time}.", "The Gane Boy ROM Generator was created by",      "Isaac Karth and Tamara Duplantis", "With additional design by Max Kreminski", "and includes programming by", "Sachita Kashyap", "Vijaya Kukutla", "Aaron Lo", "Anika Mittal", "and Harvin Park", "with the assistance of", "Adam Smith and Michael Mateas"]:
             npc_script.append(scripts.text(text=txt, avatarId=''))
 
         actor_credits = makeActor(sprite, x, y, script=npc_script)

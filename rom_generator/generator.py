@@ -961,7 +961,6 @@ def translateReferences(data, list_of_scenes):
 
     Call it after all of the scenes have been created.
     """
-    import pdb; pdb.set_trace()
     if isinstance(data, str):
         while ("♔" in data):
             if data.startswith("♔REFERENCE_TO_SCENES_"):

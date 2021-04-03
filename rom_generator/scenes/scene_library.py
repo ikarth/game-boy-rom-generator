@@ -6,7 +6,9 @@ from rom_generator.scenes.imported import So_Many_Rooms as So_Many_Rooms
 from rom_generator.scenes.imported import LiminalRooms
 from rom_generator.scenes.imported import TempleCorridor
 from rom_generator.scenes.imported import SewerArea
-
+from rom_generator.scenes.imported import Junctions
+from rom_generator.scenes.imported import Junction2
+from rom_generator.scenes.imported import Forest
 
 def getLibrary():
   scene_library = []
@@ -14,11 +16,17 @@ def getLibrary():
 
   #scene_library + scene_gen_halls.catalog()
   modules = [#BasicScenes,
-  #So_Many_Rooms,
+  So_Many_Rooms,
   #LiminalRooms,
+  Junction2,
+  Forest,
+  Junctions,
   SewerArea,
   TempleCorridor]
+
+
   for m in modules:
+      print(m)
       catalog, sprites = m.scene_generation()
       scene_library = scene_library + catalog()
       sprite_library = sprite_library + sprites

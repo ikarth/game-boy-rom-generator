@@ -1,0 +1,178 @@
+{
+  "__language": "tracery",
+  "grammar": {
+  "origin": [
+    "#chat_mentor_origin#",
+    "#i_heard_origin#",
+    "#mac_origin#",
+    "#have_you_origin#",
+    "#other_remarks#"
+  ],
+  "other_remarks": [
+    "#origin#","#origin#","#origin#","#origin#",
+    "The remarkable thing about this world is that no two areas look exactly alike, so if you see a place that looks familliar it probably means that you've been there before.",
+    "Sometimes you need to find the right object in order to proceed.",
+    "There's a cat around here somewhere.",
+    "Have you seen #place# yet?",
+    "No two worlds are alike.",
+    "I wonder how #place# was created?"
+  ],
+  "place": [
+    "the forest",
+    "the sewer",
+    "the temple",
+    "a_mentor",
+    "macguffin"
+  ],
+  "have_you_origin": [
+      "Have you tried #have_you_C#?",
+      "You'll need to #have_you_B#!"
+  ],
+  "have_you_C": [
+      "#have_you_F# the #have_you_E#",
+      "finding macguffin"
+  ],
+  "have_you_B": [
+      "#have_you_D# the #have_you_E#",
+      "acquire macguffin",
+      "use the ladder"
+  ],
+  "have_you_F": [
+      "digging in",
+      "exploring",
+      "getting lost in",
+      "petting"
+  ],
+  "have_you_E": [
+      "cat",
+      "forest",
+      "key",
+      "sewers",
+      "well"
+  ],
+  "have_you_D": [
+      "acquire",
+      "find",
+      "get lost in",
+      "pet"
+  ],
+      "mac_origin": [
+          "#mac_B# macguffin is #mac_C#.",
+          "#mac_E# macguffin #mac_F#.",
+          "Have you heard about what happened to macguffin?",
+          "We're in trouble as long as macguffin is missing."
+      ],
+      "mac_E": [
+          "",
+          "#mac_G# when",
+          "I don't think about",
+          "I've heard that",
+          "If no one recovers",
+          "Things have been bad since"
+      ],
+      "mac_F": [
+          ", I don't know what will happen to us",
+          "can be found in a ruined temple",
+          "is gone",
+          "much",
+          "was stolen",
+          "went missing"
+      ],
+      "mac_B": [
+          "",
+          "If I wasn't so busy, I'd go find macguffin myself. I heard that if"
+      ],
+      "mac_C": [
+          "gone",
+          "n't recovered, the sun will go out"
+      ],
+      "mac_G": [
+          "I heard a plague started",
+          "The trees started dying"
+      ],
+
+    "i_heard_origin": [
+        "I #i_heard_A# the #i_heard_B#."
+    ],
+    "i_heard_A": [
+        "#i_heard_C# the #i_heard_D# heard #i_heard_E# in",
+        "don't like",
+        "enjoy"
+    ],
+    "i_heard_B": [
+        "#i_heard_F# heard #i_heard_G# you #i_heard_H# the sewers #i_heard_I#",
+        "forest",
+        "sewers"
+    ],
+    "i_heard_C": [
+        "'ve never seen the temple. I heard if you don't pet",
+        "heard that it was easy to get lost in"
+    ],
+    "i_heard_D": [
+        "cat, you won't find the temple. I",
+        "sewers. I heard that there are nice flowers in the forest. I"
+    ],
+    "i_heard_E": [
+        "if you don't pet the cat, you will get lost",
+        "that there was a cold wind"
+    ],
+    "i_heard_F": [
+        "forest. I",
+        "temple. I"
+    ],
+    "i_heard_G": [
+        "if",
+        "that"
+    ],
+    "i_heard_H": [
+        "could find a key in",
+        "don't pet the cat,"
+    ],
+    "i_heard_I": [
+        "",
+        "will collapse"
+    ],
+    "chat_mentor_origin": [
+        "#chat_mentor_D# for a_mentor.",
+        "#chat_mentor_F# a_mentor #chat_mentor_C#",
+        "#chat_mentor_F# a_mentor #chat_mentor_G#.",
+        "Look for a_mentor, did you?",
+        "There is a_mentor #chat_mentor_E#."
+    ],
+    "chat_mentor_E": [
+        "in a cave",
+        "that knows how to save the world"
+    ],
+    "chat_mentor_F": [
+        "#chat_mentor_J# is",
+        "Have you heard about",
+        "I hear that",
+        "I've heard that there is",
+        "Look for",
+        "You should look for"
+    ],
+    "chat_mentor_G": [
+        "",
+        ", I hear they know what is going on",
+        "in a cave #chat_mentor_L#",
+        "in a cave that knows how to save the world",
+        "knows what is going on"
+    ],
+    "chat_mentor_C": [
+        ", I hear they know what is going on. ",
+        "?"
+    ],
+    "chat_mentor_D": [
+        "If you need advice, look",
+        "Look"
+    ],
+    "chat_mentor_J": [
+        "Somewhere, there",
+        "There"
+    ],
+    "chat_mentor_L": [
+        "",
+        "somewhere"
+    ]
+}
+}

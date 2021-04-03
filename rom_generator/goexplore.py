@@ -58,7 +58,7 @@ def runExploration(rom_path=r"J:\Isaac\Dev\genboy\gbprojects\generated\LegendofM
       return sum([random.choice(choice) for choice in gamedata.valid_actions()])
 
 
-    NUM_ITERATIONS = 50000#0#0
+    NUM_ITERATIONS = 5000#0#0#0
     STEPS_PER_ITERATION = 15*60
     STICKY_RATE = 0.975
 

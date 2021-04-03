@@ -26,6 +26,9 @@ except ImportError:
     # Try backported to PY<37 `importlib_resources`.
     import importlib_resources as pkg_resources
 from rom_generator.utilities import bcolors
+import numpy as np
+from tracery.modifiers import base_english
+
 
 # Path hack for running modules within the rom_generator folder
 sys.path.append(os.path.abspath('.'))
@@ -42,6 +45,11 @@ def cd(newdir):
         yield
     finally:
         os.chdir(prevdir)
+
+
+
+
+
 
 
 
@@ -97,6 +105,8 @@ default_project_settings = {
         "startSceneId": "",
         "playerSpriteSheetId": "581d34d0-9591-4e6e-a609-1d94f203b0cd"
     }
+
+
 
 ### query current project for information
 def getNumberOfScenes():
@@ -272,7 +282,7 @@ def makeActor(sprite, x, y, movementType="static", animate=True, moveSpeed="1", 
     element["x"] = x
     element["y"] = y
     element["animate"] = animate
-    element["script"] = []
+    element["script"] = script
     element["startScript"] = []
     element["_name"] = name
     return copy.deepcopy(element)
@@ -284,6 +294,128 @@ def addActor(scene, sprite, x, y, movementType="static", animate=True):
     element = makeActor(sprite, x, y, movementType, animate)
     scene["actors"].append(element)
     return element
+
+import tracery
+def generateDialog(macguffin_name="the macguffin", sage_name="a mentor"):
+    gen_title = "generated"
+    with open("assets/dialog.json") as json_file:
+            rules = json.load(json_file)
+
+    grammar = tracery.Grammar(rules["grammar"])
+    grammar.add_modifiers(base_english)
+    gen_title = grammar.flatten("#origin#")
+    gen_title = gen_title.replace("macguffin", f"the {macguffin_name}")
+    gen_title = gen_title.replace("a_mentor", f"a {sage_name}")
+    print(gen_title)
+    return gen_title
+
+class NoSpaceForNPC(Exception):
+    pass
+
+# This is a hack so I don't have to re-edit a bunch of scenes...
+npc_mixin_locations = {
+    "Forest_01_2a.png": [9, 11],
+    "Forest_01_2b.png": [17, 6],
+    "Forest_01_2c.png": [9, 2],
+    "Forest_01_2d.png": [3,7],
+    "Forest_01_2e.png": [12,9],
+    "Forest_01_2g.png": [11,6],
+    "Forest_01_2h.png": [15,2],
+    "Forest_01_2i.png": [2,4],
+    "Forest_01_2k.png": [8,13],
+    "Forest_01_2l.png": [11,6],
+    "Forest_01_2m.png": [9,3],
+    "Forest_01_2n.png": [2,4],
+    "Forest_01_2o.png": [5,14],
+    "Forest_01a.png": [15,6],
+    "Forest_01b.png": [13,6],
+    "Forest_01c.png": [14,11],
+    "Forest_01d.png": [11,5],
+    "Forest_01e.png": [13,13],
+    "cave.png": [3,14],
+    "corridors_01.png": [20,11],
+    "corridors_02.png": [15,6],
+    "corridors_03.png": [2,15],
+    "corridors_04.png": [3,8],
+    "corridors_05.png": [13,4],
+    "corridors_06.png": [1,7],
+    "halls_02.png": [5,8],
+    "halls_03.png": [16,14],
+    "halls_04.png": [10,21],
+    "halls_06.png": [14,11],
+    "halls_07.png": [3,13],
+    "house.png": [3,13],
+    "link_01a.png": [13,5],
+    "link_01b.png": [11,3],
+    "link_01c.png": [8,5],
+    "link_01d.png": [3,8],
+    "link_01e.png": [15,8],
+    "link_05a.png": [12,5],
+    "link_05b.png": [10,3],
+    "link_05c.png": [12,7],
+    "link_05d.png": [10,5],
+    "link_05e.png": [3,11],
+    "link_05f.png": [14,7],
+    "sewer_01.png": [12,4],
+    "sewer_02.png": [13,22],
+    "sewer_03.png": [15,14],
+    "sewer_04.png": [17,11],
+    "sewer_05.png": [15,6],
+    "sewer_06.png": [6,6]
+}
+
+def findNPCSpace(scene):
+    "Finds a space in the scene where an NPC can be placed."
+    # print(scene)
+    #print(scene["collisions"])
+    #byteToArray(scene["collisions"], width, height):
+    # cols = byteToArray(scene["scene"]["collisions"], scene["scene"]["width"], scene["scene"]["height"])
+    print(scene["scene"]["name"])
+    # print(scene["background"]["name"])
+    # [print(r) for r in cols]
+
+    try:
+        x,y = npc_mixin_locations[scene["background"]["name"]]
+    except:
+        raise NoSpaceForNPC
+    print(x,y)
+    #import pdb; pdb.set_trace()
+    return x, y
+
+def makeNPCSprite():
+    mentor_sage_images = ['sage.png', 'cat.png', 'dog.png', 'signpost.png', 'radio.png', 'npc002_static.png','npc003_static.png', 'duck_static.png']
+    mentor_sage_image = random.choice(mentor_sage_images)
+    mentor_sage_name = mentor_sage_image[:-4]
+    return makeSpriteSheet(mentor_sage_image, name=mentor_sage_name, type='static', frames=1)
+
+def mixinNPC(scene, sprite, mac_name, sage_name):
+    # 35% chance of having an NPC in this scene...
+    if random.random() > 0.35:
+        return scene
+
+    # figure out where to place the NPC...
+    try:
+        x,y = findNPCSpace(scene)
+        print(sprite)
+        npc = makeActor(sprite, x, y)
+        npc_dialog = generateDialog(mac_name, sage_name)
+        npc['script'] = [
+                        scripts.text(text=npc_dialog, avatarId=''),
+                        scripts.end()
+                    ]
+        print(npc)
+        #import pdb; pdb.set_trace()
+        try:
+            print(scene["scene"]["actors"])
+        except KeyError:
+            scene["scene"]["actors"] = []
+        scene["scene"]["actors"].append(npc)
+        #import pdb; pdb.set_trace()
+    except NoSpaceForNPC:
+        pass
+
+    return scene
+
 
 ### A trigger causes a script to play when the player reaches the trigger's location.
 def makeTrigger(trigger_name, x, y, width, height, script=[]):
@@ -423,6 +555,16 @@ def addSceneData(project, scene_data):
 import pprint
 def testConnections(scene_data_list, end_name='_gen_MacGuiffinTemple', start_name='_gen_BeginningCave'):
     pp = pprint.PrettyPrinter(indent=3)
+    scene_names = {}
+    scene_connections = {}
+    for s in scene_data_list:
+        scene_names[s["scene"]["id"]] = s["scene"]["name"]
+        try:
+            scene_connections[s["scene"]["id"]] = [c["tags"] for c in s["connections"]]
+        except KeyError as e:
+            print(e)
+            scene_connections[s["scene"]["id"]] = None
+
     scene_tree = {}
     start_id = "X"
     end_id = "Y"
@@ -437,35 +579,61 @@ def testConnections(scene_data_list, end_name='_gen_MacGuiffinTemple', start_nam
         try:
             for con_num, con in enumerate(scene["scene"]["triggers"]):
                 #pp.pprint(con)
-                scene_tree[scene["scene"]["id"]].add(con["script"][0]["args"]["sceneId"])
-
-        except KeyError:
+                try:
+                    scene_tree[scene["scene"]["id"]].add(con["script"][0]["args"]["sceneId"])
+                except KeyError as e:
+                    #print(e)
+                    pass
+        except KeyError as e:
+            #print(e)
             pass
     #pp.pprint(scene_tree)
 
     # Very naive depth-first search...
     previously_visited = []
-    def searchTreeNode(start_node, end_node, steps=0, limit = 99):
-        print(start_node, steps)
+    g_not_visited = scene_names.keys()
+    def searchTreeNode(start_node, end_node, steps=0, limit = 99, not_visited=[]):
         if "♔" in start_node:
-            return -1
+            return -1, not_visited
         if steps > limit:
-            return -1
+            return -1, not_visited
         if start_node == end_node:
-            return steps
+            print(f"found end: {end_node}")
+            not_visited = [x for x in not_visited if x != start_node] # remove all instances from not visited so we can keep track of ...
+            return steps, not_visited
+
         if start_node in previously_visited:
-            return -1
+            return -1, not_visited
+        try:
+            print(start_node, steps, "\t", scene_names[start_node], "\t\t", scene_connections[start_node])
+
+        except KeyError as e:
+            print(e)
         previously_visited.append(start_node)
+        not_visited = [x for x in not_visited if x != start_node] # remove all instances from not visited so we can keep track of ...
         node = scene_tree[start_node]
         for n in node:
-            n_result = searchTreeNode(n, end_node, steps+1)
+            n_result, not_visited = searchTreeNode(n, end_node, steps+1, not_visited=not_visited)
             if n_result == -1:
                 continue
-            return n_result
-        return -1
+            return n_result, not_visited
+        return -1, not_visited
 
-    steps_to_destination = searchTreeNode(start_id, end_id)
+    steps_to_destination, not_visited = searchTreeNode(start_id, end_id, not_visited=g_not_visited)
+    if len(not_visited) > 0:
+        print("not visited:")
+        [print(x, -1, "\t", scene_names[x], "\t\t", scene_connections[x]) for x in not_visited]
     return steps_to_destination
+
+def connectScenesByRegion(scene_data_list, use_tags=True):
+    # Get connections
+    connections_to_make = []
+    for scene_num, scene in enumerate(scene_data_list):
+        for con_num, con in enumerate(scene["connections"]):
+            connections_to_make.append([scene["scene"]["id"], con_num, con])
+
+
+
 
 
 def connectScenesRandomlySymmetric(scene_data_list, use_tags=True):
@@ -523,7 +691,7 @@ def connectScenesRandomlySymmetric(scene_data_list, use_tags=True):
 
         try:
             other_connection = random.choice(filtered_other_connections)
-            connection_tries = 15
+            connection_tries = 5
             for n in range(connection_tries):
                 if not (other_connection[2]["args"]["exit_direction"] == reverse_direction[current_connection[2]["args"]["exit_direction"]]):
                     other_connection = random.choice(filtered_other_connections)
@@ -717,7 +885,7 @@ def writeAssets(asset_array, output_path, sub_asset_path):
         print(f"writing {f_name}")
         logging.info(f"writing {f_name}")
         if f_name in check_for_duplicates:
-            logging.warning(f"Duplicate {f_name} found.")
+            logging.info(f"Duplicate {f_name} found.")
         check_for_duplicates.add(f_name)
         temp_file = os.path.abspath(Path(output_path).joinpath("assets/temp/scratch.file"))
         try:
@@ -807,6 +975,7 @@ def translateReferences(data, list_of_scenes):
                     continue
             print(data)
             breakpoint()
+            import pdb; pdb.set_trace()
             data = "♔UNBOUND_REF♔"
     if (isinstance(data, list)):
         for data_key, data_val in enumerate(data):
@@ -837,7 +1006,7 @@ def translateReferences(data, list_of_scenes):
 #         some_references_remain = False
 #     return proj_as_json
 
-def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/"):
+def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/", zip_file=None):
     """
      Write project to JSON
 
@@ -926,7 +1095,8 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
 
     metadata = {
     "title": gb_project.name,
-    "box_cover": str(box_cover_path)
+    "box_cover": str(box_cover_path),
+    "zip": zip_file
     }
     meta_json = json.dumps(metadata, sort_keys=True)
     with open(Path(output_path).joinpath("metadata.json"), "w") as wfile:
@@ -993,6 +1163,17 @@ def makeColBorder(scenex):
         cc.insert(0, jnum[::-1])
     scenex["collisions"] = cc
 
+def byteToArray(byte_string, width, height):
+    """
+    Takes the collision byte string and translates it to an array, reversing the behavior in toByteStrings().
+    """
+    #print(byte_string)
+    grid = []
+    grid = np.array([np.unpackbits(x) for x in np.array(byte_string, dtype=np.uint8)]).flatten()
+    grid = grid[:(width*height)].reshape([width, height])
+    #print(grid)
+    return grid.tolist()
+
 def toByteStrings(grid):
     """
     Take a nested array of 0/1 or T/F values and translates into bit strings.
@@ -1019,7 +1200,9 @@ def toByteStrings(grid):
         while len(byte_consumer) < 8:
             byte_consumer += "0"
     consume()
-
+    #arr = byteToArray(byte_strings_array, len(grid[0]), len(grid))
+    #assert(arr == grid)
+    #scene["collisions"] = byte_strings_array
     return byte_strings_array
 
 def makeCol(array01, scene01):
@@ -1136,6 +1319,8 @@ def createExampleProject():
     c_scene = makeScene("c_scene", c_bkg)
     collisions = [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     makeCol(collisions, c_scene)
+    # col_bytes = toByteStrings(collisions)
+    # assert(c_scene["collisions"] == col_bytes)
     print(c_scene["collisions"])
     project.scenes.append(c_scene)
     d_scene = makeScene("d_scene", c_bkg)

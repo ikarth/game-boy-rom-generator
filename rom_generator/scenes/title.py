@@ -619,9 +619,9 @@ with open("assets/ban_list.json") as json_file:
 
 import wordfilter
 def checkBanList(title):
-    wordfilter = wordfilter.Wordfilter()
-    wordfilter.addWords(ban_list)
-    return wordfilter.blacklisted(title)
+    ban_wordfilter = wordfilter.Wordfilter()
+    ban_wordfilter.addWords(ban_list)
+    return ban_wordfilter.blacklisted(title)
 
 
 def generateTitle():

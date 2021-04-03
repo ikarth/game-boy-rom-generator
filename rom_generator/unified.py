@@ -271,8 +271,8 @@ if __name__ == '__main__':
     print(root_path)
 
     RUN_AUTOEXPLORE = False
-    RUN_GB_STUDIO = False
-    use_seam_carving = False
+    RUN_GB_STUDIO = True
+    use_seam_carving = True
     CONNECTION_HEURISTIC = "random"
     CREATE_ZIP_ARCHIVE = True
     number_of_roms_to_generate = 1

@@ -1006,7 +1006,7 @@ def translateReferences(data, list_of_scenes):
 #         some_references_remain = False
 #     return proj_as_json
 
-def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/"):
+def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbprojects/projects/", zip_file=None):
     """
      Write project to JSON
 
@@ -1095,7 +1095,8 @@ def writeProjectToDisk(gb_project, filename="test.gbsproj", output_path="gbproje
 
     metadata = {
     "title": gb_project.name,
-    "box_cover": str(box_cover_path)
+    "box_cover": str(box_cover_path),
+    "zip": zip_file
     }
     meta_json = json.dumps(metadata, sort_keys=True)
     with open(Path(output_path).joinpath("metadata.json"), "w") as wfile:
@@ -1199,8 +1200,8 @@ def toByteStrings(grid):
         while len(byte_consumer) < 8:
             byte_consumer += "0"
     consume()
-    arr = byteToArray(byte_strings_array, len(grid[0]), len(grid))
-    assert(arr == grid)
+    #arr = byteToArray(byte_strings_array, len(grid[0]), len(grid))
+    #assert(arr == grid)
     #scene["collisions"] = byte_strings_array
     return byte_strings_array
 

@@ -108,7 +108,7 @@ def scene_generation(project_title="Quest for the MacGuffin", macguffin_name="Ma
         sprite = generator.makeSpriteSheet(mentor_sage_image, name=mentor_sage_name, type='static', frames=1)
         npc_script= []
 
-        for txt in [f"This game was generated with revision {git_revision_label}, version {VERSION_NUMBER} of the Game Boy ROM Generator on {generator_time}.", "The Game Boy ROM Generator was created by",      "Isaac Karth and Tamara Duplantis", "With additional design by Max Kreminski", "and includes programming by", "Sachita Kashyap", "Vijaya Kukutla", "Aaron Lo", "Anika Mittal", "and Harvin Park", "with the assistance of", "Adam Smith and Michael Mateas"]:
+        for txt in [f"This game was generated with revision {git_revision_label}, version {VERSION_NUMBER} of the Game Boy ROM Generator on {generator_time}.", "The Game Boy ROM Generator was created by",      "Isaac Karth and Tamara Duplantis", "With additional design by Max Kreminski", "and includes programming by", "Sachita Kashyap", "Vijaya Kukutla", "Aaron Lo", "Anika Mittal", "and Harvin Park", "with the assistance of", "Adam Smith"]:
             npc_script.append(script.text(text=txt, avatarId=''))
         npc_script.append(script.end())
 

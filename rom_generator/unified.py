@@ -139,6 +139,7 @@ def generateWebpageCatalog(catalog_of_roms, destination):
           margin: auto;
           text-align: center;
           gap: 1em;
+          row-gap: 2em;
           align-items: center;
           grid-template-columns: repeat(auto-fit, minmax(21.2em, 1fr));
         }
@@ -148,6 +149,7 @@ def generateWebpageCatalog(catalog_of_roms, destination):
           text-align: center;
           display: inline-block;
           align-self: start;
+          position: relative;
         }
         a {
           padding: 1em;
@@ -166,18 +168,83 @@ def generateWebpageCatalog(catalog_of_roms, destination):
           background-color: #DDD;
           color: #131313;
         }
+        .item a.download_link {
+          display: grid;
+          position: absolute;
+          visibility: hidden;
+          bottom: 0.2em;
+          margin: 0.2em;
+          padding: 1em;
+          width: 16em;
+          left: 2em;
+          right: 2em;
+          margin-left: auto;
+          margin-right: auto;
+          text-align: center;
+          background-color: #444458;
+        }
+        .item a.download_link:hover {
+          background-color: #E4E4E6;
+          color: #131313;
+        }
+        .item:hover a.download_link {
+            bottom: -2.6em;
+            animation-duration: 0.3s;
+            animation-name: slidein;
+            animation-timing-function: ease-in-and-out;
+            visibility: visible;
+            height: 1em;
+            padding: 1em;
+        }
+        .item:hover a.download_link.play_link {
+            bottom: auto;
+            top: -1.8em;
+            animation-name: slidein2;
+        }
+        @media (hover: none) {
+          .item a.download_link {
+            bottom: -2.6em;
+            visibility: visible;
+            height: 1em;
+            padding: 1em;
+          }
+        }
         img {
           width: 20em;
         }
+        @keyframes slidein {
+          from {
+            bottom: 0.2em;
+            opacity: 0;
+          }
+          to {
+            bottom: -2.6em;
+            opacity: 1;
+          }
+        }
+        @keyframes slidein2 {
+          from {
+            top: 2.2em;
+            opacity: 0;
+          }
+          to {
+            top: -1.8em;
+            opacity: 1;
+          }
+        }
     '''
-    catalog_html = f'<html>\n  <head>\n    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">\n    <title>Generated Game Boy ROMs</title>\n    <style>{css_style}</style>\n  </head>\n  <body>\n    <h1>Generated Game Boy ROMs</h1><p>Controls:<br><b>A button:</b> Z, J, or Alt<br><b>B button:</b> X, K, or Ctrl<br><b>Start:</b> Enter<br><b>Select:</b> Shift</p>\n<p><a style="height:1.5em;" href="https://forms.gle/CZNdgsGUNnq9MDgY6">Want to give me feedback?</a></p>\n    <div class="container">\n'
+    catalog_html = f'<html>\n  <head>\n    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">\n    <title>Generated Game Boy ROMs</title>\n    <style>{css_style}</style>\n  </head>\n  <body>\n    <h1>Generated Game Boy ROMs</h1><p>Controls:<br><b>A button:</b> Z, J, or Alt<br><b>B button:</b> X, K, or Ctrl<br><b>Start:</b> Enter<br><b>Select:</b> Shift</p>\n<p><a style="height:1.2em;" href="https://forms.gle/CZNdgsGUNnq9MDgY6">Want to give me feedback?</a></p>\n    <div class="container">\n'
     for rom_path, full_path in catalog_of_roms:
         webpage = rom_path + "/build/web/index.html"
         with open(full_path + "/metadata.json") as rfile:
             metadata = json.load(rfile)
         print(metadata)
+        zip_download_link = f'<a href="{metadata["zip"]}" class="download_link">Download</a>\n           '
+        if metadata["zip"] == None:
+            zip_download_link=''
         entry = f'''
         <div class="item">
+           {zip_download_link}<a href="{webpage}" class="download_link play_link">Play</a>
           <a href="{webpage}">
             <img src="./{rom_path}/box_cover.png" alt="{metadata["title"]}">
             <p>{metadata["title"]}</p>
@@ -199,16 +266,18 @@ if __name__ == '__main__':
     import os
     import json
     import uuid
+    import zipfile
     root_path = pathlib.Path(__file__).parent.absolute()
     print(root_path)
 
     RUN_AUTOEXPLORE = False
-    RUN_GB_STUDIO = False
-    use_seam_carving = False
+    RUN_GB_STUDIO = True
+    use_seam_carving = True
     CONNECTION_HEURISTIC = "random"
+    CREATE_ZIP_ARCHIVE = True
 
     generated_roms = []
-    number_of_roms_to_generate = 1
+    number_of_roms_to_generate = 3
     path_to_last_generated_rom = ""
     for n in range(number_of_roms_to_generate):
         random.seed(None)
@@ -230,12 +299,20 @@ if __name__ == '__main__':
                 project_generated += 1
                 print(f"Generation Attempt {project_generated} failed.")
 
-        generator.writeProjectToDisk(project, filename=f"{title_munged[:28]}.gbsproj", output_path = destination)
+        zip_name = f"{title_munged[:26]}{n:0>2d}.zip"
+        if not CREATE_ZIP_ARCHIVE:
+            zip_name = None
+        generator.writeProjectToDisk(project, filename=f"{title_munged[:28]}.gbsproj", output_path = destination, zip_file=zip_name)
         if RUN_GB_STUDIO:
             print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj"))
             subprocess.call([os.path.abspath(r'.\compile_rom.bat'), os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj")])
             path_to_last_generated_rom = os.path.abspath(destination + "/build/web/rom/game.gb")
             generated_roms.append([title_munged, destination])
+        if CREATE_ZIP_ARCHIVE:
+            with zipfile.ZipFile(os.path.join(destination, zip_name), "w", zipfile.ZIP_LZMA) as zipf:
+                for root, dirs, files in os.walk(destination):
+                    for file in files:
+                        zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(destination, '..')))
 
     if RUN_AUTOEXPLORE:
         runExploration(path_to_last_generated_rom, destination)

@@ -275,7 +275,7 @@ if __name__ == '__main__':
     use_seam_carving = True
     CONNECTION_HEURISTIC = "random"
     CREATE_ZIP_ARCHIVE = True
-    number_of_roms_to_generate = 1
+    number_of_roms_to_generate = 3
 
 
     generated_roms = []

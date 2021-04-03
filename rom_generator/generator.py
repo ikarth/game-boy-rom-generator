@@ -103,7 +103,8 @@ default_project_settings = {
         "startY": 9,
         "startDirection": "down",
         "startSceneId": "",
-        "playerSpriteSheetId": "581d34d0-9591-4e6e-a609-1d94f203b0cd"
+        "playerSpriteSheetId": "581d34d0-9591-4e6e-a609-1d94f203b0cd",
+        "customColorsEnabled": True
     }
 
 

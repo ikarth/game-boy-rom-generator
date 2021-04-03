@@ -613,6 +613,17 @@ def createExampleProject(proj_title="generated", use_seam_carving=True):
 
     return project
 
+ban_list = []
+with open("assets/ban_list.json") as json_file:
+    ban_list = json.load(json_file)
+
+import wordfilter
+def checkBanList(title):
+    wordfilter = wordfilter.Wordfilter()
+    wordfilter.addWords(ban_list)
+    return wordfilter.blacklisted(title)
+
+
 def generateTitle():
     gen_title = "generated"
     with open("assets/title.json") as json_file:
@@ -620,8 +631,12 @@ def generateTitle():
 
     grammar = tracery.Grammar(rules["grammar"])
     grammar.add_modifiers(base_english)
-    gen_title = grammar.flatten("#origin#")
+    banned_title = True
+    while banned_title:
+        gen_title = grammar.flatten("#origin#")
+        banned_title = checkBanList(gen_title)
     print(gen_title)
+
 
     # remove the/a confusion
     gen_title = gen_title.replace(" the a ", " the ")

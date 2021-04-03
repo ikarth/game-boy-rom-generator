@@ -304,12 +304,21 @@ if __name__ == '__main__':
             zip_name = None
         generator.writeProjectToDisk(project, filename=f"{title_munged[:28]}.gbsproj", output_path = destination, zip_file=zip_name)
         if RUN_GB_STUDIO:
-            print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(os.path.join(destination, f"{title_munged[:28]}.gbsproj")))
+            print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(os.path.join(destination, f"{title_munged[:28]}.gbsproj")) + ' ' +
+            proj_title
+            )
 
+            script_args = [os.path.abspath(os.path.join(destination, f"{title_munged[:28]}.gbsproj")),
+             f'"{proj_title}"']
+
+            script_path = r'.\compile_rom.bat'
+            proj_file_path = os.path.abspath(os.path.join(destination, f"{title_munged[:28]}.gbsproj"))
+            script_args = f"{os.path.abspath(script_path)} {proj_file_path} \"{proj_title}\""
+            print(script_args)
             subprocess.call(
-                [os.path.abspath(r'.\compile_rom.bat'),
-                 os.path.abspath(os.path.join(destination, f"{title_munged[:28]}.gbsproj"))])
-                 
+                script_args, shell=True
+                )
+
             path_to_last_generated_rom = os.path.abspath(destination + "/build/web/rom/game.gb")
             generated_roms.append([title_munged, destination])
         if CREATE_ZIP_ARCHIVE:

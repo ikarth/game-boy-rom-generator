@@ -26,4 +26,5 @@ conda install -y matplotlib
 conda install -y ipython
 pip install pyglet==1.5.11
 pip install gym-retro
+pip install wordfilter
 ```

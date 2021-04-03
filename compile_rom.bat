@@ -5,7 +5,7 @@ echo compiling %1
 rem This is a really hacky way to do it, but I'm not going to bother
 rem with anything fancier for version 1.0 of the generator.
 
-set SendKeys=CScript //nologo //E:JScript "%~F0"
+set SendKeys=CScript //nologo //E:JScript "%~F0" "GB Studio"
 
 
 start "GBStudioCompiling" J:\Isaac\Dev\genboy\gbstudio\gb-studio.exe %1
@@ -17,6 +17,7 @@ ping -n 5 -w 1 127.0.0.1 > NUL
 
 ping -n 5 -w 1 127.0.0.1 > NUL
 
+%SendKeys%
 %SendKeys% "+^N"
 echo Compiling...
 
@@ -36,7 +37,6 @@ goto :EOF
 // JScript section
 
 var WshShell = WScript.CreateObject("WScript.Shell");
-WshShell.AppActivate("GB Studio"); 
+WshShell.AppActivate("GB Studio");
 WScript.Sleep(100);
 WshShell.SendKeys(WScript.Arguments(0));
-

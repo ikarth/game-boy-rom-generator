@@ -14,12 +14,12 @@ start "GB Studio" J:\Isaac\Dev\genboy\gbstudio\gb-studio.exe %1
 echo Waiting for GB Studio to start...
 rem ping -n 9 -w 1 127.0.0.1 > NUL
 
-rem %SendKeys% "^7" %2 9000
 
 rem ping -n 1 -w 1 127.0.0.1 > NUL
 
 %SendKeys% "+^(N)" %2 8000
 echo Compiling...
+%SendKeys% "^7" %2 3000
 
 ping -n 30 -w 1 127.0.0.1 > NUL
 

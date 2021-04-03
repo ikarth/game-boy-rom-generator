@@ -271,13 +271,14 @@ if __name__ == '__main__':
     print(root_path)
 
     RUN_AUTOEXPLORE = False
-    RUN_GB_STUDIO = True
-    use_seam_carving = True
+    RUN_GB_STUDIO = False
+    use_seam_carving = False
     CONNECTION_HEURISTIC = "random"
     CREATE_ZIP_ARCHIVE = True
+    number_of_roms_to_generate = 1
+
 
     generated_roms = []
-    number_of_roms_to_generate = 3
     path_to_last_generated_rom = ""
     for n in range(number_of_roms_to_generate):
         random.seed(None)
@@ -321,11 +322,18 @@ if __name__ == '__main__':
             generated_roms.append([title_munged, destination])
         if CREATE_ZIP_ARCHIVE:
             zip_path = os.path.abspath(os.path.join(destination, '..', zip_name))
-            print(zip_path)
+            #print(zip_path)
+            #print(destination)
+            dest_length = len(destination)
             with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+                #print(zip_path)
                 for root, dirs, files in os.walk(destination):
                     for file in files:
-                        zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(destination, '..')))
+                        #print()
+                        #print(root, file)
+                        #print(os.path.relpath(os.path.join(root, file)))
+                        print(os.path.join('.' + str(root)[dest_length:], file))
+                        zipf.write(os.path.relpath(os.path.join(root, file)), os.path.join('.' + str(root)[dest_length:], file))
 
     if RUN_AUTOEXPLORE:
         runExploration(path_to_last_generated_rom, destination)

@@ -304,12 +304,18 @@ if __name__ == '__main__':
             zip_name = None
         generator.writeProjectToDisk(project, filename=f"{title_munged[:28]}.gbsproj", output_path = destination, zip_file=zip_name)
         if RUN_GB_STUDIO:
-            print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj"))
-            subprocess.call([os.path.abspath(r'.\compile_rom.bat'), os.path.abspath(destination + "/" + f"{title_munged[:28]}.gbsproj")])
+            print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(os.path.join(destination, f"{title_munged[:28]}.gbsproj")))
+
+            subprocess.call(
+                [os.path.abspath(r'.\compile_rom.bat'),
+                 os.path.abspath(os.path.join(destination, f"{title_munged[:28]}.gbsproj"))])
+                 
             path_to_last_generated_rom = os.path.abspath(destination + "/build/web/rom/game.gb")
             generated_roms.append([title_munged, destination])
         if CREATE_ZIP_ARCHIVE:
-            with zipfile.ZipFile(os.path.join(destination, zip_name), "w", zipfile.ZIP_LZMA) as zipf:
+            zip_path = os.path.abspath(os.path.join(destination, '..', zip_name))
+            print(zip_path)
+            with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
                 for root, dirs, files in os.walk(destination):
                     for file in files:
                         zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(destination, '..')))

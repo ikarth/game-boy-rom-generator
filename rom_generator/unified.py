@@ -139,7 +139,7 @@ def generateWebpageCatalog(catalog_of_roms, destination):
           margin: auto;
           text-align: center;
           gap: 1em;
-          row-gap: 2em;
+          row-gap: 2.5em;
           align-items: center;
           grid-template-columns: repeat(auto-fit, minmax(21.2em, 1fr));
         }
@@ -150,10 +150,12 @@ def generateWebpageCatalog(catalog_of_roms, destination):
           display: inline-block;
           align-self: start;
           position: relative;
+
         }
         a {
           padding: 1em;
           background-color: #545458;
+          border: 2px solid #000000;
           color: #f3f3f3;
           width: 20em;
           height: 21em;
@@ -166,6 +168,7 @@ def generateWebpageCatalog(catalog_of_roms, destination):
         }
         a:hover {
           background-color: #DDD;
+          border: 2px solid #DDD;
           color: #131313;
         }
         .item a.download_link {

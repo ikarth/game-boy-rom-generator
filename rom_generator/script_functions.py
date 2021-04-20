@@ -1,6 +1,6 @@
 # Generated methods for scripts
 from rom_generator.utilities import makeElement
-
+import textwrap
 
 # EVENT_END
 def end():
@@ -902,10 +902,30 @@ def text(text = "'push", avatarId = ""):
     text: str with a default value of "'push"
     avatarId: str with a default value of ""
     """
+    break_length = 48
+    a_text = ""
+    if type(text) == type(""):
+        a_text = textwrap.wrap(text, break_length, break_long_words=True, placeholder=' ...')
+    else:
+        if len(text) > 1:
+            a_text = []
+            for wrd in text:
+                a_text += textwrap.wrap(wrd, break_length, break_long_words=True, placeholder=' ...')
+        else:
+            a_text = text[0]
+            a_text = textwrap.wrap(a_text, break_length, break_long_words=True, placeholder=' ...')
+    if type(a_text) == type(""):
+        a_text = [a_text]
+    b_text = []
+    a_text = ["\n".join(textwrap.wrap(a, width=16, break_long_words=True)) for a in a_text]
+    if len(a_text) == 1:
+        a_text = a_text[0]
+
+
     element = makeElement()
     element["command"] = "EVENT_TEXT"
     element["args"] = {
-        "text": text,
+        "text": a_text,
         "avatarId": avatarId,
     }
     return element
@@ -1022,13 +1042,16 @@ def actorMoveRelative(actorId = "player", x = "0", y = "0"):
 
 
 # EVENT_ACTOR_MOVE_TO
-def actorMoveTo():
+def actorMoveTo(actorId='', x=0, y=0):
     """
     Generated method for the GBS script action EVENT_ACTOR_MOVE_TO.
 
     """
     element = makeElement()
     element["command"] = "EVENT_ACTOR_MOVE_TO"
+    element["actorId"] = actorId
+    element["x"] = x
+    element["y"] = y
     return element
 
 

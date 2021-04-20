@@ -270,16 +270,27 @@ if __name__ == '__main__':
     import json
     import uuid
     import zipfile
+    import argparse
     root_path = pathlib.Path(__file__).parent.absolute()
     print(root_path)
 
-    RUN_AUTOEXPLORE = False
-    RUN_GB_STUDIO = True
-    use_seam_carving = True
-    CONNECTION_HEURISTIC = "random"
-    CREATE_ZIP_ARCHIVE = True
-    number_of_roms_to_generate = 3
+    argparser = argparse.ArgumentParser(description="Generate Game Boy ROMs", epilog="You probably want to use 'python -m rom_generator.unified -cz' to run this.")
+    argparser.add_argument("count", type=int, nargs='?', help="Number of ROMs to generate in this run.", default=3)
+    argparser.add_argument("--autoexplore", '-a', action='store_true', help="Run the Autoexplore playtest.")
+    argparser.add_argument("--compile", '-c', action='store_true', help="Run the GB Studio compiler.")
+    argparser.add_argument("--noseamcarving", action='store_false', help="Disable seam carving (also disables compiling).")
+    argparser.add_argument("--heuristic", default='random', choices=['random'], help='Which connection heuristic to use: ["random"].')
+    argparser.add_argument("--zip", '-z', action='store_true', help='Also generate a zipped archive of each generated project.')
 
+    args = argparser.parse_args()
+    #print(args)
+
+    RUN_AUTOEXPLORE = args.autoexplore
+    RUN_GB_STUDIO = (args.compile and args.noseamcarving)
+    use_seam_carving = args.noseamcarving
+    CONNECTION_HEURISTIC = args.heuristic #"random"
+    CREATE_ZIP_ARCHIVE = args.zip #True
+    number_of_roms_to_generate = args.count #3
 
     generated_roms = []
     path_to_last_generated_rom = ""

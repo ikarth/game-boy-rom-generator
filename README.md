@@ -7,7 +7,7 @@
 
 # Game Boy ROM Generator
 
-To run: `python -m rom_generator.unified`
+To run: `python -m rom_generator.unified --compile --zip`
 
 To import new GBS templates: `python -m rom_generator.scenes.import -i "gbs_projects/<name of GBS file>.gbsproj"`
 

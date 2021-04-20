@@ -139,7 +139,7 @@ def generateWebpageCatalog(catalog_of_roms, destination):
           margin: auto;
           text-align: center;
           gap: 1em;
-          row-gap: 2em;
+          row-gap: 2.5em;
           align-items: center;
           grid-template-columns: repeat(auto-fit, minmax(21.2em, 1fr));
         }
@@ -150,10 +150,12 @@ def generateWebpageCatalog(catalog_of_roms, destination):
           display: inline-block;
           align-self: start;
           position: relative;
+
         }
         a {
           padding: 1em;
           background-color: #545458;
+          border: 2px solid #000000;
           color: #f3f3f3;
           width: 20em;
           height: 21em;
@@ -166,6 +168,7 @@ def generateWebpageCatalog(catalog_of_roms, destination):
         }
         a:hover {
           background-color: #DDD;
+          border: 2px solid #DDD;
           color: #131313;
         }
         .item a.download_link {
@@ -267,17 +270,29 @@ if __name__ == '__main__':
     import json
     import uuid
     import zipfile
+    import argparse
     root_path = pathlib.Path(__file__).parent.absolute()
     print(root_path)
 
-    RUN_AUTOEXPLORE = False
-    RUN_GB_STUDIO = True
-    use_seam_carving = True
-    CONNECTION_HEURISTIC = "random"
-    CREATE_ZIP_ARCHIVE = True
+    argparser = argparse.ArgumentParser(description="Generate Game Boy ROMs", epilog="You probably want to use 'python -m rom_generator.unified -cz' to run this.")
+    argparser.add_argument("count", type=int, nargs='?', help="Number of ROMs to generate in this run.", default=3)
+    argparser.add_argument("--autoexplore", '-a', action='store_true', help="Run the Autoexplore playtest.")
+    argparser.add_argument("--compile", '-c', action='store_true', help="Run the GB Studio compiler.")
+    argparser.add_argument("--noseamcarving", action='store_false', help="Disable seam carving (also disables compiling).")
+    argparser.add_argument("--heuristic", default='random', choices=['random'], help='Which connection heuristic to use: ["random"].')
+    argparser.add_argument("--zip", '-z', action='store_true', help='Also generate a zipped archive of each generated project.')
+
+    args = argparser.parse_args()
+    #print(args)
+
+    RUN_AUTOEXPLORE = args.autoexplore
+    RUN_GB_STUDIO = (args.compile and args.noseamcarving)
+    use_seam_carving = args.noseamcarving
+    CONNECTION_HEURISTIC = args.heuristic #"random"
+    CREATE_ZIP_ARCHIVE = args.zip #True
+    number_of_roms_to_generate = args.count #3
 
     generated_roms = []
-    number_of_roms_to_generate = 3
     path_to_last_generated_rom = ""
     for n in range(number_of_roms_to_generate):
         random.seed(None)
@@ -304,9 +319,6 @@ if __name__ == '__main__':
             zip_name = None
         generator.writeProjectToDisk(project, filename=f"{title_munged[:28]}.gbsproj", output_path = destination, zip_file=zip_name)
         if RUN_GB_STUDIO:
-            print("Invoking compile for " + os.path.abspath(r'.\compile_rom.bat') + ' ' + os.path.abspath(os.path.join(destination, f"{title_munged[:28]}.gbsproj")) + ' ' +
-            proj_title
-            )
 
             script_args = [os.path.abspath(os.path.join(destination, f"{title_munged[:28]}.gbsproj")),
              f'"{proj_title}"']
@@ -314,7 +326,8 @@ if __name__ == '__main__':
             script_path = r'.\compile_rom.bat'
             proj_file_path = os.path.abspath(os.path.join(destination, f"{title_munged[:28]}.gbsproj"))
             script_args = f"{os.path.abspath(script_path)} {proj_file_path} \"{proj_title}\""
-            print(script_args)
+            #print(script_args)
+            print("Invoking compile for " + script_args)
             subprocess.call(
                 script_args, shell=True
                 )
@@ -323,11 +336,18 @@ if __name__ == '__main__':
             generated_roms.append([title_munged, destination])
         if CREATE_ZIP_ARCHIVE:
             zip_path = os.path.abspath(os.path.join(destination, '..', zip_name))
-            print(zip_path)
+            #print(zip_path)
+            #print(destination)
+            dest_length = len(destination)
             with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+                #print(zip_path)
                 for root, dirs, files in os.walk(destination):
                     for file in files:
-                        zipf.write(os.path.join(root, file), os.path.relpath(os.path.join(destination, '..')))
+                        #print()
+                        #print(root, file)
+                        #print(os.path.relpath(os.path.join(root, file)))
+                        print(os.path.join('.' + str(root)[dest_length:], file))
+                        zipf.write(os.path.relpath(os.path.join(root, file)), os.path.join('.' + str(root)[dest_length:], file))
 
     if RUN_AUTOEXPLORE:
         runExploration(path_to_last_generated_rom, destination)
